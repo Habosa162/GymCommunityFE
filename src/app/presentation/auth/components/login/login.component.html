@@ -1,0 +1,196 @@
+<section id="login" class="min-vh-100 d-flex">
+  <div class="left-side vh-100 w-50 position-relative overflow-hidden">
+    <div class="circle-container position-absolute">
+      <svg width="200" height="200" viewBox="0 0 300 300">
+        <defs>
+          <path
+            id="circlePath"
+            d="M 150, 150
+               m -100, 0
+               a 100,100 0 1,1 200,0
+               a 100,100 0 1,1 -200,0"
+          />
+        </defs>
+
+        <text
+          font-size="16"
+          fill="limegreen"
+          font-family="Arial"
+          textLength="628"
+        >
+          <textPath href="#circlePath" startOffset="0%">
+            DEDICATED & SKILLED TRAINERS, DEDICATED & SKILLED TRAINERS,
+          </textPath>
+        </text>
+      </svg>
+    </div>
+
+    <div class="position-absolute top-50 start-0 translate-middle-y px-4">
+      <p class="metal-text">Welcome back to your fitness community!</p>
+      <p class="text-white-50">
+        Log in to connect with trainers, track your progress, and stay<br />
+        motivated with like-minded athletes.
+      </p>
+    </div>
+  </div>
+  <div
+    class="right-side vh-100 w-50 d-flex justify-content-around align-items-center flex-column"
+  >
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="p-3 w-75">
+      <h1 class="text-center">Sign in</h1>
+      <!-- Email input start -->
+      <div class="mb-3">
+        <label for="email" class="form-label fw-medium">Email</label>
+        <input
+          class="rounded-3 p-2 w-100 form-control"
+          formControlName="email"
+          type="email"
+          placeholder="Example@email.com"
+          id="email"
+          (focus)="errMgs = ''"
+        />
+        <div *ngIf="loginForm.get('email')?.invalid && submitted">
+          <small
+            class="text-danger"
+            *ngIf="loginForm.get('email')?.errors?.['required']"
+            >Email is required</small
+          >
+          <small
+            class="text-danger"
+            *ngIf="loginForm.get('email')?.errors?.['email']"
+            >Invalid email format</small
+          >
+        </div>
+      </div>
+
+      <!-- Email input end -->
+
+      <!-- Password input start -->
+      <div class="mb-3">
+        <label for="password" class="form-label fw-medium">Password</label>
+        <input
+          class="rounded-3 p-2 w-100 form-control"
+          formControlName="password"
+          type="password"
+          placeholder="At least 6 characters"
+          minlength="6"
+          id="password"
+          (focus)="errMgs = ''"
+        />
+        <div *ngIf="loginForm.get('password')?.invalid && submitted">
+          <small
+            class="text-danger"
+            *ngIf="loginForm.get('password')?.errors?.['required']"
+            >Password is required</small
+          >
+          <small
+            class="text-danger"
+            *ngIf="loginForm.get('password')?.errors?.['minlength']"
+          >
+            Minimum length is 6 characters
+          </small>
+        </div>
+      </div>
+      <!-- Password input end -->
+      <div class="text-end mb-3">
+        <a routerLink="/" class="ms-auto d-inline-block mainColor"
+          >Forgot password?</a
+        >
+      </div>
+      <p *ngIf="errMgs !== ''" class="text-center text-danger">{{ errMgs }}</p>
+      <div class="mb-5">
+        <button
+          [disabled]="isLoading"
+          class="w-100 rounded-3 p-2 fw-medium"
+          type="submit"
+        >
+          <span *ngIf="isLoading">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+          </span>
+
+          {{ isLoading ? "Logging in..." : "Login" }}
+        </button>
+      </div>
+      <div class="text-center d-flex justify-content-center align-items-center">
+        <span class="line"></span>
+        <span class="or position-relative">Or</span>
+        <span class="line"></span>
+      </div>
+      <div
+        class="external-login mt-3 d-flex flex-column justify-content-center align-items-center"
+      >
+        <button class="w-100 rounded-3 p-2 mt-3 border-0" type="button">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            width="25"
+            height="25"
+            viewBox="0 0 48 48"
+          >
+            <path
+              fill="#FFC107"
+              d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
+            ></path>
+            <path
+              fill="#FF3D00"
+              d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
+            ></path>
+            <path
+              fill="#4CAF50"
+              d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
+            ></path>
+            <path
+              fill="#1976D2"
+              d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+            ></path>
+          </svg>
+          Sign in with Google
+        </button>
+
+        <button class="w-100 rounded-3 p-2 mt-3 border-0" type="button">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            width="25"
+            height="25"
+            viewBox="0 0 48 48"
+          >
+            <linearGradient
+              id="Ld6sqrtcxMyckEl6xeDdMa_uLWV5A9vXIPu_gr1"
+              x1="9.993"
+              x2="40.615"
+              y1="9.993"
+              y2="40.615"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop offset="0" stop-color="#2aa4f4"></stop>
+              <stop offset="1" stop-color="#007ad9"></stop>
+            </linearGradient>
+            <path
+              fill="url(#Ld6sqrtcxMyckEl6xeDdMa_uLWV5A9vXIPu_gr1)"
+              d="M24,4C12.954,4,4,12.954,4,24s8.954,20,20,20s20-8.954,20-20S35.046,4,24,4z"
+            ></path>
+            <path
+              fill="#fff"
+              d="M26.707,29.301h5.176l0.813-5.258h-5.989v-2.874c0-2.184,0.714-4.121,2.757-4.121h3.283V12.46 c-0.577-0.078-1.797-0.248-4.102-0.248c-4.814,0-7.636,2.542-7.636,8.334v3.498H16.06v5.258h4.948v14.452 C21.988,43.9,22.981,44,24,44c0.921,0,1.82-0.084,2.707-0.204V29.301z"
+            ></path>
+          </svg>
+          Sign in with facebook
+        </button>
+      </div>
+      <p class="text-center mt-3">
+        Don't have an account?
+        <a routerLink="/Register" class="mainColor text-decoration-none"
+          >Sign up</a
+        >
+      </p>
+    </form>
+    <p class="copyright text-center text-black-50">
+      &copy; 2025
+      <a routerLink="/" class="mainColor text-decoration-none">webName</a>. All
+      rights reserved.
+    </p>
+  </div>
+</section>

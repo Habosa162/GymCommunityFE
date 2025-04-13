@@ -1,0 +1,106 @@
+#login {
+}
+.left-side {
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ),
+    url("/assets/imgs/authImgs/loginBg.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+form {
+  background-color: rgba(255, 255, 255, 0.31);
+}
+
+input {
+  border: 1px solid #ccc;
+}
+
+button[type="submit"] {
+  background-color: limegreen;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+button[type="submit"]:hover {
+  background-color: #76b82a;
+}
+.line {
+  width: 45%;
+  height: 2px;
+  background-color: #ccc;
+  margin: 10px 0;
+}
+.or {
+  width: 10%;
+}
+
+/*rotating svg*/
+.circle-container svg {
+  animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.metal-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+
+  background: linear-gradient(
+    135deg,
+    #d7d7d7,
+    #f0f0f0,
+    #a8a8a8,
+    #e0e0e0,
+    #bcbcbc
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  font-size: 40px;
+}
+
+@media (max-width: 768px) {
+  .left-side {
+    display: none;
+  }
+  .right-side {
+    width: 100% !important;
+  }
+  .circle-container {
+    display: none;
+  }
+  form {
+    width: 100% !important;
+    padding: 30px !important;
+  }
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.form-control:focus {
+  border-color: limegreen;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(50, 205, 50, 0.3);
+}
+
+::placeholder {
+  color: #c0c0c0;
+  font-size: 14px;
+  font-style: italic;
+}
