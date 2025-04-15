@@ -1,0 +1,66 @@
+<div class="container my-5">
+    <!-- Create New Subject Button -->
+    <button class="btn btn-primary mb-4" (click)="onCreate()" *ngIf="!isEditMode && !subjectId && !iscreateMode">Add New Subject</button>
+  
+    <!-- Subjects List -->
+    <div *ngIf="!isEditMode && !subjectId && !iscreateMode" >
+      <h2 class="mb-4">All Subjects</h2>
+      <div class="row">
+        <div class=" mb-4" *ngFor="let sub of subs">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ sub.name }}</h5>
+              <p class="card-text">{{ sub.description }}</p>
+              <div class="d-flex ">
+                <button class="btn btn-secondary mx-2" (click)="onDetails(sub.id)">Details</button>
+                <button class="btn btn-success mx-2" (click)="onEdit(sub.id)">Edit</button>
+                <button class="btn btn-danger mx-2" (click)="onDelete(sub.id)">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Create/Edit Subject Form -->
+    <div *ngIf="isEditMode || iscreateMode">
+      <h2>{{ isEditMode ? 'Edit Subject' : 'Create Subject' }}</h2>
+      <form [formGroup]="subForm" (ngSubmit)="onSubmit()" class="mt-4">
+        <div class="mb-3">
+          <label for="name" class="form-label">Subject Name</label>
+          <input type="text" id="name" formControlName="name" class="form-control" placeholder="Enter name" />
+          <div *ngIf="this.subForm.controls['name'].invalid && this.subForm.controls['name'].touched" class="text-danger">
+            Subject Name is required.
+          </div>
+        </div>
+  
+        <div class="mb-3">
+          <label for="description" class="form-label">Subject Description</label>
+          <input type="text" id="description" formControlName="description" class="form-control" placeholder="Enter description" />
+          <div *ngIf="this.subForm.controls['description'].invalid && this.subForm.controls['description'].touched" class="text-danger">
+            Subject Description is required.
+          </div>
+        </div>
+  
+        <button type="submit" class="btn btn-primary" [disabled]="subForm.invalid">{{ isEditMode ? 'Update' : 'Create' }} Subject</button>
+      </form>
+  
+      <button class="btn btn-secondary mt-3" (click)="onBack()">Back to List</button>
+    </div>
+  
+    <!-- Subject Details -->
+
+    <div *ngIf="!isEditMode && subjectId && currentSubject" class="subject-details mt-4">
+        <h2 class="mb-4">Subject Details</h2>
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">{{ currentSubject.name }}</h3>
+                <p class="card-text"> {{ currentSubject.description }}</p>
+            </div>
+            
+        </div>
+      
+      <button class="btn btn-secondary my-3" (click)="onBack()">Back to List</button>
+    </div>
+  </div>
+  
