@@ -15,7 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { RegisterRequest } from '../../../../domain/models/auth.model';
 import { MatRadioModule } from '@angular/material/radio';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -36,6 +36,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatDatepickerModule,
     MatNativeDateModule,
     MatRadioModule,
+    RouterModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
@@ -46,6 +47,8 @@ export class RegisterComponent {
   selectedFile!: File;
   @ViewChild('stepper') stepper!: MatStepper;
   emailError: string = '';
+  isLoading: boolean = false;
+  isSuccess: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -64,7 +67,16 @@ export class RegisterComponent {
       step2: this.fb.group(
         {
           email: ['', [Validators.required, Validators.email]],
-          password: ['', [Validators.required, Validators.minLength(6)]],
+          password: [
+            '',
+            [
+              Validators.required,
+              Validators.minLength(6),
+              Validators.pattern(
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/
+              ),
+            ],
+          ],
           confirmPassword: ['', Validators.required],
         },
         { validators: this.passwordMatchValidator }
@@ -175,6 +187,7 @@ export class RegisterComponent {
 
   submit() {
     if (this.mainForm.valid) {
+      this.isLoading = true;
       const formData = new FormData();
 
       const birthDate = new Date(this.step1.value.birthDate)
@@ -200,10 +213,15 @@ export class RegisterComponent {
       this.authService.register(formData).subscribe({
         next: (response) => {
           console.log('Registration successful', response);
-          this.router.navigate(['/login']);
+          this.isLoading = false;
+          this.isSuccess = true;
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 3000);
         },
         error: (error) => {
           console.error('Registration failed', error);
+          this.isLoading = false;
 
           if (error.error.message == 'Email already exists') {
             this.emailError = error.error.message;

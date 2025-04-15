@@ -1,0 +1,54 @@
+<section id="topNav" class="bg-white py-3">
+  <div class="container">
+    <div class="d-flex justify-content-between">
+      <span
+        ><i class="fa-solid fa-bolt fa-bounce" style="color: #32cd32"></i>
+        <span class="text-black-50"> Eat, Sleep, Gym & Repeat </span></span
+      >
+
+      <div class="text-black-50 d-flex align-items-center gap-3">
+        <a
+          href="mailto:someone@example.com"
+          class="text-black-50 text-decoration-none"
+          ><i class="fa-solid fa-envelope"></i> contact&#64;voltmort.com</a
+        >
+        |
+        <ul class="d-flex list-unstyled gap-3 m-0">
+          <li>
+            <a href=""><i class="fa-brands fa-instagram text-black-50"></i></a>
+          </li>
+          <li>
+            <a href=""><i class="fa-brands fa-youtube text-black-50"></i></a>
+          </li>
+          <li>
+            <a href=""><i class="fa-brands fa-facebook text-black-50"></i></a>
+          </li>
+          <li>
+            <a href=""><i class="fa-brands fa-x-twitter text-black-50"></i></a>
+          </li>
+          <li>
+            <a href=""
+              ><i class="fa-brands fa-linkedin-in text-black-50"></i
+            ></a>
+          </li>
+        </ul>
+        |
+        <!-- dark mode toggle -->
+        <div>
+          <input
+            type="checkbox"
+            class="checkbox"
+            id="checkbox"
+            (change)="toggleDarkMode($event)"
+          />
+          <label for="checkbox" class="checkbox-label">
+            <i class="fas fa-sun"></i>
+            <i class="fas fa-moon"></i>
+            <span class="ball"></span>
+          </label>
+        </div>
+        <!-- dark mode toggle -->
+      </div>
+    </div>
+  </div>
+</section>

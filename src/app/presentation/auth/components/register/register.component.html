@@ -1,12 +1,15 @@
-<section id="register">
-  <div class="headerSection bg-dark-subtle py-5">
+<section id="register" class="min-vh-100">
+  <div class="headerSection py-2 text-center">
+    <a routerLink="/">
+      <img width="90" src="/assets/imgs/logo.png" alt="" />
+    </a>
     <h1 class="text-center fw-bold text-capitalize">Voltmort</h1>
-    <h3 class="text-center fw-bold text-capitalize">
+    <h4 class="text-center fw-bold text-capitalize">
       Sign up and join our community
-    </h3>
+    </h4>
   </div>
   <div class="container">
-    <div class="frombox d-flex justify-content-center bg-white">
+    <div class="frombox d-flex justify-content-center">
       <mat-horizontal-stepper class="w-75" [linear]="true" #stepper>
         <!-- Step 1 -->
 
@@ -15,7 +18,7 @@
             <ng-template matStepLabel>Personal Info</ng-template>
             <div class="d-flex gap-2 gap-lg-4 my-3 flex-wrap flex-lg-nowrap">
               <mat-form-field appearance="outline" class="w-100">
-                <mat-label>First Name</mat-label>
+                <mat-label class="lable">First Name</mat-label>
                 <input matInput formControlName="firstName" required />
                 <mat-error
                   *ngIf="
@@ -26,8 +29,8 @@
                 >
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Last Name</mat-label>
+              <mat-form-field appearance="outline" class="w-100 border-white">
+                <mat-label class="lable">Last Name</mat-label>
                 <input matInput formControlName="lastName" required />
                 <mat-error
                   *ngIf="
@@ -40,9 +43,9 @@
             </div>
             <div class="d-flex gap-2 gap-lg-4 my-3 flex-wrap flex-lg-nowrap">
               <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Gender</mat-label>
-                <mat-select formControlName="gender" required>
-                  <mat-option value="m">Male</mat-option>
+                <mat-label class="lable">Gender</mat-label>
+                <mat-select class="select" formControlName="gender" required>
+                  <mat-option class="text-white" value="m">Male</mat-option>
                   <mat-option value="f">Female</mat-option>
                 </mat-select>
                 <mat-error
@@ -55,7 +58,7 @@
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Birth Date</mat-label>
+                <mat-label class="lable">Birth Date</mat-label>
                 <input
                   matInput
                   [matDatepicker]="picker"
@@ -79,7 +82,7 @@
 
             <div class="d-flex gap-2 gap-lg-4 my-3 flex-wrap flex-lg-nowrap">
               <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Address</mat-label>
+                <mat-label class="lable">Address</mat-label>
                 <input matInput formControlName="address" required />
                 <mat-error
                   *ngIf="
@@ -91,7 +94,7 @@
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Phone</mat-label>
+                <mat-label class="lable">Phone</mat-label>
                 <input matInput formControlName="phone" required />
                 <mat-error
                   *ngIf="
@@ -104,12 +107,12 @@
             </div>
 
             <button
-              class="btn btn-outline-primary"
+              class="nextButton text-primary"
               mat-button
               matStepperNext
               [disabled]="step1.invalid"
             >
-              <i class="fa-solid fa-chevron-right"></i> Next
+              Next
             </button>
           </form>
         </mat-step>
@@ -121,7 +124,7 @@
 
             <div class="my-3">
               <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Email</mat-label>
+                <mat-label class="lable">Email</mat-label>
                 <input
                   matInput
                   formControlName="email"
@@ -140,9 +143,9 @@
               </mat-form-field>
               <p *ngIf="emailError" class="text-danger">Email already exists</p>
             </div>
-            <div class="my-3">
+            <div class="d-flex gap-2 gap-lg-4 my-3 flex-wrap flex-lg-nowrap">
               <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Password</mat-label>
+                <mat-label class="lable">Password</mat-label>
                 <input
                   matInput
                   formControlName="password"
@@ -157,12 +160,20 @@
                   *ngIf="mainForm.get('step2.password')?.hasError('minlength')"
                   >Minimum 6 characters</mat-error
                 >
+                <mat-error
+                  *ngIf="mainForm.get('step2.password')?.hasError('pattern')"
+                >
+                  Password must contain at least:
+                  <ul style="margin: 0; padding-left: 1rem">
+                    <li>1 uppercase letter</li>
+                    <li>1 lowercase letter</li>
+                    <li>1 number</li>
+                    <li>1 special character</li>
+                  </ul>
+                </mat-error>
               </mat-form-field>
-            </div>
-
-            <div class="my-3">
               <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Confirm Password</mat-label>
+                <mat-label class="lable">Confirm Password</mat-label>
                 <input
                   matInput
                   formControlName="confirmPassword"
@@ -183,9 +194,15 @@
                 >
               </mat-form-field>
             </div>
+            <br /><br /><br /><br />
 
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext [disabled]="step2.invalid">
+            <button
+              mat-button
+              matStepperNext
+              class="nextButton text-primary"
+              [disabled]="step2.invalid"
+            >
               Next
             </button>
           </form>
@@ -206,7 +223,7 @@
             </mat-form-field> -->
             <mat-radio-group
               formControlName="role"
-              class="d-flex gap-3 flex-wrap justify-content-center"
+              class="d-flex gap-3 flex-wrap justify-content-center my-3"
             >
               <mat-radio-button class="role-card" value="Client">
                 <div class="card-content">
@@ -234,7 +251,12 @@
             </mat-radio-group>
 
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext [disabled]="step3.invalid">
+            <button
+              mat-button
+              matStepperNext
+              class="nextButton text-primary"
+              [disabled]="step3.invalid"
+            >
               Next
             </button>
           </form>
@@ -266,7 +288,7 @@
               <!-- Upload Circle -->
               <label
                 for="fileInput"
-                class="rounded-circle d-flex justify-content-center align-items-center bg-light border position-relative"
+                class="rounded-circle d-flex justify-content-center align-items-center bg-light border position-relative uploadCircle"
                 [ngStyle]="{
                   width: '150px',
                   height: '150px',
@@ -281,7 +303,7 @@
                   <img
                     [src]="selectedImage"
                     alt="Preview"
-                    class="w-100 h-100 object-fit-cover rounded-circle"
+                    class="w-100 h-100 object-fit-cover rounded-circle border border-black"
                   />
                   <button
                     *ngIf="selectedImage"
@@ -308,7 +330,12 @@
             </div>
 
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext [disabled]="step4.invalid">
+            <button
+              mat-button
+              matStepperNext
+              class="nextButton text-primary"
+              [disabled]="step4.invalid"
+            >
               Next
             </button>
           </form>
@@ -317,11 +344,29 @@
         <!-- Step 5 -->
         <mat-step>
           <ng-template matStepLabel>Done</ng-template>
-          <p>You have successfully completed all steps!</p>
+          <p class="text-center">You have successfully completed all steps!</p>
+          <p class="text-center">
+            <span *ngIf="isLoading">
+              <i class="fa-solid fa-spinner fa-spin fs-1"></i>
+            </span>
+            <span *ngIf="isSuccess">
+              <i
+                class="fa-regular fa-circle-check fs-1"
+                style="color: #32cd32"
+              ></i>
+            </span>
+          </p>
 
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-raised-button color="primary" (click)="submit()">
-            Submit
+          <button
+            class="btn rounded-pill btn-outline-primary"
+            (click)="submit()"
+            [disabled]="isLoading"
+          >
+            <span *ngIf="isLoading">
+              <i class="fa-solid fa-spinner fa-spin"></i>
+            </span>
+            {{ isLoading ? "Loading..." : "Submit" }}
           </button>
           <button mat-button (click)="stepper.reset()">Reset</button>
         </mat-step>

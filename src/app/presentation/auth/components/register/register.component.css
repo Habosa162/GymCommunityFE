@@ -1,8 +1,41 @@
+* {
+  font-family: "Antonio", sans-serif;
+  font-stretch: 5px;
+}
+#register {
+  background-color: rgb(231, 231, 231);
+}
+.nextButton[disabled] {
+  color: gray !important;
+}
+
+.uploadCircle {
+  border: 1px dashed black !important;
+  background-color: transparent !important;
+}
+.role-card,
+.card-content {
+  cursor: pointer !important;
+}
+.mainColor {
+  color: limegreen !important;
+}
 /* update angular commponent styles */
 
 ::ng-deep .mat-step-header:hover,
-::ng-deep .mat-step-header {
+::ng-deep .mat-step-header,
+::ng-deep .mat-horizontal-stepper {
   background-color: transparent !important;
+}
+::ng-deep .mat-stepper-vertical,
+.mat-stepper-horizontal {
+  background-color: transparent !important;
+}
+::ng-deep .mat-step-label {
+  display: none;
+}
+::ng-deep .mat-mdc-text-field-wrapper:hover .mat-mdc-notch-piece {
+  border-color: #3f51b5 !important;
 }
 
 /* radiomodule */
@@ -38,4 +71,49 @@
 
 .role-card:hover {
   border-color: #9fa8da;
+}
+
+/* dark mode styles */
+:host-context(body.dark-mode) .bg-dark-subtle {
+  background-color: #201f1f !important;
+  color: white;
+}
+:host-context(body.dark-mode) #register {
+  background-color: #201f1f !important;
+  color: white;
+}
+:host-context(body.dark-mode) button[disabled] {
+  color: gray !important;
+}
+:host-context(body.dark-mode) button {
+  color: white !important;
+}
+:host-context(body.dark-mode) input,
+:host-context(body.dark-mode) .select {
+  color: white !important;
+}
+:host-context(body.dark-mode)
+  ::ng-deep
+  .mat-mdc-text-field-wrapper:hover
+  .lable {
+  color: #3f51b5 !important;
+}
+:host-context(body.dark-mode) .role-card {
+  background-color: transparent !important;
+  border: 1px solid hsl(0, 0%, 60%) !important;
+}
+:host-context(body.dark-mode) .role-card h3,
+:host-context(body.dark-mode) .role-card p {
+  color: white !important;
+}
+:host-context(body.dark-mode) .role-card:hover {
+  border: 1px solid #3f51b5 !important;
+}
+:host-context(body.dark-mode) .uploadCircle,
+:host-context(body.dark-mode) .text-muted {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+:host-context(body.dark-mode) .submitBtn {
+  color: #3f51b5 !important;
 }
