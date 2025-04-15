@@ -1,0 +1,41 @@
+/* update angular commponent styles */
+
+::ng-deep .mat-step-header:hover,
+::ng-deep .mat-step-header {
+  background-color: transparent !important;
+}
+
+/* radiomodule */
+
+.role-card {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 1rem;
+  min-width: 355px;
+  cursor: pointer;
+  display: flex;
+
+  flex-direction: column;
+  align-items: flex-start;
+  transition: 0.3s ease;
+  background-color: #f5f5f5;
+
+  .card-content {
+    h3 {
+      margin: 0 0 0.5rem;
+    }
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.role-card.mat-radio-checked {
+  border-color: #3f51b5;
+  background-color: #e8eaf6;
+}
+
+.role-card:hover {
+  border-color: #9fa8da;
+}

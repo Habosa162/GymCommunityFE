@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
   private LoginEndPoint = `http://localhost:5299/api/Auth/login`;
-  private RegisterEndPoint = `http://localhost:5299/api/Auth/register`;
+  private RegisterEndPoint = `http://localhost:5299/api/Auth/Register`;
 
   constructor(private http: HttpClient) {}
 
@@ -17,7 +17,7 @@ export class AuthService {
     console.log(data);
     return this.http.post(this.LoginEndPoint, data);
   }
-  register(data: RegisterRequest): Observable<any> {
+  register(data: FormData): Observable<any> {
     console.log(data);
     return this.http.post(this.RegisterEndPoint, data);
   }
