@@ -17,21 +17,15 @@ import {
   Platform,
   coerceElement,
   coerceNumberProperty
-<<<<<<< Updated upstream
 <<<<<<<< Updated upstream:.angular/cache/19.2.7/GymCommunity/vite/deps/chunk-WBO3QZJC.js
 } from "./chunk-TBPBL5EG.js";
 ========
-=======
->>>>>>> Stashed changes
 <<<<<<<< HEAD:.angular/cache/19.2.7/GymCommunity/vite/deps/chunk-HRDGF2NZ.js
 } from "./chunk-YBP6BAAT.js";
 ========
 } from "./chunk-TBPBL5EG.js";
 >>>>>>>> df8fb4d01c87985d7eb8c019e80c5c78cde16e16:.angular/cache/19.2.7/GymCommunity/vite/deps/chunk-WBO3QZJC.js
-<<<<<<< Updated upstream
 >>>>>>>> Stashed changes:.angular/cache/19.2.7/GymCommunity/vite/deps/chunk-HRDGF2NZ.js
-=======
->>>>>>> Stashed changes
 import {
   DOCUMENT
 } from "./chunk-4VAIYRI4.js";
@@ -1575,18 +1569,12 @@ export {
   CdkScrollableModule,
   ScrollingModule
 };
-<<<<<<< Updated upstream
 <<<<<<<< Updated upstream:.angular/cache/19.2.7/GymCommunity/vite/deps/chunk-WBO3QZJC.js
 //# sourceMappingURL=chunk-WBO3QZJC.js.map
 ========
-=======
->>>>>>> Stashed changes
 <<<<<<<< HEAD:.angular/cache/19.2.7/GymCommunity/vite/deps/chunk-HRDGF2NZ.js
 //# sourceMappingURL=chunk-HRDGF2NZ.js.map
 ========
 //# sourceMappingURL=chunk-WBO3QZJC.js.map
 >>>>>>>> df8fb4d01c87985d7eb8c019e80c5c78cde16e16:.angular/cache/19.2.7/GymCommunity/vite/deps/chunk-WBO3QZJC.js
-<<<<<<< Updated upstream
 >>>>>>>> Stashed changes:.angular/cache/19.2.7/GymCommunity/vite/deps/chunk-HRDGF2NZ.js
-=======
->>>>>>> Stashed changes
