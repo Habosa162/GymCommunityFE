@@ -1,0 +1,37 @@
+<div class="container mt-4">
+    <h2>Create Post</h2>
+    <form (submit)="createPost(); $event.preventDefault()" class="mb-4">
+      <input class="form-control mb-2" [(ngModel)]="newPost.title" name="title" placeholder="Title" required />
+      <textarea class="form-control mb-2" [(ngModel)]="newPost.content" name="content" placeholder="Content" required></textarea>
+      <select class="form-select mb-2" [(ngModel)]="newPost.subId" name="subId" required>
+        <option *ngFor="let sub of subs" [value]="sub.id">{{ sub.name }}</option>
+      </select>
+      <input class="form-control mb-2" type="file" (change)="handleImageUpload($event)" />
+      <button class="btn btn-primary">Post</button>
+    </form>
+  
+    <div *ngFor="let post of posts" class="card mb-4">
+      <div class="card-body">
+        <h5>{{ post.title }} <small class="text-muted">by {{ post.userName }} in {{ post.subName }}</small></h5>
+        <p>{{ post.content }}</p>
+        <img *ngIf="post.imgUrl" [src]="post.imgUrl" class="img-fluid rounded" />
+        <div class="mt-2">
+          <button class="btn btn-sm btn-outline-success me-2" (click)="voteOnPost(post.id, true)">👍</button>
+          <button class="btn btn-sm btn-outline-danger" (click)="voteOnPost(post.id, false)">👎</button>
+          <span class="ms-2">Votes: {{ post.voteCount }}</span> | Comments: {{ post.commentCount }}
+        </div>
+  
+        <hr />
+        <div *ngFor="let comment of commentsMap[post.id]">
+          <p>{{ comment.content }} - <small>{{ comment.voteCount }} votes</small></p>
+          <button class="btn btn-sm btn-outline-success me-1" (click)="voteOnComment(comment.id, post.id, true)">👍</button>
+          <button class="btn btn-sm btn-outline-danger" (click)="voteOnComment(comment.id, post.id, false)">👎</button>
+        </div>
+  
+        <form (submit)="createComment(post.id, commentInput.value); commentInput.value=''; $event.preventDefault()" class="mt-2">
+          <input #commentInput class="form-control" placeholder="Add a comment..." />
+        </form>
+      </div>
+    </div>
+  </div>
+  

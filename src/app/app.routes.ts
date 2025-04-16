@@ -3,6 +3,7 @@ import { LoginComponent } from './presentation/auth/components/login/login.compo
 
 import { SubjectComponent } from './presentation/Forum/components/subject/subject.component';
 import { RegisterComponent } from './presentation/auth/components/register/register.component';
+import { ForumComponent } from './presentation/Forum/components/forum/forum.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -11,4 +12,6 @@ export const routes: Routes = [
   { path: 'subjects/create', component: SubjectComponent },
   { path: 'subjects/edit/:id', component: SubjectComponent },
   { path: 'subjects/details/:id', component: SubjectComponent },
+  { path: 'forum', component: ForumComponent },
+
 ];
