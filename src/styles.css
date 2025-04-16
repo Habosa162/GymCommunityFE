@@ -11,5 +11,16 @@
   background-color: limegreen;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.form-control:focus {
+  border-color: limegreen !important;
+  outline: 0 !important;
+  box-shadow: 0 0 0 0.25rem rgba(50, 205, 50, 0.3) !important;
+}

@@ -93,12 +93,6 @@ button:disabled {
   cursor: not-allowed;
 }
 
-.form-control:focus {
-  border-color: limegreen;
-  outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(50, 205, 50, 0.3);
-}
-
 ::placeholder {
   color: #c0c0c0;
   font-size: 14px;

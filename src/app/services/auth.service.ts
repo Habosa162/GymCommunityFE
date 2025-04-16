@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private LoginEndPoint = `http://localhost:5299/api/Auth/login`;
   private RegisterEndPoint = `http://localhost:5299/api/Auth/Register`;
+  private ForgotPasswordEndPoint = `http://localhost:5299/api/Auth/ForgotPassword`;
 
   constructor(private http: HttpClient) {}
 
@@ -20,5 +21,9 @@ export class AuthService {
   register(data: FormData): Observable<any> {
     console.log(data);
     return this.http.post(this.RegisterEndPoint, data);
+  }
+  forgotPassword(email: string): Observable<any> {
+    const body = { email };
+    return this.http.post(this.ForgotPasswordEndPoint, body);
   }
 }
