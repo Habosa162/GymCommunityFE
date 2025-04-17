@@ -84,7 +84,8 @@
             <button class="close-btn" (click)="closeAddPlanPopup()">&times;</button>
         </div>
         <div class="popup-body">
-            <form (ngSubmit)="submitDailyPlan()">
+            <div class="day-info-section">
+                <h4>Day Information</h4>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Date</label>
@@ -109,19 +110,139 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Activity</label>
-                    <input type="text" [(ngModel)]="newPlan.activity" name="activity" required>
-                </div>
-                <div class="form-group">
-                    <label>Trainer</label>
-                    <input type="text" [(ngModel)]="newPlan.trainer" name="trainer" required>
-                </div>
                 <div class="form-actions">
-                    <button type="button" class="cancel-btn" (click)="closeAddPlanPopup()">Cancel</button>
-                    <button type="submit" class="submit-btn">Add Plan</button>
+                    <button type="button" class="save-day-btn" (click)="saveDailyPlan()">
+                        <i class="fa fa-save"></i> Save Daily Plan
+                    </button>
                 </div>
-            </form>
+                <div class="validation-message" *ngIf="!newPlan.date || !selectedTimeSlot || !selectedDay">
+                    Please fill in all required day information
+                </div>
+            </div>
+
+            <div class="add-buttons-section">
+                <button class="add-exercise-btn" (click)="showExerciseForm = true" [class.disabled]="!isDayInfoSaved">
+                    <i class="fa fa-plus"></i> Add Exercise
+                </button>
+                <button class="add-meal-btn" (click)="showMealForm = true" [class.disabled]="!isDayInfoSaved">
+                    <i class="fa fa-plus"></i> Add Meal
+                </button>
+            </div>
+
+            <!-- Exercise Form -->
+            <div class="section-container" *ngIf="showExerciseForm">
+                <h4>Add Exercise</h4>
+                <form (ngSubmit)="submitExercise()">
+                    <div class="form-group">
+                        <label>Activity</label>
+                        <input type="text" [(ngModel)]="newPlan.activity" name="activity" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Trainer</label>
+                        <input type="text" [(ngModel)]="newPlan.trainer" name="trainer" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Sets</label>
+                            <input type="number" [(ngModel)]="newPlan.sets" name="sets" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Reps</label>
+                            <input type="number" [(ngModel)]="newPlan.reps" name="reps" min="1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea [(ngModel)]="newPlan.exerciseNotes" name="exerciseNotes" rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" (click)="showExerciseForm = false">Cancel</button>
+                        <button type="submit" class="submit-btn">Add Exercise</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Meal Form -->
+            <div class="section-container" *ngIf="showMealForm">
+                <h4>Add Meal</h4>
+                <form (ngSubmit)="submitMeal()">
+                    <div class="form-group">
+                        <label>Meal Type</label>
+                        <select [(ngModel)]="newPlan.mealType" name="mealType">
+                            <option value="breakfast">Breakfast</option>
+                            <option value="lunch">Lunch</option>
+                            <option value="dinner">Dinner</option>
+                            <option value="snack">Snack</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Meal Description</label>
+                        <textarea [(ngModel)]="newPlan.mealDescription" name="mealDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Calories</label>
+                        <input type="number" [(ngModel)]="newPlan.calories" name="calories" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Meal Notes</label>
+                        <textarea [(ngModel)]="newPlan.mealNotes" name="mealNotes" rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" (click)="showMealForm = false">Cancel</button>
+                        <button type="submit" class="submit-btn">Add Meal</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Added Plans Cards Section -->
+            <div class="added-plans-section">
+                <h4>Added Plans</h4>
+                <div class="plans-cards-container">
+                    <!-- Exercise Cards -->
+                    <div class="exercise-cards">
+                        <h5>Exercises</h5>
+                        <div class="cards-grid">
+                            <div class="plan-card" *ngFor="let exercise of addedExercises">
+                                <div class="card-header">
+                                    <h6>{{ exercise.activity }}</h6>
+                                    <button class="delete-btn" (click)="removeExercise(exercise)">&times;</button>
+                                </div>
+                                <div class="card-content">
+                                    <p><strong>Trainer:</strong> {{ exercise.trainer }}</p>
+                                    <p><strong>Sets:</strong> {{ exercise.sets }}</p>
+                                    <p><strong>Reps:</strong> {{ exercise.reps }}</p>
+                                    <p *ngIf="exercise.exerciseNotes"><strong>Notes:</strong> {{ exercise.exerciseNotes }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Meal Cards -->
+                    <div class="meal-cards">
+                        <h5>Meals</h5>
+                        <div class="cards-grid">
+                            <div class="plan-card" *ngFor="let meal of addedMeals">
+                                <div class="card-header">
+                                    <h6>{{ meal.mealType }}</h6>
+                                    <button class="delete-btn" (click)="removeMeal(meal)">&times;</button>
+                                </div>
+                                <div class="card-content">
+                                    <p><strong>Description:</strong> {{ meal.mealDescription }}</p>
+                                    <p><strong>Calories:</strong> {{ meal.calories }}</p>
+                                    <p *ngIf="meal.mealNotes"><strong>Notes:</strong> {{ meal.mealNotes }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" (click)="closeAddPlanPopup()">Cancel</button>
+                <button type="button" class="submit-btn" (click)="savePlan()" [class.disabled]="!isDayInfoSaved || (addedExercises.length === 0 && addedMeals.length === 0)">
+                    <i class="fa fa-save"></i> Save Plan
+                </button>
+            </div>
         </div>
     </div>
 </div>
