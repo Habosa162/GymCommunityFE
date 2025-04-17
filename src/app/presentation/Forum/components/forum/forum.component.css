@@ -1,27 +1,87 @@
 img {
-    max-height: 300px;
-    margin-top: 10px;
-  }
-  .card {
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    transition: box-shadow 0.3s ease;
-  }
-  
-  .card:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  }
-  
-  select.form-select,
-  input.form-control,
-  textarea.form-control {
-    border-radius: 0.5rem;
-  }
-  
-  .btn {
-    transition: transform 0.2s ease;
-  }
-  
-  .btn:hover {
-    transform: scale(1.02);
-  }
-  
+  max-height: 300px;
+  margin-top: 10px;
+}
+
+.card {
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-5px);
+}
+
+select.form-select,
+input.form-control,
+textarea.form-control {
+  border-radius: 0.75rem;
+}
+
+.btn {
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.btn:hover {
+  transform: scale(1.03);
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 0.5rem 1rem rgba(50, 205, 50, 0.2);
+  transition: 0.3s ease-in-out;
+}
+
+.card-body textarea,
+.card-body input,
+.card-body select {
+  font-size: 1rem;
+}
+
+/* Custom Theme Overrides */
+.bg-primary {
+  background-color: #32cd32 !important;
+}
+.text-primary {
+  color: #32cd32 !important;
+}
+.border-primary {
+  border-color: #32cd32 !important;
+}
+.btn-success {
+  background-color: #32cd32 !important;
+  border-color: #32cd32 !important;
+}
+.btn-outline-success {
+  color: #32cd32 !important;
+  border-color: #32cd32 !important;
+}
+.btn-outline-success:hover {
+  background-color: #32cd32 !important;
+  color: white !important;
+}
+.bg-gradient-custom {
+  background: linear-gradient(90deg, #32cd32, #43e043);
+}
+.bg-primary-subtle {
+  background-color: #eafcea;
+}
+.border-primary-subtle {
+  border-color: #c5f3c5 !important;
+}
+
+.rounded-5 {
+  border-radius: 1.25rem !important;
+}
+.rounded-top-5 {
+  border-top-left-radius: 1.25rem !important;
+  border-top-right-radius: 1.25rem !important;
+}
+.rounded-bottom-5 {
+  border-bottom-left-radius: 1.25rem !important;
+  border-bottom-right-radius: 1.25rem !important;
+}

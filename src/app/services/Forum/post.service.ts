@@ -47,16 +47,15 @@ export class PostService {
     formData.append('content', post.content);
     formData.append('userId', post.userId);
     formData.append('subId', post.subId.toString());
-    if (post.imgUrl) {
-      formData.append('imgUrl', post.imgUrl); 
-    }
+  
+    // Only append new image if there is one
     if (image) {
       formData.append('image', image);
     }
-
+  
     return this.http.put<PostReadDTO>(`${this.baseUrl}/${id}`, formData);
   }
-
+  
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
