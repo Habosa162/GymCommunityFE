@@ -8,7 +8,7 @@ import { RegisterComponent } from './presentation/auth/components/register/regis
 import { ForumComponent } from './presentation/Forum/components/forum/forum.component';
 import { ResetPasswordComponent } from './presentation/auth/components/reset-password/reset-password.component';
 import { ClientProfileComponent } from './presentation/client/components/client-profile/client-profile.component';
-import { TrainingPlansComponent } from './training-plans/training-plans.component';
+import { TrainingPlansComponent } from './presentation/training-plans/training-plans.component';
 
 export const routes: Routes = [
   //auth routes
