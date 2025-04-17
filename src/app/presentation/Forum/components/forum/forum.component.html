@@ -1,37 +1,137 @@
-<div class="container mt-4">
-    <h2>Create Post</h2>
-    <form (submit)="createPost(); $event.preventDefault()" class="mb-4">
-      <input class="form-control mb-2" [(ngModel)]="newPost.title" name="title" placeholder="Title" required />
-      <textarea class="form-control mb-2" [(ngModel)]="newPost.content" name="content" placeholder="Content" required></textarea>
-      <select class="form-select mb-2" [(ngModel)]="newPost.subId" name="subId" required>
-        <option *ngFor="let sub of subs" [value]="sub.id">{{ sub.name }}</option>
-      </select>
-      <input class="form-control mb-2" type="file" (change)="handleImageUpload($event)" />
-      <button class="btn btn-primary">Post</button>
-    </form>
-  
-    <div *ngFor="let post of posts" class="card mb-4">
-      <div class="card-body">
-        <h5>{{ post.title }} <small class="text-muted">by {{ post.userName }} in {{ post.subName }}</small></h5>
-        <p>{{ post.content }}</p>
-        <img *ngIf="post.imgUrl" [src]="post.imgUrl" class="img-fluid rounded" />
-        <div class="mt-2">
-          <button class="btn btn-sm btn-outline-success me-2" (click)="voteOnPost(post.id, true)">👍</button>
-          <button class="btn btn-sm btn-outline-danger" (click)="voteOnPost(post.id, false)">👎</button>
-          <span class="ms-2">Votes: {{ post.voteCount }}</span> | Comments: {{ post.commentCount }}
+<div class="container py-5">
+  <!-- Create Post Form -->
+  <div class="card shadow-lg rounded-5 mb-5 border-0">
+    <div class="card-header bg-gradient bg-primary text-white rounded-top-5 py-4 px-4">
+      <h4 class="mb-0">📢 Create a New Post</h4>
+    </div>
+    <div class="card-body px-4 py-5 bg-light rounded-bottom-5">
+      <form (submit)="createPost(); $event.preventDefault()">
+        <div class="mb-4">
+          <input class="form-control form-control-lg rounded-pill shadow-sm" [(ngModel)]="newPost.title" name="title" placeholder="Title" required />
         </div>
-  
-        <hr />
-        <div *ngFor="let comment of commentsMap[post.id]">
-          <p>{{ comment.content }} - <small>{{ comment.voteCount }} votes</small></p>
-          <button class="btn btn-sm btn-outline-success me-1" (click)="voteOnComment(comment.id, post.id, true)">👍</button>
-          <button class="btn btn-sm btn-outline-danger" (click)="voteOnComment(comment.id, post.id, false)">👎</button>
+        <div class="mb-4">
+          <textarea class="form-control shadow-sm rounded-4" [(ngModel)]="newPost.content" name="content" placeholder="What's on your mind?" rows="5" required></textarea>
         </div>
-  
-        <form (submit)="createComment(post.id, commentInput.value); commentInput.value=''; $event.preventDefault()" class="mt-2">
-          <input #commentInput class="form-control" placeholder="Add a comment..." />
+        <div class="mb-4">
+          <select class="form-select shadow-sm rounded-pill" [(ngModel)]="newPost.subId" name="subId" required>
+            <option value="" disabled selected>Select a Subject</option>
+            <option *ngFor="let sub of subs" [value]="sub.id">{{ sub.name }}</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <input type="file" class="form-control shadow-sm rounded-pill" (change)="handleImageUpload($event)" />
+        </div>
+        <div class="text-end">
+          <button class="btn btn-success px-5 py-2 rounded-pill shadow">🚀 Publish</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Filter Options -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <select class="form-select w-auto rounded-pill shadow-sm" (change)="filterBySub($event)">
+      <option value="">All Subjects</option>
+      <option *ngFor="let sub of subs" [value]="sub.id">{{ sub.name }}</option>
+    </select>
+
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-primary px-4 rounded-pill shadow-sm" (click)="filterTopRated()">⭐ Top Rated</button>
+      <button class="btn btn-outline-dark px-4 rounded-pill shadow-sm" (click)="loadPosts()">🔄 Reset</button>
+    </div>
+  </div>
+
+  <!-- Posts -->
+  <div *ngFor="let post of posts" class="card shadow-sm mb-5 border-0 rounded-5 hover-shadow bg-white">
+    <div class="card-body p-4">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="mb-0 fw-semibold">{{ post.title }}</h5>
+        <small class="text-muted">{{ post.createdAt | date:'short' }}</small>
+      </div>
+      <div class="mb-2 text-muted small">
+        by <strong>{{ post.userName }}</strong> in <em>{{ post.subName }}</em>
+      </div>
+      <p class="card-text mt-3">{{ post.content }}</p>
+      <img *ngIf="post.imgUrl" [src]="post.imgUrl" class="img-fluid rounded-4 mb-3 border shadow-sm" />
+
+      <div class="d-flex align-items-center gap-3 flex-wrap mb-3">
+        <button class="btn btn-sm btn-outline-success rounded-circle shadow-sm" (click)="voteOnPost(post.id, true)">👍</button>
+        <span 
+          class="text-success position-relative" 
+          (mouseenter)="showVoters(post.id, true)" 
+          (mouseleave)="hideVoters()" 
+          style="cursor: pointer;">
+          {{ post.upvoteCount }}
+
+          <div 
+            *ngIf="hoveredPostId === post.id" 
+            class="position-absolute bg-white border p-2 rounded shadow" 
+            style="top: 120%; left: 0; z-index: 10; white-space: nowrap;">
+            <ul class="list-unstyled mb-0 small">
+              <li *ngFor="let v of hoveredVotes">{{ v.userName }}</li>
+            </ul>
+          </div>
+        </span>
+
+        <button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" (click)="voteOnPost(post.id, false)">👎</button>
+        <span 
+          class="text-danger position-relative" 
+          (mouseenter)="showVoters(post.id, false)" 
+          (mouseleave)="hideVoters()" 
+          style="cursor: pointer;">
+          {{ post.downvoteCount }}
+        </span>
+
+        <span class="text-primary fw-semibold" style="cursor: pointer;" (click)="toggleComments(post.id)">
+          💬 {{ post.commentCount }} Comments
+        </span>
+      </div>
+
+      <hr />
+
+      <!-- Comments -->
+      <div *ngIf="commentVisibility.has(post.id)">
+        <div *ngFor="let comment of commentsMap[post.id]" class="ps-3 border-start border-4 border-primary mb-4 bg-light rounded-4 p-3 shadow-sm">
+          <div class="fw-bold mb-1">{{ comment.userName }}</div>
+          <small class="text-muted">{{ comment.createdAt | date:'short' }}</small>
+          <p class="mt-2 mb-2">{{ comment.content }}</p>
+
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-success rounded-circle shadow-sm" (click)="voteOnComment(comment.id, post.id, true)">👍</button>
+            <span class="text-success position-relative"
+              (mouseenter)="showVoters(comment.id, true, false)" 
+              (mouseleave)="hideVoters()" 
+              style="cursor: pointer;">
+              {{ comment.upvoteCount }}
+
+              <div 
+                *ngIf="hoveredCommentId === comment.id" 
+                class="position-absolute bg-white border p-2 rounded shadow" 
+                style="top: 120%; left: 0; z-index: 10; white-space: nowrap;">
+                <ul class="list-unstyled mb-0 small">
+                  <li *ngFor="let v of hoveredVotes">{{ v.userName }}</li>
+                </ul>
+              </div>
+            </span>
+
+            <button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm" (click)="voteOnComment(comment.id, post.id, false)">👎</button>
+            <span class="text-danger position-relative"
+              (mouseenter)="showVoters(comment.id, false, false)" 
+              (mouseleave)="hideVoters()" 
+              style="cursor: pointer;">
+              {{ comment.downvoteCount }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Add Comment -->
+        <form (submit)="createComment(post.id, commentInput.value); commentInput.value=''; $event.preventDefault()" class="mt-3">
+          <div class="input-group shadow-sm">
+            <input #commentInput type="text" class="form-control rounded-start-pill" placeholder="Add a comment..." />
+            <button class="btn btn-outline-secondary rounded-end-pill">➡️</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
-  
+</div>

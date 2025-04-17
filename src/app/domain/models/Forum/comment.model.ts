@@ -10,7 +10,10 @@ export interface CommentCreateDTO {
     createdAt: Date;
     updatedAt?: Date;
     userId: string;
+    userName: string;
     postId: number;
     voteCount: number;
+    upvoteCount: number;
+    downvoteCount: number;
   }
   

@@ -4,5 +4,24 @@ img {
   }
   .card {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  select.form-select,
+  input.form-control,
+  textarea.form-control {
+    border-radius: 0.5rem;
+  }
+  
+  .btn {
+    transition: transform 0.2s ease;
+  }
+  
+  .btn:hover {
+    transform: scale(1.02);
   }
   

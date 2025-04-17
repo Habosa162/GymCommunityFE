@@ -10,6 +10,8 @@ export interface PostReadDTO {
     subName: string;
     commentCount: number;
     voteCount: number;
+    upvoteCount: number;
+    downvoteCount: number;
   }
   
   export interface PostCreateDTO {

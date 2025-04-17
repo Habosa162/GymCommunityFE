@@ -10,5 +10,6 @@ export interface VoteReadDTO {
     userId: string;
     postId?: number;
     commentId?: number;
+    userName: string;
     isUpvote: boolean;
 }

@@ -60,4 +60,7 @@ export class PostService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
+  getTopRated(): Observable<PostReadDTO[]> {
+    return this.http.get<PostReadDTO[]>(`${this.baseUrl}/topRated`);
+  }
 }
