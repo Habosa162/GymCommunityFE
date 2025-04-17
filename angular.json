@@ -26,13 +26,28 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
-              "src/styles.css",
+               "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "public/assets/css/flaticon.css",
+              "node_modules/owl.carousel/dist/assets/owl.carousel.min.css",
+              "public/assets/css/barfiller.css",
+              "public/assets/css/magnific-popup.css",
+              "public/assets/css/slicknav.min.css",
+              "public/assets/css/style.css"
+             
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
+              "node_modules/@fortawesome/fontawesome-free/js/all.min.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/magnific-popup/dist/jquery.magnific-popup.min.js",
+              "public/assets/js/masonry.pkgd.min.js",
+              "public/assets/js/jquery.barfiller.js",
+              "public/assets/js/jquery.slicknav.js",
+              "node_modules/owl.carousel/dist/owl.carousel.min.js",
+              "public/assets/js/main.js"
             ]
           },
           "configurations": {

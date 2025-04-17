@@ -1,0 +1,253 @@
+<!-- Class Timetable Section Begin -->
+<section class="class-timetable-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="section-title">
+                    <span>Find Your Time</span>
+                    <h2>Find Your Time</h2>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="table-controls">
+                    <ul>
+                        <li [class.active]="filterType === 'all'" (click)="setFilter('all')">All event</li>
+                        <li [class.active]="filterType === 'fitness'" (click)="setFilter('fitness')">Fitness tips</li>
+                        <li [class.active]="filterType === 'motivation'" (click)="setFilter('motivation')">Motivation</li>
+                        <li [class.active]="filterType === 'workout'" (click)="setFilter('workout')">Workout</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="class-timetable">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Monday</th>
+                                <th>Tuesday</th>
+                                <th>Wednesday</th>
+                                <th>Thursday</th>
+                                <th>Friday</th>
+                                <th>Saturday</th>
+                                <th>Sunday</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="timeSlots.length === 0">
+                                <td class="class-time">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr *ngFor="let timeSlot of timeSlots; let i = index">
+                                <td class="class-time">{{ timeSlot.time }}</td>
+                                <td *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']; let j = index"
+                                    [class.dark-bg]="getFilteredPlans(timeSlot.id, day).length > 0 && (i + j) % 2 === 0"
+                                    [class.hover-bg]="getFilteredPlans(timeSlot.id, day).length > 0"
+                                    [class.ts-meta]="getFilteredPlans(timeSlot.id, day).length > 0"
+                                    [attr.data-tsmeta]="getFilteredPlans(timeSlot.id, day).length > 0 ? getPlanType(getFilteredPlans(timeSlot.id, day)[0]) : null"
+                                    [class.blank-td]="getFilteredPlans(timeSlot.id, day).length === 0"
+                                    [class.dark-bg]="getFilteredPlans(timeSlot.id, day).length === 0 && (i + j) % 2 === 0"
+                                    class="cell-container">
+                                    <ng-container *ngIf="getFilteredPlans(timeSlot.id, day).length > 0">
+                                        <h5>{{ getPlanActivity(getFilteredPlans(timeSlot.id, day)[0]) }}</h5>
+                                        <span>{{ getPlanTrainer(getFilteredPlans(timeSlot.id, day)[0]) }}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="getFilteredPlans(timeSlot.id, day).length === 0">
+                                        <div class="cross-icon">×</div>
+                                        <button class="add-plan-btn" (click)="openAddPlanModal(timeSlot.id, day)">
+                                            <i class="fa fa-plus"></i> Add Plan
+                                        </button>
+                                    </ng-container>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="add-row-container">
+                    <div class="week-input-container">
+                        <input type="text" [(ngModel)]="newWeekName" placeholder="Enter week name" class="week-name-input">
+                        <button class="add-row-btn" (click)="addNewTimeSlot()">
+                            <i class="fa fa-plus"></i> Add New Week
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Class Timetable Section End -->
+
+<!-- Add Plan Popup -->
+<div class="add-plan-popup" *ngIf="showAddPlanPopup">
+    <div class="popup-overlay" (click)="closeAddPlanPopup()"></div>
+    <div class="popup-content">
+        <div class="popup-header">
+            <h3>Add Daily Plan</h3>
+            <button class="close-btn" (click)="closeAddPlanPopup()">&times;</button>
+        </div>
+        <div class="popup-body">
+            <div class="day-info-section">
+                <h4>Day Information</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" [(ngModel)]="newPlan.date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Time Slot</label>
+                        <input type="text" [value]="selectedTimeSlot" disabled>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Day</label>
+                        <input type="text" [value]="selectedDay" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select [(ngModel)]="newPlan.type" name="type" required>
+                            <option value="fitness">Fitness</option>
+                            <option value="workout">Workout</option>
+                            <option value="motivation">Motivation</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="validation-message" *ngIf="!newPlan.date || !selectedTimeSlot || !selectedDay">
+                    Please fill in all required day information
+                </div>
+            </div>
+
+            <div class="add-buttons-section">
+                <button class="add-exercise-btn" (click)="showExerciseForm = true">
+                    <i class="fa fa-plus"></i> Add Exercise
+                </button>
+                <button class="add-meal-btn" (click)="showMealForm = true">
+                    <i class="fa fa-plus"></i> Add Meal
+                </button>
+            </div>
+
+            <!-- Exercise Form -->
+            <div class="section-container" *ngIf="showExerciseForm">
+                <h4>Add Exercise</h4>
+                <form (ngSubmit)="submitExercise()">
+                    <div class="form-group">
+                        <label>Activity</label>
+                        <input type="text" [(ngModel)]="newPlan.activity" name="activity" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Trainer</label>
+                        <input type="text" [(ngModel)]="newPlan.trainer" name="trainer" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Sets</label>
+                            <input type="number" [(ngModel)]="newPlan.sets" name="sets" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Reps</label>
+                            <input type="number" [(ngModel)]="newPlan.reps" name="reps" min="1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea [(ngModel)]="newPlan.exerciseNotes" name="exerciseNotes" rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" (click)="showExerciseForm = false">Cancel</button>
+                        <button type="submit" class="submit-btn">Add Exercise</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Meal Form -->
+            <div class="section-container" *ngIf="showMealForm">
+                <h4>Add Meal</h4>
+                <form (ngSubmit)="submitMeal()">
+                    <div class="form-group">
+                        <label>Meal Type</label>
+                        <select [(ngModel)]="newPlan.mealType" name="mealType">
+                            <option value="breakfast">Breakfast</option>
+                            <option value="lunch">Lunch</option>
+                            <option value="dinner">Dinner</option>
+                            <option value="snack">Snack</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Meal Description</label>
+                        <textarea [(ngModel)]="newPlan.mealDescription" name="mealDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Calories</label>
+                        <input type="number" [(ngModel)]="newPlan.calories" name="calories" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Meal Notes</label>
+                        <textarea [(ngModel)]="newPlan.mealNotes" name="mealNotes" rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" (click)="showMealForm = false">Cancel</button>
+                        <button type="submit" class="submit-btn">Add Meal</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Added Plans Cards Section -->
+            <div class="added-plans-section">
+                <h4>Added Plans</h4>
+                <div class="plans-cards-container">
+                    <!-- Exercise Cards -->
+                    <div class="exercise-cards">
+                        <h5>Exercises</h5>
+                        <div class="cards-grid">
+                            <div class="plan-card" *ngFor="let exercise of addedExercises">
+                                <div class="card-header">
+                                    <h6>{{ exercise.activity }}</h6>
+                                    <button class="delete-btn" (click)="removeExercise(exercise)">&times;</button>
+                                </div>
+                                <div class="card-content">
+                                    <p><strong>Trainer:</strong> {{ exercise.trainer }}</p>
+                                    <p><strong>Sets:</strong> {{ exercise.sets }}</p>
+                                    <p><strong>Reps:</strong> {{ exercise.reps }}</p>
+                                    <p *ngIf="exercise.exerciseNotes"><strong>Notes:</strong> {{ exercise.exerciseNotes }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Meal Cards -->
+                    <div class="meal-cards">
+                        <h5>Meals</h5>
+                        <div class="cards-grid">
+                            <div class="plan-card" *ngFor="let meal of addedMeals">
+                                <div class="card-header">
+                                    <h6>{{ meal.mealType }}</h6>
+                                    <button class="delete-btn" (click)="removeMeal(meal)">&times;</button>
+                                </div>
+                                <div class="card-content">
+                                    <p><strong>Description:</strong> {{ meal.mealDescription }}</p>
+                                    <p><strong>Calories:</strong> {{ meal.calories }}</p>
+                                    <p *ngIf="meal.mealNotes"><strong>Notes:</strong> {{ meal.mealNotes }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" (click)="closeAddPlanPopup()">Cancel</button>
+                <button type="button" class="submit-btn" (click)="savePlan()">
+                    <i class="fa fa-save"></i> Save Plan
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
