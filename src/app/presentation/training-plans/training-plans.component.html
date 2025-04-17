@@ -36,6 +36,16 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr *ngIf="timeSlots.length === 0">
+                                <td class="class-time">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
                             <tr *ngFor="let timeSlot of timeSlots; let i = index">
                                 <td class="class-time">{{ timeSlot.time }}</td>
                                 <td *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']; let j = index"

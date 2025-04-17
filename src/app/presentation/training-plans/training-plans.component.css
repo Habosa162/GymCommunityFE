@@ -471,3 +471,8 @@
     margin-top: 10px;
     text-align: center;
 }
+
+.class-timetable table {
+    min-height: 200px; /* Adjust as needed */
+    width: 100%;
+}

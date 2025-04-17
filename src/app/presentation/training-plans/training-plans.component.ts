@@ -64,7 +64,12 @@ interface DailyPlan {
 export class TrainingPlansComponent implements OnInit {
   dailyPlans: DailyPlanDto[] = [];
   filterType: string = 'all';
-  timeSlots = [{ time: 'Week 1 (Cardio Week)', id: 'week1' }];
+  // Change this:
+  // timeSlots = [{ time: 'Week 1 (Cardio Week)', id: 'week1' }];
+  
+  // To this:
+  // Fix the type of timeSlots
+  timeSlots: { time: string; id: string }[] = [];
   weekNames = [
     'Cardio Week',
     'Strength Week',
@@ -293,7 +298,6 @@ export class TrainingPlansComponent implements OnInit {
   }
 
   addNewTimeSlot(): void {
-    this.currentWeekNumber++;
     const weekName =
       this.newWeekName.trim() || `Week ${this.currentWeekNumber}`;
     const newWeekSlot = {
@@ -302,8 +306,9 @@ export class TrainingPlansComponent implements OnInit {
     };
 
     this.timeSlots.push(newWeekSlot);
+    this.currentWeekNumber++; // Increment after adding
     this.newWeekName = ''; // Clear the input after adding
-  }
+}
 
   savePlan() {
     // Validate required day info directly here
