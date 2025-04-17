@@ -305,27 +305,24 @@ export class TrainingPlansComponent implements OnInit {
     this.newWeekName = ''; // Clear the input after adding
   }
 
-  savePlan(): void {
-    if (
-      !this.isDayInfoSaved ||
-      (this.addedExercises.length === 0 && this.addedMeals.length === 0)
-    ) {
-      alert('Please add at least one exercise or meal before saving');
-      return;
+  savePlan() {
+    // Validate required day info directly here
+    if (!this.newPlan.date || !this.selectedTimeSlot || !this.selectedDay) {
+        alert('Please fill in all required day information');
+        return;
+    }
+    if (this.addedExercises.length === 0 && this.addedMeals.length === 0) {
+        alert('Please add at least one exercise or meal before saving');
+        return;
     }
 
-    // Create the plan data for the service
     const planData = {
-      activity:
-        this.addedExercises.length > 0 ? this.addedExercises[0].activity : '',
-      trainer:
-        this.addedExercises.length > 0 ? this.addedExercises[0].trainer : '',
-      type: this.newPlan.type,
-      day: this.selectedDay,
-      timeSlot: this.selectedTimeSlot,
-      date: this.newPlan.date,
-      exercises: this.addedExercises,
-      meals: this.addedMeals,
+        date: this.newPlan.date,
+        timeSlot: this.selectedTimeSlot,
+        day: this.selectedDay,
+        type: this.newPlan.type,
+        exercises: this.addedExercises,
+        meals: this.addedMeals
     };
 
     const newPlan: DailyPlanDto = {
@@ -342,10 +339,9 @@ export class TrainingPlansComponent implements OnInit {
       dailyPlanJson: JSON.stringify(planData),
     };
 
-    // Add to local array
     this.dailyPlans.push(newPlan);
     this.closeAddPlanPopup();
-  }
+}
 
   closeAddPlanPopup(): void {
     this.showAddPlanPopup = false;
