@@ -2,12 +2,13 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './presentation/auth/components/login/login.component';
 
 import { SubjectComponent } from './presentation/Forum/components/subject/subject.component';
-import { RegisterComponent } from './presentation/auth/components/register/register.component';
 import { ForgotPasswordComponent } from './presentation/auth/components/forgot-password/forgot-password.component';
+import { RegisterComponent } from './presentation/auth/components/register/register.component';
 
 import { ForumComponent } from './presentation/Forum/components/forum/forum.component';
 import { ResetPasswordComponent } from './presentation/auth/components/reset-password/reset-password.component';
 import { ClientProfileComponent } from './presentation/client/components/client-profile/client-profile.component';
+import { TrainingPlansComponent } from './training-plans/training-plans.component';
 
 export const routes: Routes = [
   //auth routes
@@ -24,4 +25,9 @@ export const routes: Routes = [
   { path: 'subjects/edit/:id', component: SubjectComponent },
   { path: 'subjects/details/:id', component: SubjectComponent },
   { path: 'forum', component: ForumComponent },
+  //Plan routes
+  { path: 'training-plans', component: TrainingPlansComponent },
+  { path: 'training-plans/create', component: TrainingPlansComponent },
+  { path: 'training-plans/edit/:id', component: TrainingPlansComponent },
+  { path: 'training-plans/details/:id', component: TrainingPlansComponent },
 ];
