@@ -159,10 +159,8 @@ export class TrainingPlansComponent implements OnInit {
 
   getPlanActivity(plan: DailyPlanDto): string {
     const planData = JSON.parse(plan.dailyPlanJson);
-    if (planData.exercises && planData.exercises.length > 0) {
-      return planData.exercises[0].activity;
-    }
-    return '';
+    const dayNumber = this.getDayNumber(planData.day);
+    return `Day ${dayNumber}`;
   }
 
   getPlanTrainer(plan: DailyPlanDto): string {

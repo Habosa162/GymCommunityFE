@@ -416,7 +416,7 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-.add-exercise-btn:hover:not(.disabled) {
+.add-exercise-btn:hover {
     background-color: #45a049;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
@@ -428,7 +428,7 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-.add-meal-btn:hover:not(.disabled) {
+.add-meal-btn:hover {
     background-color: #0b7dda;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);

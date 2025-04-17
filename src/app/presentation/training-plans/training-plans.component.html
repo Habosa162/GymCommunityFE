@@ -110,21 +110,16 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-actions">
-                    <button type="button" class="save-day-btn" (click)="saveDailyPlan()">
-                        <i class="fa fa-save"></i> Save Daily Plan
-                    </button>
-                </div>
                 <div class="validation-message" *ngIf="!newPlan.date || !selectedTimeSlot || !selectedDay">
                     Please fill in all required day information
                 </div>
             </div>
 
             <div class="add-buttons-section">
-                <button class="add-exercise-btn" (click)="showExerciseForm = true" [class.disabled]="!isDayInfoSaved">
+                <button class="add-exercise-btn" (click)="showExerciseForm = true">
                     <i class="fa fa-plus"></i> Add Exercise
                 </button>
-                <button class="add-meal-btn" (click)="showMealForm = true" [class.disabled]="!isDayInfoSaved">
+                <button class="add-meal-btn" (click)="showMealForm = true">
                     <i class="fa fa-plus"></i> Add Meal
                 </button>
             </div>
@@ -239,7 +234,7 @@
 
             <div class="form-actions">
                 <button type="button" class="cancel-btn" (click)="closeAddPlanPopup()">Cancel</button>
-                <button type="button" class="submit-btn" (click)="savePlan()" [class.disabled]="!isDayInfoSaved || (addedExercises.length === 0 && addedMeals.length === 0)">
+                <button type="button" class="submit-btn" (click)="savePlan()">
                     <i class="fa fa-save"></i> Save Plan
                 </button>
             </div>
