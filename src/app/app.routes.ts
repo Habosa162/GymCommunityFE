@@ -30,4 +30,6 @@ export const routes: Routes = [
   { path: 'training-plans/create', component: TrainingPlansComponent },
   { path: 'training-plans/edit/:id', component: TrainingPlansComponent },
   { path: 'training-plans/details/:id', component: TrainingPlansComponent },
+  //Ecommerce routes
+  
 ];
