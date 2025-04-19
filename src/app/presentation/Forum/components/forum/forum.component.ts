@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { CommentReadDTO, CommentCreateDTO } from '../../../../domain/models/Forum/comment.model';
 import { PostReadDTO, PostCreateDTO } from '../../../../domain/models/Forum/post.model';
 import { Sub } from '../../../../domain/models/Forum/sub.model';
@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './forum.component.html',
   styleUrl: './forum.component.css'
 })
-export class ForumComponent {
+export class ForumComponent implements OnInit {
   posts: PostReadDTO[] = [];
   commentsMap: { [postId: number]: CommentReadDTO[] } = {};
   subs: Sub[] = [];
@@ -33,21 +33,41 @@ export class ForumComponent {
   editSelectedImage: File | null = null;
 
 
-  currentUserId = '093d1b41-312f-4b85-bdb4-0346940eda2c'; // Replace with actual user ID
 
   userVotesMap: { [postId: number]: { isUpvote: boolean, voteId: number } | null } = {};
   userCommentVotesMap: { [commentId: number]: { isUpvote: boolean, voteId: number } | null } = {};
-
+  currentUserId : any = null;
   constructor(
     private subService: SubService,
     private postService: PostService,
     private commentService: CommentService,
     private voteService: VoteService
   ) {}
-  
-  ngOnInit(): void {
-    this.loadSubs();
-    this.loadPosts();
+
+  async ngOnInit(): Promise<void> {
+    try {
+      await this.loadCurrentUser();
+      this.loadSubs();
+      this.loadPosts();
+    } catch (error) {
+      console.error('Failed to load user:', error);
+      // Redirect to login
+    }
+  }
+  loadCurrentUser(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.postService.getCurrentUserId().subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.currentUserId = response.userId;
+            resolve();
+          } else {
+            reject('Not authenticated');
+          }
+        },
+        error: (err) => reject(err)
+      });
+    });
   }
 
   loadSubs(): void {
@@ -104,28 +124,29 @@ export class ForumComponent {
     this.newPost.userId = this.currentUserId;
     this.postService.create(this.newPost, this.selectedImage!).subscribe(post => {
       this.posts.unshift(post);
-      this.commentsMap[post.id] = []; // Initialize comments for the new post
-      this.loadComments(post.id); // Load comments for the new post 
+      this.commentsMap[post.id] = []; 
+      this.loadComments(post.id);
       this.newPost = { title: '', content: '', userId: this.currentUserId, subId: 0 };
       this.selectedImage = null;
     });
   }
 
   createComment(postId: number, content: string): void {
-    const comment: CommentCreateDTO = {
-      content,
-      userId: this.currentUserId,
-      postId
-    };
-    this.commentService.create(comment).subscribe(newComment => {
-      this.commentsMap[postId].push(newComment);
-      const post = this.posts.find(p => p.id === postId);
-      if (post) {
-        post.commentCount += 1;
-      }
-    });
-  }
+      const comment: CommentCreateDTO = {
+        content,
+        userId: this.currentUserId, 
+        postId
+      };
+      
+      this.commentService.create(comment).subscribe(newComment => {
+        this.commentsMap[postId].push(newComment);
+        const post = this.posts.find(p => p.id === postId);
+        if (post) {
+          post.commentCount += 1;
+        }
+      });
 
+  }
   editPost(post: PostReadDTO): void {
     this.editingPostId = post.id;
     this.editPostData = {
@@ -149,12 +170,11 @@ export class ForumComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
-      this.editSelectedImage = file; // this sets the real file for uploading
+      this.editSelectedImage = file; 
   
-      // Optional preview if needed
       const reader = new FileReader();
       reader.onload = () => {
-        this.editPostData.imgUrl = reader.result as string; // for preview only
+        this.editPostData.imgUrl = reader.result as string; 
       };
       reader.readAsDataURL(file);
     }
@@ -210,7 +230,7 @@ export class ForumComponent {
     if (!post) return;
   
     if (userVote && userVote.isUpvote === isUpvote) {
-      // Same vote clicked again → delete it
+      // If same vote clicked again delete it
       this.voteService.delete(userVote.voteId).subscribe(() => {
         if (isUpvote) post.upvoteCount--;
         else post.downvoteCount--;
@@ -222,12 +242,9 @@ export class ForumComponent {
         this.voteService.delete(userVote.voteId).subscribe(() => {
           if (userVote.isUpvote) post.upvoteCount--;
           else post.downvoteCount--;
-  
-          // Now create new vote
           this.createVote(postId, isUpvote, post);
         });
       } else {
-        // No existing vote → create directly
         this.createVote(postId, isUpvote, post);
       }
     }
@@ -255,7 +272,7 @@ export class ForumComponent {
     if (!comment) return;
   
     if (userVote && userVote.isUpvote === isUpvote) {
-      // Same vote clicked again → delete it
+      //If same vote clicked again delete it
       this.voteService.delete(userVote.voteId).subscribe(() => {
         if (isUpvote) comment.upvoteCount--;
         else comment.downvoteCount--;
@@ -271,7 +288,6 @@ export class ForumComponent {
           this.createCommentVote(commentId, postId, isUpvote, comment);
         });
       } else {
-        // Directly create new vote
         this.createCommentVote(commentId, postId, isUpvote, comment);
       }
     }
@@ -328,7 +344,7 @@ export class ForumComponent {
   }
   hoveredPostId: number | null = null;
 hoveredCommentId: number | null = null;
-hoveredVotes: VoteReadDTO[] = []; // adjust type if needed
+hoveredVotes: VoteReadDTO[] = []; 
 
 showVoters(targetId: number, isUpvote: boolean, isPost: boolean = true) {
   if (isPost) {

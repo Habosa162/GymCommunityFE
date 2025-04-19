@@ -62,4 +62,7 @@ export class PostService {
   getTopRated(): Observable<PostReadDTO[]> {
     return this.http.get<PostReadDTO[]>(`${this.baseUrl}/topRated`);
   }
+  getCurrentUserId(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/currentUserId`);
+  }
 }
