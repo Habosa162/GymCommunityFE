@@ -36,5 +36,7 @@ export const routes: Routes = [
 
 
   //coach
-  { path: 'portofolio', component: CoachProfileComponent }
+  { path: 'portofolio', component: CoachProfileComponent },
+  { path: 'portofolio/:id', component: CoachProfileComponent }
+
 ];

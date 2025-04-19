@@ -7,7 +7,7 @@ import { Coachworksample } from '../../domain/models/CoachModels/coachworksample
   providedIn: 'root'
 })
 export class CoachworksampleService {
-  private baseUrl = 'https://localhost:5299/api/WorkSample';
+  private baseUrl = 'https://localhost:7130/api/WorkSample';
 
   constructor(private http: HttpClient) { }
 

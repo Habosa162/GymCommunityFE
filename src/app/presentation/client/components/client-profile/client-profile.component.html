@@ -1,23 +1,47 @@
 <section id="clientProfile" class="bgColor min-vh-100">
   <!-- Cover Section -->
   <div class="cover overflow-hidden position-relative">
-    <img class="w-100"
-      src="https://img.freepik.com/free-photo/beautiful-deer-relaxing-valley-foggy-day_181624-5918.jpg?uid=R132930234&ga=GA1.1.GA1.2.263481332.1694631472&semt=ais_hybrid&w=740"
-      alt="profile cover" />
+    <img class="w-100 cover-img" [src]="clientProfile?.coverImg || 'https://img.freepik.com/free-photo/beautiful-deer-relaxing-valley-foggy-day_181624-5918.jpg?uid=R132930234&ga=GA1.1.GA1.2.263481332.1694631472&semt=ais_hybrid&w=740'" alt="profile cover" />
     <div class="cover-overlay"></div>
+    <button *ngIf="isOwner" class="btn btn-light position-absolute top-50 start-50 translate-middle" (click)="openCoverImgModal()">
+      <i class="fa-solid fa-camera"></i> Change Cover
+    </button>
+  </div>
+
+  <!-- Cover Image Modal -->
+  <div class="modal-backdrop" *ngIf="showCoverImgModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Change Cover Image</h5>
+        <button type="button" class="btn-close" (click)="closeCoverImgModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="coverImage" class="form-label">Select Image</label>
+          <input class="form-control" type="file" id="coverImage" accept="image/*" (change)="onCoverImageSelected($event)">
+        </div>
+        <div class="preview-container mt-3" *ngIf="selectedCoverImage">
+          <img [src]="selectedCoverImage" class="img-fluid" alt="Preview">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeCoverImgModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="changeCoverImg()">Save</button>
+      </div>
+    </div>
   </div>
 
   <div class="container mt-4">
     <div class="row">
       <!-- Left Side - Options Menu -->
       <div class="col-md-3">
-        <div class="options-menu">
+        <div  class="options-menu">
           <div class="profilePic overflow-hidden shadow mb-4 z-3 position-relative">
             <img class="w-100 h-100 object-fit-fill"
               [src]="clientProfile?.profileImg || 'https://img.freepik.com/free-photo/waist-up-portrait-handsome-serious-unshaven-male-keeps-hands-together-dressed-dark-blue-shirt-has-talk-with-interlocutor-stands-against-white-wall-self-confident-man-freelancer_273609-16320.jpg?uid=R132930234&ga=GA1.1.GA1.2.263481332.1694631472&semt=ais_hybrid&w=740'"
               alt="profile" />
           </div>
-          <div class="card shadow-sm rounded-4  p-2">
+          <div  class="card shadow-sm rounded-4  p-2">
             <div class="card-body p-0">
               <ul class="list-group list-group-flush bg-transparent">
                 <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
@@ -40,10 +64,7 @@
                   <i class="fa-solid fa-calendar-check me-3 "></i>
                   <span>Workout Schedule</span>
                 </li>
-                <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
-                  <i class="fa-solid fa-gear me-3 "></i>
-                  <span>Account Settings</span>
-                </li>
+         
               </ul>
             </div>
           </div>
@@ -75,7 +96,7 @@
           </div>
           <div class="d-flex align-items-center mt-2">
             <i class="fa-solid fa-calendar me-2 text-black-50" ></i>
-            <span class="text-black-50">Joined <span >{{ clientProfile?.createdAt }}</span></span>
+            <span class="text-black-50">Joined <span >{{ clientProfile?.createdAt | date:'MMM d y'}}</span></span>
           </div>
         </div>
 
@@ -83,7 +104,7 @@
         <div class="card shadow-sm mb-4">
           <div class="card-header text-white d-flex justify-content-between align-items-center text-black-50 border-0">
             <h5 class="m-0"><i class="fa-solid fa-pen me-2 "></i>Bio</h5>
-            <button class="btn  btn-sm" (click)="toggleBioEdit()">
+            <button *ngIf="isOwner" class="btn  btn-sm" (click)="toggleBioEdit()">
               <i class="fa-solid" [ngClass]="isBioEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
               {{ isBioEditing ? 'Save' : 'Edit' }}
             </button>
@@ -91,10 +112,10 @@
           <div class="card-body">
             <div class="bio-content">
               <div *ngIf="!isBioEditing">
-                <p class="mb-0 colorBlack">{{ clientProfile.clientGoal }}</p>
+                <p class="mb-0 colorBlack">{{ clientProfile.bio }}</p>
               </div>
               <div *ngIf="isBioEditing">
-                <textarea class="form-control" [(ngModel)]="clientProfile.clientGoal" rows="4"></textarea>
+                <textarea class="form-control" [(ngModel)]="clientProfile.bio" rows="4"></textarea>
               </div>
             </div>
           </div>
@@ -106,7 +127,7 @@
             <div class="card shadow-sm h-100">
               <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center text-black-50 border-0">
                 <h5 class="m-0"><i class="fa-solid fa-user me-2"></i>Personal Information</h5>
-                <button class="btn  btn-sm" (click)="togglePersonalInfoEdit()">
+                <button *ngIf="isOwner" class="btn  btn-sm" (click)="togglePersonalInfoEdit()">
                   <i class="fa-solid" [ngClass]="isPersonalInfoEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
                   {{ isPersonalInfoEditing ? 'Save' : 'Edit' }}
                 </button>
@@ -124,19 +145,19 @@
                     </select>
                   </li>
                   <li class="mb-3 rounded-4">
-                    <i class="fa-solid fa-heart me-2 text-primary"></i>
-                    <strong class="me-2">Marital status:</strong>
-                    <span *ngIf="!isPersonalInfoEditing">Single</span>
-                    <input *ngIf="isPersonalInfoEditing" type="tel"
-                      class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="staticData.phone">
+                    <i class="fa-solid fa-cake-candles me-2 text-primary"></i>
+                    <strong class="me-2">Birth Date:</strong>
+                    <span *ngIf="!isPersonalInfoEditing">{{ clientProfile?.birthDate | date:'MMM d y'  }}</span>
+                    <input *ngIf="isPersonalInfoEditing" type="date"
+                      class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="clientProfile.birthDate">
                   </li>
                   <li class="mb-3 rounded-4">
                   
                     <i class="fa-solid fa-flag me-2 text-primary"></i>
                     <strong class="me-2">Nationality:</strong>
                     <span *ngIf="!isPersonalInfoEditing">Egyptian</span>  
-                    <input *ngIf="isPersonalInfoEditing" type="email"
-                      class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="staticData.email">
+                    <input *ngIf="isPersonalInfoEditing" type="text"
+                      class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="staticData.nationality">
                   </li>
                   <li class="mb-3 rounded-4">
                     <i class="fa-solid fa-location-dot me-2 text-primary"></i>
@@ -155,7 +176,7 @@
             <div class="card shadow-sm h-100">
               <div class="card-header bg-success text-white d-flex justify-content-between align-items-center text-black-50 border-0">
                 <h5 class="m-0"><i class="fa-solid fa-chart-line me-2"></i>Fitness Stats</h5>
-                <button class="btn  btn-sm" (click)="toggleFitnessStatsEdit()">
+                <button *ngIf="isOwner" class="btn  btn-sm" (click)="toggleFitnessStatsEdit()">
                   <i class="fa-solid" [ngClass]="isFitnessStatsEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
                   {{ isFitnessStatsEditing ? 'Save' : 'Edit' }}
                 </button>
@@ -193,9 +214,9 @@
                   <div class="col-6">
                     <div class="stat-box p-3 rounded bg-light">
                       <i class="fa-solid fa-fire fa-2x text-success mb-2"></i>
-                      <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ staticData?.bodyFat || 0 }}%</h4>
+                      <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.bodyFat || 0 }}%</h4>
                       <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
-                        [(ngModel)]="staticData.bodyFat">
+                        [(ngModel)]="clientProfile.bodyFat">
                       <small class="text-black-50">Body Fat</small>
                     </div>
                   </div>
@@ -209,7 +230,7 @@
             <div class="card shadow-sm">
               <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center text-black-50 border-0">
                 <h5 class="m-0"><i class="fa-solid fa-bullseye me-2"></i>Fitness Goals</h5>
-                <button class="btn  btn-sm" (click)="toggleGoalsEdit()">
+                <button *ngIf="isOwner" class="btn  btn-sm" (click)="toggleGoalsEdit()">
                   <i class="fa-solid" [ngClass]="isGoalsEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
                   {{ isGoalsEditing ? 'Save' : 'Edit' }}
                 </button>
@@ -273,4 +294,59 @@
     </div>
   </div>
 </section>
+
+<style>
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-body {
+  padding: 1rem;
+}
+
+.modal-footer {
+  padding: 1rem;
+  border-top: 1px solid #dee2e6;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.preview-container {
+  max-height: 300px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.preview-container img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+</style>
 
