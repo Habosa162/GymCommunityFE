@@ -14,5 +14,8 @@ export interface ClientProfile {
   isPremium: boolean;
   isActive: boolean;
   gender: string;
+  bodyFat: number;
+  bio: string;
+  coverImg: string;
 
 }

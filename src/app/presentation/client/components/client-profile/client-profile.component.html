@@ -72,7 +72,7 @@
           </div>
           <div class="d-flex align-items-center mt-2">
             <i class="fa-solid fa-calendar me-2 text-black-50" ></i>
-            <span class="text-black-50">Joined <span >{{ clientProfile?.createdAt }}</span></span>
+            <span class="text-black-50">Joined <span >{{ clientProfile?.createdAt | date:'MMM d y'}}</span></span>
           </div>
         </div>
 
@@ -88,10 +88,10 @@
           <div class="card-body">
             <div class="bio-content">
               <div *ngIf="!isBioEditing">
-                <p class="mb-0 colorBlack">{{ clientProfile.clientGoal }}</p>
+                <p class="mb-0 colorBlack">{{ clientProfile.bio }}</p>
               </div>
               <div *ngIf="isBioEditing">
-                <textarea class="form-control" [(ngModel)]="clientProfile.clientGoal" rows="4"></textarea>
+                <textarea class="form-control" [(ngModel)]="clientProfile.bio" rows="4"></textarea>
               </div>
             </div>
           </div>
@@ -121,19 +121,19 @@
                     </select>
                   </li>
                   <li class="mb-3 rounded-4">
-                    <i class="fa-solid fa-heart me-2 text-primary"></i>
-                    <strong class="me-2">Marital status:</strong>
-                    <span *ngIf="!isPersonalInfoEditing">Single</span>
-                    <input *ngIf="isPersonalInfoEditing" type="tel"
-                      class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="staticData.phone">
+                    <i class="fa-solid fa-cake-candles me-2 text-primary"></i>
+                    <strong class="me-2">Birth Date:</strong>
+                    <span *ngIf="!isPersonalInfoEditing">{{ clientProfile?.birthDate | date:'MMM d y'  }}</span>
+                    <input *ngIf="isPersonalInfoEditing" type="date"
+                      class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="clientProfile.birthDate">
                   </li>
                   <li class="mb-3 rounded-4">
                   
                     <i class="fa-solid fa-flag me-2 text-primary"></i>
                     <strong class="me-2">Nationality:</strong>
                     <span *ngIf="!isPersonalInfoEditing">Egyptian</span>  
-                    <input *ngIf="isPersonalInfoEditing" type="email"
-                      class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="staticData.email">
+                    <input *ngIf="isPersonalInfoEditing" type="text"
+                      class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="staticData.nationality">
                   </li>
                   <li class="mb-3 rounded-4">
                     <i class="fa-solid fa-location-dot me-2 text-primary"></i>
@@ -190,9 +190,9 @@
                   <div class="col-6">
                     <div class="stat-box p-3 rounded bg-light">
                       <i class="fa-solid fa-fire fa-2x text-success mb-2"></i>
-                      <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ staticData?.bodyFat || 0 }}%</h4>
+                      <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.bodyFat || 0 }}%</h4>
                       <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
-                        [(ngModel)]="staticData.bodyFat">
+                        [(ngModel)]="clientProfile.bodyFat">
                       <small class="text-black-50">Body Fat</small>
                     </div>
                   </div>

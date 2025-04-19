@@ -36,14 +36,17 @@ export class ClientProfileComponent implements OnInit {
     isPremium: false,
     isActive: false,
     gender: '',
-    height: 0
+    height: 0,
+    bodyFat: 0,
+    bio: '',
+    coverImg: '',
   };
   
   // Static Data
   staticData = {
     gender: 'Male',
     phone: '+20 123 456 7890',
-    email: 'example@email.com',
+    nationality: 'egp',
     height: 180,
     bodyFat: 15,
     muscleMass: 75,
@@ -68,13 +71,8 @@ export class ClientProfileComponent implements OnInit {
         this.isOwner = res.isOwner;
         res.data.birthDate = new Date(res.data.birthDate);
         res.data.createdAt = new Date(res.data.createdAt);
-        const formatted = res.data.createdAt.toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        });
-        const cleanFormatted = formatted.replace(",", "");
-        res.data.createdAt = cleanFormatted
+    
+       
         this.clientProfile = res.data;
         console.log('Profile data loaded:', this.clientProfile);
       },
@@ -91,13 +89,7 @@ export class ClientProfileComponent implements OnInit {
           // Convert string dates to Date objects
         res.data.birthDate = new Date(res.data.birthDate);
         res.data.createdAt = new Date(res.data.createdAt);
-        const formatted = res.data.createdAt.toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        });
-        const cleanFormatted = formatted.replace(",", "");
-        res.data.createdAt = cleanFormatted
+  
         this.clientProfile = res.data;
         console.log('Profile data loaded:', this.clientProfile);
       },
