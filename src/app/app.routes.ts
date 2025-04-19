@@ -10,6 +10,8 @@ import { ResetPasswordComponent } from './presentation/auth/components/reset-pas
 import { ClientProfileComponent } from './presentation/client/components/client-profile/client-profile.component';
 import { TrainingPlansComponent } from './presentation/training-plans/training-plans.component';
 
+import { CoachProfileComponent } from './presentation/Coach/coach-profile/coach-profile.component';
+
 export const routes: Routes = [
   //auth routes
   { path: 'login', component: LoginComponent },
@@ -31,5 +33,8 @@ export const routes: Routes = [
   { path: 'training-plans/edit/:id', component: TrainingPlansComponent },
   { path: 'training-plans/details/:id', component: TrainingPlansComponent },
   //Ecommerce routes
-  
+
+
+  //coach
+  { path: 'portofolio', component: CoachProfileComponent }
 ];
