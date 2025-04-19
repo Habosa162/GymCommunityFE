@@ -1,9 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+.bgColor {
+  background-color: #f8f9fa;
+}
+
 .mainColor {
   color: limegreen;
 }
@@ -23,4 +26,19 @@ body {
   border-color: limegreen !important;
   outline: 0 !important;
   box-shadow: 0 0 0 0.25rem rgba(50, 205, 50, 0.3) !important;
+}
+
+
+/*main dark colors*/
+.dark-mode .bgColor{
+  background-color: black;
+}
+.dark-mode .text-black-50{
+color: rgba(255, 255, 255, 0.5) !important;
+}
+.colorBlack{
+  color: black;
+}
+.dark-mode .colorBlack{
+color: white ;
 }

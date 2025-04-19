@@ -1,7 +1,10 @@
 /*general*/
-.lightBg {
-  background-color: #f1f1f1;
+*{
+     /* font-family: "Oswald", sans-serif; */
+  font-family: "Mulish", sans-serif;
 }
+
+
 
 
 .cover {
@@ -20,3 +23,190 @@
   border: 0.5rem solid rgb(209, 207, 207);
   margin-top: -40px;
 }
+
+.card-header{
+  background-color: #f0f0f0 !important;
+  
+}
+.clientName{
+ color: rgba(0, 0, 0, 0.847);
+ font-weight: 600;
+}
+
+ .btn:hover{
+  color: #0d6efd !important;
+}
+ .list-group-item:hover  {
+  background-color: #F0F0F0 !important;
+  color: #32cd32 !important;
+}
+
+/*dark mode*/
+
+/* :host-context(body.dark-mode)  {
+  background-color: #121212;
+} */
+
+:host-context(body.dark-mode) .profile-header,:host-context(body.dark-mode) .card  {
+  background-color: #0e0e0e !important;
+  border: 1px solid #313030 !important;
+  color: white !important;
+}
+:host-context(body.dark-mode) .clientName {
+    background: linear-gradient(135deg, #d7d7d7, #f0f0f0, #a8a8a8, #e0e0e0, #bcbcbc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+:host-context(body.dark-mode) .text-black-50 {
+   color: rgba(255, 255, 255, 0.5) !important;
+}
+:host-context(body.dark-mode) .card-header {
+    background-color: #201f1f !important;
+}
+:host-context(body.dark-mode) .stat-box, :host-context(body.dark-mode) .goal-item {
+    background-color: #201f1f !important;
+}
+:host-context(body.dark-mode) .btn {
+      color: #32cd32;
+
+}
+
+
+:host-context(body.dark-mode) .list-group-item:hover  {
+  background-color: #000000 !important;
+  color: #32cd32 !important;
+}
+
+
+
+/*style*/
+.cover {
+    height: 200px;
+  }
+
+  .cover img {
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cover-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
+  }
+
+  .profilePic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid white;
+    margin: 0 auto;
+    margin-top: -75px;
+
+  }
+
+  .options-menu .list-group-item {
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .options-menu .list-group-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+  }
+
+  .options-menu .list-group-item i {
+    width: 20px;
+    text-align: center;
+  }
+
+  .card {
+    border: none;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+  }
+
+  .card-header {
+    border-radius: 15px 15px 0 0 !important;
+    background-color: #8098b2;
+  }
+
+  .stat-box {
+    transition: transform 0.3s ease;
+  }
+
+  .stat-box:hover {
+    transform: scale(1.05);
+  }
+
+  .progress {
+    height: 8px;
+    border-radius: 4px;
+  }
+
+  .goal-item {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    height: 100%;
+  }
+
+  .profile-header {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .bio-content {
+    position: relative;
+  }
+
+
+
+  .edit-bio {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .edit-bio .btn {
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+
+  .edit-bio .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+.Personal-info  li{
+height: 25%;
+  margin: 0 !important;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  
+}
+.Personal-info  li:nth-child(even){
+  background-color: #f8f9fa  ;
+}
+:host-context(body.dark-mode) .Personal-info  li:nth-child(even){
+  background-color: #201f1f  ;
+
+}
+
+
+
+

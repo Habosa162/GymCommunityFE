@@ -1,4 +1,4 @@
-<section id="clientProfile">
+<section id="clientProfile" class="bgColor min-vh-100">
   <!-- Cover Section -->
   <div class="cover overflow-hidden position-relative">
     <img class="w-100"
@@ -19,29 +19,29 @@
           </div>
           <div class="card shadow-sm rounded-4  p-2">
             <div class="card-body p-0">
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex align-items-center">
-                  <i class="fa-solid fa-user-pen me-3 text-primary"></i>
+              <ul class="list-group list-group-flush bg-transparent">
+                <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
+                  <i class="fa-solid fa-user-pen me-3 "></i>
                   <span>Edit Profile</span>
                 </li>
-                <li class="list-group-item d-flex align-items-center">
-                  <i class="fa-solid fa-lock me-3 text-primary"></i>
+                <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
+                  <i class="fa-solid fa-lock me-3 "></i>
                   <span>Change Password</span>
                 </li>
-                <li class="list-group-item d-flex align-items-center">
-                  <i class="fa-solid fa-bell me-3 text-primary"></i>
-                  <span>Notification Settings</span>
+                <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
+                  <i class="fa-solid fa-crown me-3 "></i>
+                  <span>Premium</span>
                 </li>
-                <li class="list-group-item d-flex align-items-center">
-                  <i class="fa-solid fa-chart-line me-3 text-primary"></i>
+                <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
+                  <i class="fa-solid fa-chart-line me-3 "></i>
                   <span>Fitness Progress</span>
                 </li>
-                <li class="list-group-item d-flex align-items-center">
-                  <i class="fa-solid fa-calendar-check me-3 text-primary"></i>
+                <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
+                  <i class="fa-solid fa-calendar-check me-3 "></i>
                   <span>Workout Schedule</span>
                 </li>
-                <li class="list-group-item d-flex align-items-center">
-                  <i class="fa-solid fa-gear me-3 text-primary"></i>
+                <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
+                  <i class="fa-solid fa-gear me-3 "></i>
                   <span>Account Settings</span>
                 </li>
               </ul>
@@ -53,18 +53,37 @@
       <!-- Right Side - Profile Information -->
       <div class="col-md-9">
         <div class="profile-header mb-4">
-          <h2 class="text-capitalize m-0">{{ clientProfile?.firstName }} {{ clientProfile?.lastName }}</h2>
+          <div class="d-flex  align-items-center">
+            <h2 class="clientName text-capitalize m-0">{{ clientProfile?.firstName }} {{ clientProfile?.lastName }} </h2>
+            <span class="m-2" title="Premium User"
+             style="width: 30px;">
+             <svg class="w-100 h-100" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800px" height="800px" viewBox="0 0 128 128" enable-background="new 0 0 128 128" xml:space="preserve" fill="#000000">
+
+<g id="SVGRepo_bgCarrier" stroke-width="0"/>
+
+<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+
+<g id="SVGRepo_iconCarrier"> <path fill="#32cd32" d="M112,36c-6.629,0-12,5.375-12,12c0,1.68,0.352,3.273,0.973,4.727L84,60L69.801,34.445 C73.48,32.391,76,28.508,76,24c0-6.625-5.371-12-12-12s-12,5.375-12,12c0,4.508,2.52,8.391,6.199,10.445L44,60l-16.973-7.273 C27.648,51.273,28,49.68,28,48c0-6.625-5.371-12-12-12S4,41.375,4,48s5.371,12,12,12c0.93,0,1.822-0.133,2.695-0.328L28,100v8 c0,4.422,3.582,8,8,8h56c4.418,0,8-3.578,8-8v-8l9.309-40.328C110.176,59.875,111.07,60,112,60c6.629,0,12-5.375,12-12 S118.629,36,112,36z M64,20c2.207,0,4,1.797,4,4s-1.793,4-4,4s-4-1.797-4-4S61.793,20,64,20z M12,48c0-2.203,1.793-4,4-4 s4,1.797,4,4s-1.793,4-4,4S12,50.203,12,48z M92,108H36v-8h56V108z M93.633,92H34.367L27.34,61.563l13.508,5.789 C41.871,67.789,42.941,68,43.996,68c2.828,0,5.547-1.5,6.996-4.117L64,40.477l13.008,23.406C78.457,66.5,81.176,68,84.004,68 c1.055,0,2.125-0.211,3.148-0.648l13.508-5.789L93.633,92z M112,52c-2.207,0-4-1.797-4-4s1.793-4,4-4s4,1.797,4,4S114.207,52,112,52 z"/> </g>
+
+</svg>
+
+            </span>
+
+          </div>
+          <div style="width: 50px;">
+            
+          </div>
           <div class="d-flex align-items-center mt-2">
-            <i class="fa-solid fa-calendar-days me-2"></i>
-            <span>{{ clientProfile?.birthDate }}</span>
+            <i class="fa-solid fa-calendar me-2 text-black-50" ></i>
+            <span class="text-black-50">Joined <span >{{ clientProfile?.createdAt }}</span></span>
           </div>
         </div>
 
         <!-- Bio Section -->
         <div class="card shadow-sm mb-4">
-          <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
-            <h5 class="m-0"><i class="fa-solid fa-pen me-2"></i>Bio</h5>
-            <button class="btn btn-light btn-sm" (click)="toggleBioEdit()">
+          <div class="card-header text-white d-flex justify-content-between align-items-center text-black-50 border-0">
+            <h5 class="m-0"><i class="fa-solid fa-pen me-2 "></i>Bio</h5>
+            <button class="btn  btn-sm" (click)="toggleBioEdit()">
               <i class="fa-solid" [ngClass]="isBioEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
               {{ isBioEditing ? 'Save' : 'Edit' }}
             </button>
@@ -72,7 +91,7 @@
           <div class="card-body">
             <div class="bio-content">
               <div *ngIf="!isBioEditing">
-                <p class="mb-0">{{ clientProfile.clientGoal }}</p>
+                <p class="mb-0 colorBlack">{{ clientProfile.clientGoal }}</p>
               </div>
               <div *ngIf="isBioEditing">
                 <textarea class="form-control" [(ngModel)]="clientProfile.clientGoal" rows="4"></textarea>
@@ -85,18 +104,18 @@
           <!-- Personal Info Card -->
           <div class="col-md-6">
             <div class="card shadow-sm h-100">
-              <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+              <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center text-black-50 border-0">
                 <h5 class="m-0"><i class="fa-solid fa-user me-2"></i>Personal Information</h5>
-                <button class="btn btn-light btn-sm" (click)="togglePersonalInfoEdit()">
+                <button class="btn  btn-sm" (click)="togglePersonalInfoEdit()">
                   <i class="fa-solid" [ngClass]="isPersonalInfoEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
                   {{ isPersonalInfoEditing ? 'Save' : 'Edit' }}
                 </button>
               </div>
-              <div class="card-body">
-                <ul class="list-unstyled">
-                  <li class="mb-3">
+              <div class="card-body ">
+                <ul class="Personal-info list-unstyled d-flex flex-column justify-content-between h-100">
+                  <li class="mb-3 rounded-4">
                     <i class="fa-solid fa-venus-mars me-2 text-primary"></i>
-                    <strong>Gender:</strong>
+                    <strong class="me-2">Gender:</strong>
                     <span *ngIf="!isPersonalInfoEditing">{{ clientProfile?.gender==='m'?'Male':'Female' }}</span>
                     <select *ngIf="isPersonalInfoEditing" class="form-select form-select-sm d-inline-block w-auto"
                       [(ngModel)]="clientProfile.gender">
@@ -104,23 +123,24 @@
                       <option value="f">Female</option>
                     </select>
                   </li>
-                  <li class="mb-3">
-                    <i class="fa-solid fa-phone me-2 text-primary"></i>
-                    <strong>Phone:</strong>
-                    <span *ngIf="!isPersonalInfoEditing">{{ staticData.phone }}</span>
+                  <li class="mb-3 rounded-4">
+                    <i class="fa-solid fa-heart me-2 text-primary"></i>
+                    <strong class="me-2">Marital status:</strong>
+                    <span *ngIf="!isPersonalInfoEditing">Single</span>
                     <input *ngIf="isPersonalInfoEditing" type="tel"
                       class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="staticData.phone">
                   </li>
-                  <li class="mb-3">
-                    <i class="fa-solid fa-envelope me-2 text-primary"></i>
-                    <strong>Email:</strong>
-                    <span *ngIf="!isPersonalInfoEditing">{{ staticData.email }}</span>
+                  <li class="mb-3 rounded-4">
+                  
+                    <i class="fa-solid fa-flag me-2 text-primary"></i>
+                    <strong class="me-2">Nationality:</strong>
+                    <span *ngIf="!isPersonalInfoEditing">Egyptian</span>  
                     <input *ngIf="isPersonalInfoEditing" type="email"
                       class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="staticData.email">
                   </li>
-                  <li class="mb-3">
+                  <li class="mb-3 rounded-4">
                     <i class="fa-solid fa-location-dot me-2 text-primary"></i>
-                    <strong>Address:</strong>
+                    <strong class="me-2">Address:</strong>
                     <span *ngIf="!isPersonalInfoEditing">{{ clientProfile.address }}</span>
                     <input *ngIf="isPersonalInfoEditing" type="text"
                       class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="clientProfile.address">
@@ -133,9 +153,9 @@
           <!-- Fitness Stats Card -->
           <div class="col-md-6">
             <div class="card shadow-sm h-100">
-              <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+              <div class="card-header bg-success text-white d-flex justify-content-between align-items-center text-black-50 border-0">
                 <h5 class="m-0"><i class="fa-solid fa-chart-line me-2"></i>Fitness Stats</h5>
-                <button class="btn btn-light btn-sm" (click)="toggleFitnessStatsEdit()">
+                <button class="btn  btn-sm" (click)="toggleFitnessStatsEdit()">
                   <i class="fa-solid" [ngClass]="isFitnessStatsEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
                   {{ isFitnessStatsEditing ? 'Save' : 'Edit' }}
                 </button>
@@ -148,7 +168,7 @@
                       <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.weight || 0 }} kg</h4>
                       <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
                         [(ngModel)]="clientProfile.weight">
-                      <small class="text-muted">Current Weight</small>
+                      <small class="text-black-50">Current Weight</small>
                     </div>
                   </div>
                   <div class="col-6 mb-3">
@@ -157,7 +177,7 @@
                       <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.height || 0 }} cm</h4>
                       <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
                         [(ngModel)]="clientProfile.height">
-                      <small class="text-muted">Height</small>
+                      <small class="text-black-50">Height</small>
                     </div>
                   </div>
                   <div class="col-6">
@@ -167,7 +187,7 @@
                       </h4>
                       <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
                         [(ngModel)]="clientProfile.workoutAvailability">
-                      <small class="text-muted">Workout Days</small>
+                      <small class="text-black-50">Workout Days</small>
                     </div>
                   </div>
                   <div class="col-6">
@@ -176,7 +196,7 @@
                       <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ staticData?.bodyFat || 0 }}%</h4>
                       <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
                         [(ngModel)]="staticData.bodyFat">
-                      <small class="text-muted">Body Fat</small>
+                      <small class="text-black-50">Body Fat</small>
                     </div>
                   </div>
                 </div>
@@ -187,9 +207,9 @@
           <!-- Goals Card -->
           <div class="col-12">
             <div class="card shadow-sm">
-              <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+              <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center text-black-50 border-0">
                 <h5 class="m-0"><i class="fa-solid fa-bullseye me-2"></i>Fitness Goals</h5>
-                <button class="btn btn-light btn-sm" (click)="toggleGoalsEdit()">
+                <button class="btn  btn-sm" (click)="toggleGoalsEdit()">
                   <i class="fa-solid" [ngClass]="isGoalsEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
                   {{ isGoalsEditing ? 'Save' : 'Edit' }}
                 </button>
@@ -254,122 +274,3 @@
   </div>
 </section>
 
-<style>
-  #clientProfile {
-    min-height: 100vh;
-    background-color: #f8f9fa;
-  }
-
-  .cover {
-    height: 200px;
-  }
-
-  .cover img {
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .cover-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
-  }
-
-  .profilePic {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 5px solid white;
-    margin: 0 auto;
-    margin-top: -75px;
-
-  }
-
-  .options-menu .list-group-item {
-    border: none;
-    padding: 15px 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .options-menu .list-group-item:hover {
-    background-color: #f8f9fa;
-    transform: translateX(5px);
-  }
-
-  .options-menu .list-group-item i {
-    width: 20px;
-    text-align: center;
-  }
-
-  .card {
-    border: none;
-    border-radius: 15px;
-    transition: transform 0.3s ease;
-  }
-
-  .card:hover {
-    transform: translateY(-5px);
-  }
-
-  .card-header {
-    border-radius: 15px 15px 0 0 !important;
-  }
-
-  .stat-box {
-    transition: transform 0.3s ease;
-  }
-
-  .stat-box:hover {
-    transform: scale(1.05);
-  }
-
-  .progress {
-    height: 8px;
-    border-radius: 4px;
-  }
-
-  .goal-item {
-    padding: 15px;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    height: 100%;
-  }
-
-  .profile-header {
-    background-color: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .bio-content {
-    position: relative;
-  }
-
-  .bio-content p {
-    line-height: 1.6;
-    color: #333;
-  }
-
-  .edit-bio {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-
-  .edit-bio .btn {
-    border-radius: 20px;
-    padding: 5px 15px;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-  }
-
-  .edit-bio .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-</style>

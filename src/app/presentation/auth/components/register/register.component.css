@@ -3,7 +3,7 @@
   font-stretch: 5px;
 }
 #register {
-  background-color: rgb(231, 231, 231);
+  background-color: #f8f9fa;
 }
 .nextButton[disabled] {
   color: gray !important;

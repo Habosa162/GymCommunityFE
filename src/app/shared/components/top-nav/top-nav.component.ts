@@ -10,9 +10,12 @@ export class TopNavComponent {
   toggleDarkMode(event: Event) {
     const isChecked = (event.target as HTMLInputElement).checked;
     if (isChecked) {
-      document.body.classList.add('dark-mode');
-    } else {
+      // document.body.classList.add('dark-mode');
       document.body.classList.remove('dark-mode');
+    } else {
+            document.body.classList.add('dark-mode');
+
+      // document.body.classList.remove('dark-mode');
     }
   }
 }

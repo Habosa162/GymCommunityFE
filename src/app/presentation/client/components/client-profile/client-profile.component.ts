@@ -64,6 +64,16 @@ export class ClientProfileComponent implements OnInit {
         // Convert string dates to Date objects
         res.data.birthDate = new Date(res.data.birthDate);
         res.data.createdAt = new Date(res.data.createdAt);
+        const formatted = res.data.createdAt.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+        const cleanFormatted = formatted.replace(",", "");
+        res.data.createdAt = cleanFormatted
+
+        
+
         this.clientProfile = res.data;
         console.log('Profile data loaded:', this.clientProfile);
       },
