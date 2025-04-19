@@ -1,0 +1,36 @@
+.card {
+    border: none;
+    border-radius: 1.5rem;
+}
+
+.img-fluid {
+    max-height: 200px;
+    object-fit: cover;
+}
+
+.badge {
+    font-size: 0.9rem;
+    padding: 0.5em 0.75em;
+}
+
+.list-group-item {
+    border-radius: 0.75rem;
+    margin-bottom: 0.75rem;
+    background-color: #f8f9fa;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
+}
+
+.card-body {
+    background-color: #fff;
+}
+
+h2,
+h3 {
+    font-weight: 700;
+}

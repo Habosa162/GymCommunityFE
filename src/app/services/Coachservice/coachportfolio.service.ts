@@ -16,15 +16,15 @@ export class CoachportfolioService {
     return this.http.get<Coachportfolio[]>(this.baseUrl);
   }
 
-  getByCoachId(coachId: string): Observable<Coachportfolio> {
+  getByCoachId(coachId: string): Observable<any> {
     return this.http.get<Coachportfolio>(`${this.baseUrl}/byCoach/${coachId}`);
   }
 
-  addPortfolio(portfolio: Coachportfolio): Observable<any> {
+  addPortfolio(portfolio: any): Observable<any> {
     return this.http.post(this.baseUrl, portfolio);
   }
 
-  updatePortfolio(id: number, portfolio: Coachportfolio): Observable<any> {
+  updatePortfolio(id: number, portfolio: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/${id}`, portfolio);
   }
 
