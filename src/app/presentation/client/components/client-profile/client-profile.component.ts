@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ClientProfileService } from '../../../../services/Client/client-profile.service';
 import { ClientProfile } from '../../../../domain/models/Client/client-profile.model';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ClientInfoService } from '../../../../services/Client/client-info.service';
 
 @Component({
   selector: 'app-client-profile',
@@ -57,7 +58,7 @@ export class ClientProfileComponent implements OnInit {
     }
   };
 
-  constructor(private clientProfileService: ClientProfileService, private route: ActivatedRoute) { }
+  constructor(private clientProfileService: ClientProfileService,private clientInfoService: ClientInfoService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.loadProfileData();
@@ -99,6 +100,7 @@ export class ClientProfileComponent implements OnInit {
     });
   }
 }
+
 
   // Toggle edit modes
   toggleBioEdit(): void {
@@ -187,4 +189,16 @@ export class ClientProfileComponent implements OnInit {
       }
     });
   }
+  //change cover img
+private changeCoverImg(file: File){
+  this.clientInfoService.changeClientCoverImg(file).subscribe({
+    next: (response: any) => {
+      console.log('Cover img updated successfully');
+    },
+    error: (error) => {
+      console.error('Error updating cover img:', error);
+    }
+
+  });
+}
 }
