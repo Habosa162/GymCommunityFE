@@ -9,6 +9,8 @@ export interface Product{
   rating: number;
   categoryId: number;
   category: string;
+  brandId : number ;
+  brandName : string ;
   discountAmount:number ;
   // : number;
   // reviews: number;
