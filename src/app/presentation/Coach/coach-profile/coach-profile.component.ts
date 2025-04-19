@@ -10,6 +10,7 @@ import { Coachworksample } from '../../../domain/models/CoachModels/coachworksam
 import { CoachratingService } from '../../../services/Coachservice/coachrating.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-coach-profile',
@@ -30,30 +31,46 @@ export class CoachProfileComponent implements OnInit {
     private portfolioService: CoachportfolioService,
     private certificateService: CoachcertficateService,
     private ratingService: CoachratingService,
-    private sampleService: CoachworksampleService
+    private sampleService: CoachworksampleService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
-    this.coachId = this.route.snapshot.paramMap.get('coachId')!;
+    this.coachId = this.authService.getCoachId() || this.route.snapshot.paramMap.get('coachId')!;
     console.log(this.coachId)
-    this.loadCoachData();
+    if (this.coachId) {
+      this.loadCoachData();
+    } else {
+      console.error('Coach ID not found in token');
+    }
+
+
   }
 
   loadCoachData(): void {
+
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.portfolioService.getByCoachId(id).subscribe((res) => {
+        this.portfolio = res;
+      })
+    }
     // Load portfolio
     this.portfolioService.getByCoachId(this.coachId).subscribe((res) => {
       this.portfolio = res;
 
+
       // Load certificates and worksamples using portfolioId
       this.loadCertificates(this.portfolio.id!);
+      console.log(this.portfolio)
       this.loadWorkSamples(this.portfolio.id!);
     });
 
     // Load ratings
-    this.ratingService.getByCoachId(this.coachId).subscribe((res) => {
-      this.ratings = res;
-      this.calculateAverageRating();
-    });
+    // this.ratingService.getByCoachId(this.coachId).subscribe((res) => {
+    //   this.ratings = res;
+    //   this.calculateAverageRating();
+    // });
   }
 
   loadCertificates(portfolioId: number): void {
@@ -68,11 +85,11 @@ export class CoachProfileComponent implements OnInit {
     });
   }
 
-  calculateAverageRating(): void {
-    if (this.ratings.length > 0) {
-      const total = this.ratings.reduce((sum, r) => sum + r.rate, 0);
-      this.averageRating = total / this.ratings.length;
-    }
-  }
+  // calculateAverageRating(): void {
+  //   if (this.ratings.length > 0) {
+  //     const total = this.ratings.reduce((sum, r) => sum + r.rate, 0);
+  //     this.averageRating = total / this.ratings.length;
+  //   }
+  // }
 
 }

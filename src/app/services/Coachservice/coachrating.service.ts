@@ -8,7 +8,7 @@ import { Coachrating } from '../../domain/models/CoachModels/coachrating.model';
 })
 export class CoachratingService {
 
-  private baseUrl = 'https://localhost:5299/api/CoachRating';
+  private baseUrl = 'https://localhost:7130/api/CoachRating';
 
   constructor(private http: HttpClient) { }
 

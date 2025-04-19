@@ -1,7 +1,7 @@
 import { LoginRequest, RegisterRequest } from './../domain/models/auth.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -40,12 +40,32 @@ export class AuthService {
     );
   }
 
-  // getCoachIdFromToken(): string {
-  //   const token = localStorage.getItem('authToken');
-  //   if (token) {
-  //     const decoded: any = decode(token);
-  //     return decoded.coachId;  // Assuming the coachId is in the token
-  //   }
-  //   return '';
-  // }
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  // ✅ Decode token
+  getDecodedToken(): any {
+    const token = this.getToken();
+    if (token) {
+      try {
+        return jwtDecode(token);
+      } catch (e) {
+        console.error('Invalid token');
+      }
+    }
+    return null;
+  }
+
+  // ✅ Get CoachId from decoded token (assumes it's stored under 'coachId')
+  getCoachId(): string | null {
+    const decoded = this.getDecodedToken();
+
+    // Extract using the full claim URI
+    return decoded
+      ? decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']
+      : null;
+  }
+
+
 }
