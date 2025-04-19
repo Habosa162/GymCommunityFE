@@ -3,10 +3,11 @@ import { Constructor } from './../../../../../node_modules/@angular/cdk/schemati
 import { Component } from '@angular/core';
 import { ProductComponent } from '../product/product.component';
 import { Product } from '../../../domain/models/Ecommerce/product.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-products-list',
-  imports: [ProductComponent],
+  imports: [ProductComponent,CommonModule],
   templateUrl: './products-list.component.html',
   styleUrl: './products-list.component.css'
 })

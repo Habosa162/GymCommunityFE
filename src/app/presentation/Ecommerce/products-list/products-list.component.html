@@ -1,2 +1,2 @@
 <p>products-list works!</p>
-<app-product></app-product>
+<app-product *ngFor="let product of products" [product]="product" />
