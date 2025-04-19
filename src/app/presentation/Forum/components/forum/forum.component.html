@@ -85,9 +85,9 @@
       </ng-template>
 
       <div class="mb-2 text-muted small">
-        by <strong>{{ post.userName }}</strong> in <em>{{ post.subName }}</em>
+        by <strong>{{ post.userName }}</strong> in <span class="badge bg-success bg-opacity-10 text-success">{{ post.subName }}</span>
       </div>
-      <p class="card-text mt-3">{{ post.content }}</p>
+      <p class="text-dark fs-5 mt-3">{{ post.content }}</p>
       <img *ngIf="post.imgUrl" [src]="post.imgUrl" class="img-fluid rounded-4 mb-3 border shadow-sm" />
 
       <div class="d-flex align-items-center gap-3 flex-wrap mb-3">

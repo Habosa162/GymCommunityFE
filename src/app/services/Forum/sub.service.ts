@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Sub } from '../../domain/models/Forum/sub.model';
+import { baseUrl } from '../enviroment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubService {
 
-  private apiUrl = 'https://localhost:7130/api/Sub'; 
+  private apiUrl = `${baseUrl}/Sub`;
 
   constructor(private http: HttpClient) {}
 
