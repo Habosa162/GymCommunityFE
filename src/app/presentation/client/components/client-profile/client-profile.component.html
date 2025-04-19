@@ -1,11 +1,9 @@
 <section id="clientProfile">
   <!-- Cover Section -->
   <div class="cover overflow-hidden position-relative">
-    <img
-      class="w-100"
+    <img class="w-100"
       src="https://img.freepik.com/free-photo/beautiful-deer-relaxing-valley-foggy-day_181624-5918.jpg?uid=R132930234&ga=GA1.1.GA1.2.263481332.1694631472&semt=ais_hybrid&w=740"
-      alt="profile cover"
-    />
+      alt="profile cover" />
     <div class="cover-overlay"></div>
   </div>
 
@@ -15,11 +13,9 @@
       <div class="col-md-3">
         <div class="options-menu">
           <div class="profilePic overflow-hidden shadow mb-4 z-3 position-relative">
-            <img
-              class="w-100 h-100 object-fit-fill"
+            <img class="w-100 h-100 object-fit-fill"
               [src]="clientProfile?.profileImg || 'https://img.freepik.com/free-photo/waist-up-portrait-handsome-serious-unshaven-male-keeps-hands-together-dressed-dark-blue-shirt-has-talk-with-interlocutor-stands-against-white-wall-self-confident-man-freelancer_273609-16320.jpg?uid=R132930234&ga=GA1.1.GA1.2.263481332.1694631472&semt=ais_hybrid&w=740'"
-              alt="profile"
-            />
+              alt="profile" />
           </div>
           <div class="card shadow-sm rounded-4  p-2">
             <div class="card-body p-0">
@@ -102,7 +98,8 @@
                     <i class="fa-solid fa-venus-mars me-2 text-primary"></i>
                     <strong>Gender:</strong>
                     <span *ngIf="!isPersonalInfoEditing">{{ clientProfile?.gender==='m'?'Male':'Female' }}</span>
-                    <select *ngIf="isPersonalInfoEditing" class="form-select form-select-sm d-inline-block w-auto" [(ngModel)]="clientProfile.gender">
+                    <select *ngIf="isPersonalInfoEditing" class="form-select form-select-sm d-inline-block w-auto"
+                      [(ngModel)]="clientProfile.gender">
                       <option value="m">Male</option>
                       <option value="f">Female</option>
                     </select>
@@ -111,19 +108,22 @@
                     <i class="fa-solid fa-phone me-2 text-primary"></i>
                     <strong>Phone:</strong>
                     <span *ngIf="!isPersonalInfoEditing">{{ staticData.phone }}</span>
-                    <input *ngIf="isPersonalInfoEditing" type="tel" class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="staticData.phone">
+                    <input *ngIf="isPersonalInfoEditing" type="tel"
+                      class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="staticData.phone">
                   </li>
                   <li class="mb-3">
                     <i class="fa-solid fa-envelope me-2 text-primary"></i>
                     <strong>Email:</strong>
                     <span *ngIf="!isPersonalInfoEditing">{{ staticData.email }}</span>
-                    <input *ngIf="isPersonalInfoEditing" type="email" class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="staticData.email">
+                    <input *ngIf="isPersonalInfoEditing" type="email"
+                      class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="staticData.email">
                   </li>
                   <li class="mb-3">
                     <i class="fa-solid fa-location-dot me-2 text-primary"></i>
                     <strong>Address:</strong>
                     <span *ngIf="!isPersonalInfoEditing">{{ clientProfile.address }}</span>
-                    <input *ngIf="isPersonalInfoEditing" type="text" class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="clientProfile.address">
+                    <input *ngIf="isPersonalInfoEditing" type="text"
+                      class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="clientProfile.address">
                   </li>
                 </ul>
               </div>
@@ -146,7 +146,8 @@
                     <div class="stat-box p-3 rounded bg-light">
                       <i class="fa-solid fa-weight-scale fa-2x text-success mb-2"></i>
                       <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.weight || 0 }} kg</h4>
-                      <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center" [(ngModel)]="clientProfile.weight">
+                      <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
+                        [(ngModel)]="clientProfile.weight">
                       <small class="text-muted">Current Weight</small>
                     </div>
                   </div>
@@ -154,15 +155,18 @@
                     <div class="stat-box p-3 rounded bg-light">
                       <i class="fa-solid fa-ruler-vertical fa-2x text-success mb-2"></i>
                       <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.height || 0 }} cm</h4>
-                      <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center" [(ngModel)]="clientProfile.height">
+                      <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
+                        [(ngModel)]="clientProfile.height">
                       <small class="text-muted">Height</small>
                     </div>
                   </div>
                   <div class="col-6">
                     <div class="stat-box p-3 rounded bg-light">
                       <i class="fa-solid fa-dumbbell fa-2x text-success mb-2"></i>
-                      <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.workoutAvailability || 0 }}/7</h4>
-                      <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center" [(ngModel)]="clientProfile.workoutAvailability">
+                      <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.workoutAvailability || 0 }}/7
+                      </h4>
+                      <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
+                        [(ngModel)]="clientProfile.workoutAvailability">
                       <small class="text-muted">Workout Days</small>
                     </div>
                   </div>
@@ -170,7 +174,8 @@
                     <div class="stat-box p-3 rounded bg-light">
                       <i class="fa-solid fa-fire fa-2x text-success mb-2"></i>
                       <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ staticData?.bodyFat || 0 }}%</h4>
-                      <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center" [(ngModel)]="staticData.bodyFat">
+                      <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
+                        [(ngModel)]="staticData.bodyFat">
                       <small class="text-muted">Body Fat</small>
                     </div>
                   </div>
@@ -195,11 +200,15 @@
                     <div class="goal-item">
                       <div class="d-flex justify-content-between align-items-center mb-2">
                         <span>Weight Goal</span>
-                        <span class="badge bg-primary" *ngIf="!isGoalsEditing">{{ staticData?.goals?.weight || 0 }} kg</span>
-                        <input *ngIf="isGoalsEditing" type="number" class="form-control form-control-sm w-auto" [(ngModel)]="staticData.goals.weight">
+                        <span class="badge bg-primary" *ngIf="!isGoalsEditing">{{ staticData?.goals?.weight || 0 }}
+                          kg</span>
+                        <input *ngIf="isGoalsEditing" type="number" class="form-control form-control-sm w-auto"
+                          [(ngModel)]="staticData.goals.weight">
                       </div>
                       <div class="progress">
-                        <div class="progress-bar bg-primary" role="progressbar" [style.width]="calculateProgress(clientProfile?.weight || 0, staticData?.goals?.weight || 0) + '%'"></div>
+                        <div class="progress-bar bg-primary" role="progressbar"
+                          [style.width]="calculateProgress(clientProfile?.weight || 0, staticData?.goals?.weight || 0) + '%'">
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -207,11 +216,15 @@
                     <div class="goal-item">
                       <div class="d-flex justify-content-between align-items-center mb-2">
                         <span>Muscle Mass</span>
-                        <span class="badge bg-success" *ngIf="!isGoalsEditing">+{{ staticData?.goals?.muscleMass || 0 }} kg</span>
-                        <input *ngIf="isGoalsEditing" type="number" class="form-control form-control-sm w-auto" [(ngModel)]="staticData.goals.muscleMass">
+                        <span class="badge bg-success" *ngIf="!isGoalsEditing">+{{ staticData?.goals?.muscleMass || 0 }}
+                          kg</span>
+                        <input *ngIf="isGoalsEditing" type="number" class="form-control form-control-sm w-auto"
+                          [(ngModel)]="staticData.goals.muscleMass">
                       </div>
                       <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" [style.width]="calculateProgress(staticData?.muscleMass || 0, staticData?.goals?.muscleMass || 0) + '%'"></div>
+                        <div class="progress-bar bg-success" role="progressbar"
+                          [style.width]="calculateProgress(staticData?.muscleMass || 0, staticData?.goals?.muscleMass || 0) + '%'">
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -219,11 +232,15 @@
                     <div class="goal-item">
                       <div class="d-flex justify-content-between align-items-center mb-2">
                         <span>Body Fat</span>
-                        <span class="badge bg-info" *ngIf="!isGoalsEditing">{{ staticData?.goals?.bodyFat || 0 }}%</span>
-                        <input *ngIf="isGoalsEditing" type="number" class="form-control form-control-sm w-auto" [(ngModel)]="staticData.goals.bodyFat">
+                        <span class="badge bg-info" *ngIf="!isGoalsEditing">{{ staticData?.goals?.bodyFat || 0
+                          }}%</span>
+                        <input *ngIf="isGoalsEditing" type="number" class="form-control form-control-sm w-auto"
+                          [(ngModel)]="staticData.goals.bodyFat">
                       </div>
                       <div class="progress">
-                        <div class="progress-bar bg-info" role="progressbar" [style.width]="calculateProgress(staticData?.bodyFat || 0, staticData?.goals?.bodyFat || 0) + '%'"></div>
+                        <div class="progress-bar bg-info" role="progressbar"
+                          [style.width]="calculateProgress(staticData?.bodyFat || 0, staticData?.goals?.bodyFat || 0) + '%'">
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -238,121 +255,121 @@
 </section>
 
 <style>
-#clientProfile {
-  min-height: 100vh;
-  background-color: #f8f9fa;
-}
+  #clientProfile {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+  }
 
-.cover {
-  height: 200px;
-}
+  .cover {
+    height: 200px;
+  }
 
-.cover img {
-  height: 100%;
-  object-fit: cover;
-}
+  .cover img {
+    height: 100%;
+    object-fit: cover;
+  }
 
-.cover-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.1));
-}
+  .cover-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
+  }
 
-.profilePic {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  border: 5px solid white;
-  margin: 0 auto;
-  margin-top: -75px;
-  
-}
+  .profilePic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid white;
+    margin: 0 auto;
+    margin-top: -75px;
 
-.options-menu .list-group-item {
-  border: none;
-  padding: 15px 20px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+  }
 
-.options-menu .list-group-item:hover {
-  background-color: #f8f9fa;
-  transform: translateX(5px);
-}
+  .options-menu .list-group-item {
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
 
-.options-menu .list-group-item i {
-  width: 20px;
-  text-align: center;
-}
+  .options-menu .list-group-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+  }
 
-.card {
-  border: none;
-  border-radius: 15px;
-  transition: transform 0.3s ease;
-}
+  .options-menu .list-group-item i {
+    width: 20px;
+    text-align: center;
+  }
 
-.card:hover {
-  transform: translateY(-5px);
-}
+  .card {
+    border: none;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+  }
 
-.card-header {
-  border-radius: 15px 15px 0 0 !important;
-}
+  .card:hover {
+    transform: translateY(-5px);
+  }
 
-.stat-box {
-  transition: transform 0.3s ease;
-}
+  .card-header {
+    border-radius: 15px 15px 0 0 !important;
+  }
 
-.stat-box:hover {
-  transform: scale(1.05);
-}
+  .stat-box {
+    transition: transform 0.3s ease;
+  }
 
-.progress {
-  height: 8px;
-  border-radius: 4px;
-}
+  .stat-box:hover {
+    transform: scale(1.05);
+  }
 
-.goal-item {
-  padding: 15px;
-  background-color: #f8f9fa;
-  border-radius: 10px;
-  height: 100%;
-}
+  .progress {
+    height: 8px;
+    border-radius: 4px;
+  }
 
-.profile-header {
-  background-color: white;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+  .goal-item {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    height: 100%;
+  }
 
-.bio-content {
-  position: relative;
-}
+  .profile-header {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-.bio-content p {
-  line-height: 1.6;
-  color: #333;
-}
+  .bio-content {
+    position: relative;
+  }
 
-.edit-bio {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
+  .bio-content p {
+    line-height: 1.6;
+    color: #333;
+  }
 
-.edit-bio .btn {
-  border-radius: 20px;
-  padding: 5px 15px;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-}
+  .edit-bio {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 
-.edit-bio .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+  .edit-bio .btn {
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+
+  .edit-bio .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
 </style>

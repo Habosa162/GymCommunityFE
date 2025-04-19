@@ -13,7 +13,7 @@ export class AuthService {
   private ForgotPasswordEndPoint = `http://localhost:5299/api/Auth/ForgotPassword`;
   private ResetPasswordEndPoint = `http://localhost:5299/api/Auth/ResetPassword`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(data: LoginRequest): Observable<any> {
     console.log(data);
@@ -39,4 +39,13 @@ export class AuthService {
       body
     );
   }
+
+  // getCoachIdFromToken(): string {
+  //   const token = localStorage.getItem('authToken');
+  //   if (token) {
+  //     const decoded: any = decode(token);
+  //     return decoded.coachId;  // Assuming the coachId is in the token
+  //   }
+  //   return '';
+  // }
 }
