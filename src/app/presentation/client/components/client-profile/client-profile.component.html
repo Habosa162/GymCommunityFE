@@ -1,34 +1,10 @@
 <section id="clientProfile" class="bgColor min-vh-100">
   <!-- Cover Section -->
   <div class="cover overflow-hidden position-relative">
-    <img class="w-100 cover-img" [src]="clientProfile?.coverImg || 'https://img.freepik.com/free-photo/beautiful-deer-relaxing-valley-foggy-day_181624-5918.jpg?uid=R132930234&ga=GA1.1.GA1.2.263481332.1694631472&semt=ais_hybrid&w=740'" alt="profile cover" />
+    <img class="w-100 cover-img"
+      src="https://img.freepik.com/free-photo/beautiful-deer-relaxing-valley-foggy-day_181624-5918.jpg?uid=R132930234&ga=GA1.1.GA1.2.263481332.1694631472&semt=ais_hybrid&w=740"
+      alt="profile cover" />
     <div class="cover-overlay"></div>
-    <button *ngIf="isOwner" class="btn btn-light position-absolute top-50 start-50 translate-middle" (click)="openCoverImgModal()">
-      <i class="fa-solid fa-camera"></i> Change Cover
-    </button>
-  </div>
-
-  <!-- Cover Image Modal -->
-  <div class="modal-backdrop" *ngIf="showCoverImgModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Change Cover Image</h5>
-        <button type="button" class="btn-close" (click)="closeCoverImgModal()"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <label for="coverImage" class="form-label">Select Image</label>
-          <input class="form-control" type="file" id="coverImage" accept="image/*" (change)="onCoverImageSelected($event)">
-        </div>
-        <div class="preview-container mt-3" *ngIf="selectedCoverImage">
-          <img [src]="selectedCoverImage" class="img-fluid" alt="Preview">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeCoverImgModal()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="changeCoverImg()">Save</button>
-      </div>
-    </div>
   </div>
 
   <div class="container mt-4">
@@ -294,59 +270,4 @@
     </div>
   </div>
 </section>
-
-<style>
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1050;
-}
-
-.modal-content {
-  background-color: white;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.modal-header {
-  padding: 1rem;
-  border-bottom: 1px solid #dee2e6;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal-body {
-  padding: 1rem;
-}
-
-.modal-footer {
-  padding: 1rem;
-  border-top: 1px solid #dee2e6;
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-}
-
-.preview-container {
-  max-height: 300px;
-  overflow: hidden;
-  border-radius: 4px;
-}
-
-.preview-container img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-</style>
 
