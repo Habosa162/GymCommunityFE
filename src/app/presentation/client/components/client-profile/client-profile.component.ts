@@ -3,13 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ClientProfileService } from '../../../../services/Client/client-profile.service';
 import { ClientProfile } from '../../../../domain/models/Client/client-profile.model';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-client-profile',
   templateUrl: './client-profile.component.html',
   styleUrls: ['./client-profile.component.css'],
   standalone: true,
-  imports: [FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule,RouterModule]
 })
 export class ClientProfileComponent implements OnInit {
   // Edit states
@@ -17,6 +18,7 @@ export class ClientProfileComponent implements OnInit {
   isPersonalInfoEditing: boolean = false;
   isFitnessStatsEditing: boolean = false;
   isGoalsEditing: boolean = false;
+  isOwner: boolean = false;
   
   // API Data
   clientProfile: ClientProfile = {
@@ -52,16 +54,18 @@ export class ClientProfileComponent implements OnInit {
     }
   };
 
-  constructor(private clientProfileService: ClientProfileService) { }
+  constructor(private clientProfileService: ClientProfileService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.loadProfileData();
   }
 
   loadProfileData(): void {
-    this.clientProfileService.getMyPrfole().subscribe({
+     const param = this.route.snapshot.paramMap.get('userId');
+     if(param){
+     this.clientProfileService.getClientProfileById(param).subscribe({
       next: (res: any) => {
-        // Convert string dates to Date objects
+        this.isOwner = res.isOwner;
         res.data.birthDate = new Date(res.data.birthDate);
         res.data.createdAt = new Date(res.data.createdAt);
         const formatted = res.data.createdAt.toLocaleDateString("en-US", {
@@ -71,9 +75,29 @@ export class ClientProfileComponent implements OnInit {
         });
         const cleanFormatted = formatted.replace(",", "");
         res.data.createdAt = cleanFormatted
+        this.clientProfile = res.data;
+        console.log('Profile data loaded:', this.clientProfile);
+      },
+      error: (error) => {
+        console.error('Error loading profile:', error);
+      }
+    });
+     }
+     else{
+      this.clientProfileService.getMyPrfole().subscribe({
+        next: (res: any) => {
+                  this.isOwner = res.isOwner;
 
-        
-
+          // Convert string dates to Date objects
+        res.data.birthDate = new Date(res.data.birthDate);
+        res.data.createdAt = new Date(res.data.createdAt);
+        const formatted = res.data.createdAt.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+        const cleanFormatted = formatted.replace(",", "");
+        res.data.createdAt = cleanFormatted
         this.clientProfile = res.data;
         console.log('Profile data loaded:', this.clientProfile);
       },
@@ -82,6 +106,7 @@ export class ClientProfileComponent implements OnInit {
       }
     });
   }
+}
 
   // Toggle edit modes
   toggleBioEdit(): void {

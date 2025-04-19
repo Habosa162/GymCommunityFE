@@ -18,4 +18,8 @@ export class ClientProfileService {
   updateClientProfile(clientProfile: ClientProfile) {
     return this.http.put(`${this.baseUrl}`, clientProfile);
   }
+
+  getClientProfileById(id: string) {
+    return this.http.get(`${this.baseUrl}?id=${id}`);
+  }
 }

@@ -3,6 +3,9 @@
      /* font-family: "Oswald", sans-serif; */
   font-family: "Mulish", sans-serif;
 }
+a{
+  color: inherit;
+}
 
 
 

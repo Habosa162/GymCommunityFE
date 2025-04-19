@@ -11,13 +11,13 @@
     <div class="row">
       <!-- Left Side - Options Menu -->
       <div class="col-md-3">
-        <div class="options-menu">
+        <div  class="options-menu">
           <div class="profilePic overflow-hidden shadow mb-4 z-3 position-relative">
             <img class="w-100 h-100 object-fit-fill"
               [src]="clientProfile?.profileImg || 'https://img.freepik.com/free-photo/waist-up-portrait-handsome-serious-unshaven-male-keeps-hands-together-dressed-dark-blue-shirt-has-talk-with-interlocutor-stands-against-white-wall-self-confident-man-freelancer_273609-16320.jpg?uid=R132930234&ga=GA1.1.GA1.2.263481332.1694631472&semt=ais_hybrid&w=740'"
               alt="profile" />
           </div>
-          <div class="card shadow-sm rounded-4  p-2">
+          <div  class="card shadow-sm rounded-4  p-2">
             <div class="card-body p-0">
               <ul class="list-group list-group-flush bg-transparent">
                 <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
@@ -40,10 +40,7 @@
                   <i class="fa-solid fa-calendar-check me-3 "></i>
                   <span>Workout Schedule</span>
                 </li>
-                <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
-                  <i class="fa-solid fa-gear me-3 "></i>
-                  <span>Account Settings</span>
-                </li>
+         
               </ul>
             </div>
           </div>
@@ -83,7 +80,7 @@
         <div class="card shadow-sm mb-4">
           <div class="card-header text-white d-flex justify-content-between align-items-center text-black-50 border-0">
             <h5 class="m-0"><i class="fa-solid fa-pen me-2 "></i>Bio</h5>
-            <button class="btn  btn-sm" (click)="toggleBioEdit()">
+            <button *ngIf="isOwner" class="btn  btn-sm" (click)="toggleBioEdit()">
               <i class="fa-solid" [ngClass]="isBioEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
               {{ isBioEditing ? 'Save' : 'Edit' }}
             </button>
@@ -106,7 +103,7 @@
             <div class="card shadow-sm h-100">
               <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center text-black-50 border-0">
                 <h5 class="m-0"><i class="fa-solid fa-user me-2"></i>Personal Information</h5>
-                <button class="btn  btn-sm" (click)="togglePersonalInfoEdit()">
+                <button *ngIf="isOwner" class="btn  btn-sm" (click)="togglePersonalInfoEdit()">
                   <i class="fa-solid" [ngClass]="isPersonalInfoEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
                   {{ isPersonalInfoEditing ? 'Save' : 'Edit' }}
                 </button>
@@ -155,7 +152,7 @@
             <div class="card shadow-sm h-100">
               <div class="card-header bg-success text-white d-flex justify-content-between align-items-center text-black-50 border-0">
                 <h5 class="m-0"><i class="fa-solid fa-chart-line me-2"></i>Fitness Stats</h5>
-                <button class="btn  btn-sm" (click)="toggleFitnessStatsEdit()">
+                <button *ngIf="isOwner" class="btn  btn-sm" (click)="toggleFitnessStatsEdit()">
                   <i class="fa-solid" [ngClass]="isFitnessStatsEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
                   {{ isFitnessStatsEditing ? 'Save' : 'Edit' }}
                 </button>
@@ -209,7 +206,7 @@
             <div class="card shadow-sm">
               <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center text-black-50 border-0">
                 <h5 class="m-0"><i class="fa-solid fa-bullseye me-2"></i>Fitness Goals</h5>
-                <button class="btn  btn-sm" (click)="toggleGoalsEdit()">
+                <button *ngIf="isOwner" class="btn  btn-sm" (click)="toggleGoalsEdit()">
                   <i class="fa-solid" [ngClass]="isGoalsEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
                   {{ isGoalsEditing ? 'Save' : 'Edit' }}
                 </button>
