@@ -3,15 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
+import { baseUrl } from './enviroment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private LoginEndPoint = `http://localhost:5299/api/Auth/login`;
-  private RegisterEndPoint = `http://localhost:5299/api/Auth/Register`;
-  private ForgotPasswordEndPoint = `http://localhost:5299/api/Auth/ForgotPassword`;
-  private ResetPasswordEndPoint = `http://localhost:5299/api/Auth/ResetPassword`;
+  private LoginEndPoint = `${baseUrl}/Auth/login`;
+  private RegisterEndPoint = `${baseUrl}/Auth/Register`;
+  private ForgotPasswordEndPoint = `${baseUrl}/Auth/ForgotPassword`;
+  private ResetPasswordEndPoint = `${baseUrl}/Auth/ResetPassword`;
 
   constructor(private http: HttpClient) { }
 

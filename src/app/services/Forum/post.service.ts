@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PostReadDTO, PostCreateDTO } from '../../domain/models/Forum/post.model';
+import { baseUrl } from '../enviroment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
 
-  private baseUrl = 'https://localhost:7130/api/Post'; 
+  private baseUrl = `${baseUrl}/Post`;
 
   constructor(private http: HttpClient) {}
 
@@ -47,15 +48,15 @@ export class PostService {
     formData.append('content', post.content);
     formData.append('userId', post.userId);
     formData.append('subId', post.subId.toString());
-  
+
     // Only append new image if there is one
     if (image) {
       formData.append('image', image);
     }
-  
+
     return this.http.put<PostReadDTO>(`${this.baseUrl}/${id}`, formData);
   }
-  
+
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }

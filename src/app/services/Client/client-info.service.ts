@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { baseUrl } from '../enviroment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +9,9 @@ export class ClientInfoService {
 
   constructor(private http: HttpClient) { }
 
-  private baseUrl = 'http://localhost:5299/api/ClientInfo';
+  private apiUrl = `${baseUrl}/ClientInfo`;
 
   changeClientCoverImg(file: File) {
-    return this.http.get(`${this.baseUrl}/ChangeCoverImg`);
+    return this.http.get(`${this.apiUrl}/ChangeCoverImg`);
   }
 }

@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CommentReadDTO, CommentCreateDTO } from '../../domain/models/Forum/comment.model';
+import { baseUrl } from '../enviroment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
 
-  private baseUrl = 'https://localhost:7130/api/Comment'; 
+  private baseUrl = `${baseUrl}/Comment`;
 
   constructor(private http: HttpClient) {}
 

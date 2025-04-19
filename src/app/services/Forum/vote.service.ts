@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { VoteReadDTO, VoteCreateDTO } from '../../domain/models/Forum/vote.model';
+import { baseUrl } from '../enviroment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VoteService {
 
-  private baseUrl = 'https://localhost:7130/api/Vote'; 
+  private baseUrl = `${baseUrl}/Vote`;
 
   constructor(private http: HttpClient) {}
 
