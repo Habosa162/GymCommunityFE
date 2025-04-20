@@ -11,6 +11,11 @@ import { ClientProfileComponent } from './presentation/client/components/client-
 import { TrainingPlansComponent } from './presentation/training-plans/training-plans.component';
 
 import { CoachProfileComponent } from './presentation/Coach/coach-profile/coach-profile.component';
+import { ProductsListComponent } from './presentation/Ecommerce/products-list/products-list.component';
+import { CreateCategoryComponent } from './presentation/Ecommerce/Administration/create-category/create-category.component';
+import { CreateBrandComponent } from './presentation/Ecommerce/Administration/create-brand/create-brand.component';
+
+
 
 export const routes: Routes = [
   //auth routes
@@ -33,6 +38,10 @@ export const routes: Routes = [
   { path: 'training-plans/edit/:id', component: TrainingPlansComponent },
   { path: 'training-plans/details/:id', component: TrainingPlansComponent },
   //Ecommerce routes
+  {path: 'shop', component: ProductsListComponent},
+  {path: 'create-category', component: CreateCategoryComponent},
+  {path: 'create-brand', component: CreateBrandComponent},
+
 
 
   //coach

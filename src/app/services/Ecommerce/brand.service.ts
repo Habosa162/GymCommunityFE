@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class BrnadService {
+export class BrandService {
 
   private apiUrl:string = `${baseUrl}/Brand` ;
   constructor(private http : HttpClient) {}
@@ -17,14 +17,14 @@ export class BrnadService {
   }
 
   createBrand(name:string,desc:string) : Observable<any>{
-    return this.http.post(`${this.apiUrl}`, {name,desc}) ;
+    return this.http.post(`${this.apiUrl}`, {Name:name,Description:desc}) ;
   }
 
   removeBrand(BrandId : number ) : Observable<any>{
     return this.http.delete(`${this.apiUrl}/${BrandId}`) ;
   }
   updateBrand(Brand:Brand):Observable<any>{
-    return this.http.put(`${this.apiUrl}/${Brand.id}`, Brand);
+    return this.http.put(`${this.apiUrl}/${Brand.brandID}`, Brand);
   }
 
 }

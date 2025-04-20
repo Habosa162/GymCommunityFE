@@ -1,0 +1,60 @@
+<div class="container mt-4">
+  <h2 class="text-center">Brand Administration</h2>
+
+  <!-- Brand Form -->
+  <form (ngSubmit)="onAddBrand()" class="row g-3">
+    <div class="col-md-4">
+      <label for="brandName" class="form-label">Brand Name</label>
+      <input
+        type="text"
+        id="brandName"
+        class="form-control"
+        [(ngModel)]="brandName"
+        name="brandName"
+        required
+      />
+    </div>
+
+    <div class="col-md-4">
+      <label for="brandDesc" class="form-label">Brand Description</label>
+      <textarea
+        id="brandDesc"
+        class="form-control"
+        [(ngModel)]="brandDesc"
+        name="brandDesc"
+        required
+      ></textarea>
+    </div>
+
+    <div class="col-md-4 d-flex align-items-end">
+      <button type="submit" class="btn btn-primary w-100" [disabled]="!brandName.trim() || !brandDesc.trim()">Add Brand</button>
+    </div>
+  </form>
+
+  <!-- Brand Table -->
+  <div class="mt-4">
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th style="width: 150px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let brand of brands">
+          <td>{{ brand.brandID }}</td>
+          <td>{{ brand.name }}</td>
+          <td>{{ brand.description }}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="onRemoveBrand(brand.brandID)">Remove</button>
+          </td>
+        </tr>
+        <tr *ngIf="brands.length === 0">
+          <td colspan="4" class="text-center">No brands available.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
