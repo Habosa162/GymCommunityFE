@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
 import { baseUrl } from './enviroment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class AuthService {
   private ForgotPasswordEndPoint = `${baseUrl}/Auth/ForgotPassword`;
   private ResetPasswordEndPoint = `${baseUrl}/Auth/ResetPassword`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient , private router: Router) { }
 
   login(data: LoginRequest): Observable<any> {
     console.log(data);
@@ -95,6 +96,12 @@ isLoggedIn(): boolean {
 
   const expirationDate = new Date(decodedToken.exp * 1000);
   return expirationDate > new Date();
+}
+
+logout(): void {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  this.router.navigate(['/login']);
 }
 
 }

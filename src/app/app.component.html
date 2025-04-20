@@ -1,2 +1,5 @@
 <app-top-nav></app-top-nav>
-<router-outlet></router-outlet>
+<!-- <router-outlet></router-outlet> -->
+<app-client-layout *ngIf="authService.getUserRole() !== 'Admin'"></app-client-layout>
+
+<app-admin-layout *ngIf="authService.getUserRole() === 'Admin'"></app-admin-layout>

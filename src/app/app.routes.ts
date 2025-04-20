@@ -15,6 +15,12 @@ import { ProductsListComponent } from './presentation/Ecommerce/products-list/pr
 import { CreateCategoryComponent } from './presentation/Ecommerce/Administration/create-category/create-category.component';
 import { CreateBrandComponent } from './presentation/Ecommerce/Administration/create-brand/create-brand.component';
 import { CreateProductComponent } from './presentation/Ecommerce/Administration/create-product/create-product.component';
+import { WishListComponent } from './presentation/Ecommerce/wish-list/wish-list.component';
+import { AuthGuard } from './core/guards/auth.guard';
+import { clientGuard } from './core/guards/client.guard';
+import { CoachGuard } from './core/guards/coach.guard';
+import { AdminGuard } from './core/guards/admin.guard';
+import { AdminCoachGuard } from './core/guards/admin-coach.guard';
 
 
 
@@ -25,30 +31,33 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'ResetPassword', component: ResetPasswordComponent },
   //client routes
-  { path: 'profile/me', component: ClientProfileComponent },
+  
+  { path: 'profile/me', component: ClientProfileComponent , canActivate: [AuthGuard,clientGuard]},
   { path: 'profile/:userId', component: ClientProfileComponent },
   //Forum routes
-  { path: 'subjects', component: SubjectComponent },
-  { path: 'subjects/create', component: SubjectComponent },
-  { path: 'subjects/edit/:id', component: SubjectComponent },
-  { path: 'subjects/details/:id', component: SubjectComponent },
-  { path: 'forum', component: ForumComponent },
+  { path: 'subjects', component: SubjectComponent , canActivate: [AuthGuard]},
+  { path: 'subjects/create', component: SubjectComponent , canActivate: [AuthGuard]},
+  { path: 'subjects/edit/:id', component: SubjectComponent , canActivate: [AuthGuard]},
+  { path: 'subjects/details/:id', component: SubjectComponent , canActivate: [AuthGuard]},
+  { path: 'forum', component: ForumComponent , canActivate: [AuthGuard]},
   //Plan routes
-  { path: 'training-plans', component: TrainingPlansComponent },
-  { path: 'training-plans/create', component: TrainingPlansComponent },
-  { path: 'training-plans/edit/:id', component: TrainingPlansComponent },
-  { path: 'training-plans/details/:id', component: TrainingPlansComponent },
+  { path: 'training-plans', component: TrainingPlansComponent , canActivate: [AuthGuard]},
+  { path: 'training-plans/create', component: TrainingPlansComponent , canActivate: [AuthGuard,AdminCoachGuard]},
+  { path: 'training-plans/edit/:id', component: TrainingPlansComponent , canActivate: [AuthGuard,AdminCoachGuard]},
+  { path: 'training-plans/details/:id', component: TrainingPlansComponent , canActivate: [AuthGuard,AdminCoachGuard]},
   //Ecommerce routes
   {path: 'shop', component: ProductsListComponent},
-  {path: 'create-category', component: CreateCategoryComponent},
-  {path: 'create-brand', component: CreateBrandComponent},
-  {path: 'create-product', component: CreateProductComponent},
+  {path: 'create-category', component: CreateCategoryComponent , canActivate: [AuthGuard,AdminGuard]},
+  {path: 'create-brand', component: CreateBrandComponent , canActivate: [AuthGuard,AdminGuard]},
+  {path: 'create-product', component: CreateProductComponent , canActivate: [AuthGuard,AdminCoachGuard]},
+  {path: 'wish-list', component: WishListComponent , canActivate: [AuthGuard,clientGuard]},
+
 
 
 
 
   //coach
-  { path: 'portofolio', component: CoachProfileComponent },
+  { path: 'portofolio', component: CoachProfileComponent , canActivate: [AuthGuard,CoachGuard]},
   { path: 'portofolio/:id', component: CoachProfileComponent }
 
 ];
