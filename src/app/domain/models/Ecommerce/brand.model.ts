@@ -1,6 +1,6 @@
 
 export interface Brand {
-  id: number;
+  brandID: number;
   name: string;
   description: string;
 }

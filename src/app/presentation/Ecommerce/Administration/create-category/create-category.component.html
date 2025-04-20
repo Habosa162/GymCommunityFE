@@ -1,0 +1,46 @@
+<div class="container mt-4">
+  <h2 class="text-center">Category Administration</h2>
+
+  <!-- Category Form -->
+  <form (ngSubmit)="onAddCategory()" class="row g-3">
+    <div class="col-md-4">
+      <label for="categoryName" class="form-label">Category Name</label>
+      <input
+        type="text"
+        id="categoryName"
+        class="form-control"
+        [(ngModel)]="CategoryName"
+        name="CategoryName"
+        required
+      />
+    </div>
+    <div class="col-md-4 d-flex align-items-end">
+      <button type="submit" class="btn btn-primary w-100" [disabled]="!CategoryName.trim()">Add Category</button>
+    </div>
+  </form>
+
+  <!-- Category Table -->
+  <div class="mt-4">
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th style="width: 150px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let category of categories">
+          <td>{{ category.categoryID }}</td>
+          <td>{{ category.name }}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="onRemoveCategory(category.categoryID)">Remove</button>
+          </td>
+        </tr>
+        <tr *ngIf="categories.length === 0">
+          <td colspan="3" class="text-center">No categories available.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

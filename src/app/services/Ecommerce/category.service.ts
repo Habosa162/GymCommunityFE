@@ -15,10 +15,12 @@ export class CategoryService {
     return this.http.get(`${this.apiUrl}`) ;
   }
   createCategory(categoryName:string):  Observable<any>{
-    return this.http.post(`${this.apiUrl}`,categoryName) ;
+    return this.http.post(`${this.apiUrl}`,{
+      Name:categoryName
+    }) ;
   }
   updateCategory(category:Category) : Observable<any>{
-    return this.http.put(`${this.apiUrl}/${category.id}`,category) ;
+    return this.http.put(`${this.apiUrl}/${category.categoryID}`,category) ;
   }
   deleteCategory(categoryId:number)  : Observable<any>{
     return this.http.delete(`${this.apiUrl}/${categoryId}`) ;
