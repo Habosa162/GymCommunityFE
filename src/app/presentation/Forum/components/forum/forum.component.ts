@@ -9,11 +9,15 @@ import { SubService } from '../../../../services/Forum/sub.service';
 import { VoteService } from '../../../../services/Forum/vote.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
-  selector: 'app-forum',
-  imports: [CommonModule,
-    FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatMenuModule,
+    MatIconModule
+  ],
   templateUrl: './forum.component.html',
   styleUrl: './forum.component.css'
 })
