@@ -47,7 +47,9 @@
                                 <td>&nbsp;</td>
                             </tr>
                             <tr *ngFor="let timeSlot of timeSlots; let i = index">
-                                <td class="class-time">{{ timeSlot.time }}</td>
+                                <td class="class-time">
+                                    <span class="week-label">{{ timeSlot.time }}</span>
+                                </td>
                                 <td *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']; let j = index"
                                     [class.dark-bg]="getFilteredPlans(timeSlot.id, day).length > 0 && (i + j) % 2 === 0"
                                     [class.hover-bg]="getFilteredPlans(timeSlot.id, day).length > 0"

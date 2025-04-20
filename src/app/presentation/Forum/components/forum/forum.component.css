@@ -1,3 +1,72 @@
+/* Dark mode styles */
+:host-context(body.dark-mode) {
+  /* Card styles */
+  .card {
+    background-color: #191a1d;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .card:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Text colors */
+  .text-muted,
+  .post-title,
+  .post-content,
+  .comment-content,
+  .username,
+  .card-header h4 {
+    color: #e2e8f0 !important;
+  }
+
+  /* Form elements */
+  select.form-select,
+  input.form-control,
+  textarea.form-control {
+    background-color: #161818;
+    border-color: #4a5568;
+    color: #f7fafc;
+  }
+  ::placeholder{
+    color: #e2e8f0;
+  }
+
+  .btn-outline-dark {
+    color: #e2e8f0;
+    border-color: #4a5568;
+  }
+
+  .btn-outline-dark:hover {
+    background-color: #4a5568;
+    color: #f7fafc;
+  }
+
+  /* Comment thread line */
+  .comment-box:before {
+    background-color: #4a5568;
+  }
+
+  .divider {
+    border-color: #4a5568;
+  }
+
+  .voters-tooltip {
+    background-color: #4a5568;
+    color: #f7fafc;
+    border: 1px solid #718096;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+  }
+
+  .badge {
+    background-color: rgba(50, 205, 50, 0.2) !important;
+  }
+}
+
+* {
+  background-color: inherit;
+}
 img {
   max-height: 300px;
   margin-top: 10px;
@@ -17,6 +86,7 @@ img {
   transform: translateY(-2px);
 }
 
+
 /* Form Elements */
 select.form-select,
 input.form-control,
@@ -34,7 +104,6 @@ textarea.form-control:focus {
   box-shadow: 0 0 0 0.25rem rgba(50, 205, 50, 0.25);
 }
 
-/* Buttons */
 .btn {
   transition: all 0.3s ease;
   font-weight: 500;
@@ -56,7 +125,6 @@ textarea.form-control:focus {
   color: white;
 }
 
-/* Custom Theme Colors */
 .bg-primary {
   background-color: #32cd32 !important;
 }
@@ -73,7 +141,6 @@ textarea.form-control:focus {
   background: linear-gradient(135deg, #32cd32, #43e043);
 }
 
-/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -83,7 +150,6 @@ textarea.form-control:focus {
   animation: fadeIn 0.5s ease-out;
 }
 
-/* Avatar Styles */
 .avatar {
   width: 45px;
   height: 45px;
@@ -96,7 +162,6 @@ textarea.form-control:focus {
   background: linear-gradient(135deg, #32cd32, #43e043);
 }
 
-/* Comment Styles */
 .comment-box {
   position: relative;
   padding-left: 60px;
@@ -112,7 +177,6 @@ textarea.form-control:focus {
   background-color: #e0e0e0;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
   .card {
     border-radius: 0.5rem !important;
