@@ -14,6 +14,7 @@ import { CoachProfileComponent } from './presentation/Coach/coach-profile/coach-
 import { ProductsListComponent } from './presentation/Ecommerce/products-list/products-list.component';
 import { CreateCategoryComponent } from './presentation/Ecommerce/Administration/create-category/create-category.component';
 import { CreateBrandComponent } from './presentation/Ecommerce/Administration/create-brand/create-brand.component';
+import { CreateProductComponent } from './presentation/Ecommerce/Administration/create-product/create-product.component';
 
 
 
@@ -41,6 +42,8 @@ export const routes: Routes = [
   {path: 'shop', component: ProductsListComponent},
   {path: 'create-category', component: CreateCategoryComponent},
   {path: 'create-brand', component: CreateBrandComponent},
+  {path: 'create-product', component: CreateProductComponent},
+
 
 
 

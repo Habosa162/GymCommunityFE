@@ -1,1 +1,49 @@
-<p>create-product works!</p>
+<div class="container mt-4">
+  <h2 class="text-center">Create Product</h2>
+
+  <form (ngSubmit)="onCreateProduct()" class="row g-3">
+    
+    <div class="col-md-6">
+      <label class="form-label">Name</label>
+      <input type="text" class="form-control" [(ngModel)]="newProduct.name" name="name" required />
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Price</label>
+      <input type="number" class="form-control" [(ngModel)]="newProduct.price" name="price" required />
+    </div>
+
+    <div class="col-md-12">
+      <label class="form-label">Stock</label>
+      <input type="number" class="form-control" [(ngModel)]="newProduct.stock" name="stock" required />
+    </div>
+
+    <div class="col-12">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" [(ngModel)]="newProduct.description" name="description" rows="3"></textarea>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Category</label>
+      <select class="form-select" [(ngModel)]="newProduct.categoryId" name="subCategoryId" required>
+        <option *ngFor="let category of categories" [value]="category.categoryID">{{ category.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Brand</label>
+      <select class="form-select" [(ngModel)]="newProduct.brandId" name="brand" required>
+        <option *ngFor="let brand of brands" [value]="brand.brandID">{{ brand.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-12">
+      <label class="form-label">Product Image</label>
+      <input type="file" class="form-control" (change)="onFileSelected($event)" />
+    </div>
+
+    <div class="col-12 text-center">
+      <button class="btn btn-success w-50" type="submit">Create Product</button>
+    </div>
+  </form>
+</div>
