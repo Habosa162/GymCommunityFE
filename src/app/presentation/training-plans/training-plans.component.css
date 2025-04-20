@@ -475,4 +475,7 @@
 .class-timetable table {
     min-height: 200px; /* Adjust as needed */
     width: 100%;
-}
+    .week-label {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }}
