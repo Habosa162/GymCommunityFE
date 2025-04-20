@@ -4,31 +4,33 @@ import { baseUrl } from '../enviroment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 import { Observable } from 'rxjs';
+import { wishlistItem } from '../../domain/models/Ecommerce/wishList.model';
 @Injectable({
   providedIn: 'root'
 })
 export class WishlistService {
 
-  constructor(private http: HttpClient,private auth : AuthService) { }
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
-  private apiUrl = `${baseUrl}/wishlist`;
+  private apiUrl = `${baseUrl}/WishList`;
 
-  private headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    // 'Authorization': this.auth.getToken() // Assuming you have a method to get the token
-  });
-
-  private options = {
-    headers: this.headers
-  };
-
-  addToWishlist(product: Product) : Observable<any> {
-    return this.http.post<Product>(this.apiUrl, product, this.options) ;
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': this.auth.getToken() ? `Bearer ${this.auth.getToken()}` : ''
+    });
   }
+
+  addToWishlist(productID: number): Observable<any> {
+    return this.http.post<any>(this.apiUrl, productID, { headers: this.getHeaders() });
+  }
+
   removeFromWishlist(productId: number): Observable<any> {
-    return this.http.delete<Product>(`${this.apiUrl}/${productId}`, this.options);
+    console.log(productId); 
+    return this.http.delete<any>(`${this.apiUrl}/${productId}`, { headers: this.getHeaders() });
   }
-  getWishlist(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl, this.options);
+
+  getWishlist(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl, { headers: this.getHeaders() });
   }
 }
