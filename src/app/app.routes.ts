@@ -30,6 +30,7 @@ import { CoachCertificatesComponent } from './presentation/Coach/coach-certifica
 import { CoachWorkSamplesComponent } from './presentation/Coach/coach-work-samples/coach-work-samples.component';
 import { PublicCoachProfileComponent } from './presentation/Coach/public-coach-profile/public-coach-profile.component';
 import { CoachRatingComponent } from './presentation/Coach/coach-rating/coach-rating.component';
+import { CartComponent } from './presentation/Ecommerce/cart/cart.component';
 
 
 
@@ -62,6 +63,7 @@ export const routes: Routes = [
   {path: 'create-product', component: CreateProductComponent , canActivate: [AuthGuard,AdminCoachGuard]},
   {path: 'wish-list', component: WishListComponent, title:'wish-list' , canActivate: [AuthGuard,clientGuard]},
   {path: 'product-details/:id', component: ProductDetailsComponent, title:'product details' , canActivate: [AuthGuard,clientGuard]},
+  {path: 'cart', component: CartComponent, title:'Cart'},
 
   //Gym routes
   { path: 'gym-owner-dashboard', component: GymOwnerDashboardComponent },
