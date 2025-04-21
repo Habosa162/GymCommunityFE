@@ -33,7 +33,6 @@ import { CoachRatingComponent } from './presentation/Coach/coach-rating/coach-ra
 
 
 
-
 export const routes: Routes = [
   //auth routes
   { path: 'login', component: LoginComponent },
