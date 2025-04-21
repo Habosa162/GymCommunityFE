@@ -21,6 +21,7 @@ import { clientGuard } from './core/guards/client.guard';
 import { CoachGuard } from './core/guards/coach.guard';
 import { AdminGuard } from './core/guards/admin.guard';
 import { AdminCoachGuard } from './core/guards/admin-coach.guard';
+import { ProductDetailsComponent } from './presentation/Ecommerce/product-details/product-details.component';
 
 import { GymOwnerDashboardComponent } from './presentation/Gym/gym-owner-dashboard/gym-owner-dashboard.component';
 
@@ -29,7 +30,6 @@ import { CoachCertificatesComponent } from './presentation/Coach/coach-certifica
 import { CoachWorkSamplesComponent } from './presentation/Coach/coach-work-samples/coach-work-samples.component';
 import { PublicCoachProfileComponent } from './presentation/Coach/public-coach-profile/public-coach-profile.component';
 import { CoachRatingComponent } from './presentation/Coach/coach-rating/coach-rating.component';
-
 
 
 
@@ -55,17 +55,16 @@ export const routes: Routes = [
   { path: 'training-plans/edit/:id', component: TrainingPlansComponent, canActivate: [AuthGuard, AdminCoachGuard] },
   { path: 'training-plans/details/:id', component: TrainingPlansComponent, canActivate: [AuthGuard, AdminCoachGuard] },
   //Ecommerce routes
-  { path: 'shop', component: ProductsListComponent },
-  { path: 'create-category', component: CreateCategoryComponent, canActivate: [AuthGuard, AdminGuard] },
-  { path: 'create-brand', component: CreateBrandComponent, canActivate: [AuthGuard, AdminGuard] },
-  { path: 'create-product', component: CreateProductComponent, canActivate: [AuthGuard, AdminCoachGuard] },
-  { path: 'wish-list', component: WishListComponent, canActivate: [AuthGuard, clientGuard] },
+
+  {path: 'shop', component: ProductsListComponent},
+  {path: 'create-category', component: CreateCategoryComponent , canActivate: [AuthGuard,AdminGuard]},
+  {path: 'create-brand', component: CreateBrandComponent , canActivate: [AuthGuard,AdminGuard]},
+  {path: 'create-product', component: CreateProductComponent , canActivate: [AuthGuard,AdminCoachGuard]},
+  {path: 'wish-list', component: WishListComponent, title:'wish-list' , canActivate: [AuthGuard,clientGuard]},
+  {path: 'product-details/:id', component: ProductDetailsComponent, title:'product details' , canActivate: [AuthGuard,clientGuard]},
 
   //Gym routes
   { path: 'gym-owner-dashboard', component: GymOwnerDashboardComponent },
-
-
-
 
   //coach
   { path: 'portofolio', component: CoachProfileComponent, canActivate: [AuthGuard, CoachGuard] },
