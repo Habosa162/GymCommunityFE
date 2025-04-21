@@ -2,12 +2,25 @@
   animation: pop 0.4s ease-in-out;
 }
 .card {
-  background-color: #F6F6F6;
-  border: solid 1px;
+  border: 1px solid #E6E6E6;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
 }
 .card:hover {
-  border: solid 1px #D6D6D6;
+  border-color: #D6D6D6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
+
+.card img {
+  transition: transform 0.3s ease;
+  display: block;
+  width: 100%;
+}
+
+.card:hover img {
+  transform: scale(1.2);
+}
+
 @keyframes pop {
   0% { transform: scale(1); }
   50% { transform: scale(1.3); }

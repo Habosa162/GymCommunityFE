@@ -31,8 +31,8 @@ export class CreateProductComponent implements OnInit {
     imageUrl: '',
     createdAt: new Date(),
     rating: 0,
-    categoryId: 0,
-    category: '',
+    categoryID: 0,
+    categoryName: '',
     brandId: 0,
     brandName: '',
     discountAmount: 0,
@@ -70,7 +70,7 @@ export class CreateProductComponent implements OnInit {
     formData.append('Name', this.newProduct.name.toUpperCase() || '');
     formData.append('Description', this.newProduct.description.toLowerCase() || '');
     formData.append('Price', this.newProduct.price.toString());
-    formData.append('CategoryID', this.newProduct.categoryId.toString());
+    formData.append('CategoryID', this.newProduct.categoryID.toString());
     formData.append('Stock', this.newProduct.stock.toString());
     formData.append('AverageRating', this.newProduct.rating.toString());
     formData.append('BrandId', this.newProduct.brandId.toString());

@@ -25,6 +25,9 @@ export class ProductService {
   getOneProduct(id:number) : Observable<any> {
     return this.HttpClient.get(`${this.apiUrl}/${id}`);
   }
+  getProductByCategory(categoryId:number) : Observable<any> {
+    return this.HttpClient.get(`${this.apiUrl}/category/${categoryId}`);
+  }
   updateProduct(Product:Product) : Observable<any> {
     return this.HttpClient.put(`${this.apiUrl}`, Product);
   }

@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { LoginRequest } from '../../../../domain/models/auth.model';
+import { CartService } from '../../../../services/Ecommerce/cart.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cartService:CartService
   ) {}
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -50,6 +52,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('token', response.token);
           this.isLoading = false;
           this.router.navigate(['/']);
+          this.cartService.setUser(this.authService.getUserId());
         },
         (error) => {
           console.error('Login failed', error.error.message);

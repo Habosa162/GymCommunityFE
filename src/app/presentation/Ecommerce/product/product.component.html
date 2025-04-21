@@ -1,60 +1,54 @@
-  <div class="card h-100 product-card">
-    <!-- Discount Badge -->
-    <div class="badge bg-danger position-absolute discountBadge" style="top: 0.5rem; right: 0.5rem"
-         *ngIf="product.discountAmount > 0">
-      {{ product.discountAmount }} EGP OFF
-    </div>
+<div class="card h-100 product-card position-relative">
 
-    <!-- Product Image -->
+  <!-- Discount Badge -->
+  <div class="badge bg-danger position-absolute top-0 end-0 m-2" *ngIf="product.discountAmount > 0">
+    {{ product.discountAmount }} EGP OFF
+  </div>
+
+  <!-- Product Image -->
+  <a [routerLink]="['/product-details', product.id]" class="d-block">
     <div class="position-relative" style="height: 180px; overflow: hidden;">
-    <a [routerLink]="['/products', product.id]" class="d-block h-100">
-    <img class="img-fluid p-2"
-    [src]="product.imageUrl"
-    [alt]="product.name"
-    style="width: 100%; height: 100%; object-fit: contain; cursor: pointer;">
-    </a>
+      <img [src]="product.imageUrl" [alt]="product.name"
+           class="img-fluid p-2 w-100 h-100" style="object-fit: contain; cursor: pointer;">
+    </div>
+  </a>
 
-<!-- Centered Action Buttons -->
-<div *ngIf="authService.isLoggedIn() && authService.getUserRole() === 'Client'" class="product-actions position-absolute top-50 start-50 translate-middle d-flex gap-3">
+  <!-- Action Buttons -->
+  <div *ngIf="authService.isLoggedIn() && authService.getUserRole() !== 'Admin'"
+       class="product-actions position-absolute bottom-0 start-50 translate-middle-x z-3 mb-2 d-flex gap-2">
 
+    <!-- Add to Wishlist -->
+    <button *ngIf="!isInWishlist(product.id)"
+            class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+            (click)="addToWishlist(product.id); $event.stopPropagation()"
+            [disabled]="product.stock <= 0"
+            style="width: 40px; height: 40px;">
+      <i class="fa-regular fa-heart fs-5" [class.heart-animation]="animatedHeart[product.id]"></i>
+    </button>
 
-  
-  <!-- Add to Wishlist -->
-<button *ngIf="!isInWishlist(product.id)"
-class="btn btn-sm btn-light rounded-circle shadow-sm p-2 d-flex align-items-center justify-content-center"
-(click)="addToWishlist(product.id); $event.stopPropagation()"
-[disabled]="product.stock <= 0"
-style="width: 40px; height: 40px;">
-<i class="fa-regular fa-heart fs-5" [class.heart-animation]="animatedHeart[product.id]"></i>
-</button>
+    <!-- Remove from Wishlist -->
+    <button *ngIf="isInWishlist(product.id)"
+            class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+            (click)="removeFromWishlist(product.id); $event.stopPropagation()"
+            [disabled]="product.stock <= 0"
+            style="width: 40px; height: 40px;">
+      <i class="fa-solid fa-heart fs-5 text-danger" [class.heart-animation]="animatedHeart[product.id]"></i>
+    </button>
 
-<!-- Remove from Wishlist -->
-<button *ngIf="isInWishlist(product.id)"
-class="btn btn-sm btn-light rounded-circle  shadow-sm p-2 d-flex align-items-center justify-content-center"
-(click)="removeFromWishlist(product.id); $event.stopPropagation()"
-[disabled]="product.stock <= 0"
-style="width: 40px; height: 40px;">
-<i class="fa-solid fa-heart fs-5 text-danger" [class.heart-animation]="animatedHeart[product.id]"></i>
-</button>
+    <!-- Add to Cart -->
+    <button class="btn btn-primary btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+            (click)="addToCart(product); $event.stopPropagation()"
+            [disabled]="product.stock <= 0"
+            style="width: 40px; height: 40px;">
+      <i class="fa-solid fa-cart-plus fs-5"></i>
+    </button>
+  </div>
 
-
-<!-- Remove from Wishlist -->
-
-
-<button class="btn btn-sm btn-primary rounded-circle shadow-sm p-2 d-flex align-items-center justify-content-center"
-    (click)="addToCart(product); $event.stopPropagation()"
-    [disabled]="product.stock <= 0"
-    style="width: 40px; height: 40px;">
-<i class="fa-solid fa-cart-plus fs-5"></i>
-</button>
-</div>
-</div>
-
-
-    <!-- Product Info -->
+  <!-- Product Info -->
+  <a [routerLink]="['/product-details', product.id]" class="text-decoration-none text-dark">
     <div class="card-body p-2">
-      <div class="text-muted small mb-1 text-truncate">{{ product.category }}</div>
-      <h6 class="card-title mb-1 text-truncate">{{ product.name }}</h6>
+      <div class="text-muted small mb-1 text-truncate">{{ product.categoryName }}</div>
+      <h6 class="card-title mb-1 text-truncate text-uppercase">{{ product.name }}</h6>
 
       <div class="mb-2">
         <span *ngFor="let star of getStars(product.rating || 0)" class="text-warning">★</span>
@@ -63,10 +57,12 @@ style="width: 40px; height: 40px;">
 
       <div class="d-flex justify-content-between align-items-center">
         <div>
-          <span class="text-dark fw-bold">${{ product.price| number:'1.2-2' }}</span>
-          <span class="text-decoration-line-through text-muted small ms-1"
-                *ngIf="product.discountAmount > 0">
-            ${{ product.price | number:'1.2-2' }}
+          <span class="text-dark fw-bold">
+            <!-- EGP{{ (product.price - product.discountAmount) | number:'1.2-2' }} -->
+            EGP {{ (product.price ) | number:'1.2-2' }}
+          </span>
+          <span class="text-decoration-line-through text-muted small ms-1" *ngIf="product.discountAmount > 0">
+            EGP{{ product.price | number:'1.2-2' }}
           </span>
         </div>
 
@@ -76,4 +72,5 @@ style="width: 40px; height: 40px;">
         </span>
       </div>
     </div>
-  </div>
+  </a>
+</div>

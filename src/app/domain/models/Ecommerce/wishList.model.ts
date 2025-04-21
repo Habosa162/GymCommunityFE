@@ -1,7 +1,15 @@
 export interface wishlistItem{
-    createdAt: Date;
-    id: number;
-    productID: number;
-    userID: string;
-    userName : string;
+  wishListId: number;
+  id: number; 
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  imageUrl: string;
+  createdAt: Date;
+  averageRating: number;
+  categoryID: number;
+  categoryName: string;
+  brandId: number;
+  brandName: string;
   } 
