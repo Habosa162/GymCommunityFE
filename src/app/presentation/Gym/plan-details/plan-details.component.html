@@ -90,7 +90,7 @@
             <p><strong>Expired:</strong> {{ sub.isExpired ? 'Yes' : 'No' }}</p>
           </div>
           <div class="subscription-actions">
-            <button class="btn btn-info" (click)="validateQrCode(sub.qrCodeData)">Validate QR</button>
+            <button class="btn btn-info" (click)="validateQrCode(sub.rawData)">Validate QR</button>
             <button class="btn btn-danger" (click)="deleteSubscription(sub.id)">Delete</button>
             <button class="btn btn-info" routerLink="/gym-owner/subscription/{{sub.id}}">Details</button>
 

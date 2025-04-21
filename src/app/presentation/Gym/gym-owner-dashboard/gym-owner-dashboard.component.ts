@@ -4,10 +4,11 @@ import { GymReadDTO, GymCreateDTO } from '../../../domain/models/Gym/gym.model';
 import { GymService } from '../../../services/Gym/gym.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @Component({
   selector: 'app-gym-owner-dashboard',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,GoogleMapsModule],
   templateUrl: './gym-owner-dashboard.component.html',
   styleUrl: './gym-owner-dashboard.component.css'
 })
@@ -23,6 +24,14 @@ export class GymOwnerDashboardComponent implements OnInit {
     longitude: 0
   };
 
+  // Google Maps properties
+  mapOptions: google.maps.MapOptions = {
+    center: { lat: 30.0444, lng: 31.2357 }, // Cairo coordinates
+    zoom: 12
+  };
+  markerPosition: google.maps.LatLngLiteral | null = null;
+  mapInitialized = false;
+
   constructor(
     private gymService: GymService,
     private router: Router
@@ -30,6 +39,7 @@ export class GymOwnerDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadGyms();
+    this.loadGoogleMapsScript();
   }
 
   loadGyms(): void {
@@ -39,9 +49,71 @@ export class GymOwnerDashboardComponent implements OnInit {
       error: (err) => console.error('Failed to load gyms', err)
     });
   }
+  loadGoogleMapsScript(): void {
+    if (typeof google === 'undefined') {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBRdLpkTJ_S1yEvLAKhbAnmcq66XtO8-xQ&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      script.onload = () => this.initializeMap();
+      document.head.appendChild(script);
+    } else {
+      this.initializeMap();
+    }
+  }
+  initializeMap(): void {
+    this.mapInitialized = true;
+  }
 
   toggleAddGymForm(): void {
     this.showAddGymForm = !this.showAddGymForm;
+    if (this.showAddGymForm) {
+      setTimeout(() => this.initAutocomplete(), 100);
+    }
+  }
+  initAutocomplete(): void {
+    const locationInput = document.getElementById('location') as HTMLInputElement;
+    const autocomplete = new google.maps.places.Autocomplete(locationInput, {
+      types: ['establishment', 'geocode']
+    });
+
+    autocomplete.addListener('place_changed', () => {
+      const place = autocomplete.getPlace();
+      if (!place.geometry || !place.geometry.location) {
+        return;
+      }
+
+      this.newGym.location = place.formatted_address || '';
+      this.newGym.latitude = place.geometry.location.lat();
+      this.newGym.longitude = place.geometry.location.lng();
+      
+      // Update map marker
+      this.markerPosition = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng()
+      };
+      
+      // Center map on selected location
+      this.mapOptions = {
+        ...this.mapOptions,
+        center: this.markerPosition
+      };
+    });
+  }
+  handleMapClick(event: google.maps.MapMouseEvent): void {
+    if (event.latLng) {
+      this.markerPosition = event.latLng.toJSON();
+      this.newGym.latitude = this.markerPosition.lat;
+      this.newGym.longitude = this.markerPosition.lng;
+      
+      // Reverse geocode to get address
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ location: this.markerPosition }, (results, status) => {
+        if (status === 'OK' && results?.[0]) {
+          this.newGym.location = results[0].formatted_address;
+        }
+      });
+    }
   }
 
   addGym(): void {
@@ -50,20 +122,21 @@ export class GymOwnerDashboardComponent implements OnInit {
       next: (createdGym) => {
         this.gyms.push(createdGym);
         this.showAddGymForm = false;
-        this.newGym = {
-          ownerId: '',
-          name: '',
-          location: '',
-          phoneNumber: '',
-          website: '',
-          email: '',
-          description: '',
-          latitude: 0,
-          longitude: 0
-        };
+        this.resetNewGymForm();
       },
       error: (err) => console.error('Failed to create gym', err)
     });
+  }
+  resetNewGymForm(): void {
+    this.newGym = {
+      ownerId: '',
+      name: '',
+      location: '',
+      description: '',
+      latitude: 0,
+      longitude: 0
+    };
+    this.markerPosition = null;
   }
 
   viewGymDetails(gymId: number): void {

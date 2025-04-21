@@ -34,6 +34,7 @@
               "public/assets/css/barfiller.css",
               "public/assets/css/magnific-popup.css",
               "public/assets/css/slicknav.min.css",
+              "node_modules/@angular/google-maps/prebuilt-themes/indigo-pink.css",
               "public/assets/css/style.css"
              
             ],

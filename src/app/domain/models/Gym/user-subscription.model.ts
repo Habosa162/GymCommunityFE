@@ -32,4 +32,5 @@ export interface UserSubscriptionRead {
     expiresAt: Date;
     isExpired: boolean;
     qrCodeData: string;
+    rawData: string;
   }

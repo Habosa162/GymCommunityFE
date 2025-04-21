@@ -32,14 +32,36 @@
             <label>Email</label>
             <input [(ngModel)]="newGym.email" name="email" required>
         </div>
-        <div class="form-group">
-          <label>Latitude</label>
-          <input type="number" [(ngModel)]="newGym.latitude" name="latitude" required>
+        <!-- Map for location selection -->
+      <div class="form-group">
+        <label>Select Location on Map</label>
+        <div class="map-container" *ngIf="mapInitialized">
+          <google-map 
+            [options]="mapOptions"
+            (mapClick)="handleMapClick($event)"
+            height="400px"
+            width="100%">
+            <map-marker 
+              *ngIf="markerPosition"
+              [position]="markerPosition">
+            </map-marker>
+          </google-map>
         </div>
-        <div class="form-group">
-          <label>Longitude</label>
-          <input type="number" [(ngModel)]="newGym.longitude" name="longitude" required>
+        <div *ngIf="!mapInitialized" class="map-loading">
+          Loading map...
         </div>
+      </div>
+
+      <!-- Hidden latitude/longitude fields (will be set by map) -->
+      <input type="hidden" [(ngModel)]="newGym.latitude" name="latitude">
+      <input type="hidden" [(ngModel)]="newGym.longitude" name="longitude">
+
+      <div class="coordinates-display" *ngIf="markerPosition">
+        <p><strong>Selected Location:</strong></p>
+        <p>Latitude: {{ newGym.latitude | number:'1.4-4' }}</p>
+        <p>Longitude: {{ newGym.longitude | number:'1.4-4' }}</p>
+      </div>
+      
         <button type="submit" class="btn btn-success">Save Gym</button>
       </form>
     </div>

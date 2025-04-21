@@ -268,7 +268,7 @@ export class GymDetailsComponent implements OnInit {
   validateQrCode(qrCodeData: string): void {
     this.userSubscriptionService.validateQrCode(qrCodeData).subscribe({
       next: (subscription) => {
-        alert(`Subscription validated for user: ${subscription.userId}`);
+        alert(`Valid QR Code!`);
       },
       error: (err) => alert('Invalid QR Code')
     });
