@@ -135,9 +135,9 @@
               </ul>
             </div>
           </span>
-  
+          
           <button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm hover-grow" 
-          [ngClass]="{'btn-danger': userVotesMap[post.id]?.isUpvote === false}" 
+          [class.active]=" userVotesMap[post.id]?.isUpvote === false" 
           (click)="voteOnPost(post.id, false)">👎</button>
           <span 
             class="text-danger position-relative" 

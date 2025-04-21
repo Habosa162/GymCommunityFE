@@ -21,6 +21,7 @@ import { clientGuard } from './core/guards/client.guard';
 import { CoachGuard } from './core/guards/coach.guard';
 import { AdminGuard } from './core/guards/admin.guard';
 import { AdminCoachGuard } from './core/guards/admin-coach.guard';
+import { GymOwnerDashboardComponent } from './presentation/Gym/gym-owner-dashboard/gym-owner-dashboard.component';
 
 
 
@@ -52,6 +53,8 @@ export const routes: Routes = [
   {path: 'create-product', component: CreateProductComponent , canActivate: [AuthGuard,AdminCoachGuard]},
   {path: 'wish-list', component: WishListComponent , canActivate: [AuthGuard,clientGuard]},
 
+  //Gym routes
+  { path: 'gym-owner-dashboard', component: GymOwnerDashboardComponent },
 
 
 

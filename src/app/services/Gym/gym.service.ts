@@ -19,6 +19,10 @@ export class GymService {
     return this.http.get<GymReadDTO>(`${this.baseUrl}/${id}`);
   }
 
+  getByOwnerId(ownerId: string): Observable<GymReadDTO[]> {
+    return this.http.get<GymReadDTO[]>(`${this.baseUrl}/ownerId/${ownerId}`);
+  }
+
   createGym(gym: GymCreateDTO): Observable<GymReadDTO> {
     return this.http.post<GymReadDTO>(`${this.baseUrl}`, gym);
   }

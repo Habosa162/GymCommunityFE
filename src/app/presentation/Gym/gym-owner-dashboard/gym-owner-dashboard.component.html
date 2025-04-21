@@ -1,0 +1,54 @@
+<div class="dashboard-container">
+    <h1>My Gyms</h1>
+    
+    <button class="btn btn-primary" (click)="toggleAddGymForm()">
+      {{ showAddGymForm ? 'Cancel' : 'Add New Gym' }}
+    </button>
+  
+    <div *ngIf="showAddGymForm" class="add-gym-form">
+      <h2>Add New Gym</h2>
+      <form (submit)="addGym()">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" [(ngModel)]="newGym.name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" [(ngModel)]="newGym.location" name="location" required>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea [(ngModel)]="newGym.description" name="description" required></textarea>
+        </div>
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input [(ngModel)]="newGym.phoneNumber" name="phoneNumber" required>
+        </div>
+        <div class="form-group">
+            <label>Website</label>
+            <input [(ngModel)]="newGym.website" name="website" required>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input [(ngModel)]="newGym.email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label>Latitude</label>
+          <input type="number" [(ngModel)]="newGym.latitude" name="latitude" required>
+        </div>
+        <div class="form-group">
+          <label>Longitude</label>
+          <input type="number" [(ngModel)]="newGym.longitude" name="longitude" required>
+        </div>
+        <button type="submit" class="btn btn-success">Save Gym</button>
+      </form>
+    </div>
+  
+    <div class="gyms-list">
+      <div *ngFor="let gym of gyms" class="gym-card" (click)="viewGymDetails(gym.id)">
+        <h3>{{ gym.name }}</h3>
+        <p>{{ gym.location }}</p>
+        <p>{{ gym.description }}</p>
+      </div>
+    </div>
+  </div>
