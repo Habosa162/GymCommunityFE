@@ -1,0 +1,13 @@
+img {
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+button {
+  min-width: 32px;
+}
+.cart-summary {
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
+  margin-top: 20px;
+}
