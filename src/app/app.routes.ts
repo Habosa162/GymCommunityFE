@@ -31,6 +31,9 @@ import { CoachWorkSamplesComponent } from './presentation/Coach/coach-work-sampl
 import { PublicCoachProfileComponent } from './presentation/Coach/public-coach-profile/public-coach-profile.component';
 import { CoachRatingComponent } from './presentation/Coach/coach-rating/coach-rating.component';
 import { CartComponent } from './presentation/Ecommerce/cart/cart.component';
+import { GymDetailsComponent } from './presentation/Gym/gym-details.component/gym-details.component.component';
+import { PlanDetailsComponent } from './presentation/Gym/plan-details/plan-details.component';
+import { SubscriptionDetailsComponent } from './presentation/Gym/subscription-details/subscription-details.component';
 
 
 
@@ -67,6 +70,10 @@ export const routes: Routes = [
 
   //Gym routes
   { path: 'gym-owner-dashboard', component: GymOwnerDashboardComponent },
+  { path: 'gym-owner', component: GymOwnerDashboardComponent },
+  { path: 'gym-owner/gym/:id', component: GymDetailsComponent },
+  { path: 'gym-owner/plan/:id', component: PlanDetailsComponent },
+  { path: 'gym-owner/subscription/:id', component: SubscriptionDetailsComponent },
 
   //coach
   { path: 'portofolio', component: CoachProfileComponent, canActivate: [AuthGuard, CoachGuard] },
