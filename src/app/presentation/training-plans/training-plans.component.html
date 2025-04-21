@@ -141,6 +141,21 @@
                 <h4>Add Exercise</h4>
                 <form (ngSubmit)="submitExercise()">
                     <div class="form-group">
+                        <label>Muscle Group</label>
+                        <select (change)="onMuscleGroupChange($event)" [(ngModel)]="muscleGroups" name="muscleGroup" required>
+                            <option value="">Select Muscle Group</option>
+                            <option *ngFor="let muscleGroup of muscleGroups" [value]="muscleGroup.id">
+                                {{ muscleGroup.name }}
+                            </option>
+                        </select>
+                        <select [(ngModel)]="exercises" name="exercise" required>
+                            <option value="">Select Exercise</option>
+                            <option *ngFor="let exercise of exercises" [value]="exercise.id">
+                                {{ exercise.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label>Activity</label>
                         <input type="text" [(ngModel)]="newPlan.activity" name="activity" required>
                     </div>
