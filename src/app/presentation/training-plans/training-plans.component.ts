@@ -149,12 +149,12 @@ export class TrainingPlansComponent implements OnInit {
   onMuscleGroupChange(event: Event): void {
     const selectedMuscleGroupId = (event.target as HTMLSelectElement).value;
     this.selectedMuscleGroupId = parseInt(selectedMuscleGroupId);
-    this.loadExercises();
+    this.loadExercises(this.selectedMuscleGroupId);
   }
 
-  loadExercises(): void {
+  loadExercises(muscleGroupId: number): void {
     this.exerciseService
-      .getExercises(this.selectedMuscleGroupId)
+      .getExercises(muscleGroupId)
       .subscribe((exercises: ExerciseModel[]) => {
         this.exercises = exercises;
         console.log(this.exercises);

@@ -142,7 +142,7 @@
                 <form (ngSubmit)="submitExercise()">
                     <div class="form-group">
                         <label>Muscle Group</label>
-                        <select (change)="onMuscleGroupChange($event)" [(ngModel)]="muscleGroups" name="muscleGroup" required>
+                        <select (change)="onMuscleGroupChange($event)" [(ngModel)]="selectedMuscleGroupId" name="muscleGroup" required>
                             <option value="">Select Muscle Group</option>
                             <option *ngFor="let muscleGroup of muscleGroups" [value]="muscleGroup.id">
                                 {{ muscleGroup.name }}
@@ -150,7 +150,7 @@
                         </select>
                         <select [(ngModel)]="exercises" name="exercise" required>
                             <option value="">Select Exercise</option>
-                            <option *ngFor="let exercise of exercises" [value]="exercise.id">
+                            <option *ngFor="let exercise of exercises" [value]="exercise.name">
                                 {{ exercise.name }}
                             </option>
                         </select>
