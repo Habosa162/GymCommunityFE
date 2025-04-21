@@ -26,7 +26,7 @@
           <h4>Total: <strong>{{ totalPrice }} EGP</strong></h4>
           <div class="d-flex justify-content-end gap-2 mt-3">
             <button class="btn btn-outline-danger" (click)="clearCart()">Clear Cart</button>
-            <button class="btn btn-primary">Proceed to Checkout</button>
+            <a [routerLink]="['/checkout']" routerLinkActive="router-link-active" class="btn btn-success">Proceed to Checkout</a>
           </div>
         </div>
       </div>
