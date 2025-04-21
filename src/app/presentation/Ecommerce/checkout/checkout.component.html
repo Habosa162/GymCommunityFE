@@ -1,0 +1,66 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+
+    <div class="col-12 text-center mb-4">
+      <h2 class="fw-bold">Checkout</h2>
+    </div>
+
+    <!-- Cart Summary -->
+    <div class="col-md-6 mb-5">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-3">🛒 Your Cart</h5>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+                *ngFor="let item of cartItems">
+              <div>
+                {{ item.name }}
+                <span class="text-muted">(x{{ item.quantity }})</span>
+              </div>
+              <span class="fw-semibold">{{ item.finalPrice * item.quantity }} EGP</span>
+            </li>
+          </ul>
+          <div class="text-end">
+            <h6 class="fw-bold text-success">Total: {{ totalPrice }} EGP</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checkout Form -->
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-3">🚚 Shipping Information</h5>
+          <form (ngSubmit)="submitOrder()" #checkoutForm="ngForm">
+
+            <div class="mb-3">
+              <label for="name" class="form-label">Full Name</label>
+              <input id="name" name="name" class="form-control" required [(ngModel)]="shipping.name" />
+            </div>
+
+            <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <input id="address" name="address" class="form-control" required [(ngModel)]="shipping.address" />
+            </div>
+
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone Number</label>
+              <input id="phone" name="phone" type="tel" class="form-control" required [(ngModel)]="shipping.phone" />
+            </div>
+
+            <div class="text-center">
+              <button type="submit"
+                      class="btn btn-outline-success fw-bold px-5"
+                      [disabled]="cartItems.length === 0 || checkoutForm.invalid">
+                Confirm Order
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

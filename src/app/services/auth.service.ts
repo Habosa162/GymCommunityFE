@@ -64,7 +64,7 @@ export class AuthService {
       : null;
   }
 
-  getUserId(): string | null {
+ public getUserId(): string | null {
     const decoded = this.getDecodedToken();
     return decoded
       ? decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']

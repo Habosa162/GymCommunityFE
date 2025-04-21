@@ -7,9 +7,11 @@ export class CartService {
   private userId: string | null = null;
 
   // Signal to track the current cart items reactively
-  private cartItems = signal<any[]>(this.loadCart());
+  private cartItems = signal<any[]>([]);
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+    this.cartItems.set(this.loadCart());
+  }
 
   // Set the current user ID and merge guest cart if switching from guest to user
   setUser(userId: string | null) {
@@ -26,8 +28,8 @@ export class CartService {
 
   // Determine which localStorage key to use for the cart
   private getCartStorageKey(): string {
-    return this.userId ? `cart_${this.userId}` : 'cart_guest';
-  }
+     this.userId = this.authService.getUserId();
+    return this.userId ? `cart_${this.userId}` : 'cart_guest';  }
 
   // Load cart data from localStorage
   private loadCart(): any[] {

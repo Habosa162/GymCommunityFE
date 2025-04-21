@@ -29,7 +29,18 @@ export class ProductComponent {
   ngOnInit() {
     this.getWishlist();
   }
-
+  // Cart Methods
+  addToCart(product:Product): void {    
+    if (!this.cartService.isInCart(product.id)) {
+      this.cartService.addToCart(product); 
+    } else {
+      this.cartService.removeFromCart(product.id);
+    }
+  }
+  isInCart(product: Product): boolean {
+    return product ? this.cartService.isInCart(product.id) : false;
+  }
+  //wishlist Methods
   getWishlist() {
     this.wishlistService.getWishlist().subscribe({
       next: (res) => {
@@ -77,10 +88,6 @@ export class ProductComponent {
     setTimeout(() => {
       this.animatedHeart[productId] = false;
     }, 400);
-  }
-
-  addToCart(product: Product) {
-    console.log('Product added to cart:', product);
   }
 
   getStars(rating: number): number[] {
