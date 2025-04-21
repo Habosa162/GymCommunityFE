@@ -8,40 +8,50 @@
   <!-- Product Image -->
   <a [routerLink]="['/product-details', product.id]" class="d-block">
     <div class="position-relative" style="height: 180px; overflow: hidden;">
-      <img [src]="product.imageUrl" [alt]="product.name"
-           class="img-fluid p-2 w-100 h-100" style="object-fit: contain; cursor: pointer;">
+      <img [src]="product.imageUrl" [alt]="product.name" class="img-fluid p-2 w-100 h-100"
+        style="object-fit: contain; cursor: pointer;">
     </div>
   </a>
 
   <!-- Action Buttons -->
   <div *ngIf="authService.isLoggedIn() && authService.getUserRole() !== 'Admin'"
-       class="product-actions position-absolute bottom-0 start-50 translate-middle-x z-3 mb-2 d-flex gap-2">
+    class="product-actions position-absolute bottom-0 start-50 translate-middle-x z-3 mb-2 d-flex gap-2">
 
     <!-- Add to Wishlist -->
     <button *ngIf="!isInWishlist(product.id)"
-            class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
-            (click)="addToWishlist(product.id); $event.stopPropagation()"
-            [disabled]="product.stock <= 0"
-            style="width: 40px; height: 40px;">
+      class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+      (click)="addToWishlist(product.id); $event.stopPropagation()" [disabled]="product.stock <= 0"
+      style="width: 40px; height: 40px;">
       <i class="fa-regular fa-heart fs-5" [class.heart-animation]="animatedHeart[product.id]"></i>
     </button>
 
     <!-- Remove from Wishlist -->
     <button *ngIf="isInWishlist(product.id)"
-            class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
-            (click)="removeFromWishlist(product.id); $event.stopPropagation()"
-            [disabled]="product.stock <= 0"
-            style="width: 40px; height: 40px;">
+      class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+      (click)="removeFromWishlist(product.id); $event.stopPropagation()" [disabled]="product.stock <= 0"
+      style="width: 40px; height: 40px;">
       <i class="fa-solid fa-heart fs-5 text-danger" [class.heart-animation]="animatedHeart[product.id]"></i>
     </button>
 
     <!-- Add to Cart -->
-    <button class="btn btn-primary btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+    <!-- <button class="btn btn-primary btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
             (click)="addToCart(product); $event.stopPropagation()"
             [disabled]="product.stock <= 0"
             style="width: 40px; height: 40px;">
       <i class="fa-solid fa-cart-plus fs-5"></i>
+    </button> -->
+    <button class="btn" (click)="addToCart(product); $event.stopPropagation()" [disabled]="product.stock <= 0"
+      [ngClass]="{
+          'btn-outline-success': !isInCart(product),
+          'btn-outline-danger': isInCart(product)
+        }" title="{{ isInCart(product) ? 'Remove from Cart' : (product.stock > 0 ? 'Add to Cart' : 'Out of Stock') }}">
+
+      <i class="fa-solid fs-5" [class.fa-cart-plus]="!isInCart(product)" [class.fa-cart-arrow-down]="isInCart(product)">
+      </i>
     </button>
+
+
+
   </div>
 
   <!-- Product Info -->
@@ -67,7 +77,7 @@
         </div>
 
         <span class="badge bg-opacity-10"
-              [ngClass]="{'bg-success': product.stock > 0, 'bg-danger': product.stock <= 0}">
+          [ngClass]="{'bg-success': product.stock > 0, 'bg-danger': product.stock <= 0}">
           {{ product.stock > 0 ? product.stock : 'Out' }}
         </span>
       </div>
