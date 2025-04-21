@@ -5,6 +5,8 @@ import { CreateDailyPlanDto } from '../../services/Training Plans/dtos/create-da
 import { DailyPlanDto } from '../../services/Training Plans/dtos/daily-plan-dto';
 import { WeekPlanDto } from '../../services/Training Plans/dtos/weekly-plan-dto';
 import { TrainingPlansService } from '../../services/Training Plans/training-plan.service';
+import { ExerciseService } from '../../services/Training Plans/exercise.service';
+import { MealService } from '../../services/Training Plans/meal.service';
 
 interface DailyPlanData {
   activity: string;
@@ -57,7 +59,7 @@ interface DailyPlan {
 @Component({
   selector: 'app-training-plans',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,ExerciseService,MealService],
   templateUrl: './training-plans.component.html',
   styleUrl: './training-plans.component.css',
 })
