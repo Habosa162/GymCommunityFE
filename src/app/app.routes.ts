@@ -66,9 +66,6 @@ export const routes: Routes = [
   //Gym routes
   { path: 'gym-owner-dashboard', component: GymOwnerDashboardComponent },
 
-
-
-
   //coach
   { path: 'portofolio', component: CoachProfileComponent, canActivate: [AuthGuard, CoachGuard] },
   // { path: 'portofolio/:id', component: CoachProfileComponent }
