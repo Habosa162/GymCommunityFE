@@ -34,6 +34,7 @@ import { CartComponent } from './presentation/Ecommerce/cart/cart.component';
 import { GymDetailsComponent } from './presentation/Gym/gym-details.component/gym-details.component.component';
 import { PlanDetailsComponent } from './presentation/Gym/plan-details/plan-details.component';
 import { SubscriptionDetailsComponent } from './presentation/Gym/subscription-details/subscription-details.component';
+import { CheckoutComponent } from './presentation/Ecommerce/checkout/checkout.component';
 
 
 
@@ -67,6 +68,8 @@ export const routes: Routes = [
   {path: 'wish-list', component: WishListComponent, title:'wish-list' , canActivate: [AuthGuard,clientGuard]},
   {path: 'product-details/:id', component: ProductDetailsComponent, title:'product details' , canActivate: [AuthGuard,clientGuard]},
   {path: 'cart', component: CartComponent, title:'Cart'},
+  {path: 'checkout', component: CheckoutComponent, title:'Checkout'},
+
 
   //Gym routes
   { path: 'gym-owner-dashboard', component: GymOwnerDashboardComponent },
