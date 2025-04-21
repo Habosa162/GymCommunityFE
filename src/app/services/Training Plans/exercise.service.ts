@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ExerciseDto } from './dtos/exercise-dto';
+import { MuscleGroupDto } from './dtos/muscle-group.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,9 @@ export class ExerciseService {
 
   constructor(private http: HttpClient) {}
 
+  getAllMuscleGroups(): Observable<MuscleGroupDto[]> {
+    return this.http.get<MuscleGroupDto[]>(`${this.baseUrl}/MuscleGroup`);
+  }
   getExercises(muscleGroupId?: number): Observable<ExerciseDto[]> {
     let params = new HttpParams();
     if (muscleGroupId !== undefined) {
