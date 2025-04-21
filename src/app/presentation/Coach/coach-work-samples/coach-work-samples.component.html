@@ -1,22 +1,41 @@
-<div class="container mt-4">
-    <h4>Work Samples</h4>
-  
-    <div class="mb-3">
-      <input type="file" class="form-control mb-2" (change)="onFileSelected($event)">
-      <textarea class="form-control mb-2" [(ngModel)]="description" placeholder="Add description..."></textarea>
-      <button class="btn btn-primary" (click)="uploadSample()" [disabled]="!selectedFile || !description">Upload</button>
-    </div>
-  
-    <div class="row">
-      <div class="col-md-4 mb-3" *ngFor="let sample of workSamples">
-        <div class="card">
-          <img [src]="sample.imageUrl" class="card-img-top" alt="Work Sample">
+<div class="container py-4">
+  <div class="card mb-4 shadow rounded-4">
+    <div class="card-body">
+      <h3 class="card-title fw-bold mb-4">Work Samples</h3>
+
+      <div class="mb-4">
+        <div class="card shadow-sm border-0">
           <div class="card-body">
-            <p class="card-text">{{ sample.description }}</p>
-            <button class="btn btn-danger btn-sm" (click)="deleteSample(sample.id!)">Delete</button>
+            <h5 class="mb-3">Upload New Work Sample</h5>
+            <div class="mb-3">
+              <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+            </div>
+            <div class="mb-3">
+              <textarea class="form-control" [(ngModel)]="description" placeholder="Add description..."
+                rows="3"></textarea>
+            </div>
+            <button class="btn btn-primary" (click)="uploadSample()" [disabled]="!selectedFile || !description">
+              <i class="bi bi-upload me-2"></i>Upload Sample
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-4 col-sm-6" *ngFor="let sample of workSamples">
+          <div class="card shadow-sm border-0 h-100">
+            <img [src]="sample.imageUrl" class="card-img-top rounded-3" alt="Work Sample">
+            <div class="card-body">
+              <p class="card-text">{{ sample.description }}</p>
+              <div class="text-end">
+                <button class="btn btn-outline-danger btn-sm" (click)="deleteSample(sample.id!)">
+                  <i class="bi bi-trash me-2"></i>Delete
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

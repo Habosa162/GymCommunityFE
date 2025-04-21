@@ -1,0 +1,153 @@
+.plan-details-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .plan-info {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+  }
+  
+  .plan-info p {
+    margin-bottom: 10px;
+  }
+  
+  .plan-info ul {
+    margin-left: 20px;
+  }
+  
+  .edit-form {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .form-group textarea {
+    min-height: 100px;
+  }
+  
+  .form-group label.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: normal;
+  }
+  
+  .btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .btn-primary {
+    background: #007bff;
+    color: white;
+  }
+  
+  .btn-danger {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-success {
+    background: #28a745;
+    color: white;
+  }
+  
+  .btn-info {
+    background: #17a2b8;
+    color: white;
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .subscriptions-section {
+    margin-top: 30px;
+  }
+  
+  .subscriptions-list {
+    margin-top: 20px;
+  }
+  
+  .subscription-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .subscription-info {
+    flex: 1;
+    min-width: 250px;
+  }
+  
+  .subscription-info p {
+    margin-bottom: 8px;
+  }
+  
+  .subscription-actions {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  
+  .no-subscriptions {
+    text-align: center;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 5px;
+  }
+  
+  .loading {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+  }
+  
+  select {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background: white;
+  }

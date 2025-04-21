@@ -1,2 +1,18 @@
-<p>wish-list works!</p>
-<app-product *ngFor="let product of wishlistProducts" [product]="product" />
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 text-center mb-4">
+      <h2 class="text-primary">My Wishlist</h2>
+      <p class="text-muted">You have {{ wishlistProducts.length }} products in your wishlist.</p>
+    </div>
+
+    <div class="col-md-4" *ngFor="let product of wishlistProducts">
+      <app-product
+       [product]="product"
+      (removedFromWishlist)="removeItemFromWishlist($event)"
+      ></app-product>
+    </div>
+
+
+  </div>
+</div>

@@ -1,0 +1,165 @@
+.subscription-details-container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .subscription-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .subscription-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+  
+  @media (max-width: 768px) {
+    .subscription-info {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .info-section {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .info-section h2 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+  }
+  
+  .info-display p {
+    margin: 12px 0;
+    font-size: 16px;
+  }
+  
+  .info-display strong {
+    display: inline-block;
+    width: 140px;
+    color: #555;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  select.form-control {
+    padding: 9px;
+  }
+  
+  .btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  
+  .btn-primary {
+    background: #007bff;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #0069d9;
+  }
+  
+  .btn-danger {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-danger:hover {
+    background: #c82333;
+  }
+  
+  .btn-success {
+    background: #28a745;
+    color: white;
+  }
+  
+  .btn-success:hover {
+    background: #218838;
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background: #5a6268;
+  }
+  
+  .btn-outline {
+    background: transparent;
+    border: 1px solid #ddd;
+    color: #333;
+  }
+  
+  .btn-outline:hover {
+    background: #f8f9fa;
+  }
+  
+  .qr-section {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  .qr-code-container {
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    max-width: 300px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .qr-placeholder {
+    padding: 20px;
+  }
+  
+  .qr-data {
+    font-family: monospace;
+    word-break: break-all;
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .loading {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+    color: #666;
+  }

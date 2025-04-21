@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Product } from './../../../domain/models/Ecommerce/product.model';
 import { wishlistItem } from './../../../domain/models/Ecommerce/wishList.model';
 import { WishlistService } from './../../../services/Ecommerce/wishlist.service';
 import { AuthService } from '../../../services/auth.service';
+import { CartService } from '../../../services/Ecommerce/cart.service';
 
 @Component({
   selector: 'app-product',
@@ -14,13 +15,15 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class ProductComponent {
   @Input() product!: Product;
+  @Output() removedFromWishlist = new EventEmitter<number>();
 
   WishList: wishlistItem[] = [];
   animatedHeart: { [productId: number]: boolean } = {};
 
   constructor(
     private wishlistService: WishlistService,
-    protected authService: AuthService
+    protected authService: AuthService,
+    private cartService: CartService
   ) {}
 
   ngOnInit() {
@@ -42,7 +45,7 @@ export class ProductComponent {
     this.wishlistService.addToWishlist(productId).subscribe({
       next: (res) => {
         console.log('Added to wishlist', res);
-        this.getWishlist(); 
+        this.getWishlist();
         this.resetAnimation(productId);
       },
       error: (err) => {
@@ -53,26 +56,21 @@ export class ProductComponent {
   }
 
   removeFromWishlist(productId: number) {
-    const wishListItem = this.WishList.find(item => item.productID === productId);
+    const wishListItem = this.WishList.find(item => item.id === productId);
     if (!wishListItem) return;
 
     this.animatedHeart[productId] = true;
 
-    this.wishlistService.removeFromWishlist(wishListItem.id).subscribe({
-      next: (res) => {
-        console.log('Removed from wishlist', res);
-        this.getWishlist(); 
-        this.resetAnimation(productId);
-      },
-      error: (err) => {
-        console.error('Failed to remove from wishlist:', err);
-        this.resetAnimation(productId);
-      }
+    this.wishlistService.removeFromWishlist(wishListItem.wishListId).subscribe((res)=>{
+      console.log('Removed from wishlist', res);
+      this.getWishlist();
+      this.resetAnimation(productId);
+      this.removedFromWishlist.emit(wishListItem.wishListId); 
     });
   }
 
   isInWishlist(productId: number): boolean {
-    return this.WishList.some(item => item.productID === productId);
+    return this.WishList.some(item => item.id === productId);
   }
 
   resetAnimation(productId: number) {

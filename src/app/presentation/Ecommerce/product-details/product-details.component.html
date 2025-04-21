@@ -1,1 +1,81 @@
-<p>product-details works!</p>
+<div class="container mt-4">
+  <!-- Product Details -->
+  <div *ngIf="Product" class="row justify-content-center align-items-center">
+    <div class="col-md-6 bg-dark text-center">
+      <img class="img-fluid" [src]="Product.imageUrl" [alt]="Product.name" style="max-height: 80vh; object-fit: contain;">
+    </div>
+    <div class="col-md-6">
+      <h2 class="text-uppercase">{{ Product.name }}</h2>
+      <div class="mb-3">
+        <span class="text-muted small fw-bold fs-5 ">{{ Product.categoryName }}</span>
+      </div>
+      <div class="mb-3">
+        <span class="text-dark fw-bold fs-3">{{ Product.price | number: '1.2-2' }} EGP</span>
+      </div>
+      <p class="text-muted fw-bold fs-5">{{ Product.description }}</p>
+
+      <!-- Buttons -->
+      <div class="d-flex justify-content-start gap-4 mb-4">
+        <!-- Updated Add to Cart Button -->
+        <button class="btn  fw-bold"
+                (click)="addToCart(Product); $event.stopPropagation()"
+                [disabled]="Product.stock <= 0"
+                [ngClass]="{
+                  'btn-outline-success': !isInCart(Product),
+                  'btn-outline-danger': isInCart(Product)
+                }">
+          <i class="bi me-2"
+             [class.bi-cart-plus]="!isInCart(Product)"
+             [class.bi-cart-dash]="isInCart(Product)"></i>
+          {{ isInCart(Product) ? 'Remove from Cart' : (Product.stock > 0 ? 'Add to Cart' : 'Out of Stock') }}
+        </button>
+      
+        <!-- Wishlist Buttons -->
+            <button *ngIf="!isInWishlist(Product.id)&&authService.isLoggedIn()"
+            class="btn btn-light shadow-sm d-flex align-items-center justify-content-center"
+            (click)="addToWishList(Product.id); $event.stopPropagation()"
+            [disabled]="Product.stock <= 0">
+            <i class="fa-regular fa-heart fs-5" [class.heart-animation]="animatedHeart[Product.id]"></i>
+          </button>
+
+            <!-- Remove from Wishlist -->
+          <button *ngIf="isInWishlist(Product.id)&&authService.isLoggedIn()"
+                  class="btn btn-light shadow-sm d-flex align-items-center justify-content-center"
+                  (click)="removeFromWishList(Product.id); $event.stopPropagation()"
+                  [disabled]="Product.stock <= 0">
+            <i class="fa-solid fa-heart fs-5 text-danger" [class.heart-animation]="animatedHeart[Product.id]"></i>
+          </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews Section -->
+  <div *ngIf="Product" class="mt-4">
+    <h4>Customer Reviews</h4>
+    <div *ngIf="reviews.length > 0">
+      <div *ngFor="let review of reviews" class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{ review.userName }}</h5>
+          <div class="d-flex align-items-center">
+            <div *ngFor="let star of getStars(review.rating)" class="text-warning">★</div>
+          </div>
+          <p class="card-text">{{ review.comment }}</p>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!reviews?.length">
+      <p>No reviews yet. Be the first to review!</p>
+    </div>
+  </div>
+
+  <!-- Related Products (Category Products) -->
+  <div *ngIf="CategoryProducts?.length" class="mt-4">
+    <h4 class="my-3">Related Products</h4>
+    <div class="row">
+      <div *ngFor="let relatedProduct of CategoryProducts" class="col-md-4 mb-4">
+        <app-product [product]="relatedProduct"></app-product>
+      </div>
+    </div>
+  </div>
+</div>

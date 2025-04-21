@@ -7,8 +7,8 @@ export interface Product{
   imageUrl: string;
   createdAt: Date;
   rating: number;
-  categoryId: number;
-  category: string;
+  categoryID: number;
+  categoryName: string;
   brandId : number ;
   brandName : string ;
   discountAmount:number ;

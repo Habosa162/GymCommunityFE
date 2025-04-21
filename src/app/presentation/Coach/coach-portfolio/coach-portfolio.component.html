@@ -1,37 +1,59 @@
-<div class="container mt-4 p-4 shadow rounded bg-white">
-  <h3 class="mb-4">Edit Coach Portfolio</h3>
+<div class="container py-4">
+  <div class="card shadow rounded-4">
+    <div class="card-body">
+      <h3 class="card-title fw-bold mb-4">Edit Coach Portfolio</h3>
 
-  <form [formGroup]="portfolioForm" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-      <label class="form-label">About Me Description</label>
-      <textarea class="form-control" formControlName="aboutMeDescription" rows="3"></textarea>
+      <form [formGroup]="portfolioForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-4">
+              <label class="form-label fw-bold">About Me Description</label>
+              <textarea class="form-control" formControlName="aboutMeDescription" rows="4"
+                placeholder="Tell us about yourself..."></textarea>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold">Experience Years</label>
+              <input type="number" class="form-control" formControlName="experienceYears"
+                placeholder="Enter your years of experience">
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold">Qualifications</label>
+              <input type="text" class="form-control" formControlName="qualifications"
+                placeholder="Enter your qualifications">
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="mb-4">
+              <label class="form-label fw-bold">Skills</label>
+              <input type="text" class="form-control" [(ngModel)]="skillsInput" (blur)="handleSkills()" name="skills"
+                placeholder="Enter skills (comma separated)">
+              <small class="text-muted">Example: Personal Training, Nutrition, Yoga</small>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold">Social Media Links</label>
+              <input type="text" class="form-control" [(ngModel)]="socialLinksInput" (blur)="handleSocialLinks()"
+                name="social" placeholder="Enter social media links (comma separated)">
+              <small class="text-muted">Example: https://linkedin.com/in/username</small>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold">About Me Image</label>
+              <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+              <small class="text-muted">Upload a professional photo of yourself</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-end mt-4">
+          <button class="btn btn-primary px-4" type="submit" [disabled]="portfolioForm.invalid">
+            <i class="bi bi-save me-2"></i>Save Portfolio
+          </button>
+        </div>
+      </form>
     </div>
-
-    <div class="mb-3">
-      <label class="form-label">Experience Years</label>
-      <input type="number" class="form-control" formControlName="experienceYears">
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">Qualifications</label>
-      <input type="text" class="form-control" formControlName="qualifications">
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">Skills (comma separated)</label>
-      <input type="text" class="form-control" [(ngModel)]="skillsInput" (blur)="handleSkills()" name="skills">
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">Social Media Links (comma separated)</label>
-      <input type="text" class="form-control" [(ngModel)]="socialLinksInput" (blur)="handleSocialLinks()" name="social">
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">About Me Image</label>
-      <input type="file" class="form-control" (change)="onFileSelected($event)">
-    </div>
-
-    <button class="btn btn-primary" type="submit" [disabled]="portfolioForm.invalid">Save Portfolio</button>
-  </form>
+  </div>
 </div>
