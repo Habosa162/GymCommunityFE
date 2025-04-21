@@ -1,15 +1,24 @@
-<div class="card p-3 mt-3">
-    <h5>Leave a Rating</h5>
+<div class="card shadow-sm border-0">
+  <div class="card-body">
+    <h5 class="card-title fw-bold mb-4">Leave a Rating</h5>
     <form (ngSubmit)="onSubmit()" [formGroup]="ratingForm">
-      <div class="mb-3">
-        <label for="rate" class="form-label">Rating (1-5)</label>
-        <input type="number" class="form-control" id="rate" formControlName="rate" min="1" max="5">
+      <div class="mb-4">
+        <label for="rate" class="form-label">Rating</label>
+        <div class="d-flex align-items-center gap-2">
+          <input type="number" class="form-control" id="rate" formControlName="rate" min="1" max="5"
+            placeholder="Enter rating (1-5)">
+          <span class="text-warning fw-bold">★</span>
+        </div>
+        <small class="text-muted">Rate from 1 to 5 stars</small>
       </div>
-      <div class="mb-3">
+      <div class="mb-4">
         <label for="comment" class="form-label">Comment</label>
-        <textarea class="form-control" id="comment" formControlName="comment" rows="3"></textarea>
+        <textarea class="form-control" id="comment" formControlName="comment" rows="3"
+          placeholder="Share your experience..."></textarea>
       </div>
-      <button class="btn btn-primary" [disabled]="ratingForm.invalid">Submit Rating</button>
+      <button class="btn btn-primary w-100" [disabled]="ratingForm.invalid">
+        <i class="bi bi-star me-2"></i>Submit Rating
+      </button>
     </form>
   </div>
-  
+</div>

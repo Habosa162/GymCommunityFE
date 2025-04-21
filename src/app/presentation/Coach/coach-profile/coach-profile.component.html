@@ -30,7 +30,7 @@
                         <div class="d-flex gap-3">
                             <a *ngFor="let link of portfolio?.socialMediaLinksJson" [href]="link" target="_blank"
                                 class="btn btn-outline-dark btn-sm">
-                                {{ link }}
+                                <i class="bi bi-link-45deg me-2"></i>{{ link }}
                             </a>
                         </div>
                     </div>
@@ -40,26 +40,30 @@
     </div>
 
     <!-- Certificates -->
-    <div class="mb-4">
-        <h4 class="mb-3">Certificates</h4>
-        <div class="row g-3">
-            <div *ngFor="let cert of certificates" class="col-md-4 col-sm-6">
-                <div class="card shadow-sm border-0 h-100">
-                    <img [src]="cert.imageUrl" class="card-img-top rounded-3" alt="Certificate">
+    <div class="card mb-4 shadow rounded-4">
+        <div class="card-body">
+            <h3 class="card-title fw-bold mb-4">Certificates</h3>
+            <div class="row g-3">
+                <div *ngFor="let cert of certificates" class="col-md-4 col-sm-6">
+                    <div class="card shadow-sm border-0 h-100">
+                        <img [src]="cert.imageUrl" class="card-img-top rounded-3" alt="Certificate">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Work Samples -->
-    <div class="mb-4">
-        <h4 class="mb-3">Work Samples</h4>
-        <div class="row g-3">
-            <div *ngFor="let work of workSamples" class="col-md-4 col-sm-6">
-                <div class="card shadow-sm border-0 h-100">
-                    <img [src]="work.imageUrl" class="card-img-top rounded-3" alt="Work Sample">
-                    <div class="card-body">
-                        <p class="card-text">{{ work.description }}</p>
+    <div class="card mb-4 shadow rounded-4">
+        <div class="card-body">
+            <h3 class="card-title fw-bold mb-4">Work Samples</h3>
+            <div class="row g-3">
+                <div *ngFor="let work of workSamples" class="col-md-4 col-sm-6">
+                    <div class="card shadow-sm border-0 h-100">
+                        <img [src]="work.imageUrl" class="card-img-top rounded-3" alt="Work Sample">
+                        <div class="card-body">
+                            <p class="card-text">{{ work.description }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,23 +71,25 @@
     </div>
 
     <!-- Ratings -->
-    <div class="mb-4">
-        <h4 class="mb-3">Client Ratings</h4>
-        <div *ngIf="ratings.length > 0">
-            <div class="mb-2">
-                <strong>Average Rating:</strong>
-                <span class="text-warning fw-bold">{{ averageRating.toFixed(1) }} ★</span>
-            </div>
-            <div class="list-group">
-                <div *ngFor="let rating of ratings" class="list-group-item">
-                    <div class="d-flex justify-content-between">
-                        <span class="fw-bold">Client: {{ rating.clientId }}</span>
-                        <span class="text-warning">{{ rating.rate }} ★</span>
+    <div class="card mb-4 shadow rounded-4">
+        <div class="card-body">
+            <h3 class="card-title fw-bold mb-4">Client Ratings</h3>
+            <div *ngIf="ratings.length > 0">
+                <div class="mb-3">
+                    <strong>Average Rating:</strong>
+                    <span class="text-warning fw-bold">{{ averageRating.toFixed(1) }} ★</span>
+                </div>
+                <div class="list-group">
+                    <div *ngFor="let rating of ratings" class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">Client: {{ rating.clientId }}</span>
+                            <span class="text-warning">{{ rating.rate }} ★</span>
+                        </div>
+                        <p class="mb-0 mt-2">{{ rating.comment }}</p>
                     </div>
-                    <p class="mb-0">{{ rating.comment }}</p>
                 </div>
             </div>
+            <div *ngIf="ratings?.length === 0" class="text-muted">No ratings yet.</div>
         </div>
-        <div *ngIf="ratings?.length === 0" class="text-muted">No ratings yet.</div>
     </div>
 </div>

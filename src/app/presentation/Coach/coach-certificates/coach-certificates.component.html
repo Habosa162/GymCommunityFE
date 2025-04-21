@@ -1,17 +1,32 @@
-<div class="container mt-4">
-    <h4>Certificates</h4>
+<div class="container py-4">
+    <div class="card mb-4 shadow rounded-4">
+        <div class="card-body">
+            <h3 class="card-title fw-bold mb-4">Certificates</h3>
 
-    <div class="mb-3">
-        <input type="file" class="form-control" (change)="onFileSelected($event)">
-        <button class="btn btn-success mt-2" (click)="uploadCertificate()" [disabled]="!selectedFile">Upload</button>
-    </div>
+            <div class="mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="mb-3">Upload New Certificate</h5>
+                        <div class="mb-3">
+                            <input type="file" class="form-control" (change)="onFileSelected($event)">
+                        </div>
+                        <button class="btn btn-primary" (click)="uploadCertificate()" [disabled]="!selectedFile">
+                            <i class="bi bi-upload me-2"></i>Upload Certificate
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-    <div class="row">
-        <div class="col-md-3" *ngFor="let cert of certificates">
-            <div class="card mb-3">
-                <img [src]="cert.imageUrl" class="card-img-top" alt="Certificate">
-                <div class="card-body text-center">
-                    <button class="btn btn-danger btn-sm" (click)="deleteCertificate(cert.id!)">Delete</button>
+            <div class="row g-3">
+                <div class="col-md-4 col-sm-6" *ngFor="let cert of certificates">
+                    <div class="card shadow-sm border-0 h-100">
+                        <img [src]="cert.imageUrl" class="card-img-top rounded-3" alt="Certificate">
+                        <div class="card-body text-center">
+                            <button class="btn btn-outline-danger" (click)="deleteCertificate(cert.id!)">
+                                <i class="bi bi-trash me-2"></i>Delete
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -30,7 +30,48 @@
     background-color: #fff;
 }
 
-h2,
-h3 {
+.btn {
+    border-radius: 0.75rem;
+    padding: 0.5rem 1rem;
+}
+
+.btn-outline-dark {
+    border-color: #212529;
+    color: #212529;
+}
+
+.btn-outline-dark:hover {
+    background-color: #212529;
+    color: #fff;
+}
+
+h3,
+h5 {
     font-weight: 700;
+    color: #212529;
+}
+
+.shadow-sm {
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+}
+
+.shadow {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+}
+
+.text-warning {
+    color: #ffc107 !important;
+}
+
+.text-muted {
+    font-size: 0.875rem;
+}
+
+.card-text {
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+.rounded-circle {
+    border: 4px solid #fff;
 }
