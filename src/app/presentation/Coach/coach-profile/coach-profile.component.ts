@@ -36,7 +36,7 @@ export class CoachProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.coachId = this.authService.getCoachId() || this.route.snapshot.paramMap.get('coachId')!;
+    this.coachId = this.authService.getUserId() || this.route.snapshot.paramMap.get('coachId')!;
     console.log(this.coachId)
     if (this.coachId) {
       this.loadCoachData();

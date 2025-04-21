@@ -17,8 +17,10 @@ export class ProductsListComponent {
   constructor(private productService : ProductService){}
   getProducts(){
     this.productService.getProducts().subscribe((res)=>{
-      console.log(res);
       this.products = res ;
     })
+  }
+  ngOnInit(): void {
+    this.getProducts();
   }
 }

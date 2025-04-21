@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
 import { baseUrl } from './enviroment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class AuthService {
   private ForgotPasswordEndPoint = `${baseUrl}/Auth/ForgotPassword`;
   private ResetPasswordEndPoint = `${baseUrl}/Auth/ResetPassword`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient , private router: Router) { }
 
   login(data: LoginRequest): Observable<any> {
     console.log(data);
@@ -45,7 +46,6 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
-  // ✅ Decode token
   getDecodedToken(): any {
     const token = this.getToken();
     if (token) {
@@ -57,16 +57,51 @@ export class AuthService {
     }
     return null;
   }
-
-  // ✅ Get CoachId from decoded token (assumes it's stored under 'coachId')
-  getCoachId(): string | null {
+  getUserRole():string | null{
     const decoded = this.getDecodedToken();
+    return decoded
+      ? decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+      : null;
+  }
 
-    // Extract using the full claim URI
+  getUserId(): string | null {
+    const decoded = this.getDecodedToken();
     return decoded
       ? decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']
       : null;
   }
+  getUserEmail(): string | null {
+    const decoded = this.getDecodedToken();
+    return decoded
+      ? decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']
+      : null;
+  }
+  
+  getUserName(): string | null {
+    const decoded = this.getDecodedToken();
+    return decoded?.Name || null;
+  }
+  
+  getProfileImg(): string | null {
+    const decoded = this.getDecodedToken();
+    return decoded?.ProfileImg || null;
+  }
 
+isLoggedIn(): boolean {
+  const token = this.getToken();
+  if (!token) return false;
+
+  const decodedToken = this.getDecodedToken();
+  if (!decodedToken || !decodedToken.exp) return false;
+
+  const expirationDate = new Date(decodedToken.exp * 1000);
+  return expirationDate > new Date();
+}
+
+logout(): void {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  this.router.navigate(['/login']);
+}
 
 }
