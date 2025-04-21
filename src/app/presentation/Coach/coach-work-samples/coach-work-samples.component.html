@@ -1,0 +1,22 @@
+<div class="container mt-4">
+    <h4>Work Samples</h4>
+  
+    <div class="mb-3">
+      <input type="file" class="form-control mb-2" (change)="onFileSelected($event)">
+      <textarea class="form-control mb-2" [(ngModel)]="description" placeholder="Add description..."></textarea>
+      <button class="btn btn-primary" (click)="uploadSample()" [disabled]="!selectedFile || !description">Upload</button>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-4 mb-3" *ngFor="let sample of workSamples">
+        <div class="card">
+          <img [src]="sample.imageUrl" class="card-img-top" alt="Work Sample">
+          <div class="card-body">
+            <p class="card-text">{{ sample.description }}</p>
+            <button class="btn btn-danger btn-sm" (click)="deleteSample(sample.id!)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

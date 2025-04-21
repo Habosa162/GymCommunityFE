@@ -1,0 +1,15 @@
+<div class="card p-3 mt-3">
+    <h5>Leave a Rating</h5>
+    <form (ngSubmit)="onSubmit()" [formGroup]="ratingForm">
+      <div class="mb-3">
+        <label for="rate" class="form-label">Rating (1-5)</label>
+        <input type="number" class="form-control" id="rate" formControlName="rate" min="1" max="5">
+      </div>
+      <div class="mb-3">
+        <label for="comment" class="form-label">Comment</label>
+        <textarea class="form-control" id="comment" formControlName="comment" rows="3"></textarea>
+      </div>
+      <button class="btn btn-primary" [disabled]="ratingForm.invalid">Submit Rating</button>
+    </form>
+  </div>
+  

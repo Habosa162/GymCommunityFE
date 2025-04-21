@@ -17,19 +17,23 @@ export class CoachportfolioService {
     return this.http.get<Coachportfolio[]>(this.baseUrl);
   }
 
+  getById(id: number) {
+    return this.http.get<Coachportfolio>(`${this.baseUrl}/${id}`);
+  }
+
   getByCoachId(coachId: string): Observable<any> {
     return this.http.get<Coachportfolio>(`${this.baseUrl}/byCoach/${coachId}`);
   }
 
-  addPortfolio(portfolio: any): Observable<any> {
-    return this.http.post(this.baseUrl, portfolio);
+  create(formData: FormData) {
+    return this.http.post(this.baseUrl, formData);
   }
 
-  updatePortfolio(id: number, portfolio: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}`, portfolio);
+  update(id: number, formData: FormData) {
+    return this.http.put(`${this.baseUrl}/${id}`, formData);
   }
 
-  deletePortfolio(id: number): Observable<any> {
+  delete(id: number) {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }

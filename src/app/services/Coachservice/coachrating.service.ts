@@ -17,7 +17,7 @@ export class CoachratingService {
     return this.http.get<Coachrating[]>(`${this.baseUrl}/byCoach/${coachId}`);
   }
 
-  addRating(rating: Coachrating): Observable<any> {
+  addRating(rating: any): Observable<any> {
     return this.http.post(this.baseUrl, rating);
   }
 

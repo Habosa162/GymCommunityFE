@@ -1,0 +1,19 @@
+<div class="container mt-4">
+    <h4>Certificates</h4>
+
+    <div class="mb-3">
+        <input type="file" class="form-control" (change)="onFileSelected($event)">
+        <button class="btn btn-success mt-2" (click)="uploadCertificate()" [disabled]="!selectedFile">Upload</button>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3" *ngFor="let cert of certificates">
+            <div class="card mb-3">
+                <img [src]="cert.imageUrl" class="card-img-top" alt="Certificate">
+                <div class="card-body text-center">
+                    <button class="btn btn-danger btn-sm" (click)="deleteCertificate(cert.id!)">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

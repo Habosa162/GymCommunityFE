@@ -1,0 +1,37 @@
+<div class="container mt-4 p-4 shadow rounded bg-white">
+  <h3 class="mb-4">Edit Coach Portfolio</h3>
+
+  <form [formGroup]="portfolioForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label class="form-label">About Me Description</label>
+      <textarea class="form-control" formControlName="aboutMeDescription" rows="3"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Experience Years</label>
+      <input type="number" class="form-control" formControlName="experienceYears">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Qualifications</label>
+      <input type="text" class="form-control" formControlName="qualifications">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Skills (comma separated)</label>
+      <input type="text" class="form-control" [(ngModel)]="skillsInput" (blur)="handleSkills()" name="skills">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Social Media Links (comma separated)</label>
+      <input type="text" class="form-control" [(ngModel)]="socialLinksInput" (blur)="handleSocialLinks()" name="social">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">About Me Image</label>
+      <input type="file" class="form-control" (change)="onFileSelected($event)">
+    </div>
+
+    <button class="btn btn-primary" type="submit" [disabled]="portfolioForm.invalid">Save Portfolio</button>
+  </form>
+</div>

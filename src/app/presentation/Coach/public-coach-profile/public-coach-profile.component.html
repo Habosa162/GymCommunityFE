@@ -1,0 +1,56 @@
+<div class="container mt-4">
+    <h2>{{ portfolio.qualifications }}</h2>
+  
+    <div class="row">
+      <div class="col-md-4">
+        <img [src]="portfolio.aboutMeImageUrl" class="img-fluid rounded" alt="Coach Image" />
+      </div>
+      <div class="col-md-8">
+        <p><strong>About Me:</strong> {{ portfolio.aboutMeDescription }}</p>
+        <p><strong>Experience:</strong> {{ portfolio.experienceYears }} years</p>
+        <p><strong>Skills:</strong>
+          <span class="badge bg-info me-1" *ngFor="let skill of portfolio?.skillsJson">{{ skill }}</span>
+        </p>
+        <p><strong>Social Links:</strong>
+          <a *ngFor="let link of portfolio?.socialMediaLinksJson" [href]="link" target="_blank" class="me-2">
+            <i class="bi bi-link-45deg"></i> Link
+          </a>
+        </p>
+      </div>
+    </div>
+  
+    <hr>
+  
+    <h4>Certificates</h4>
+    <div class="row">
+      <div class="col-md-3 mb-3" *ngFor="let cert of certificates">
+        <img [src]="cert.imageUrl" class="img-fluid border rounded" alt="Certificate">
+      </div>
+    </div>
+  
+    <hr>
+  
+    <h4>Work Samples</h4>
+    <div class="row">
+      <div class="col-md-4 mb-3" *ngFor="let sample of workSamples">
+        <div class="card">
+          <img [src]="sample.imageUrl" class="card-img-top" alt="Sample">
+          <div class="card-body">
+            <p class="card-text">{{ sample.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <hr>
+  
+    <h4>Client Ratings</h4>
+    <div *ngFor="let rating of ratings" class="border rounded p-2 mb-2">
+      <strong>Rating:</strong> {{ rating.rate }} ★<br>
+      <strong>Comment:</strong> {{ rating.comment }}
+    </div>
+  
+    <!-- ✅ Embed Coach Rating Form Component -->
+    <app-coach-rating [coachIdFromParent]="coachId"></app-coach-rating>
+  </div>
+  
