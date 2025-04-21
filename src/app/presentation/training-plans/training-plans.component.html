@@ -142,12 +142,18 @@
                 <form (ngSubmit)="submitExercise()">
                     <div class="form-group">
                         <label>Muscle Group</label>
+                        <div class="form-row">
+                     
                         <select (change)="onMuscleGroupChange($event)" [(ngModel)]="selectedMuscleGroupId" name="muscleGroup" required>
                             <option value="">Select Muscle Group</option>
                             <option *ngFor="let muscleGroup of muscleGroups" [value]="muscleGroup.id">
                                 {{ muscleGroup.name }}
                             </option>
                         </select>
+                    </div>
+                    <label>Exercise</label>
+                    <div class="form-row">
+                        
                         <select [(ngModel)]="exercises" name="exercise" required>
                             <option value="">Select Exercise</option>
                             <option *ngFor="let exercise of exercises" [value]="exercise.name">
@@ -155,14 +161,8 @@
                             </option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Activity</label>
-                        <input type="text" [(ngModel)]="newPlan.activity" name="activity" required>
                     </div>
-                    <div class="form-group">
-                        <label>Trainer</label>
-                        <input type="text" [(ngModel)]="newPlan.trainer" name="trainer" required>
-                    </div>
+                   
                     <div class="form-row">
                         <div class="form-group">
                             <label>Sets</label>
@@ -174,8 +174,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Notes</label>
-                        <textarea [(ngModel)]="newPlan.exerciseNotes" name="exerciseNotes" rows="3"></textarea>
+                        <label>Duration</label>
+                        <input type="text" [(ngModel)]="newPlan.duration" name="duration">
                     </div>
                     <div class="form-actions">
                         <button type="button" class="cancel-btn" (click)="showExerciseForm = false">Cancel</button>
@@ -197,14 +197,31 @@
                             <option value="snack">Snack</option>
                         </select>
                     </div>
-                    <div class="form-group ">
-                        <label>Meal Description</label>
-                        <textarea [(ngModel)]="newPlan.mealDescription" name="mealDescription" rows="3"></textarea>
+                    <div class="form-group">
+                       
+                    </div>
+                    <label>Is Supplement</label>
+                    <select (change)="onIsSupplementChange($event)" [(ngModel)]="isSupplement" name="isSupplement" required>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                    <div class="form-group">
+                       
+
+                
+                        <label>All Meals</label>
+                        <select [(ngModel)]="meals" name="meals" required>
+                            <option value="">Select Meal</option>
+                            <option *ngFor="let meal of meals" [value]="meal.id">
+                                {{ meal.name }}
+                            </option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label>Calories</label>
-                        <input type="number" [(ngModel)]="newPlan.calories" name="calories" min="0">
+                        <label>Quantity</label>
+                        <textarea [(ngModel)]="newPlan.quantity" name="quantity" rows="3"></textarea>
                     </div>
+                    
                     <div class="form-group">
                         <label>Meal Notes</label>
                         <textarea [(ngModel)]="newPlan.mealNotes" name="mealNotes" rows="3"></textarea>
@@ -225,15 +242,13 @@
                         <h5>Exercises</h5>
                         <div class="cards-grid">
                             <div class="plan-card" *ngFor="let exercise of addedExercises">
-                                <div class="card-header">
-                                    <h6>{{ exercise.activity }}</h6>
-                                    <button class="delete-btn" (click)="removeExercise(exercise)">&times;</button>
-                                </div>
+                               
                                 <div class="card-content">
-                                    <p><strong>Trainer:</strong> {{ exercise.trainer }}</p>
+                                    <p class="d-none">  {{ exercise.exerciseId }}</p>
+                                    <p><strong>Exercise:</strong> {{ exercise.exerciseName }}</p>
                                     <p><strong>Sets:</strong> {{ exercise.sets }}</p>
                                     <p><strong>Reps:</strong> {{ exercise.reps }}</p>
-                                    <p *ngIf="exercise.exerciseNotes"><strong>Notes:</strong> {{ exercise.exerciseNotes }}</p>
+                                    <p *ngIf="exercise.duration"><strong>Duration:</strong> {{ exercise.duration }}</p>
                                 </div>
                             </div>
                         </div>
@@ -243,15 +258,20 @@
                     <div class="meal-cards">
                         <h5>Meals</h5>
                         <div class="cards-grid">
+                         
                             <div class="plan-card" *ngFor="let meal of addedMeals">
+                                <div class="card-content">
+                                    <p><strong>Meal:</strong> {{ meal.mealName }}</p>
+                                </div>
                                 <div class="card-header">
                                     <h6>{{ meal.mealType }}</h6>
                                     <button class="delete-btn" (click)="removeMeal(meal)">&times;</button>
                                 </div>
                                 <div class="card-content">
-                                    <p><strong>Description:</strong> {{ meal.mealDescription }}</p>
-                                    <p><strong>Calories:</strong> {{ meal.calories }}</p>
                                     <p *ngIf="meal.mealNotes"><strong>Notes:</strong> {{ meal.mealNotes }}</p>
+                                </div>
+                                <div class="card-content">
+                                    <p><strong>Quantity:</strong> {{ meal.quantity }}</p>
                                 </div>
                             </div>
                         </div>

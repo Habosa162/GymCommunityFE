@@ -5,8 +5,10 @@ import { ExerciseModel } from '../../domain/models/TraingingPlansModels/exercise
 import { MuscleGroup } from '../../domain/models/TraingingPlansModels/muscle-group-model';
 import { CreateDailyPlanDto } from '../../services/Training Plans/dtos/create-daily-plan.dto';
 import { DailyPlanDto } from '../../services/Training Plans/dtos/daily-plan-dto';
+import { MealDto } from '../../services/Training Plans/dtos/meal-dto';
 import { WeekPlanDto } from '../../services/Training Plans/dtos/weekly-plan-dto';
 import { ExerciseService } from '../../services/Training Plans/exercise.service';
+import { MealService } from '../../services/Training Plans/meal.service';
 import { TrainingPlansService } from '../../services/Training Plans/training-plan.service';
 
 interface DailyPlanData {
@@ -17,35 +19,36 @@ interface DailyPlanData {
   timeSlot: string;
 }
 
-interface NewPlan {
-  activity: string;
-  trainer: string;
-  type: string;
-  date: string;
-  // Exercise Plan
-  sets: number;
-  reps: number;
-  exerciseNotes: string;
-  // Meal Plan
-  mealType: string;
-  mealDescription: string;
-  calories: number;
-  mealNotes: string;
-}
+// interface NewPlan {
+//   activity: string;
+//   trainer: string;
+//   type: string;
+//   date: string;
+//   // Exercise Plan
+//   sets: number;
+//   reps: number;
+//   duration: string;
+//   // Meal Plan
+//   mealType: string;
+//   mealDescription: string;
+//   calories: number;
+//   mealNotes: string;
+// }
 
 interface Exercise {
-  activity: string;
-  trainer: string;
   sets: number;
   reps: number;
-  exerciseNotes: string;
+  duration: string;
+  exerciseName: string;
+  exerciseId: number;
 }
 
 interface Meal {
+  mealId: number;
+  mealName: string;
   mealType: string;
-  mealDescription: string;
-  calories: number;
   mealNotes: string;
+  quantity: string;
 }
 
 interface DailyPlan {
@@ -70,11 +73,16 @@ export class TrainingPlansComponent implements OnInit {
    */
   constructor(
     private trainingPlanService: TrainingPlansService,
-    private exerciseService: ExerciseService
+    private exerciseService: ExerciseService,
+    private mealService: MealService
   ) {}
   muscleGroups: MuscleGroup[] = [];
   selectedMuscleGroupId: number = 0;
   exercises: ExerciseModel[] = [];
+  meals: MealDto[] = [];
+  isSupplement: boolean = false;
+  addedExercises: Exercise[] = [];
+  addedMeals: Meal[] = [];
   dailyPlans: DailyPlanDto[] = [];
   filterType: string = 'all';
   // Change this:
@@ -96,7 +104,7 @@ export class TrainingPlansComponent implements OnInit {
   showAddPlanPopup: boolean = false;
   selectedTimeSlot: string = '';
   selectedDay: string = '';
-  newPlan: NewPlan = {
+  newPlan: any = {
     activity: '',
     trainer: '',
     type: 'fitness',
@@ -104,7 +112,7 @@ export class TrainingPlansComponent implements OnInit {
     // Exercise Plan
     sets: 0,
     reps: 0,
-    exerciseNotes: '',
+    duration: '',
     // Meal Plan
     mealType: 'breakfast',
     mealDescription: '',
@@ -113,8 +121,7 @@ export class TrainingPlansComponent implements OnInit {
   };
   currentWeekNumber: number = 1;
   newWeekName: string = '';
-  addedExercises: Exercise[] = [];
-  addedMeals: Meal[] = [];
+
   showExerciseForm: boolean = false;
   showMealForm: boolean = false;
   dayInfo: any = {
@@ -136,8 +143,22 @@ export class TrainingPlansComponent implements OnInit {
   ngOnInit(): void {
     this.loadDailyPlans();
     this.loadMuscleGroups();
+    this.loadMeals();
   }
 
+  loadMeals(): void {
+    this.mealService
+      .getMeals(this.isSupplement)
+      .subscribe((meals: MealDto[]) => {
+        this.meals = meals;
+        console.log(this.meals);
+      });
+  }
+  onIsSupplementChange(event: Event): void {
+    const selectedIsSupplement = (event.target as HTMLSelectElement).value;
+    this.isSupplement = selectedIsSupplement === 'true';
+    this.loadMeals();
+  }
   loadMuscleGroups(): void {
     this.exerciseService
       .getAllMuscleGroups()
@@ -283,26 +304,26 @@ export class TrainingPlansComponent implements OnInit {
   }
 
   submitExercise(): void {
-    if (this.newPlan.activity) {
-      this.addedExercises.push({
-        activity: this.newPlan.activity,
-        trainer: this.newPlan.trainer,
-        sets: this.newPlan.sets,
-        reps: this.newPlan.reps,
-        exerciseNotes: this.newPlan.exerciseNotes,
-      });
-      this.resetExerciseForm();
-    }
+    this.addedExercises.push({
+      sets: this.newPlan.sets,
+      reps: this.newPlan.reps,
+      duration: this.newPlan.duration,
+      exerciseName: this.newPlan.exerciseName,
+      exerciseId: this.newPlan.exerciseId,
+    });
+    this.resetExerciseForm();
+
     this.showExerciseForm = false;
   }
 
   submitMeal(): void {
-    if (this.newPlan.mealDescription) {
+    {
       this.addedMeals.push({
+        mealId: this.newPlan.mealId,
+        mealName: this.newPlan.mealName,
         mealType: this.newPlan.mealType,
-        mealDescription: this.newPlan.mealDescription,
-        calories: this.newPlan.calories,
         mealNotes: this.newPlan.mealNotes,
+        quantity: this.newPlan.quantity,
       });
       this.resetMealForm();
     }
@@ -314,7 +335,7 @@ export class TrainingPlansComponent implements OnInit {
     this.newPlan.trainer = '';
     this.newPlan.sets = 0;
     this.newPlan.reps = 0;
-    this.newPlan.exerciseNotes = '';
+    this.newPlan.duration = '';
   }
 
   resetMealForm(): void {
@@ -405,7 +426,7 @@ export class TrainingPlansComponent implements OnInit {
       date: new Date().toISOString().split('T')[0],
       sets: 0,
       reps: 0,
-      exerciseNotes: '',
+      duration: '',
       mealType: 'breakfast',
       mealDescription: '',
       calories: 0,
