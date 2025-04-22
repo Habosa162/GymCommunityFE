@@ -13,7 +13,7 @@ export class CoachGuard implements CanActivate {
     if (role === 'Coach') {
       return true;
     }
-    this.router.navigate(['/login']);
+    this.router.navigate(['/coach/dashboard']);
     return false;
   }
 }

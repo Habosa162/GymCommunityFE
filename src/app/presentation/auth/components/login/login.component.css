@@ -98,3 +98,18 @@ button:disabled {
   font-size: 14px;
   font-style: italic;
 }
+
+:host-context(body.dark-mode) #login , :host-context(body.dark-mode) form{
+  background-color: #201f1f;
+}
+
+:host-context(body.dark-mode) h1, :host-context(body.dark-mode) label ,:host-context(body.dark-mode) .or{
+
+  color: white !important;
+
+}
+:host-context(body.dark-mode) input {
+
+  background-color: #201f1f !important;
+
+}
