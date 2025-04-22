@@ -20,7 +20,7 @@ interface RatingWithClientName extends Coachrating {
 
 @Component({
   selector: 'app-public-coach-profile',
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, RouterModule, CoachRatingComponent],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, RouterModule],
   templateUrl: './public-coach-profile.component.html',
   styleUrl: './public-coach-profile.component.css'
 })

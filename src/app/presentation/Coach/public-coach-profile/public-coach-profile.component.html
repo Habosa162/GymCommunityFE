@@ -6,16 +6,16 @@
       <div class="row align-items-center py-5">
         <div class="col-md-4 text-center">
           <div class="coach-avatar">
-            <img [src]="portfolio?.aboutMeImageUrl" class="img-fluid rounded-circle" alt="Coach Profile">
+            <img [src]="portfolio.aboutMeImageUrl" class="img-fluid rounded-circle" alt="Coach Profile">
           </div>
         </div>
         <div class="col-md-8">
           <div class="coach-header">
-            <h1 class="coach-name">{{ portfolio?.qualifications }}</h1>
+            <h1 class="coach-name">{{ portfolio.qualifications }}</h1>
             <div class="coach-stats d-flex gap-4 mt-3">
               <div class="stat-item">
                 <i class="bi bi-trophy-fill"></i>
-                <span>{{ portfolio?.experienceYears }} Years Experience</span>
+                <span>{{ portfolio.experienceYears }} Years Experience</span>
               </div>
               <div class="stat-item">
                 <i class="bi bi-star-fill"></i>
@@ -42,7 +42,7 @@
         <h3 class="card-title">
           <i class="bi bi-person-lines-fill"></i>About Me
         </h3>
-        <p class="card-text">{{ portfolio?.aboutMeDescription }}</p>
+        <p class="card-text">{{ portfolio.aboutMeDescription }}</p>
 
         <!-- Skills -->
         <div *ngIf="portfolio?.skillsJson?.length" class="mt-4">
