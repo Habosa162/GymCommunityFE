@@ -11,3 +11,24 @@ button {
   padding-top: 20px;
   margin-top: 20px;
 }
+
+:host-context(body.dark-mode) .empty-cart h1{
+  color: limegreen !important;
+}
+:host-context(body.dark-mode) #cart{
+  background-color: black !important;
+}
+:host-context(body.dark-mode) .card{
+  background-color: #202020 !important;
+  border: 1px solid hsl(0, 0%, 50%) !important;
+  color: white !important;
+}
+:host-context(body.dark-mode) h5{
+  color: white !important;
+  
+}
+:host-context(body.dark-mode) h4
+{
+  color: white !important;
+}
+

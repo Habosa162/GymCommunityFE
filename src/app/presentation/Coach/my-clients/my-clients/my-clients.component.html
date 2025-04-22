@@ -1,0 +1,115 @@
+<!-- My Clients Section Start -->
+<section class="my-clients-section">
+  <div class="container">
+    <div class="row">
+      <!-- Sidebar Filters -->
+      <div class="col-lg-3">
+        <div class="client-sidebar">
+          <h4>Filter Clients</h4>
+          
+          <div class="filter-section">
+            <h5>Search</h5>
+            <div class="search-box">
+              <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name..." class="form-control">
+              <button class="search-btn" (click)="applyFilters()"><i class="fa fa-search"></i></button>
+            </div>
+          </div>
+          
+          <div class="filter-section">
+            <h5>Gender</h5>
+            <div class="filter-options">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="male" [(ngModel)]="isMaleChecked">
+                <label class="form-check-label" for="male">Male</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="female" [(ngModel)]="isFemaleChecked">
+                <label class="form-check-label" for="female">Female</label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="filter-section">
+            <h5>Age Range</h5>
+            <div class="range-slider">
+              <div class="range-values">
+                <span>{{ minAge }}</span> - <span>{{ maxAge }}</span> years
+              </div>
+              <input type="range" min="18" max="80" [(ngModel)]="minAge" class="range-min">
+              <input type="range" min="18" max="80" [(ngModel)]="maxAge" class="range-max">
+            </div>
+          </div>
+          
+          <button class="btn btn-primary apply-filter-btn" (click)="applyFilters()">Apply Filters</button>
+          <button class="btn btn-outline-secondary reset-btn" (click)="resetFilters()">Reset</button>
+        </div>
+      </div>
+      
+      <!-- Client Cards Area -->
+      <div class="col-lg-9">
+        <div class="clients-header">
+          <h2>My Clients</h2>
+          <div class="sorting-options">
+            <select class="form-control rounded-4" (change)="sortClients($any($event.target).value)">
+              <option value="name">Sort by Name</option>
+              <option value="age">Sort by Age</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- Client Cards Row -->
+        <div class="row client-cards">
+          <div *ngIf="filteredClients.length === 0" class="col-12 text-center">
+            <p>No clients found matching your criteria.</p>
+          </div>
+          
+          <!-- Client Card -->
+          <div class="col-md-4 col-sm-6" *ngFor="let client of filteredClients">
+            <div class="client-card rounded-4">
+              <div class="client-image position-relative">
+                <img [src]="client.client?.profileImg || 'assets/img/placeholder-profile.jpg'" alt="Client Image">
+                <div class="seeProfile position-absolute d-flex justify-content-center align-items-center   w-100 h-100">
+                    <a class="text-decoration-none" routerLink="/profile/{{ client.client?.id }}">View Profile</a>
+                </div>
+              </div>
+              <div class="client-info">
+                <h4 class="client-name text-capitalize">{{ client.client?.firstName || 'Client' }} {{ client.client?.lastName || '' }}</h4>
+                <ul class="client-details">
+                  <li class="text-capitalize"><i class="fa-solid fa-venus-mars"></i> {{ client.client?.gender || 'Unknown' }}</li>
+                  <li><i class="fa fa-calendar"></i> {{ calculateAge(client.client?.birthDate) }} years</li>
+                </ul>
+                <div class="client-actions">
+                  <a class="btn btn-sm btn-primary rounded-4" routerLink="/profile/{{ client.client?.id }}"><i class="fa-solid fa-clipboard-list"></i> Manage Plan</a>
+                  <button class="btn btn-sm btn-outline-secondary rounded-4"><i class="fa fa-message"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="pagination-container flex-column justify-content-center align-items-center gap-3" *ngIf="totalPages > 0">
+          <div class="pagination-info">
+            Showing {{ (currentPage - 1) * pageSize + 1 }} to {{ currentPage * pageSize > totalCount ? totalCount : currentPage * pageSize }} of {{ totalCount }} clients
+          </div>
+          <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" href="javascript:void(0)" (click)="prevPage()">Previous</a>
+            </li>
+            
+            <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
+              <li class="page-item" [class.active]="currentPage === i + 1">
+                <a class="page-link" href="javascript:void(0)" (click)="goToPage(i + 1)">{{ i + 1 }}</a>
+              </li>
+            </ng-container>
+            
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" href="javascript:void(0)" (click)="nextPage()">Next</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- My Clients Section End -->
