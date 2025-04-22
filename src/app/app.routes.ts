@@ -30,11 +30,16 @@ import { CoachCertificatesComponent } from './presentation/Coach/coach-certifica
 import { CoachWorkSamplesComponent } from './presentation/Coach/coach-work-samples/coach-work-samples.component';
 import { PublicCoachProfileComponent } from './presentation/Coach/public-coach-profile/public-coach-profile.component';
 import { CoachRatingComponent } from './presentation/Coach/coach-rating/coach-rating.component';
+
 import { CartComponent } from './presentation/Ecommerce/cart/cart.component';
 import { GymDetailsComponent } from './presentation/Gym/gym-details.component/gym-details.component.component';
 import { PlanDetailsComponent } from './presentation/Gym/plan-details/plan-details.component';
 import { SubscriptionDetailsComponent } from './presentation/Gym/subscription-details/subscription-details.component';
 import { CheckoutComponent } from './presentation/Ecommerce/checkout/checkout.component';
+import { CoachesListComponent } from './presentation/Coach/coaches-list/coaches-list.component';
+
+
+
 
 
 
@@ -61,36 +66,60 @@ export const routes: Routes = [
   { path: 'training-plans/details/:id', component: TrainingPlansComponent, canActivate: [AuthGuard, AdminCoachGuard] },
   //Ecommerce routes
 
-  {path: 'shop', component: ProductsListComponent},
-  {path: 'create-category', component: CreateCategoryComponent , canActivate: [AuthGuard,AdminGuard]},
-  {path: 'create-brand', component: CreateBrandComponent , canActivate: [AuthGuard,AdminGuard]},
-  {path: 'create-product', component: CreateProductComponent , canActivate: [AuthGuard,AdminCoachGuard]},
-  {path: 'wish-list', component: WishListComponent, title:'wish-list' , canActivate: [AuthGuard,clientGuard]},
-  {path: 'product-details/:id', component: ProductDetailsComponent, title:'product details' , canActivate: [AuthGuard,clientGuard]},
-  {path: 'cart', component: CartComponent, title:'Cart'},
-  {path: 'checkout', component: CheckoutComponent, title:'Checkout'},
+  { path: 'shop', component: ProductsListComponent },
+  { path: 'create-category', component: CreateCategoryComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'create-brand', component: CreateBrandComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'create-product', component: CreateProductComponent, canActivate: [AuthGuard, AdminCoachGuard] },
+  { path: 'wish-list', component: WishListComponent, title: 'wish-list', canActivate: [AuthGuard, clientGuard] },
+  { path: 'product-details/:id', component: ProductDetailsComponent, title: 'product details', canActivate: [AuthGuard, clientGuard] },
+  { path: 'cart', component: CartComponent, title: 'Cart' },
+  { path: 'checkout', component: CheckoutComponent, title: 'Checkout' },
 
 
   //Gym routes
   { path: 'gym-owner-dashboard', component: GymOwnerDashboardComponent },
+
   { path: 'gym-owner', component: GymOwnerDashboardComponent },
   { path: 'gym-owner/gym/:id', component: GymDetailsComponent },
   { path: 'gym-owner/plan/:id', component: PlanDetailsComponent },
   { path: 'gym-owner/subscription/:id', component: SubscriptionDetailsComponent },
 
   //coach
-  { path: 'portofolio', component: CoachProfileComponent, canActivate: [AuthGuard, CoachGuard] },
-  // { path: 'portofolio/:id', component: CoachProfileComponent }
 
-  // Coach private routes (Dashboard / Edit Profile etc.)
-  { path: 'coach/portfolio', component: CoachPortfolioComponent },
-  { path: 'coach/certificates', component: CoachCertificatesComponent },
-  { path: 'coach/work-samples', component: CoachWorkSamplesComponent },
+  //coach routes
+  {
+    path: 'coach',
+    children: [
+      // Public coach routes
+      {
+        path: '',
+        component: CoachesListComponent
+      },
+      {
+        path: 'profile/:coachId',
+        component: PublicCoachProfileComponent
+      },
+      {
+        path: 'rate/:coachId',
+        component: CoachRatingComponent,
+        canActivate: [AuthGuard, clientGuard]
+      },
 
-  // Public coach profile route
-  { path: 'coach-profile', component: PublicCoachProfileComponent },
+      // Private coach routes (requires authentication and coach role)
+      {
+        path: 'dashboard',
+        canActivate: [AuthGuard, CoachGuard],
+        children: [
+          { path: '', component: PublicCoachProfileComponent },
+          { path: 'portfolio', component: CoachPortfolioComponent },
+          { path: 'certificates', component: CoachCertificatesComponent },
+          { path: 'work-samples', component: CoachWorkSamplesComponent }
+        ]
+      }
+    ]
+  },
 
-  // Optional route for submitting a rating directly (can be used standalone)
-  { path: 'rate-coach/:coachId', component: CoachRatingComponent },
+  // Default route
+  { path: '', redirectTo: '/', pathMatch: 'full' }
 
 ];

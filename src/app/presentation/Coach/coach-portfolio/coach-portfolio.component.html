@@ -3,46 +3,47 @@
     <div class="card-body">
       <h3 class="card-title fw-bold mb-4">Edit Coach Portfolio</h3>
 
-      <form [formGroup]="portfolioForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="portfolioForm" (ngSubmit)="onSubmit()" class="portfolio-form">
         <div class="row">
           <div class="col-md-6">
-            <div class="mb-4">
-              <label class="form-label fw-bold">About Me Description</label>
-              <textarea class="form-control" formControlName="aboutMeDescription" rows="4"
+            <div class="form-group">
+              <label for="aboutMeDescription">About Me</label>
+              <textarea id="aboutMeDescription" formControlName="aboutMeDescription" class="form-control" rows="4"
                 placeholder="Tell us about yourself..."></textarea>
             </div>
 
-            <div class="mb-4">
-              <label class="form-label fw-bold">Experience Years</label>
-              <input type="number" class="form-control" formControlName="experienceYears"
+            <div class="form-group">
+              <label for="experienceYears">Years of Experience</label>
+              <input type="number" id="experienceYears" formControlName="experienceYears" class="form-control"
                 placeholder="Enter your years of experience">
             </div>
 
-            <div class="mb-4">
-              <label class="form-label fw-bold">Qualifications</label>
-              <input type="text" class="form-control" formControlName="qualifications"
-                placeholder="Enter your qualifications">
+            <div class="form-group">
+              <label for="qualifications">Qualifications</label>
+              <textarea id="qualifications" formControlName="qualifications" class="form-control" rows="3"
+                placeholder="Enter your qualifications"></textarea>
             </div>
           </div>
 
           <div class="col-md-6">
-            <div class="mb-4">
-              <label class="form-label fw-bold">Skills</label>
-              <input type="text" class="form-control" [(ngModel)]="skillsInput" (blur)="handleSkills()" name="skills"
+            <div class="form-group">
+              <label for="skills">Skills (comma-separated)</label>
+              <input type="text" id="skills" formControlName="skills" class="form-control"
                 placeholder="Enter skills (comma separated)">
               <small class="text-muted">Example: Personal Training, Nutrition, Yoga</small>
             </div>
 
-            <div class="mb-4">
-              <label class="form-label fw-bold">Social Media Links</label>
-              <input type="text" class="form-control" [(ngModel)]="socialLinksInput" (blur)="handleSocialLinks()"
-                name="social" placeholder="Enter social media links (comma separated)">
+            <div class="form-group">
+              <label for="socialLinks">Social Media Links (comma-separated)</label>
+              <input type="text" id="socialLinks" formControlName="socialLinks" class="form-control"
+                placeholder="Enter social media links (comma separated)">
               <small class="text-muted">Example: https://linkedin.com/in/username</small>
             </div>
 
-            <div class="mb-4">
-              <label class="form-label fw-bold">About Me Image</label>
-              <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+            <div class="form-group">
+              <label for="aboutMeImage">Profile Image</label>
+              <input type="file" id="aboutMeImage" (change)="onFileSelected($event)" class="form-control"
+                accept="image/*">
               <small class="text-muted">Upload a professional photo of yourself</small>
             </div>
           </div>

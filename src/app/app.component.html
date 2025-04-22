@@ -1,5 +1,8 @@
 <app-top-nav></app-top-nav>
-<!-- <router-outlet></router-outlet> -->
-<app-client-layout *ngIf="authService.getUserRole() !== 'Admin'"></app-client-layout>
 
-<app-admin-layout *ngIf="authService.getUserRole() === 'Admin'"></app-admin-layout>
+<ng-container [ngSwitch]="authService.getUserRole()">
+    <app-client-layout *ngSwitchCase="'Client'"></app-client-layout>
+    <app-admin-layout *ngSwitchCase="'Admin'"></app-admin-layout>
+    <app-coach-layout *ngSwitchCase="'Coach'"></app-coach-layout>
+    <router-outlet *ngSwitchDefault></router-outlet>
+</ng-container>

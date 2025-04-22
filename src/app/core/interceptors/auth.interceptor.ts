@@ -3,7 +3,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('token');
 
-  const secureUrls = ['/api/ClientProfile', '/api/ClientInfo', '/api/Post', '/api/Comment', '/api/Vote', '/api/CoachCertificate', '/api/WorkSample'];
+  const secureUrls = ['/api/ClientProfile', '/api/ClientInfo', '/api/Post', '/api/Comment', '/api/Vote', '/api/CoachCertificate', '/api/WorkSample', '/api/CoachPortfolio'];
   const shouldAttach = secureUrls.some(url => req.url.includes(url));
 
   if (token && shouldAttach) {
