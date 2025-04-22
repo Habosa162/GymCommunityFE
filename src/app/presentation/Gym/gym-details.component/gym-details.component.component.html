@@ -24,7 +24,6 @@
         <p><strong>Phone:</strong> {{ gym.phoneNumber || 'Not provided' }}</p>
         <p><strong>Email:</strong> {{ gym.email || 'Not provided' }}</p>
         <p><strong>Website:</strong> {{ gym.website || 'Not provided' }}</p>
-        <p><strong>Coordinates:</strong> {{ gym.latitude }}, {{ gym.longitude }}</p>
       </div>
   
       <div *ngIf="editMode" class="edit-form">
@@ -32,10 +31,6 @@
           <div class="form-group">
             <label>Name</label>
             <input type="text" [(ngModel)]="updatedGym.name" name="name" required>
-          </div>
-          <div class="form-group">
-            <label>Location</label>
-            <input type="text" [(ngModel)]="updatedGym.location" name="location" required>
           </div>
           <div class="form-group">
             <label>Description</label>
@@ -54,13 +49,35 @@
             <input type="url" [(ngModel)]="updatedGym.website" name="website">
           </div>
           <div class="form-group">
-            <label>Latitude</label>
-            <input type="number" [(ngModel)]="updatedGym.latitude" name="latitude" required>
+            <label>Location</label>
+            <input type="text" id="location" [(ngModel)]="gym.location" name="location" required>
           </div>
+
           <div class="form-group">
-            <label>Longitude</label>
-            <input type="number" [(ngModel)]="updatedGym.longitude" name="longitude" required>
+            <label>Select Location on Map</label>
+            <div class="map-container" *ngIf="mapInitialized">
+              <google-map 
+                [options]="mapOptions"
+                (mapClick)="handleMapClick($event)"
+                height="400px"
+                width="100%">
+                <map-marker 
+                  *ngIf="markerPosition"
+                  [position]="markerPosition">
+                </map-marker>
+              </google-map>
+            </div>
+            <div *ngIf="!mapInitialized" class="map-loading">
+              Loading map...
+            </div>
           </div>
+      
+          <div class="coordinates-display" *ngIf="markerPosition">
+            <p><strong>Coordinates:</strong></p>
+            <p>Latitude: {{ gym.latitude | number:'1.4-4' }}</p>
+            <p>Longitude: {{ gym.longitude | number:'1.4-4' }}</p>
+          </div>
+          
           <button type="submit" class="btn btn-success">Save Changes</button>
         </form>
       </div>

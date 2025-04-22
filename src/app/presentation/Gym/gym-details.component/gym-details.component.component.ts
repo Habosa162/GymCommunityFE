@@ -12,16 +12,22 @@ import { GymService } from '../../../services/Gym/gym.service';
 import { UserSubscriptionService } from '../../../services/Gym/user-subscription.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @Component({
   selector: 'app-gym-details.component',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,GoogleMapsModule],
   templateUrl: './gym-details.component.component.html',
   styleUrl: './gym-details.component.component.css'
 })
 export class GymDetailsComponent implements OnInit {
   gym: GymReadDTO | null = null;
   gymId!: number;
+
+  // Map properties
+  mapOptions: google.maps.MapOptions = {};
+  markerPosition: google.maps.LatLngLiteral | null = null;
+  mapInitialized = false;
   
   // Tabs
   activeTab: 'info' | 'images' | 'coaches' | 'plans' = 'info';
@@ -79,6 +85,7 @@ export class GymDetailsComponent implements OnInit {
     this.loadImages();
     this.loadCoaches();
     this.loadPlans();
+    this.loadGoogleMapsScript();
     
     this.newImage.gymId = this.gymId;
     this.newCoach.gymId = this.gymId;
@@ -272,6 +279,92 @@ export class GymDetailsComponent implements OnInit {
       },
       error: (err) => alert('Invalid QR Code')
     });
+  }
+
+  // Google Maps Methods
+  loadGoogleMapsScript(): void {
+    if (typeof google === 'undefined') {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBRdLpkTJ_S1yEvLAKhbAnmcq66XtO8-xQ&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      script.onload = () => this.initializeMap();
+      document.head.appendChild(script);
+    } else {
+      this.initializeMap();
+    }
+  }
+
+  initializeMap(): void {
+    this.mapInitialized = true;
+    if (this.gym) {
+      this.initMapWithGymLocation();
+    }
+  }
+
+  initMapWithGymLocation(): void {
+    if (!this.gym) return;
+
+    this.mapOptions = {
+      center: { lat: this.gym.latitude, lng: this.gym.longitude },
+      zoom: 15
+    };
+
+    this.markerPosition = {
+      lat: this.gym.latitude,
+      lng: this.gym.longitude
+    };
+
+    if (this.editMode) {
+      setTimeout(() => this.initAutocomplete(), 100);
+    }
+  }
+
+  initAutocomplete(): void {
+    const locationInput = document.getElementById('location') as HTMLInputElement;
+    const autocomplete = new google.maps.places.Autocomplete(locationInput, {
+      types: ['establishment', 'geocode'],
+      componentRestrictions: { country: 'eg' } // Egypt restriction
+    });
+
+    autocomplete.addListener('place_changed', () => {
+      const place = autocomplete.getPlace();
+      if (!place.geometry || !place.geometry.location) return;
+
+      if (this.gym) {
+        this.gym.location = place.formatted_address || '';
+        this.gym.latitude = place.geometry.location.lat();
+        this.gym.longitude = place.geometry.location.lng();
+        
+        this.markerPosition = {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
+        };
+        
+        this.mapOptions = {
+          ...this.mapOptions,
+          center: this.markerPosition
+        };
+      }
+    });
+  }
+
+  handleMapClick(event: google.maps.MapMouseEvent): void {
+    if (!this.editMode || !event.latLng) return;
+
+    this.markerPosition = event.latLng.toJSON();
+    
+    if (this.gym) {
+      this.gym.latitude = this.markerPosition.lat;
+      this.gym.longitude = this.markerPosition.lng;
+
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ location: this.markerPosition }, (results, status) => {
+        if (status === 'OK' && results?.[0]) {
+          this.gym!.location = results[0].formatted_address;
+        }
+      });
+    }
   }
 
 }
