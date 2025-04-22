@@ -1,35 +1,36 @@
+<section id="product-detailes" class="min-vh-100 py-5">
 <div class="container mt-4">
   <!-- Product Details -->
-  <div *ngIf="Product" class="row justify-content-center align-items-center">
-    <div class="col-md-6 bg-dark text-center">
-      <img class="img-fluid" [src]="Product.imageUrl" [alt]="Product.name" style="max-height: 80vh; object-fit: contain;">
+  <div *ngIf="Product" class="row justify-content-center align-items-center shadow-lg background-dark p-5">
+    <div class="col-md-6 p-3 text-center Details-image border-dark border-light">
+      <img class="img-fluid"
+      [src]="Product.imageUrl" [alt]="Product.name" style="max-height: 90vh; object-fit: contain;">
     </div>
-    <div class="col-md-6">
-      <h2 class="text-uppercase">{{ Product.name }}</h2>
+    <div class="col-md-6 text-center">
+      <h2 class="text-uppercase green-dark h1 fs-1">{{ Product.name }}</h2>
       <div class="mb-3">
-        <span class="text-muted small fw-bold fs-5 ">{{ Product.categoryName }}</span>
+        <span class="text-muted small fw-bold fs-5 muted-dark">{{ Product.categoryName }}</span>
       </div>
       <div class="mb-3">
-        <span class="text-dark fw-bold fs-3">{{ Product.price | number: '1.2-2' }} EGP</span>
+        <span class="text-dark fw-bold fs-3 light-dark">{{ Product.price | number: '1.2-2' }} EGP</span>
       </div>
-      <p class="text-muted fw-bold fs-5">{{ Product.description }}</p>
-
+      <p class="text-muted fw-bold fs-5 muted-dark">{{ Product.description }}</p>
       <!-- Buttons -->
-      <div class="d-flex justify-content-start gap-4 mb-4">
+      <div class="d-flex justify-content-center gap-4 mb-4">
         <!-- Updated Add to Cart Button -->
         <button class="btn  fw-bold"
                 (click)="addToCart(Product); $event.stopPropagation()"
                 [disabled]="Product.stock <= 0"
                 [ngClass]="{
-                  'btn-outline-success': !isInCart(Product),
-                  'btn-outline-danger': isInCart(Product)
+                  'btn-success': !isInCart(Product),
+                  'btn-danger': isInCart(Product)
                 }">
           <i class="bi me-2"
              [class.bi-cart-plus]="!isInCart(Product)"
              [class.bi-cart-dash]="isInCart(Product)"></i>
           {{ isInCart(Product) ? 'Remove from Cart' : (Product.stock > 0 ? 'Add to Cart' : 'Out of Stock') }}
         </button>
-      
+
         <!-- Wishlist Buttons -->
             <button *ngIf="!isInWishlist(Product.id)&&authService.isLoggedIn()"
             class="btn btn-light shadow-sm d-flex align-items-center justify-content-center"
@@ -52,26 +53,26 @@
 
   <!-- Reviews Section -->
   <div *ngIf="Product" class="mt-4">
-    <h4>Customer Reviews</h4>
+    <h4 class="green-dark">Customer Reviews</h4>
     <div *ngIf="reviews.length > 0">
       <div *ngFor="let review of reviews" class="card mb-3">
         <div class="card-body">
-          <h5 class="card-title">{{ review.userName }}</h5>
-          <div class="d-flex align-items-center">
+          <h5 class="card-title light-dark">{{ review.userName }}</h5>
+          <div class="d-flex align-items-center light-dark">
             <div *ngFor="let star of getStars(review.rating)" class="text-warning">★</div>
           </div>
-          <p class="card-text">{{ review.comment }}</p>
+          <p class="card-text light-dark">{{ review.comment }}</p>
         </div>
       </div>
     </div>
     <div *ngIf="!reviews?.length">
-      <p>No reviews yet. Be the first to review!</p>
+      <p class="light-dark">No reviews yet. Be the first to review!</p>
     </div>
   </div>
 
   <!-- Related Products (Category Products) -->
   <div *ngIf="CategoryProducts?.length" class="mt-4">
-    <h4 class="my-3">Related Products</h4>
+    <h4 class="my-3 green-dark">Related Products</h4>
     <div class="row">
       <div *ngFor="let relatedProduct of CategoryProducts" class="col-md-4 mb-4">
         <app-product [product]="relatedProduct"></app-product>
@@ -79,3 +80,4 @@
     </div>
   </div>
 </div>
+</section>

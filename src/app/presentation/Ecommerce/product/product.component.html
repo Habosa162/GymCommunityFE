@@ -7,7 +7,7 @@
 
   <!-- Product Image -->
   <a [routerLink]="['/product-details', product.id]" class="d-block">
-    <div class="position-relative" style="height: 180px; overflow: hidden;">
+    <div class="position-relative" style="height: 35vh; overflow: hidden;">
       <img [src]="product.imageUrl" [alt]="product.name" class="img-fluid p-2 w-100 h-100 rounded-4"
         style="object-fit: cover; cursor: pointer;">
     </div>
@@ -17,7 +17,7 @@
 
 
   <!-- Product Info -->
-  
+
     <div class="card-body p-2">
       <div class="text-muted small mb-1 text-truncate d-flex justify-content-between">{{ product.categoryName }}
 
@@ -62,7 +62,7 @@
   </div>
 </div>
 <a [routerLink]="['/product-details', product.id]" class="text-decoration-none text-dark">
-      
+
       <h6 class="card-title mb-1 text-truncate text-uppercase">{{ product.name }}</h6>
 
       <div class="mb-2">

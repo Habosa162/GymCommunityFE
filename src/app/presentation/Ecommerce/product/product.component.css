@@ -3,7 +3,7 @@
 }
 .card {
   border: 1px solid #E6E6E6;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
   overflow: hidden;
 }
 .card:hover {
@@ -12,7 +12,7 @@
 }
 
 .card img {
-  transition: transform 0.3s ease;
+  transition: transform 0.8s ease;
   display: block;
   width: 100%;
 }
@@ -29,7 +29,7 @@
 
 :host-context(body.dark-mode) .card{
   background-color: #202020 ;
-  
+
 }
 :host-context(body.dark-mode) .text-muted{
   color: #ffffffc7 !important;
@@ -39,7 +39,7 @@
 }
 .wishListBtn{
   border-radius: 50% !important;
-  
+
 }
 :host-context(body.dark-mode) .wishListBtn{
   color: #ffffff !important;

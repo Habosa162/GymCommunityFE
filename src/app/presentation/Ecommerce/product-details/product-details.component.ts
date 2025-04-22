@@ -24,6 +24,8 @@ export class ProductDetailsComponent implements OnInit {
   reviews: any[] = [];
   WishList: wishlistItem[] = [];
   animatedHeart: { [productId: number]: boolean } = {};
+  isHovering = false;
+  
 
 
   constructor(
@@ -46,9 +48,9 @@ export class ProductDetailsComponent implements OnInit {
     });
   }
 //cart Methods
-  addToCart(product:Product): void {    
+  addToCart(product:Product): void {
     if (!this.cartService.isInCart(product.id)) {
-      this.cartService.addToCart(product); 
+      this.cartService.addToCart(product);
     } else {
       this.cartService.removeFromCart(product.id);
     }
@@ -140,7 +142,7 @@ private loadReviews(productId: number): void {
   }
 
 
-  
+
 
 
   getStars(rating: number): number[] {
