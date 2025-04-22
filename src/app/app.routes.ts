@@ -37,6 +37,7 @@ import { PlanDetailsComponent } from './presentation/Gym/plan-details/plan-detai
 import { SubscriptionDetailsComponent } from './presentation/Gym/subscription-details/subscription-details.component';
 import { CheckoutComponent } from './presentation/Ecommerce/checkout/checkout.component';
 import { CoachesListComponent } from './presentation/Coach/coaches-list/coaches-list.component';
+import { MyClientsComponent } from './presentation/Coach/my-clients/my-clients/my-clients.component';
 
 
 
@@ -44,6 +45,7 @@ import { CoachesListComponent } from './presentation/Coach/coaches-list/coaches-
 
 
 export const routes: Routes = [
+  
   //auth routes
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -113,7 +115,8 @@ export const routes: Routes = [
           { path: '', component: PublicCoachProfileComponent },
           { path: 'portfolio', component: CoachPortfolioComponent },
           { path: 'certificates', component: CoachCertificatesComponent },
-          { path: 'work-samples', component: CoachWorkSamplesComponent }
+          { path: 'work-samples', component: CoachWorkSamplesComponent },
+          { path: 'my-client', component: MyClientsComponent }
         ]
       }
     ]

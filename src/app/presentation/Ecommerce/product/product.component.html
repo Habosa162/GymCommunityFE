@@ -1,4 +1,4 @@
-<div class="card h-100 product-card position-relative">
+<div class="card h-100 product-card position-relative rounded-4 shadow">
 
   <!-- Discount Badge -->
   <div class="badge bg-danger position-absolute top-0 end-0 m-2" *ngIf="product.discountAmount > 0">
@@ -8,18 +8,25 @@
   <!-- Product Image -->
   <a [routerLink]="['/product-details', product.id]" class="d-block">
     <div class="position-relative" style="height: 180px; overflow: hidden;">
-      <img [src]="product.imageUrl" [alt]="product.name" class="img-fluid p-2 w-100 h-100"
-        style="object-fit: contain; cursor: pointer;">
+      <img [src]="product.imageUrl" [alt]="product.name" class="img-fluid p-2 w-100 h-100 rounded-4"
+        style="object-fit: cover; cursor: pointer;">
     </div>
   </a>
 
   <!-- Action Buttons -->
-  <div *ngIf="authService.isLoggedIn() && authService.getUserRole() !== 'Admin'"
-    class="product-actions position-absolute bottom-0 start-50 translate-middle-x z-3 mb-2 d-flex gap-2">
+
+
+  <!-- Product Info -->
+  
+    <div class="card-body p-2">
+      <div class="text-muted small mb-1 text-truncate d-flex justify-content-between">{{ product.categoryName }}
+
+                  <div *ngIf="authService.isLoggedIn() && authService.getUserRole() !== 'Admin'"
+    class="product-actions  mb-2 d-flex gap-2">
 
     <!-- Add to Wishlist -->
     <button *ngIf="!isInWishlist(product.id)"
-      class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+      class="btn wishListBtn border-0  btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
       (click)="addToWishlist(product.id); $event.stopPropagation()" [disabled]="product.stock <= 0"
       style="width: 40px; height: 40px;">
       <i class="fa-regular fa-heart fs-5" [class.heart-animation]="animatedHeart[product.id]"></i>
@@ -27,10 +34,19 @@
 
     <!-- Remove from Wishlist -->
     <button *ngIf="isInWishlist(product.id)"
-      class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+      class="btn wishListBtn border-0  btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
       (click)="removeFromWishlist(product.id); $event.stopPropagation()" [disabled]="product.stock <= 0"
       style="width: 40px; height: 40px;">
       <i class="fa-solid fa-heart fs-5 text-danger" [class.heart-animation]="animatedHeart[product.id]"></i>
+    </button>
+        <button class="btn border-0 shadow-sm" (click)="addToCart(product); $event.stopPropagation()" [disabled]="product.stock <= 0"
+      [ngClass]="{
+          'btn-outline-success': !isInCart(product),
+          'btn-outline-danger': isInCart(product)
+        }" title="{{ isInCart(product) ? 'Remove from Cart' : (product.stock > 0 ? 'Add to Cart' : 'Out of Stock') }}">
+
+      <i class="fa-solid fs-5  "[class.fa-cart-plus]="!isInCart(product)" [class.fa-cart-arrow-down]="isInCart(product)">
+      </i>
     </button>
 
     <!-- Add to Cart -->
@@ -40,24 +56,13 @@
             style="width: 40px; height: 40px;">
       <i class="fa-solid fa-cart-plus fs-5"></i>
     </button> -->
-    <button class="btn" (click)="addToCart(product); $event.stopPropagation()" [disabled]="product.stock <= 0"
-      [ngClass]="{
-          'btn-outline-success': !isInCart(product),
-          'btn-outline-danger': isInCart(product)
-        }" title="{{ isInCart(product) ? 'Remove from Cart' : (product.stock > 0 ? 'Add to Cart' : 'Out of Stock') }}">
-
-      <i class="fa-solid fs-5" [class.fa-cart-plus]="!isInCart(product)" [class.fa-cart-arrow-down]="isInCart(product)">
-      </i>
-    </button>
 
 
 
   </div>
-
-  <!-- Product Info -->
-  <a [routerLink]="['/product-details', product.id]" class="text-decoration-none text-dark">
-    <div class="card-body p-2">
-      <div class="text-muted small mb-1 text-truncate">{{ product.categoryName }}</div>
+</div>
+<a [routerLink]="['/product-details', product.id]" class="text-decoration-none text-dark">
+      
       <h6 class="card-title mb-1 text-truncate text-uppercase">{{ product.name }}</h6>
 
       <div class="mb-2">
@@ -81,6 +86,6 @@
           {{ product.stock > 0 ? product.stock : 'Out' }}
         </span>
       </div>
+    </a>
     </div>
-  </a>
 </div>
