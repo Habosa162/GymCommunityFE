@@ -1,5 +1,4 @@
 <app-top-nav></app-top-nav>
-
 <ng-container [ngSwitch]="authService.getUserRole()">
     <app-client-layout *ngSwitchCase="'Client'"></app-client-layout>
     <app-admin-layout *ngSwitchCase="'Admin'"></app-admin-layout>

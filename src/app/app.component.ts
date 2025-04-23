@@ -6,10 +6,11 @@ import { ClientLayoutComponent } from './layouts/client-layout/client-layout/cli
 import { AuthService } from './services/auth.service';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout/admin-layout.component';
 import { CoachLayoutComponent } from './layouts/coach-layout/coach-layout.component';
+import { NavbarComponent } from "./core/shared/components/navbar/navbar.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterModule, CommonModule, TopNavComponent, ClientLayoutComponent, AdminLayoutComponent, CoachLayoutComponent],
+  imports: [RouterModule, CommonModule, TopNavComponent, ClientLayoutComponent, AdminLayoutComponent, CoachLayoutComponent, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
