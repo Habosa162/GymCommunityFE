@@ -17,11 +17,14 @@ selectRole(role: string) {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json' // Important!
     },
-    responseType: 'text' as 'json' 
-  }).subscribe(() => {
+    
+  }).subscribe((response: any) => {
+    localStorage.setItem('token', response.token);
+    console.log(response);
     this.router.navigate(['/']);
+  }, error => {
+    console.error('Error assigning role:', error);
   });
 }
-
 
 }
