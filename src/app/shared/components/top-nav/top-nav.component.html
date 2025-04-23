@@ -9,11 +9,11 @@
       <div class="text-black-50 d-flex align-items-center gap-3 ">
         <a
           href="mailto:someone@example.com"
-          class="text-black-50 text-decoration-none"
+          class="text-black-50 text-decoration-none d-none d-md-block"
           ><i class="fa-solid fa-envelope"></i> contact&#64;voltmort.com</a
         >
-        |
-        <ul class="d-flex list-unstyled gap-3 m-0">
+        <span class="d-none d-md-flex">|</span>
+        <ul class="d-flex list-unstyled gap-3 m-0 d-none d-md-flex">
           <li>
             <a href=""><i class="fa-brands fa-instagram text-black-50"></i></a>
           </li>
@@ -32,7 +32,8 @@
             ></a>
           </li>
         </ul>
-        |
+                <span class="d-none d-md-flex">|</span>
+
         <!-- dark mode toggle -->
         <div>
           <input

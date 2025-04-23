@@ -111,5 +111,6 @@ button:disabled {
 :host-context(body.dark-mode) input {
 
   background-color: #201f1f !important;
+  color: white !important;
 
 }

@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
   submitted = false;
   isLoading = false;
   errMgs: string = '';
+  isGoogleLoading = false;
   
 
   constructor(
@@ -50,11 +51,19 @@ export class LoginComponent implements OnInit {
 
     google.accounts.id.renderButton(
       document.getElementById("googleBtn"),
-      { theme: "outline", size: "large" }
+        {
+    theme: "outline", // "outline", "filled_blue", or "filled_black"
+    size: "large",         // "small", "medium", "large"
+    text: "signin_with",   // "signin_with", "signup_with", "continue_with", or "signup"
+    shape: "pill",         // "rectangular" or "pill"
+    logo_alignment: "center",// "left" or "center"
+    width: 300             // in pixels
+  }
     );
   }
 
     handleCredentialResponse(response: any): void {
+    this.isGoogleLoading = true;
     const idToken = response.credential;
     this.http.post('https://localhost:7130/api/Auth/externallogin', {
       provider: 'Google',
@@ -63,6 +72,7 @@ export class LoginComponent implements OnInit {
       next: (res: any) => {
         localStorage.setItem('token', res.token);
         console.log('Login success', res);
+        this.isGoogleLoading = false;
         if(res.isNewUser){
           this.router.navigate(['/Choose-role']);
         }
@@ -73,6 +83,7 @@ export class LoginComponent implements OnInit {
       },
       error: (err) => {
         console.error('Login failed', err);
+        this.isGoogleLoading = false;
       }
     });
   }

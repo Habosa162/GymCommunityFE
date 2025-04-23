@@ -1,4 +1,23 @@
-    <h2>Select Role</h2>
-    <button (click)="selectRole('Coach')">Coach</button>
-    <button (click)="selectRole('Client')">User</button>
-    <button (click)="selectRole('GymOwner')">Gym Owner</button>
+    <section id="select-role" class="text-center py-5">
+        <div class="container">
+    <h1 class="mb-4 mainColor">Who Are You?</h1>
+    <div class="row justify-content-center flex-wrap gap-3">
+    <button (click)="selectRole('Coach')" class="Rolebtn shadow p-3 rounded-4 text-black-50 bg-transparent ">
+        <h3 class="mb-2 text-start"><i class="fas fa-heartbeat"></i> Coach</h3>
+        <p class="m-0">For personal trainers and fitness coaches</p>
+    </button>
+    <button (click)="selectRole('Client')" class="Rolebtn shadow p-3 rounded-4 text-black-50 bg-transparent ">
+           <h3 class="mb-2 text-start"><i class="fa-regular fa-circle-user"></i> Client</h3>
+        <p class="m-0">For gym-goers and fitness seekers</p>
+    </button>
+    <button (click)="selectRole('GymOwner')" class="Rolebtn shadow p-3 rounded-4 text-black-50 bg-transparent ">
+                  <h3 class="mb-2 text-start">
+                    <i class="fa-solid fa-dumbbell"></i>
+                    Gym Owner
+                  </h3>
+                  <p class="m-0">For owners of fitness centers or gyms</p>
+    </button>
+    </div>
+    </div>
+
+</section>
