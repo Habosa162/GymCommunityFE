@@ -63,7 +63,7 @@ export class AuthService {
     const decoded = this.getDecodedToken();
     return decoded
       ? decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
-      : null;
+      : 'Client';
   }
 
  public getUserId(): string | null {
@@ -78,12 +78,12 @@ export class AuthService {
       ? decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']
       : null;
   }
-  
+
   getUserName(): string | null {
     const decoded = this.getDecodedToken();
     return decoded?.Name || null;
   }
-  
+
   getProfileImg(): string | null {
     const decoded = this.getDecodedToken();
     return decoded?.ProfileImg || null;
