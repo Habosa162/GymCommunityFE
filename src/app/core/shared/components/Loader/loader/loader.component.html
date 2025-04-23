@@ -1,0 +1,19 @@
+<div id="loader">
+  <div class="backdrop  position-absolute top-0 start-0 w-100 h-100 z-3 d-flex justify-content-center align-items-center">
+    <img width="200" src="/assets/imgs/logo.png" alt="logo" >
+  </div>
+</div>
+<style>
+
+  .backdrop{
+    background-color: hsla(0, 0%, 0%, 0.8);
+   
+  }
+  #loader img{
+    animation: spin 1.5s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg); }
+  }
+</style>

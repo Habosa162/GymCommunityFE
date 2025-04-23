@@ -28,7 +28,6 @@ export class LoginComponent implements OnInit {
   submitted = false;
   isLoading = false;
   errMgs: string = '';
-  isGoogleLoading = false;
   
 
   constructor(
@@ -44,26 +43,39 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
 
-        google.accounts.id.initialize({
-      client_id: '542482302983-oeddeor9j8rirdjnf99oe2um6sucgi58.apps.googleusercontent.com', // 🔁 Replace with your real client ID
-      callback: (response: any) => this.handleCredentialResponse(response)
-    });
+        
+  }
+ngAfterViewInit(): void {
+  const tryRenderGoogleButton = () => {
+    if ((window as any).google?.accounts?.id) {
+      google.accounts.id.initialize({
+        client_id: '542482302983-oeddeor9j8rirdjnf99oe2um6sucgi58.apps.googleusercontent.com',
+        callback: (response: any) => this.handleCredentialResponse(response)
+      });
 
-    google.accounts.id.renderButton(
-      document.getElementById("googleBtn"),
+      google.accounts.id.renderButton(
+        document.getElementById("googleBtn"),
         {
-    theme: "outline", // "outline", "filled_blue", or "filled_black"
-    size: "large",         // "small", "medium", "large"
-    text: "signin_with",   // "signin_with", "signup_with", "continue_with", or "signup"
-    shape: "pill",         // "rectangular" or "pill"
-    logo_alignment: "center",// "left" or "center"
-    width: 300             // in pixels
-  }
-    );
-  }
+          theme: "outline",
+          size: "large",
+          text: "signin_with",
+          shape: "pill",
+          logo_alignment: "center",
+          width: 300
+        }
+      );
+    } else {
+      // Try again after 300ms if Google script is not yet ready
+      setTimeout(tryRenderGoogleButton, 300);
+    }
+  };
+
+  tryRenderGoogleButton();
+}
+
 
     handleCredentialResponse(response: any): void {
-    this.isGoogleLoading = true;
+    this.isLoading = true;
     const idToken = response.credential;
     this.http.post('https://localhost:7130/api/Auth/externallogin', {
       provider: 'Google',
@@ -72,7 +84,7 @@ export class LoginComponent implements OnInit {
       next: (res: any) => {
         localStorage.setItem('token', res.token);
         console.log('Login success', res);
-        this.isGoogleLoading = false;
+        this.isLoading = false;
         if(res.isNewUser){
           this.router.navigate(['/Choose-role']);
         }
@@ -83,7 +95,7 @@ export class LoginComponent implements OnInit {
       },
       error: (err) => {
         console.error('Login failed', err);
-        this.isGoogleLoading = false;
+        this.isLoading = false;
       }
     });
   }
