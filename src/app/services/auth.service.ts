@@ -5,6 +5,8 @@ import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
 import { baseUrl } from './enviroment';
 import { Router } from '@angular/router';
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService } from '@abacritt/angularx-social-login';
+
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +17,7 @@ export class AuthService {
   private ForgotPasswordEndPoint = `${baseUrl}/Auth/ForgotPassword`;
   private ResetPasswordEndPoint = `${baseUrl}/Auth/ResetPassword`;
 
-  constructor(private http: HttpClient , private router: Router) { }
+  constructor(private http: HttpClient , private router: Router, private SocialAuthService: SocialAuthService) { }
 
   login(data: LoginRequest): Observable<any> {
     console.log(data);
@@ -103,5 +105,35 @@ logout(): void {
   localStorage.removeItem('user');
   this.router.navigate(['/login']);
 }
+
+  loginWithGoogle() {
+    this.SocialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID).then(user => {
+      console.log('Google ID Token:', user.idToken);
+      this.externalLogin('Google', user.idToken);
+    });
+  }
+    loginWithFacebook() {
+    this.SocialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID).then(user => {
+      this.externalLogin('Facebook', user.authToken);
+    });
+  }
+
+    externalLogin(provider: string, token: string) {
+    this.http.post('https://localhost:7130/api/auth/externallogin', {
+      provider,
+      idToken: token
+    }).subscribe((res: any) => {
+      localStorage.setItem('jwt', res.token);
+      if (res.isNewUser) {
+        this.router.navigate(['/choose-role']);
+      } else {
+        this.router.navigate(['/']);
+      }
+    },
+    (error: any) => {
+      console.error('External login failed:', error);
+    }
+  );
+  }
 
 }

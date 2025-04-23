@@ -38,6 +38,8 @@ import { SubscriptionDetailsComponent } from './presentation/Gym/subscription-de
 import { CheckoutComponent } from './presentation/Ecommerce/checkout/checkout.component';
 import { CoachesListComponent } from './presentation/Coach/coaches-list/coaches-list.component';
 import { MyClientsComponent } from './presentation/Coach/my-clients/my-clients/my-clients.component';
+import { SelectRoleComponent } from './presentation/auth/components/select-role/select-role.component';
+import { HomeComponent } from './presentation/home/home/home.component';
 
 
 
@@ -45,12 +47,13 @@ import { MyClientsComponent } from './presentation/Coach/my-clients/my-clients/m
 
 
 export const routes: Routes = [
-  
+  { path: '', component: HomeComponent },
   //auth routes
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'ResetPassword', component: ResetPasswordComponent },
+  { path: 'Choose-role', component: SelectRoleComponent },
   //client routes
 
   { path: 'profile/me', component: ClientProfileComponent, canActivate: [AuthGuard, clientGuard] },

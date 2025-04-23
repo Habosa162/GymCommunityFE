@@ -119,7 +119,9 @@
       <div
         class="external-login mt-3 d-flex flex-column justify-content-center align-items-center"
       >
-        <button class="w-100 rounded-3 p-2 mt-3 border-0" type="button">
+      <div id="googleBtn"></div>
+
+        <!-- <button class="w-100 rounded-3 p-2 mt-3 border-0" type="button" (click)="loginWithGoogle()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -146,7 +148,17 @@
             ></path>
           </svg>
           Sign in with Google
-        </button>
+        </button> -->
+
+   <!-- <asl-google-signin-button 
+  (click)="loginWithGoogle()"
+  type="standard"
+  size="large"
+  shape="rectangular"
+  text="signin_with"
+></asl-google-signin-button> -->
+
+
 
         <button class="w-100 rounded-3 p-2 mt-3 border-0" type="button">
           <svg
