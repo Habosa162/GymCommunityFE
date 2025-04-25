@@ -50,33 +50,38 @@
           </div>
           <div class="form-group">
             <label>Location</label>
-            <input type="text" id="location" [(ngModel)]="gym.location" name="location" required>
+            <input type="text" id="location" [(ngModel)]="updatedGym.location" name="location" required>
           </div>
 
-          <div class="form-group">
-            <label>Select Location on Map</label>
-            <div class="map-container" *ngIf="mapInitialized">
-              <google-map 
-                [options]="mapOptions"
-                (mapClick)="handleMapClick($event)"
-                height="400px"
-                width="100%">
-                <map-marker 
-                  *ngIf="markerPosition"
-                  [position]="markerPosition">
-                </map-marker>
-              </google-map>
-            </div>
-            <div *ngIf="!mapInitialized" class="map-loading">
-              Loading map...
-            </div>
-          </div>
-      
-          <div class="coordinates-display" *ngIf="markerPosition">
-            <p><strong>Coordinates:</strong></p>
-            <p>Latitude: {{ gym.latitude | number:'1.4-4' }}</p>
-            <p>Longitude: {{ gym.longitude | number:'1.4-4' }}</p>
-          </div>
+          <!-- Map for location selection -->
+      <div class="form-group">
+        <label>Select Location on Map</label>
+        <div class="map-container" *ngIf="mapInitialized">
+          <google-map 
+            [options]="mapOptions"
+            (mapClick)="handleMapClick($event)"
+            height="400px"
+            width="100%">
+            <map-marker 
+              *ngIf="markerPosition"
+              [position]="markerPosition">
+            </map-marker>
+          </google-map>
+        </div>
+        <div *ngIf="!mapInitialized" class="map-loading">
+          Loading map...
+        </div>
+      </div>
+
+      <!-- Hidden latitude/longitude fields (will be set by map) -->
+      <input type="hidden" [(ngModel)]="updatedGym.latitude" name="latitude">
+      <input type="hidden" [(ngModel)]="updatedGym.longitude" name="longitude">
+
+      <div class="coordinates-display" *ngIf="markerPosition">
+        <p><strong>Selected Location:</strong></p>
+        <p>Latitude: {{ updatedGym.latitude | number:'1.4-4' }}</p>
+        <p>Longitude: {{ updatedGym.longitude | number:'1.4-4' }}</p>
+      </div>
           
           <button type="submit" class="btn btn-success">Save Changes</button>
         </form>
@@ -119,7 +124,7 @@
           <h3>{{ coach.coachName || 'Coach ' + coach.coachID }}</h3>
           <p>ID: {{ coach.coachID }}</p>
           <div class="coach-actions">
-            <button class="btn btn-info" (click)="viewCoachPortfolio(coach.coachID)">View Portfolio</button>
+            <button class="btn btn-info" (click)="viewCoachPortfolio(coach.coachID)">View Profile</button>
             <button class="btn btn-danger" (click)="deleteCoach(coach.id)">Remove</button>
           </div>
         </div>

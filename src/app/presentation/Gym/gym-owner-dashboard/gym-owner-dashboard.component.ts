@@ -5,6 +5,8 @@ import { GymService } from '../../../services/Gym/gym.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { AuthService } from '../../../services/auth.service';
+declare var google: any; 
 
 @Component({
   selector: 'app-gym-owner-dashboard',
@@ -34,86 +36,29 @@ export class GymOwnerDashboardComponent implements OnInit {
 
   constructor(
     private gymService: GymService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService 
   ) {}
 
   ngOnInit(): void {
     this.loadGyms();
-    this.loadGoogleMapsScript();
+    this.initGoogleMaps();
   }
 
   loadGyms(): void {
-    const ownerId = 'fd6a3800-35d3-4d8b-8595-2e82a4adf6d8'; // Replace with actual owner ID 
+    const ownerId = this.authService.getUserId(); // Replace with actual owner ID 
+    if (!ownerId) {
+      console.error('Owner ID not found');
+      return;
+    }
     this.gymService.getByOwnerId(ownerId).subscribe({
       next: (gyms) => this.gyms = gyms,
       error: (err) => console.error('Failed to load gyms', err)
     });
   }
-  loadGoogleMapsScript(): void {
-    if (typeof google === 'undefined') {
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBRdLpkTJ_S1yEvLAKhbAnmcq66XtO8-xQ&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      script.onload = () => this.initializeMap();
-      document.head.appendChild(script);
-    } else {
-      this.initializeMap();
-    }
-  }
-  initializeMap(): void {
-    this.mapInitialized = true;
-  }
 
   toggleAddGymForm(): void {
     this.showAddGymForm = !this.showAddGymForm;
-    if (this.showAddGymForm) {
-      setTimeout(() => this.initAutocomplete(), 100);
-    }
-  }
-  initAutocomplete(): void {
-    const locationInput = document.getElementById('location') as HTMLInputElement;
-    const autocomplete = new google.maps.places.Autocomplete(locationInput, {
-      types: ['establishment', 'geocode']
-    });
-
-    autocomplete.addListener('place_changed', () => {
-      const place = autocomplete.getPlace();
-      if (!place.geometry || !place.geometry.location) {
-        return;
-      }
-
-      this.newGym.location = place.formatted_address || '';
-      this.newGym.latitude = place.geometry.location.lat();
-      this.newGym.longitude = place.geometry.location.lng();
-      
-      // Update map marker
-      this.markerPosition = {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng()
-      };
-      
-      // Center map on selected location
-      this.mapOptions = {
-        ...this.mapOptions,
-        center: this.markerPosition
-      };
-    });
-  }
-  handleMapClick(event: google.maps.MapMouseEvent): void {
-    if (event.latLng) {
-      this.markerPosition = event.latLng.toJSON();
-      this.newGym.latitude = this.markerPosition.lat;
-      this.newGym.longitude = this.markerPosition.lng;
-      
-      // Reverse geocode to get address
-      const geocoder = new google.maps.Geocoder();
-      geocoder.geocode({ location: this.markerPosition }, (results, status) => {
-        if (status === 'OK' && results?.[0]) {
-          this.newGym.location = results[0].formatted_address;
-        }
-      });
-    }
   }
 
   addGym(): void {
@@ -141,6 +86,31 @@ export class GymOwnerDashboardComponent implements OnInit {
 
   viewGymDetails(gymId: number): void {
     this.router.navigate(['/gym-owner/gym', gymId]);
+  }
+
+  // Google Maps Methods
+  initGoogleMaps(): void {
+    if (typeof google === 'undefined' || !google.maps || !google.maps.places) {
+      this.loadGoogleMapsScript();
+    } else {
+      this.mapInitialized = true;
+    }
+  }
+  
+  loadGoogleMapsScript(): void {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAFEYZKTxhZz5eY9c760Gyz7kJ3mNbXb34&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      script.onload = () => this.mapInitialized = true;
+      document.head.appendChild(script);
+  }
+  handleMapClick(event: google.maps.MapMouseEvent): void {
+    if (event.latLng) {
+      this.markerPosition = event.latLng.toJSON();
+      this.newGym.latitude = this.markerPosition.lat;
+      this.newGym.longitude = this.markerPosition.lng;
+    }
   }
 
 }

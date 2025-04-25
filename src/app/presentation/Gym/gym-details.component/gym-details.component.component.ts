@@ -13,7 +13,7 @@ import { UserSubscriptionService } from '../../../services/Gym/user-subscription
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GoogleMapsModule } from '@angular/google-maps';
-
+declare var google: any; 
 @Component({
   selector: 'app-gym-details.component',
   imports: [CommonModule,FormsModule,GoogleMapsModule],
@@ -25,7 +25,9 @@ export class GymDetailsComponent implements OnInit {
   gymId!: number;
 
   // Map properties
-  mapOptions: google.maps.MapOptions = {};
+  mapOptions: google.maps.MapOptions = {
+    zoom: 18  
+  };
   markerPosition: google.maps.LatLngLiteral | null = null;
   mapInitialized = false;
   
@@ -85,8 +87,7 @@ export class GymDetailsComponent implements OnInit {
     this.loadImages();
     this.loadCoaches();
     this.loadPlans();
-    this.loadGoogleMapsScript();
-    
+    this.initGoogleMaps();    
     this.newImage.gymId = this.gymId;
     this.newCoach.gymId = this.gymId;
     this.newPlan.gymId = this.gymId;
@@ -97,6 +98,10 @@ export class GymDetailsComponent implements OnInit {
       next: (gym) => {
         this.gym = gym;
         this.updatedGym = { ...gym };
+        console.log(gym.latitude , gym.longitude);
+        if (gym.latitude && gym.longitude) {
+          this.updateMapPosition(gym.latitude, gym.longitude);
+        }
       },
       error: (err) => console.error('Failed to load gym', err)
     });
@@ -186,7 +191,7 @@ export class GymDetailsComponent implements OnInit {
   }
 
   viewCoachPortfolio(coachId: string): void {
-    this.router.navigate(['/coaches', coachId]);
+    this.router.navigate(['/profile', coachId]);
   }
 
   // Plan Methods
@@ -282,89 +287,44 @@ export class GymDetailsComponent implements OnInit {
   }
 
   // Google Maps Methods
+  initGoogleMaps(): void {
+    if (typeof google === 'undefined' || !google.maps || !google.maps.places) {
+      this.loadGoogleMapsScript();
+    } else {
+      this.mapInitialized = true;
+      if (this.gym?.latitude && this.gym?.longitude) {
+        this.updateMapPosition(this.gym.latitude, this.gym.longitude);
+      }
+    }
+  }
+  
   loadGoogleMapsScript(): void {
-    if (typeof google === 'undefined') {
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBRdLpkTJ_S1yEvLAKhbAnmcq66XtO8-xQ&libraries=places`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAFEYZKTxhZz5eY9c760Gyz7kJ3mNbXb34&libraries=places`;
       script.async = true;
       script.defer = true;
-      script.onload = () => this.initializeMap();
+      script.onload = () => this.mapInitialized = true;
       document.head.appendChild(script);
-    } else {
-      this.initializeMap();
-    }
   }
-
-  initializeMap(): void {
-    this.mapInitialized = true;
-    if (this.gym) {
-      this.initMapWithGymLocation();
-    }
-  }
-
-  initMapWithGymLocation(): void {
-    if (!this.gym) return;
-
-    this.mapOptions = {
-      center: { lat: this.gym.latitude, lng: this.gym.longitude },
-      zoom: 15
-    };
-
-    this.markerPosition = {
-      lat: this.gym.latitude,
-      lng: this.gym.longitude
-    };
-
-    if (this.editMode) {
-      setTimeout(() => this.initAutocomplete(), 100);
-    }
-  }
-
-  initAutocomplete(): void {
-    const locationInput = document.getElementById('location') as HTMLInputElement;
-    const autocomplete = new google.maps.places.Autocomplete(locationInput, {
-      types: ['establishment', 'geocode'],
-      componentRestrictions: { country: 'eg' } // Egypt restriction
-    });
-
-    autocomplete.addListener('place_changed', () => {
-      const place = autocomplete.getPlace();
-      if (!place.geometry || !place.geometry.location) return;
-
-      if (this.gym) {
-        this.gym.location = place.formatted_address || '';
-        this.gym.latitude = place.geometry.location.lat();
-        this.gym.longitude = place.geometry.location.lng();
-        
-        this.markerPosition = {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng()
-        };
-        
-        this.mapOptions = {
-          ...this.mapOptions,
-          center: this.markerPosition
-        };
-      }
-    });
-  }
-
   handleMapClick(event: google.maps.MapMouseEvent): void {
-    if (!this.editMode || !event.latLng) return;
-
-    this.markerPosition = event.latLng.toJSON();
-    
-    if (this.gym) {
-      this.gym.latitude = this.markerPosition.lat;
-      this.gym.longitude = this.markerPosition.lng;
-
-      const geocoder = new google.maps.Geocoder();
-      geocoder.geocode({ location: this.markerPosition }, (results, status) => {
-        if (status === 'OK' && results?.[0]) {
-          this.gym!.location = results[0].formatted_address;
-        }
-      });
+    if (event.latLng) {
+      this.markerPosition = event.latLng.toJSON();
+      this.updatedGym.latitude = this.markerPosition.lat;
+      this.updatedGym.longitude = this.markerPosition.lng;
     }
+  }
+  private updateMapPosition(lat: number, lng: number): void {
+    this.mapOptions = {
+      ...this.mapOptions,
+      center: { lat, lng }
+    };
+    
+    this.markerPosition = { lat, lng };
+    
+    // // If map is already initialized, pan to new position
+    // if (this.googleMap) {
+    //   this.googleMap.panTo({ lat, lng });
+    // }
   }
 
 }
