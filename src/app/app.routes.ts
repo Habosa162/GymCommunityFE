@@ -40,6 +40,7 @@ import { CoachesListComponent } from './presentation/Coach/coaches-list/coaches-
 import { MyClientsComponent } from './presentation/Coach/my-clients/my-clients/my-clients.component';
 import { SelectRoleComponent } from './presentation/auth/components/select-role/select-role.component';
 import { HomeComponent } from './presentation/home/home/home.component';
+import { PaymentSuccessComponent } from './presentation/Ecommerce/payment-success/payment-success.component';
 
 
 
@@ -79,6 +80,7 @@ export const routes: Routes = [
   { path: 'product-details/:id', component: ProductDetailsComponent, title: 'product details', canActivate: [AuthGuard, clientGuard] },
   { path: 'cart', component: CartComponent, title: 'Cart' },
   { path: 'checkout', component: CheckoutComponent, title: 'Checkout' },
+  { path: 'payment-success', component: PaymentSuccessComponent, title: 'payment' },
 
 
   //Gym routes
