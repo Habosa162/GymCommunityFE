@@ -14,6 +14,7 @@ import { ShippingService } from '../../../services/Ecommerce/shipping.service';
   styleUrls: ['./payment-success.component.css']
 })
 export class PaymentSuccessComponent {
+
   paymentInfo = {
     pending: false,
     amount_cents: 0,
@@ -81,7 +82,7 @@ export class PaymentSuccessComponent {
             Shipping: shippingInfo,
             OrderItems: this.cartService.getCart().map((item)=>{
               return{
-                productId: item.productId,
+                productId: item.id,
                 quantity: item.quantity,
                 price: item.price
               }
