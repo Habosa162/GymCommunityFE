@@ -12,12 +12,16 @@ import { CommonModule } from '@angular/common';
   styleUrl: './products-list.component.css'
 })
 export class ProductsListComponent {
-
+  isLoading = true;
   products: Product[]=[];
   constructor(private productService : ProductService){}
   getProducts(){
     this.productService.getProducts().subscribe((res)=>{
       this.products = res ;
+      this.isLoading = false;
+    },(error)=>{
+      console.log(error);
+      this.isLoading = false;
     })
   }
   ngOnInit(): void {

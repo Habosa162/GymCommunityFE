@@ -1,8 +1,20 @@
 <section id="shop" class="min-vh-100 py-5">
 
-<div class="container ">
-  <div class="row">
-      <app-product class="col-md-4" *ngFor="let product of products" [product]="product" />
+  <div class="container ">
+    <div class="row">
+
+
+      <!-- Skeleton loading -->
+      <ng-container *ngIf="isLoading; else showProducts">
+        <div *ngFor="let skeleton of [1,2,3,4,5,6]" class="col-md-4 mb-4">
+          <div class="skeleton-card"></div>
+        </div>
+      </ng-container>
+
+      <ng-template #showProducts>
+        <app-product class="col-md-4" *ngFor="let product of products" [product]="product" />
+      </ng-template>
+
+    </div>
   </div>
-</div>
 </section>
