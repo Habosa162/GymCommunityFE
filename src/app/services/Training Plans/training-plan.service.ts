@@ -1,3 +1,4 @@
+import { trainingPlan } from './../../domain/models/TraingingPlansModels/training-plan-model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -66,5 +67,10 @@ export class TrainingPlansService {
 
   deleteWeekPlan(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/week-plans/${id}`);
+  }
+
+  // ========== TRAINING PLANS (mostafa samir) ==========
+  getTrainingPlanById(Id: number): Observable<trainingPlan> {
+    return this.http.get<trainingPlan>(`${this.baseUrl}/get/${Id}`);
   }
 }

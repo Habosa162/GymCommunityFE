@@ -1,0 +1,40 @@
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">
+            Update Profile Picture
+        </button>
+    
+    
+   <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadModalLabel">Update Profile Picture</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="upload-container text-center">
+                        <div class="preview-container mb-4">
+                            <div class="image-preview">
+                                <img id="preview" src="https://images.unsplash.com/photo-1633332755192-727a05c4013d" alt="Profile preview">
+                            </div>
+                        </div>
+                        <div class="drop-zone" id="dropZone">
+                            <p class="mb-2">Drag & Drop your image here</p>
+                            <p class="text-muted small">or</p>
+                            <label class="btn btn-outline-primary mb-2" for="fileInput">
+                                Choose File
+                            </label>
+                            <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.gif" class="d-none">
+                            <p class="text-muted small">Supported formats: JPG, PNG, GIF (max 5MB)</p>
+                        </div>
+                        <div id="errorMessage" class="alert alert-danger d-none"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveButton">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+

@@ -20,12 +20,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     '/api/Review',
     '/api/Product',
     '/api/WishList',
+    '/api/trainingPlans',
   ];
-  const shouldAttach = secureUrls.some(url => req.url.includes(url));
+  const shouldAttach = secureUrls.some((url) => req.url.includes(url));
 
   if (token && shouldAttach) {
     const cloned = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${token}`)
+      headers: req.headers.set('Authorization', `Bearer ${token}`),
     });
     return next(cloned);
   }
