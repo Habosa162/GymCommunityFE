@@ -12,7 +12,7 @@
           <h5 class="card-title mb-3">🛒 Your Cart</h5>
           <ul class="list-group mb-3">
             <li class="list-group-item d-flex justify-content-between align-items-center"
-                *ngFor="let item of cartItems">
+              *ngFor="let item of cartItems">
               <div>
                 {{ item.name }}
                 <span class="text-muted">(x{{ item.quantity }})</span>
@@ -25,42 +25,72 @@
           </div>
         </div>
       </div>
+      <!-- Payment Method Selection -->
+      <div class="card p-4">
+        <h4 class="mb-3">Payment Method</h4>
+        <div class="form-check mb-2">
+          <input type="radio" id="cashOnDelivery" name="paymentMethod" [(ngModel)]="paymentMethod" value="COD"
+            class="form-check-input">
+          <label for="cashOnDelivery" class="form-check-label">Cash on Delivery</label>
+        </div>
+        <div class="form-check">
+          <input type="radio" id="paymob" name="paymentMethod" [(ngModel)]="paymentMethod" value="Paymob"
+            class="form-check-input">
+          <label for="paymob" class="form-check-label">Credit Card or Wallet</label>
+        </div>
+        <!-- <button type="button" class="btn btn-success w-100 mt-3" (click)="processPayment()">Proceed to Payment</button> -->
+
+      </div>
     </div>
 
     <!-- Checkout Form -->
     <div class="col-md-6">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title mb-3">🚚 Shipping Information</h5>
-          <form (ngSubmit)="submitOrder()" #checkoutForm="ngForm">
 
-            <div class="mb-3">
-              <label for="name" class="form-label">Full Name</label>
-              <input id="name" name="name" class="form-control" required [(ngModel)]="shipping.name" />
-            </div>
+      <div class="row">
 
-            <div class="mb-3">
-              <label for="address" class="form-label">Address</label>
-              <input id="address" name="address" class="form-control" required [(ngModel)]="shipping.address" />
-            </div>
 
-            <div class="mb-3">
-              <label for="phone" class="form-label">Phone Number</label>
-              <input id="phone" name="phone" type="tel" class="form-control" required [(ngModel)]="shipping.phone" />
-            </div>
-
-            <div class="text-center">
-              <button type="submit"
-                      class="btn btn-outline-success fw-bold px-5"
-                      [disabled]="cartItems.length === 0 || checkoutForm.invalid">
-                Confirm Order
-              </button>
-            </div>
-
-          </form>
+        <div class="col-md-12">
+          <div id="map" style="height: 400px; width: 100%; margin-bottom: 20px;"></div>
         </div>
+
+
+
+
+        <div class="col-md-12">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title mb-3">🚚 Shipping Information</h5>
+              <form (ngSubmit)="submitOrder()" #checkoutForm="ngForm">
+
+                <div class="mb-3">
+                  <label for="name" class="form-label">Full Name</label>
+                  <input id="name" name="name" class="form-control" required [(ngModel)]="shipping.CustomerName" />
+                </div>
+
+                <div class="mb-3">
+                  <label for="address" class="form-label">Address</label>
+                  <input id="address" name="address" class="form-control" required [(ngModel)]="shipping.ShippingAddress" />
+                </div>
+
+                <div class="mb-3">
+                  <label for="phone" class="form-label">Phone Number</label>
+                  <input id="phone" name="phone" type="tel" class="form-control" required [(ngModel)]="shipping.PhoneNumber" />
+                </div>
+
+                <div class="text-center">
+                  <button type="submit" class="btn btn-outline-success fw-bold px-5"
+                    [disabled]="cartItems.length === 0 || checkoutForm.invalid">
+                    Proceed to Payment
+                  </button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
   </div>
-</div>
+  </div>
