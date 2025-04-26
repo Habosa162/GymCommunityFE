@@ -1,21 +1,31 @@
-<div class="gym-details-container" *ngIf="gym">
-    <div class="gym-header">
-      <h1>{{ gym.name }}</h1>
-      <div class="gym-actions">
-        <button class="btn btn-primary" (click)="editMode = !editMode">
+<section class="bgColor py-4" style="min-height: 100vh;">
+  <div class="container gym-wrapper py-3 px-3" *ngIf="gym">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="gym-title" style="color: #32cd32;">{{ gym.name }}</h2>
+      <div class="btn-group">
+        <button class="btn btn-outline-success " (click)="editMode = !editMode">
           {{ editMode ? 'Cancel' : 'Edit Gym' }}
         </button>
-        <button class="btn btn-danger" (click)="deleteGym()">Delete Gym</button>
+        <button class="btn btn-outline-danger" (click)="deleteGym()">Delete Gym</button>
       </div>
     </div>
-  
-    <div class="tabs">
-      <button [class.active]="activeTab === 'info'" (click)="activeTab = 'info'">Info</button>
-      <button [class.active]="activeTab === 'images'" (click)="activeTab = 'images'">Images</button>
-      <button [class.active]="activeTab === 'coaches'" (click)="activeTab = 'coaches'">Coaches</button>
-      <button [class.active]="activeTab === 'plans'" (click)="activeTab = 'plans'">Plans</button>
-    </div>
-  
+
+    <!-- TABS -->
+    <ul class="nav nav-tabs mb-4" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link text-success" [ngClass]="{active: activeTab === 'info'}" (click)="activeTab = 'info'">Info</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link text-success" [ngClass]="{active: activeTab === 'images'}" (click)="activeTab = 'images'">Images</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link text-success" [ngClass]="{active: activeTab === 'coaches'}" (click)="activeTab = 'coaches'">Coaches</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link text-success" [ngClass]="{active: activeTab === 'plans'}" (click)="activeTab = 'plans'">Plans</button>
+      </li>
+    </ul>
+
     <!-- Gym Info Tab -->
     <div *ngIf="activeTab === 'info'" class="tab-content">
       <div *ngIf="!editMode">
@@ -77,7 +87,7 @@
       <input type="hidden" [(ngModel)]="updatedGym.latitude" name="latitude">
       <input type="hidden" [(ngModel)]="updatedGym.longitude" name="longitude">
 
-      <div class="coordinates-display" *ngIf="markerPosition">
+      <div *ngIf="markerPosition">
         <p><strong>Selected Location:</strong></p>
         <p>Latitude: {{ updatedGym.latitude | number:'1.4-4' }}</p>
         <p>Longitude: {{ updatedGym.longitude | number:'1.4-4' }}</p>
@@ -90,42 +100,41 @@
   
     <!-- Images Tab -->
     <div *ngIf="activeTab === 'images'" class="tab-content">
-      <h2>Gym Images</h2>
-      
-      <div class="add-image-form">
-        <h3>Add New Image</h3>
-        <input type="file" (change)="onImageSelected($event)" accept="image/*">
-        <button class="btn btn-primary" (click)="addImage()" [disabled]="!selectedImageFile">Upload Image</button>
+      <button class="btn btn-outline-success" (click)="toggleAddImageForm()">
+        {{ showAddImageForm ? 'Cancel' : 'Add New Image' }}
+      </button>
+      <div *ngIf="showAddImageForm"  class="add-image-form">
+        <input type="file" (change)="onImageSelected($event)" accept="image/*" style="cursor: pointer;">
+        <button class="btn btn-success" (click)="addImage()" [disabled]="!selectedImageFile">Upload Image</button>
       </div>
       
       <div class="images-grid">
         <div *ngFor="let image of images" class="image-card">
           <img [src]="image.imageUrl" alt="Gym Image">
-          <button class="btn btn-danger" (click)="deleteImage(image.id)">Delete</button>
+          <button class="btn btn-outline-danger" (click)="deleteImage(image.id)">Delete</button>
         </div>
       </div>
     </div>
   
     <!-- Coaches Tab -->
-    <div *ngIf="activeTab === 'coaches'" class="tab-content">
-      <h2>Gym Coaches</h2>
-      
-      <div class="add-coach-form">
-        <h3>Add New Coach</h3>
+    <div *ngIf="activeTab === 'coaches'" class="tab-content">      
+      <button class="btn btn-outline-success" (click)="toggleAddCoachForm()">
+        {{ showAddCoachForm ? 'Cancel' : 'Add New Coach' }}
+      </button>
+      <div *ngIf="showAddCoachForm" class="add-coach-form">
         <div class="form-group">
           <label>Coach ID</label>
           <input type="text" [(ngModel)]="newCoach.coachID" name="coachID" required>
         </div>
-        <button class="btn btn-primary" (click)="addCoach()">Add Coach</button>
+        <button class="btn btn-success" (click)="addCoach()">Add Coach</button>
       </div>
       
       <div class="coaches-list">
-        <div *ngFor="let coach of coaches" class="coach-card">
+        <div *ngFor="let coach of coaches" class="coach-card"(click)="viewCoachPortfolio(coach.coachID)" style="cursor: pointer;">
           <h3>{{ coach.coachName || 'Coach ' + coach.coachID }}</h3>
           <p>ID: {{ coach.coachID }}</p>
           <div class="coach-actions">
-            <button class="btn btn-info" (click)="viewCoachPortfolio(coach.coachID)">View Profile</button>
-            <button class="btn btn-danger" (click)="deleteCoach(coach.id)">Remove</button>
+            <button class="btn btn-outline-danger" (click)="deleteCoach(coach.id)">Remove</button>
           </div>
         </div>
       </div>
@@ -133,10 +142,10 @@
   
     <!-- Plans Tab -->
     <div *ngIf="activeTab === 'plans'" class="tab-content">
-      <h2>Gym Plans</h2>
-      
-      <div class="add-plan-form">
-        <h3>Add New Plan</h3>
+      <button class="btn btn-outline-success" (click)="toggleAddPlanForm()">
+        {{ showAddPlanForm ? 'Cancel' : 'Add New Plan' }}
+      </button>
+      <div *ngIf="showAddPlanForm" class="add-plan-form">
         <form (submit)="addPlan()">
           <div class="form-group">
             <label>Title</label>
@@ -172,44 +181,29 @@
               Access to All Areas
             </label>
           </div>
-          <button type="submit" class="btn btn-primary">Add Plan</button>
+          <button type="submit" class="btn btn-success">Add Plan</button>
         </form>
-      </div>
-      
+
+      </div>    
+
       <div class="plans-list">
-        <div *ngFor="let plan of plans" class="plan-card">
+        <div *ngFor="let plan of plans" class="plan-card" (click)="viewPlanDetails(plan.id)" style="cursor: pointer;">
           <h3>{{ plan.title }}</h3>
           <p>{{ plan.description }}</p>
           <p><strong>Price:</strong> ${{ plan.price }}</p>
           <p><strong>Duration:</strong> {{ plan.durationMonths }} months</p>
           <p><strong>Subscriptions:</strong> {{ plan.noOfSubscriptions }}</p>
-          
-          <div class="plan-actions">
-            <button class="btn btn-info" (click)="viewPlanDetails(plan.id)">Details</button>
-            <button class="btn btn-danger" (click)="deletePlan(plan.id)">Delete</button>
-            <button class="btn btn-secondary" (click)="loadSubscriptions(plan.id)">View Subscriptions</button>
-          </div>
-          
-          <!-- Subscriptions for this plan -->
-          <div *ngIf="selectedPlanId === plan.id" class="subscriptions-list">
-            <h4>Subscriptions</h4>
-            <div *ngIf="subscriptions.length === 0">No subscriptions yet</div>
-            <div *ngFor="let sub of subscriptions" class="subscription-card">
-              <p><strong>User ID:</strong> {{ sub.userId }}</p>
-              <p><strong>Status:</strong> {{ sub.paymentStatus }}</p>
-              <p><strong>Valid:</strong> {{ sub.startDate | date }} to {{ sub.expiresAt | date }}</p>
-              <div class="subscription-actions">
-                <button class="btn btn-info" (click)="viewSubscriptionDetails(sub.id)">Details</button>
-                <button class="btn btn-danger" (click)="deleteSubscription(sub.id)">Delete</button>
-                <button class="btn btn-success" (click)="validateQrCode(sub.rawData)">Validate QR</button>
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
     </div>
-  </div>
   
-  <div *ngIf="!gym" class="loading">
-    Loading gym details...
   </div>
+
+  <div *ngIf="!gym" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3">Loading gym details...</p>
+  </div>
+</section>

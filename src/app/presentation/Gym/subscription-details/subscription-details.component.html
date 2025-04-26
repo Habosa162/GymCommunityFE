@@ -1,88 +1,101 @@
-<div class="subscription-details-container" *ngIf="subscription">
-    <div class="subscription-header">
-      <h1>Subscription Details</h1>
-      <div class="subscription-actions">
-        <button class="btn btn-primary" (click)="toggleEditMode()">
-          {{ editMode ? 'Cancel' : 'Edit' }}
-        </button>
-        <button class="btn btn-danger" (click)="deleteSubscription()">Delete</button>
-        <button class="btn btn-secondary" (click)="validateQrCode()">Validate QR Code</button>
-        <button class="btn btn-outline" routerLink="/gym-owner/plan/{{subscription.planId}}">Back to Plan</button>
+<section class="bgColor w-100" style="min-height: 100vh;">
+<div class="subscription-details-container container py-4" *ngIf="subscription">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+    <h1 class="display-5 title">Subscription Details</h1>
+    <div class="btn-group">
+      <button class="btn btn-outline-success" (click)="toggleEditMode()">
+        <i class="bi bi-pencil-square me-1"></i>{{ editMode ? 'Cancel' : 'Edit' }}
+      </button>
+      <button class="btn btn-outline-danger" (click)="deleteSubscription()">
+        <i class="bi bi-trash me-1"></i>Delete
+      </button>
+    </div>
+  </div>
+
+  <!-- Info Section -->
+  <div class="row gy-4">
+    <!-- Basic Info -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light fw-semibold">Basic Information</div>
+        <div class="card-body">
+          <ng-container *ngIf="!editMode; else editForm">
+            <p><strong>User ID:</strong> {{ subscription.userId }}</p>
+            <p><strong>Payment Status:</strong> {{ getStatusName(subscription.paymentStatus) }}</p>
+            <p><strong>Purchase Date:</strong> {{ subscription.purchaseDate | date:'medium' }}</p>
+            <p><strong>Start Date:</strong> {{ subscription.startDate | date:'medium' }}</p>
+            <p><strong>Expiration Date:</strong> {{ subscription.expiresAt | date:'medium' }}</p>
+            <p><strong>Expired:</strong> {{ subscription.isExpired ? 'Yes' : 'No' }}</p>
+          </ng-container>
+
+          <!-- Edit Mode Form -->
+          <ng-template #editForm>
+            <div class="mb-3">
+              <label class="form-label">Payment Status</label>
+              <select [(ngModel)]="updatedSubscription.paymentStatus" class="form-select">
+                <option *ngFor="let status of paymentStatuses" [value]="status">
+                  {{ getStatusName(status) }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Start Date</label>
+              <input type="datetime-local" [(ngModel)]="updatedSubscription.startDate" class="form-control" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Expiration Date</label>
+              <input type="datetime-local" [(ngModel)]="updatedSubscription.expiresAt" class="form-control" />
+            </div>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="updatedSubscription.isExpired" id="expiredCheck" />
+              <label class="form-check-label" for="expiredCheck">Mark as Expired</label>
+            </div>
+            <button class="btn btn-success" (click)="updateSubscription()">Save Changes</button>
+          </ng-template>
+        </div>
+      </div>
+          <!-- QR Code -->
+      <div class="qr-section card shadow-sm " *ngIf="subscription.qrCodeData" style="height: 290px;">
+        <div class="card-header bg-light fw-semibold">QR Code</div>
+        <div class="qr-code-container">
+          <div class="qr-wrapper">
+            <img class="qr-data" [src]="subscription.qrCodeData" [alt]="subscription.qrCodeData">
+            <button class="btn btn-success scan-btn" (click)="validateQrCode()">Scan</button>
+          </div>
+        </div>
       </div>
     </div>
-  
-    <!-- Subscription Info -->
-    <div class="subscription-info">
-      <div class="info-section">
-        <h2>Basic Information</h2>
-        <div *ngIf="!editMode" class="info-display">
-          <p><strong>User ID:</strong> {{ subscription.userId }}</p>
-          <p><strong>Payment Status:</strong> {{ getStatusName(subscription.paymentStatus) }}</p>
-          <p><strong>Purchase Date:</strong> {{ subscription.purchaseDate | date:'medium' }}</p>
-          <p><strong>Start Date:</strong> {{ subscription.startDate | date:'medium' }}</p>
-          <p><strong>Expiration Date:</strong> {{ subscription.expiresAt | date:'medium' }}</p>
-          <p><strong>Expired:</strong> {{ subscription.isExpired ? 'Yes' : 'No' }}</p>
-        </div>
-  
-        <div *ngIf="editMode" class="info-edit">
-          <div class="form-group">
-            <label>Payment Status</label>
-            <select [(ngModel)]="updatedSubscription.paymentStatus" class="form-control">
-              <option *ngFor="let status of paymentStatuses" [value]="status">
-                {{ getStatusName(status) }}
-              </option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Start Date</label>
-            <input type="datetime-local" [(ngModel)]="updatedSubscription.startDate" class="form-control">
-          </div>
-          <div class="form-group">
-            <label>Expiration Date</label>
-            <input type="datetime-local" [(ngModel)]="updatedSubscription.expiresAt" class="form-control">
-          </div>
-          <div class="form-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="updatedSubscription.isExpired">
-              Mark as Expired
-            </label>
-          </div>
-          <button class="btn btn-success" (click)="updateSubscription()">Save Changes</button>
-        </div>
-      </div>
-  
-      <!-- Related Information -->
-      <div class="related-info">
-        <div class="info-section" *ngIf="plan">
-          <h2>Plan Details</h2>
+
+    <!-- Related Info -->
+    <div class="col-lg-6">
+      <div *ngIf="plan" class="card mb-4 shadow-sm">
+        <div class="card-header bg-light fw-semibold">Plan Details</div>
+        <div class="card-body">
           <p><strong>Plan:</strong> {{ plan.title }}</p>
           <p><strong>Price:</strong> ${{ plan.price }}</p>
           <p><strong>Duration:</strong> {{ plan.durationMonths }} months</p>
           <p><strong>Description:</strong> {{ plan.description }}</p>
         </div>
-  
-        <div class="info-section" *ngIf="gym">
-          <h2>Gym Details</h2>
+      </div>
+
+      <div *ngIf="gym" class="card shadow-sm">
+        <div class="card-header bg-light fw-semibold">Gym Details</div>
+        <div class="card-body">
           <p><strong>Gym:</strong> {{ gym.name }}</p>
           <p><strong>Location:</strong> {{ gym.location }}</p>
           <p><strong>Phone:</strong> {{ gym.phoneNumber || 'N/A' }}</p>
         </div>
       </div>
     </div>
-  
-    <!-- QR Code Section -->
-    <div class="qr-section" *ngIf="subscription.qrCodeData">
-      <h2>QR Code</h2>
-      <div class="qr-code-container">
-        <!-- In a real app, you would generate a QR code image from qrCodeData -->
-        <div class="qr-placeholder">
-          <p>QR Code would be displayed here</p>
-          <img class="qr-data" [src]="subscription.qrCodeData" [alt]="subscription.qrCodeData">
-        </div>
-      </div>
-    </div>
   </div>
-  
-  <div *ngIf="!subscription" class="loading">
-    Loading subscription details...
+</div>
+
+<!-- Loading Spinner -->
+<div *ngIf="!subscription" class="text-center mt-5">
+  <div class="spinner-border text-success" role="status">
+    <span class="visually-hidden">Loading...</span>
   </div>
+  <p class="mt-2">Loading subscription details...</p>
+</div>
+</section>

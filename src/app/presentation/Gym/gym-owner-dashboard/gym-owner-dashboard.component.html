@@ -1,76 +1,84 @@
-<div class="dashboard-container">
-    <h1>My Gyms</h1>
-    
-    <button class="btn btn-primary" (click)="toggleAddGymForm()">
-      {{ showAddGymForm ? 'Cancel' : 'Add New Gym' }}
-    </button>
-  
-    <div *ngIf="showAddGymForm" class="add-gym-form">
-      <h2>Add New Gym</h2>
-      <form (submit)="addGym()">
-        <div class="form-group">
-          <label>Name</label>
-          <input type="text" [(ngModel)]="newGym.name" name="name" required>
-        </div>
-        <div class="form-group">
-          <label>Location</label>
-          <input type="text" [(ngModel)]="newGym.location" name="location" required>
-        </div>
-        <div class="form-group">
-          <label>Description</label>
-          <textarea [(ngModel)]="newGym.description" name="description" required></textarea>
-        </div>
-        <div class="form-group">
-            <label>Phone Number</label>
-            <input [(ngModel)]="newGym.phoneNumber" name="phoneNumber" required>
-        </div>
-        <div class="form-group">
-            <label>Website</label>
-            <input [(ngModel)]="newGym.website" name="website" required>
-        </div>
-        <div class="form-group">
-            <label>Email</label>
-            <input [(ngModel)]="newGym.email" name="email" required>
-        </div>
-        <!-- Map for location selection -->
-      <div class="form-group">
-        <label>Select Location on Map</label>
-        <div class="map-container" *ngIf="mapInitialized">
-          <google-map 
-            [options]="mapOptions"
-            (mapClick)="handleMapClick($event)"
-            height="400px"
-            width="100%">
-            <map-marker 
-              *ngIf="markerPosition"
-              [position]="markerPosition">
-            </map-marker>
-          </google-map>
-        </div>
-        <div *ngIf="!mapInitialized" class="map-loading">
-          Loading map...
-        </div>
-      </div>
+<section class="bgColor py-4" style="min-height: 100vh;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold title" style="color: #32cd32;">Gym Dashboard</h2>
+      <button class="btn btn-outline-success" (click)="toggleAddGymForm()">
+        <i class="bi bi-plus-circle me-2"></i>{{ showAddGymForm ? 'Cancel' : 'Add New Gym' }}
+      </button>
+    </div>
 
-      <!-- Hidden latitude/longitude fields (will be set by map) -->
-      <input type="hidden" [(ngModel)]="newGym.latitude" name="latitude">
-      <input type="hidden" [(ngModel)]="newGym.longitude" name="longitude">
+    <!-- Add Gym Form -->
+    <div *ngIf="showAddGymForm" class="card shadow-sm mb-5 p-4 add-gym-form ">
+      <h4 class="mb-3">Add New Gym</h4>
+      <form (submit)="addGym()" class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" [(ngModel)]="newGym.name" name="name" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Location</label>
+          <input type="text" class="form-control" [(ngModel)]="newGym.location" name="location" required>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" rows="2" [(ngModel)]="newGym.description" name="description" required></textarea>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Phone Number</label>
+          <input class="form-control" [(ngModel)]="newGym.phoneNumber" name="phoneNumber" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Website</label>
+          <input class="form-control" [(ngModel)]="newGym.website" name="website" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" [(ngModel)]="newGym.email" name="email" required>
+        </div>
 
-      <div class="coordinates-display" *ngIf="markerPosition">
-        <p><strong>Selected Location:</strong></p>
-        <p>Latitude: {{ newGym.latitude | number:'1.4-4' }}</p>
-        <p>Longitude: {{ newGym.longitude | number:'1.4-4' }}</p>
-      </div>
-      
-        <button type="submit" class="btn btn-success">Save Gym</button>
+        <!-- Google Map -->
+        <div class="col-12 mt-3 ">
+          <label class="form-label">Select Location on Map</label>
+          <div class=" map-container" *ngIf="mapInitialized">
+            <google-map 
+              [options]="mapOptions"
+              (mapClick)="handleMapClick($event)"
+              height="400px"
+              width="100%">
+              <map-marker 
+                *ngIf="markerPosition"
+                [position]="markerPosition">
+              </map-marker>
+            </google-map>
+          </div>
+          <div *ngIf="!mapInitialized" class="text-muted small">Loading map...</div>
+        </div>
+
+        <input type="hidden" [(ngModel)]="newGym.latitude" name="latitude">
+        <input type="hidden" [(ngModel)]="newGym.longitude" name="longitude">
+
+        <div *ngIf="markerPosition" class="col-12 text-muted">
+          <p class="mb-0"><strong>Selected Coordinates:</strong></p>
+          <small>Latitude: {{ newGym.latitude | number:'1.4-4' }} | Longitude: {{ newGym.longitude | number:'1.4-4' }}</small>
+        </div>
+
+        <div class="col-12 d-flex justify-content-end">
+          <button type="submit" class="btn btn-success mt-3 px-4">Save Gym</button>
+        </div>
       </form>
     </div>
-  
-    <div class="gyms-list">
-      <div *ngFor="let gym of gyms" class="gym-card" (click)="viewGymDetails(gym.id)">
-        <h3>{{ gym.name }}</h3>
-        <p>{{ gym.location }}</p>
-        <p>{{ gym.description }}</p>
+
+    <!-- List of Gyms -->
+    <div class="row gy-4">
+      <div class="col-md-6 col-lg-4" *ngFor="let gym of gyms">
+        <div class="card shadow-sm gym-card h-100" (click)="viewGymDetails(gym.id)" style="cursor: pointer;">
+          <div class="card-body">
+            <h5 class="card-title">{{ gym.name }}</h5>
+            <h6 class="text-muted">{{ gym.location }}</h6>
+            <p class="card-text">{{ gym.description }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+</section>

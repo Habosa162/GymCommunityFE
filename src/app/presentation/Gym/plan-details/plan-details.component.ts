@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './plan-details.component.css'
 })
 export class PlanDetailsComponent implements OnInit {
+[x: string]: any;
   plan!: GymPlanRead;
   planId!: number;
   editMode = false;
@@ -28,6 +29,7 @@ export class PlanDetailsComponent implements OnInit {
     hasAccessToAllAreas: false
   };
 
+  viewSubList = false;
   subscriptions: UserSubscriptionRead[] = [];
   paymentStatuses = Object.values(PaymentStatus).filter(value => typeof value === 'number');
   statusText: Record<number, string> = {
@@ -126,6 +128,9 @@ export class PlanDetailsComponent implements OnInit {
 
   getStatusName(status: number): string {
     return this.statusText[status] || 'Unknown';
+  }
+  toggleSubscriptionList(): void {
+    this.viewSubList = !this.viewSubList;
   }
 
 }

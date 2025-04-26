@@ -13,10 +13,15 @@ import { UserSubscriptionService } from '../../../services/Gym/user-subscription
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 declare var google: any; 
 @Component({
   selector: 'app-gym-details.component',
-  imports: [CommonModule,FormsModule,GoogleMapsModule],
+  imports: [CommonModule,FormsModule,GoogleMapsModule,
+    MatMenuModule,
+    MatIconModule
+  ],
   templateUrl: './gym-details.component.component.html',
   styleUrl: './gym-details.component.component.css'
 })
@@ -24,6 +29,10 @@ export class GymDetailsComponent implements OnInit {
   gym: GymReadDTO | null = null;
   gymId!: number;
 
+  // Forms
+  showAddPlanForm = false;
+  showAddImageForm = false;
+  showAddCoachForm = false;
   // Map properties
   mapOptions: google.maps.MapOptions = {
     zoom: 18  
@@ -206,6 +215,7 @@ export class GymDetailsComponent implements OnInit {
     this.gymPlanService.create(this.newPlan).subscribe({
       next: (plan) => {
         this.plans.push(plan);
+        this.showAddPlanForm = false;
         this.resetNewPlanForm();
       },
       error: (err) => console.error('Failed to add plan', err)
@@ -227,63 +237,6 @@ export class GymDetailsComponent implements OnInit {
 
   viewPlanDetails(planId: number): void {
     this.router.navigate(['/gym-owner/plan', planId]);
-  }
-
-  updatePlan(plan: GymPlanRead): void {
-    this.gymPlanService.update(plan.id, plan).subscribe({
-      next: (updatedPlan) => {
-        const index = this.plans.findIndex(p => p.id === updatedPlan.id);
-        if (index !== -1) {
-          this.plans[index] = updatedPlan;
-        }
-      },
-      error: (err) => console.error('Failed to update plan', err)
-    });
-  }
-
-  deletePlan(planId: number): void {
-    if (confirm('Are you sure you want to delete this plan?')) {
-      this.gymPlanService.delete(planId).subscribe({
-        next: () => this.plans = this.plans.filter(p => p.id !== planId),
-        error: (err) => console.error('Failed to delete plan', err)
-      });
-    }
-  }
-
-  // Subscription Methods
-  loadSubscriptions(planId: number): void {
-    this.selectedPlanId = planId;
-    this.userSubscriptionService.getByPlanId(planId).subscribe({
-      next: (subscriptions) => this.subscriptions = subscriptions,
-      error: (err) => console.error('Failed to load subscriptions', err)
-    });
-  }
-
-  viewSubscriptionDetails(subscriptionId: number): void {
-    this.router.navigate(['/gym-owner/subscription', subscriptionId]);
-  }
-
-  deleteSubscription(subscriptionId: number): void {
-    if (confirm('Are you sure you want to delete this subscription?')) {
-      this.userSubscriptionService.delete(subscriptionId).subscribe({
-        next: () => {
-          this.subscriptions = this.subscriptions.filter(s => s.id !== subscriptionId);
-          if (this.selectedPlanId) {
-            this.loadSubscriptions(this.selectedPlanId);
-          }
-        },
-        error: (err) => console.error('Failed to delete subscription', err)
-      });
-    }
-  }
-
-  validateQrCode(qrCodeData: string): void {
-    this.userSubscriptionService.validateQrCode(qrCodeData).subscribe({
-      next: (subscription) => {
-        alert(`Valid QR Code!`);
-      },
-      error: (err) => alert('Invalid QR Code')
-    });
   }
 
   // Google Maps Methods
@@ -320,11 +273,18 @@ export class GymDetailsComponent implements OnInit {
     };
     
     this.markerPosition = { lat, lng };
-    
-    // // If map is already initialized, pan to new position
-    // if (this.googleMap) {
-    //   this.googleMap.panTo({ lat, lng });
-    // }
+  }
+
+  toggleAddPlanForm(): void {
+    this.showAddPlanForm = !this.showAddPlanForm;
+  }
+
+  toggleAddImageForm(): void {
+    this.showAddImageForm = !this.showAddImageForm;
+  }
+
+  toggleAddCoachForm(): void {
+    this.showAddCoachForm = !this.showAddCoachForm;
   }
 
 }

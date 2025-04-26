@@ -1,0 +1,13 @@
+
+.navbar{
+
+}
+:host-context(body.dark-mode) .navbar{
+  background-color: #202020 !important;
+}
+:host-context(body.dark-mode) .navbar-brand{
+  color: #ffffff !important;
+}
+:host-context(body.dark-mode) .nav-link,:host-context(body.dark-mode) button{
+    color: hsla(0, 0%, 100%, 0.555) !important;
+}

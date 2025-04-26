@@ -7,10 +7,11 @@ import { AuthService } from './services/auth.service';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout/admin-layout.component';
 import { CoachLayoutComponent } from './layouts/coach-layout/coach-layout.component';
 import { NavbarComponent } from "./core/shared/components/navbar/navbar.component";
+import { GymOwnerLayoutComponent } from './layouts/gym-owner-layout/gym-owner-layout.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterModule, CommonModule, TopNavComponent, ClientLayoutComponent, AdminLayoutComponent, CoachLayoutComponent, NavbarComponent],
+  imports: [RouterModule, CommonModule, TopNavComponent, ClientLayoutComponent, AdminLayoutComponent, CoachLayoutComponent,GymOwnerLayoutComponent, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
