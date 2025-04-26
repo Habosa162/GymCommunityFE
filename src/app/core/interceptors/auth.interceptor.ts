@@ -13,12 +13,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     '/api/WorkSample',
     '/api/CoachPortfolio',
     '/api/CoachClients',
-    '/api/payment-success',
-    '/api/checkout',
-    '/api/wish-list',
-    '/api/create-category',
-    '/api/create-brand',
-    '/api/create-product',
+    '/api/Brand',
+    '/api/Category',
+    '/api/Order',
+    '/api/Payment',
+    '/api/Review',
+    '/api/Product',
+    '/api/WishList',
   ];
   const shouldAttach = secureUrls.some(url => req.url.includes(url));
 

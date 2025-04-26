@@ -144,7 +144,6 @@ export class CheckoutComponent {
     }
 
 
-    alert('Order submitted successfully ✅');
     this.processPayment();
     this.shipping = {
       CustomerName: ''
@@ -157,6 +156,5 @@ export class CheckoutComponent {
       ,EstimatedDeliveryDate: ''
     };
     this.paymentMethod = 'COD';
-    alert("✅ Order confirmed! We'll deliver it soon.");
   }
 }
