@@ -8,6 +8,7 @@ import { MealDto } from '../../services/Training Plans/dtos/meal-dto';
 import { ExerciseService } from '../../services/Training Plans/exercise.service';
 import { MealService } from '../../services/Training Plans/meal.service';
 import { TrainingPlansService } from '../../services/Training Plans/training-plan.service';
+import { trainingPlan } from '../../domain/models/TraingingPlansModels/training-plan-model';
 
 interface DailyPlanData {
   activity: string;
@@ -55,6 +56,8 @@ export class TrainingPlansComponent implements OnInit {
     private exerciseService: ExerciseService,
     private mealService: MealService
   ) {}
+  // Training Plans (mostafa)
+  trainingPlan!: trainingPlan;
 
   // Muscle Groups and Exercises
   muscleGroups: MuscleGroup[] = [];
@@ -127,6 +130,8 @@ export class TrainingPlansComponent implements OnInit {
     this.loadDailyPlans();
     this.loadMuscleGroups();
     this.loadMeals();
+    //mostafa samir
+    this.getTrainingPlanById(1);
   }
 
   loadMeals(): void {
@@ -374,4 +379,19 @@ export class TrainingPlansComponent implements OnInit {
       mealNotes: '',
     };
   }
+
+  //#region mostafa samir
+  getTrainingPlanById(Id: number): void {
+    this.trainingPlanService.getTrainingPlanById(Id).subscribe({
+      next: (plan) => {
+        this.trainingPlan = plan;
+        console.log('Training Plan:', this.trainingPlan);
+      },
+      error: (error) => {
+        console.error('Error loading training plan:', error);
+      },
+    });
+  }
+
+  //#endregion
 }

@@ -6,17 +6,19 @@
       alt="profile cover" />
     <div class="cover-overlay"></div>
   </div>
+  
 
   <div class="container mt-4">
     <div class="row">
       <!-- Left Side - Options Menu -->
       <div class="col-md-3">
         <div  class="options-menu">
-          <div class="profilePic overflow-hidden shadow mb-4 z-3 position-relative">
+          <div class="profilePic overflow-hidden shadow mb-2 z-3 position-relative">
             <img class="w-100 h-100 object-fit-fill"
               [src]="clientProfile?.profileImg || 'https://img.freepik.com/free-photo/waist-up-portrait-handsome-serious-unshaven-male-keeps-hands-together-dressed-dark-blue-shirt-has-talk-with-interlocutor-stands-against-white-wall-self-confident-man-freelancer_273609-16320.jpg?uid=R132930234&ga=GA1.1.GA1.2.263481332.1694631472&semt=ais_hybrid&w=740'"
               alt="profile" />
-          </div>
+            </div>
+            <p *ngIf="isOwner" class="text-center mainColor mb-4"><i class="fa-solid fa-camera"></i> Change profile picture</p>
           <div  class="card shadow-sm rounded-4  p-2">
             <div class="card-body p-0">
               <ul class="list-group list-group-flush bg-transparent">
@@ -271,3 +273,4 @@
   </div>
 </section>
 
+<app-change-profile-img *ngIf="isOwner"></app-change-profile-img>

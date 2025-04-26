@@ -5,13 +5,14 @@ import { ClientProfileService } from '../../../../services/Client/client-profile
 import { ClientProfile } from '../../../../domain/models/Client/client-profile.model';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ClientInfoService } from '../../../../services/Client/client-info.service';
+import { ChangeProfileImgComponent } from '../../../../core/shared/components/changeProfileImg/change-profile-img/change-profile-img.component';
 
 @Component({
   selector: 'app-client-profile',
   templateUrl: './client-profile.component.html',
   styleUrls: ['./client-profile.component.css'],
   standalone: true,
-  imports: [FormsModule, CommonModule,RouterModule]
+  imports: [FormsModule, CommonModule,RouterModule,ChangeProfileImgComponent]
 })
 export class ClientProfileComponent implements OnInit {
   // Edit states

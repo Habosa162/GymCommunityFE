@@ -1,0 +1,442 @@
+<!-- Class Timetable Section Begin -->
+<section class="class-timetable-section spad" *ngIf="trainingPlan">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="section-title">
+          <span>Plan</span>
+          <h2>{{ trainingPlan.name }}</h2>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="table-controls">
+          <ul>
+            <li *ngFor="let month of months" 
+                [class.active]="selectedMonth === month" 
+                (click)="selectMonth(month)">
+              Month {{ month }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="class-timetable">
+          <table>
+            <thead>
+              <tr>
+                <th>Week</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+                <th>Sunday</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let week of getWeeksForSelectedMonth()" 
+                  [class.week-hover]="isWeekHovered(week.weekNumber)"
+                  (mouseenter)="setHoveredWeek(week.weekNumber)" 
+                  (mouseleave)="setHoveredWeek(null)">
+                  <!-- <div class="bg-danger"></div> -->
+                <td class="class-time ">
+                  Week {{ week.weekNumber }}<br>
+                  <small>{{ week.startDate | date:'shortDate' }} - {{ week.endDate | date:'shortDate' }}</small>
+                </td>
+                
+                <!-- Monday -->
+                <td class="dark-bg" 
+                    [class.week-disabled]="!week.hasWeekPlan && !isWeekHovered(week.weekNumber)"
+                    [class.hover-bg]="!week.hasWeekPlan && isWeekHovered(week.weekNumber) || (week.hasWeekPlan && !hasDayPlan(week, 1) && isDayHovered(week.weekNumber, 1))" 
+                    [class.has-plan]="week.hasWeekPlan"
+                    (mouseenter)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, 1) : null"
+                    (mouseleave)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, null) : null"
+                    (click)="!week.hasWeekPlan && isWeekHovered(week.weekNumber) ? openAddWeekPopup(week) : 
+                           (week.hasWeekPlan && !hasDayPlan(week, 1) && isDayHovered(week.weekNumber, 1)) ? openAddDayPopup(week, 1) : null">
+                  
+                  <!-- Add Week Button (if no week plan) -->
+                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button ">
+                    <h5>Add Week</h5>
+                  </div>
+             
+                  
+                  <!-- Add Day Button (if has week plan but no day plan) -->
+                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 1) && isDayHovered(week.weekNumber, 1)" class="add-day-button">
+                    <h5>Add Day Plan</h5>
+                  </div>
+                  
+                  <!-- Show Day Plan (if exists) -->
+                  <div *ngIf="week.hasWeekPlan && hasDayPlan(week, 1)" class="day-plan-info">
+                    <h5>Monday</h5>
+                    <div *ngIf="getDayPlan(week, 1)?.parsedData?.exercises?.length > 0" class="plan-summary">
+                      <span class="plan-type">Exercises: {{ getDayPlan(week, 1)?.parsedData?.exercises?.length }}</span>
+                    </div>
+                    <div *ngIf="getDayPlan(week, 1)?.parsedData?.meals?.length > 0" class="plan-summary">
+                      <span class="plan-type">Meals: {{ getDayPlan(week, 1)?.parsedData?.meals?.length }}</span>
+                    </div>
+                    <small *ngIf="getDayPlan(week, 1)?.extraTips">{{ getDayPlan(week, 1)?.extraTips }}</small>
+                  </div>
+                </td>
+                
+                <!-- Tuesday -->
+                <td class="hover-bg" 
+                    [class.week-disabled]="!week.hasWeekPlan && !isWeekHovered(week.weekNumber)"
+                    [class.hover-bg]="!week.hasWeekPlan && isWeekHovered(week.weekNumber) || (week.hasWeekPlan && !hasDayPlan(week, 2) && isDayHovered(week.weekNumber, 2))" 
+                    [class.has-plan]="week.hasWeekPlan"
+                    (mouseenter)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, 2) : null"
+                    (mouseleave)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, null) : null"
+                    (click)="!week.hasWeekPlan && isWeekHovered(week.weekNumber) ? openAddWeekPopup(week) : 
+                           (week.hasWeekPlan && !hasDayPlan(week, 2) && isDayHovered(week.weekNumber, 2)) ? openAddDayPopup(week, 2) : null">
+                  
+                  <!-- Add Week Button (if no week plan) -->
+                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button">
+                    <h5>Add Week</h5>
+                  </div>
+                  
+                  <!-- Add Day Button (if has week plan but no day plan) -->
+                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 2) && isDayHovered(week.weekNumber, 2)" class="add-day-button">
+                    <h5>Add Day Plan</h5>
+                  </div>
+                  
+                  <!-- Show Day Plan (if exists) -->
+                  <div *ngIf="week.hasWeekPlan && hasDayPlan(week, 2)" class="day-plan-info">
+                    <h5>Tuesday</h5>
+                    <div *ngIf="getDayPlan(week, 2)?.parsedData?.exercises?.length > 0" class="plan-summary">
+                      <span class="plan-type">Exercises: {{ getDayPlan(week, 2)?.parsedData?.exercises?.length }}</span>
+                    </div>
+                    <div *ngIf="getDayPlan(week, 2)?.parsedData?.meals?.length > 0" class="plan-summary">
+                      <span class="plan-type">Meals: {{ getDayPlan(week, 2)?.parsedData?.meals?.length }}</span>
+                    </div>
+                    <small *ngIf="getDayPlan(week, 2)?.extraTips">{{ getDayPlan(week, 2)?.extraTips }}</small>
+                  </div>
+                </td>
+                
+                <!-- Wednesday -->
+                <td class="dark-bg" 
+                    [class.week-disabled]="!week.hasWeekPlan && !isWeekHovered(week.weekNumber)"
+                    [class.hover-bg]="!week.hasWeekPlan && isWeekHovered(week.weekNumber) || (week.hasWeekPlan && !hasDayPlan(week, 3) && isDayHovered(week.weekNumber, 3))" 
+                    [class.has-plan]="week.hasWeekPlan"
+                    (mouseenter)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, 3) : null"
+                    (mouseleave)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, null) : null"
+                    (click)="!week.hasWeekPlan && isWeekHovered(week.weekNumber) ? openAddWeekPopup(week) : 
+                           (week.hasWeekPlan && !hasDayPlan(week, 3) && isDayHovered(week.weekNumber, 3)) ? openAddDayPopup(week, 3) : null">
+                  
+                  <!-- Add Week Button (if no week plan) -->
+                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button">
+                    <h5>Add Week</h5>
+                  </div>
+                  
+                  <!-- Add Day Button (if has week plan but no day plan) -->
+                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 3) && isDayHovered(week.weekNumber, 3)" class="add-day-button">
+                    <h5>Add Day Plan</h5>
+                  </div>
+                  
+                  <!-- Show Day Plan (if exists) -->
+                  <div *ngIf="week.hasWeekPlan && hasDayPlan(week, 3)" class="day-plan-info">
+                    <h5>Wednesday</h5>
+                    <div *ngIf="getDayPlan(week, 3)?.parsedData?.exercises?.length > 0" class="plan-summary">
+                      <span class="plan-type">Exercises: {{ getDayPlan(week, 3)?.parsedData?.exercises?.length }}</span>
+                    </div>
+                    <div *ngIf="getDayPlan(week, 3)?.parsedData?.meals?.length > 0" class="plan-summary">
+                      <span class="plan-type">Meals: {{ getDayPlan(week, 3)?.parsedData?.meals?.length }}</span>
+                    </div>
+                    <small *ngIf="getDayPlan(week, 3)?.extraTips">{{ getDayPlan(week, 3)?.extraTips }}</small>
+                  </div>
+                </td>
+                
+                <!-- Thursday -->
+                <td class="hover-bg" 
+                    [class.week-disabled]="!week.hasWeekPlan && !isWeekHovered(week.weekNumber)"
+                    [class.hover-bg]="!week.hasWeekPlan && isWeekHovered(week.weekNumber) || (week.hasWeekPlan && !hasDayPlan(week, 4) && isDayHovered(week.weekNumber, 4))" 
+                    [class.has-plan]="week.hasWeekPlan"
+                    (mouseenter)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, 4) : null"
+                    (mouseleave)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, null) : null"
+                    (click)="!week.hasWeekPlan && isWeekHovered(week.weekNumber) ? openAddWeekPopup(week) : 
+                           (week.hasWeekPlan && !hasDayPlan(week, 4) && isDayHovered(week.weekNumber, 4)) ? openAddDayPopup(week, 4) : null">
+                  
+                  <!-- Add Week Button (if no week plan) -->
+                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button">
+                    <h5>Add Week</h5>
+                  </div>
+                  
+                  <!-- Add Day Button (if has week plan but no day plan) -->
+                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 4) && isDayHovered(week.weekNumber, 4)" class="add-day-button">
+                    <h5>Add Day Plan</h5>
+                  </div>
+                  
+                  <!-- Show Day Plan (if exists) -->
+                  <div *ngIf="week.hasWeekPlan && hasDayPlan(week, 4)" class="day-plan-info">
+                    <h5>Thursday</h5>
+                    <div *ngIf="getDayPlan(week, 4)?.parsedData?.exercises?.length > 0" class="plan-summary">
+                      <span class="plan-type">Exercises: {{ getDayPlan(week, 4)?.parsedData?.exercises?.length }}</span>
+                    </div>
+                    <div *ngIf="getDayPlan(week, 4)?.parsedData?.meals?.length > 0" class="plan-summary">
+                      <span class="plan-type">Meals: {{ getDayPlan(week, 4)?.parsedData?.meals?.length }}</span>
+                    </div>
+                    <small *ngIf="getDayPlan(week, 4)?.extraTips">{{ getDayPlan(week, 4)?.extraTips }}</small>
+                  </div>
+                </td>
+                
+                <!-- Friday -->
+                <td class="dark-bg" 
+                    [class.week-disabled]="!week.hasWeekPlan && !isWeekHovered(week.weekNumber)"
+                    [class.hover-bg]="!week.hasWeekPlan && isWeekHovered(week.weekNumber) || (week.hasWeekPlan && !hasDayPlan(week, 5) && isDayHovered(week.weekNumber, 5))" 
+                    [class.has-plan]="week.hasWeekPlan"
+                    (mouseenter)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, 5) : null"
+                    (mouseleave)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, null) : null"
+                    (click)="!week.hasWeekPlan && isWeekHovered(week.weekNumber) ? openAddWeekPopup(week) : 
+                           (week.hasWeekPlan && !hasDayPlan(week, 5) && isDayHovered(week.weekNumber, 5)) ? openAddDayPopup(week, 5) : null">
+                  
+                  <!-- Add Week Button (if no week plan) -->
+                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button">
+                    <h5>Add Week</h5>
+                  </div>
+                  
+                  <!-- Add Day Button (if has week plan but no day plan) -->
+                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 5) && isDayHovered(week.weekNumber, 5)" class="add-day-button">
+                    <h5>Add Day Plan</h5>
+                  </div>
+                  
+                  <!-- Show Day Plan (if exists) -->
+                  <div *ngIf="week.hasWeekPlan && hasDayPlan(week, 5)" class="day-plan-info">
+                    <h5>Friday</h5>
+                    <div *ngIf="getDayPlan(week, 5)?.parsedData?.exercises?.length > 0" class="plan-summary">
+                      <span class="plan-type">Exercises: {{ getDayPlan(week, 5)?.parsedData?.exercises?.length }}</span>
+                    </div>
+                    <div *ngIf="getDayPlan(week, 5)?.parsedData?.meals?.length > 0" class="plan-summary">
+                      <span class="plan-type">Meals: {{ getDayPlan(week, 5)?.parsedData?.meals?.length }}</span>
+                    </div>
+                    <small *ngIf="getDayPlan(week, 5)?.extraTips">{{ getDayPlan(week, 5)?.extraTips }}</small>
+                  </div>
+                </td>
+                
+                <!-- Saturday -->
+                <td class="hover-bg" 
+                    [class.week-disabled]="!week.hasWeekPlan && !isWeekHovered(week.weekNumber)"
+                    [class.hover-bg]="!week.hasWeekPlan && isWeekHovered(week.weekNumber) || (week.hasWeekPlan && !hasDayPlan(week, 6) && isDayHovered(week.weekNumber, 6))" 
+                    [class.has-plan]="week.hasWeekPlan"
+                    (mouseenter)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, 6) : null"
+                    (mouseleave)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, null) : null"
+                    (click)="!week.hasWeekPlan && isWeekHovered(week.weekNumber) ? openAddWeekPopup(week) : 
+                           (week.hasWeekPlan && !hasDayPlan(week, 6) && isDayHovered(week.weekNumber, 6)) ? openAddDayPopup(week, 6) : null">
+                  
+                  <!-- Add Week Button (if no week plan) -->
+                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button">
+                    <h5>Add Week</h5>
+                  </div>
+                  
+                  <!-- Add Day Button (if has week plan but no day plan) -->
+                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 6) && isDayHovered(week.weekNumber, 6)" class="add-day-button">
+                    <h5>Add Day Plan</h5>
+                  </div>
+                  
+                  <!-- Show Day Plan (if exists) -->
+                  <div *ngIf="week.hasWeekPlan && hasDayPlan(week, 6)" class="day-plan-info">
+                    <h5>Saturday</h5>
+                    <div *ngIf="getDayPlan(week, 6)?.parsedData?.exercises?.length > 0" class="plan-summary">
+                      <span class="plan-type">Exercises: {{ getDayPlan(week, 6)?.parsedData?.exercises?.length }}</span>
+                    </div>
+                    <div *ngIf="getDayPlan(week, 6)?.parsedData?.meals?.length > 0" class="plan-summary">
+                      <span class="plan-type">Meals: {{ getDayPlan(week, 6)?.parsedData?.meals?.length }}</span>
+                    </div>
+                    <small *ngIf="getDayPlan(week, 6)?.extraTips">{{ getDayPlan(week, 6)?.extraTips }}</small>
+                  </div>
+                </td>
+                
+                <!-- Sunday -->
+                <td class="dark-bg" 
+                    [class.week-disabled]="!week.hasWeekPlan && !isWeekHovered(week.weekNumber)"
+                    [class.hover-bg]="!week.hasWeekPlan && isWeekHovered(week.weekNumber) || (week.hasWeekPlan && !hasDayPlan(week, 7) && isDayHovered(week.weekNumber, 7))" 
+                    [class.has-plan]="week.hasWeekPlan"
+                    (mouseenter)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, 7) : null"
+                    (mouseleave)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, null) : null"
+                    (click)="!week.hasWeekPlan && isWeekHovered(week.weekNumber) ? openAddWeekPopup(week) : 
+                           (week.hasWeekPlan && !hasDayPlan(week, 7) && isDayHovered(week.weekNumber, 7)) ? openAddDayPopup(week, 7) : null">
+                  
+                  <!-- Add Week Button (if no week plan) -->
+                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button">
+                    <h5>Add Week</h5>
+                  </div>
+                  
+                  <!-- Add Day Button (if has week plan but no day plan) -->
+                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 7) && isDayHovered(week.weekNumber, 7)" class="add-day-button">
+                    <h5>Add Day Plan</h5>
+                  </div>
+                  
+                  <!-- Show Day Plan (if exists) -->
+                  <div *ngIf="week.hasWeekPlan && hasDayPlan(week, 7)" class="day-plan-info">
+                    <h5>Sunday</h5>
+                    <div *ngIf="getDayPlan(week, 7)?.parsedData?.exercises?.length > 0" class="plan-summary">
+                      <span class="plan-type">Exercises: {{ getDayPlan(week, 7)?.parsedData?.exercises?.length }}</span>
+                    </div>
+                    <div *ngIf="getDayPlan(week, 7)?.parsedData?.meals?.length > 0" class="plan-summary">
+                      <span class="plan-type">Meals: {{ getDayPlan(week, 7)?.parsedData?.meals?.length }}</span>
+                    </div>
+                    <small *ngIf="getDayPlan(week, 7)?.extraTips">{{ getDayPlan(week, 7)?.extraTips }}</small>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Class Timetable Section End -->
+
+<!-- Add Week Plan Popup -->
+<div class="popup-overlay" *ngIf="showWeekPopup">
+  <div class="popup-container">
+    <div class="popup-header">
+      <h3>Add Week Plan</h3>
+      <button class="close-btn" (click)="closeWeekPopup()">×</button>
+    </div>
+    <div class="popup-body">
+      <form (ngSubmit)="submitWeekPlan()">
+        <div class="form-group">
+          <label for="weekName">Week Name</label>
+          <input type="text" id="weekName" name="weekName" [(ngModel)]="newWeekPlan.weekName" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="startDate">Start Date</label>
+          <input type="date" id="startDate" name="startDate" [(ngModel)]="newWeekPlan.startDate" class="form-control" readonly>
+        </div>
+        <div class="form-group text-center">
+          <button type="submit" class="primary-btn">Create Week Plan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Add Day Plan Popup -->
+<div class="popup-overlay" *ngIf="showDayPopup">
+  <div class="popup-container day-plan-popup">
+    <div class="popup-header">
+      <h3>Add Day Plan</h3>
+      <button class="close-btn" (click)="closeDayPopup()">×</button>
+    </div>
+    <div class="popup-body">
+      <form (ngSubmit)="submitDayPlan()">
+        <div class="form-group">
+          <label for="dayDate">Day Date</label>
+          <input type="date" id="dayDate" name="dayDate" [(ngModel)]="newDayPlan.dayDate" class="form-control" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label for="extraTips">Extra Tips</label>
+          <textarea id="extraTips" name="extraTips" [(ngModel)]="newDayPlan.extraTips" class="form-control" rows="3"></textarea>
+        </div>
+        
+        <!-- Plan Items Sections -->
+        <div class="plan-sections">
+          <div class="section-tabs">
+            <button type="button" class="section-tab" [class.active]="activeSection === 'exercises'" (click)="setActiveSection('exercises')">Exercises</button>
+            <button type="button" class="section-tab" [class.active]="activeSection === 'meals'" (click)="setActiveSection('meals')">Meals</button>
+          </div>
+          
+          <!-- Exercises Section -->
+          <div class="section-content" *ngIf="activeSection === 'exercises'">
+            <h4>Exercises</h4>
+            
+            <div class="exercise-list">
+              <div class="exercise-item" *ngFor="let exercise of dayPlanData.exercises; let i = index">
+                <div class="exercise-header">
+                  <h5>{{ exercise.exerciseName || 'New Exercise' }}</h5>
+                  <button type="button" class="remove-btn" (click)="removeExercise(i)">×</button>
+                </div>
+                <div class="exercise-details">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Muscle Group</label>
+                      <input type="text" [(ngModel)]="exercise.muscleGroup" name="muscleGroup{{i}}" class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <label>Exercise Name</label>
+                      <input type="text" [(ngModel)]="exercise.exerciseName" name="exerciseName{{i}}" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Sets</label>
+                      <input type="number" [(ngModel)]="exercise.sets" name="sets{{i}}" class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <label>Reps</label>
+                      <input type="number" [(ngModel)]="exercise.reps" name="reps{{i}}" class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <label>Duration (min)</label>
+                      <input type="number" [(ngModel)]="exercise.duration" name="duration{{i}}" class="form-control">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <button type="button" class="add-item-btn" (click)="addExercise()">+ Add Exercise</button>
+          </div>
+          
+          <!-- Meals Section -->
+          <div class="section-content" *ngIf="activeSection === 'meals'">
+            <h4>Meals</h4>
+            
+            <div class="meal-list">
+              <div class="meal-item" *ngFor="let meal of dayPlanData.meals; let i = index">
+                <div class="meal-header">
+                  <h5>{{ meal.mealName || 'New Meal' }}</h5>
+                  <button type="button" class="remove-btn" (click)="removeMeal(i)">×</button>
+                </div>
+                <div class="meal-details">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Meal Type</label>
+                      <select [(ngModel)]="meal.mealType" name="mealType{{i}}" class="form-control">
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                        <option value="snack">Snack</option>
+                        <option value="preworkout">Pre-Workout</option>
+                        <option value="postworkout">Post-Workout</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Meal Name</label>
+                      <input type="text" [(ngModel)]="meal.mealName" name="mealName{{i}}" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Quantity</label>
+                      <input type="text" [(ngModel)]="meal.quantity" name="quantity{{i}}" class="form-control">
+                    </div>
+                    <div class="form-group checkbox-group">
+                      <label>
+                        <input type="checkbox" [(ngModel)]="meal.isSupplement" name="isSupplement{{i}}">
+                        Is Supplement
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Meal Notes</label>
+                    <textarea [(ngModel)]="meal.notes" name="mealNotes{{i}}" class="form-control" rows="2"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <button type="button" class="add-item-btn" (click)="addMeal()">+ Add Meal</button>
+          </div>
+        </div>
+        
+        <div class="form-group text-center">
+          <button type="submit" class="primary-btn">Create Day Plan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

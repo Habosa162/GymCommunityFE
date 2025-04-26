@@ -41,11 +41,7 @@ import { MyClientsComponent } from './presentation/Coach/my-clients/my-clients/m
 import { SelectRoleComponent } from './presentation/auth/components/select-role/select-role.component';
 import { HomeComponent } from './presentation/home/home/home.component';
 import { PaymentSuccessComponent } from './presentation/Ecommerce/payment-success/payment-success.component';
-
-
-
-
-
+import { TrainingPlanComponent } from './presentation/traningPlans/training-plan/training-plan.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -57,31 +53,94 @@ export const routes: Routes = [
   { path: 'Choose-role', component: SelectRoleComponent },
   //client routes
 
-  { path: 'profile/me', component: ClientProfileComponent, canActivate: [AuthGuard, clientGuard] },
+  {
+    path: 'profile/me',
+    component: ClientProfileComponent,
+    canActivate: [AuthGuard, clientGuard],
+  },
   { path: 'profile/:userId', component: ClientProfileComponent },
   //Forum routes
   { path: 'subjects', component: SubjectComponent, canActivate: [AuthGuard] },
-  { path: 'subjects/create', component: SubjectComponent, canActivate: [AuthGuard] },
-  { path: 'subjects/edit/:id', component: SubjectComponent, canActivate: [AuthGuard] },
-  { path: 'subjects/details/:id', component: SubjectComponent, canActivate: [AuthGuard] },
+  {
+    path: 'subjects/create',
+    component: SubjectComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'subjects/edit/:id',
+    component: SubjectComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'subjects/details/:id',
+    component: SubjectComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'forum', component: ForumComponent, canActivate: [AuthGuard] },
   //Plan routes
-  { path: 'training-plans', component: TrainingPlansComponent, canActivate: [AuthGuard] },
-  { path: 'training-plans/create', component: TrainingPlansComponent, canActivate: [AuthGuard, AdminCoachGuard] },
-  { path: 'training-plans/edit/:id', component: TrainingPlansComponent, canActivate: [AuthGuard, AdminCoachGuard] },
-  { path: 'training-plans/details/:id', component: TrainingPlansComponent, canActivate: [AuthGuard, AdminCoachGuard] },
+  {
+    path: 'training-plans',
+    component: TrainingPlansComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'trainingPlan/:id',
+    component: TrainingPlanComponent,
+    canActivate: [AuthGuard],
+  },
+
+  {
+    path: 'training-plans/create',
+    component: TrainingPlansComponent,
+    canActivate: [AuthGuard, AdminCoachGuard],
+  },
+  {
+    path: 'training-plans/edit/:id',
+    component: TrainingPlansComponent,
+    canActivate: [AuthGuard, AdminCoachGuard],
+  },
+  {
+    path: 'training-plans/details/:id',
+    component: TrainingPlansComponent,
+    canActivate: [AuthGuard, AdminCoachGuard],
+  },
   //Ecommerce routes
 
   { path: 'shop', component: ProductsListComponent },
-  { path: 'create-category', component: CreateCategoryComponent, canActivate: [AuthGuard, AdminGuard] },
-  { path: 'create-brand', component: CreateBrandComponent, canActivate: [AuthGuard, AdminGuard] },
-  { path: 'create-product', component: CreateProductComponent, canActivate: [AuthGuard, AdminCoachGuard] },
-  { path: 'wish-list', component: WishListComponent, title: 'wish-list', canActivate: [AuthGuard, clientGuard] },
-  { path: 'product-details/:id', component: ProductDetailsComponent, title: 'product details', canActivate: [AuthGuard, clientGuard] },
+  {
+    path: 'create-category',
+    component: CreateCategoryComponent,
+    canActivate: [AuthGuard, AdminGuard],
+  },
+  {
+    path: 'create-brand',
+    component: CreateBrandComponent,
+    canActivate: [AuthGuard, AdminGuard],
+  },
+  {
+    path: 'create-product',
+    component: CreateProductComponent,
+    canActivate: [AuthGuard, AdminCoachGuard],
+  },
+  {
+    path: 'wish-list',
+    component: WishListComponent,
+    title: 'wish-list',
+    canActivate: [AuthGuard, clientGuard],
+  },
+  {
+    path: 'product-details/:id',
+    component: ProductDetailsComponent,
+    title: 'product details',
+    canActivate: [AuthGuard, clientGuard],
+  },
   { path: 'cart', component: CartComponent, title: 'Cart' },
   { path: 'checkout', component: CheckoutComponent, title: 'Checkout' },
-  { path: 'payment-success', component: PaymentSuccessComponent, title: 'payment' },
-
+  {
+    path: 'payment-success',
+    component: PaymentSuccessComponent,
+    title: 'payment',
+  },
 
   //Gym routes
   { path: 'gym-owner-dashboard', component: GymOwnerDashboardComponent },
@@ -89,7 +148,10 @@ export const routes: Routes = [
   { path: 'gym-owner', component: GymOwnerDashboardComponent },
   { path: 'gym-owner/gym/:id', component: GymDetailsComponent },
   { path: 'gym-owner/plan/:id', component: PlanDetailsComponent },
-  { path: 'gym-owner/subscription/:id', component: SubscriptionDetailsComponent },
+  {
+    path: 'gym-owner/subscription/:id',
+    component: SubscriptionDetailsComponent,
+  },
 
   //coach
 
@@ -100,16 +162,16 @@ export const routes: Routes = [
       // Public coach routes
       {
         path: '',
-        component: CoachesListComponent
+        component: CoachesListComponent,
       },
       {
         path: 'profile/:coachId',
-        component: PublicCoachProfileComponent
+        component: PublicCoachProfileComponent,
       },
       {
         path: 'rate/:coachId',
         component: CoachRatingComponent,
-        canActivate: [AuthGuard, clientGuard]
+        canActivate: [AuthGuard, clientGuard],
       },
 
       // Private coach routes (requires authentication and coach role)
@@ -121,13 +183,12 @@ export const routes: Routes = [
           { path: 'portfolio', component: CoachPortfolioComponent },
           { path: 'certificates', component: CoachCertificatesComponent },
           { path: 'work-samples', component: CoachWorkSamplesComponent },
-          { path: 'my-client', component: MyClientsComponent }
-        ]
-      }
-    ]
+          { path: 'my-client', component: MyClientsComponent },
+        ],
+      },
+    ],
   },
 
   // Default route
-  { path: '', redirectTo: '/', pathMatch: 'full' }
-
+  { path: '', redirectTo: '/', pathMatch: 'full' },
 ];
