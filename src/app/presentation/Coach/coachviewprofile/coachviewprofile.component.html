@@ -1,0 +1,45 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="profile-image">
+      <img [src]="coach?.portfolio?.aboutMeImageUrl" alt="Coach Profile">
+    </div>
+
+    <div class="profile-info">
+      <h2>{{userName}}</h2>
+      <!-- <p class="username">{{userName}}</p> -->
+      <p class="bio">{{coach?.portfolio?.aboutMeDescription}}</p>
+
+
+    </div>
+  </div>
+
+  <div class="profile-tabs">
+    <div class="tab-buttons">
+      <button class="tab-btn active">Portfolio</button>
+      <button class="tab-btn" routerLink="/coach/dashboard/certificates">Certifications</button>
+      <button class="tab-btn">Clients</button>
+    </div>
+  </div>
+
+  <div class="profile-stats">
+    <div class="stat-item">
+      <h3>Experience</h3>
+      <p>{{coach?.portfolio?.experienceYears}} Years</p>
+    </div>
+    <div class="stat-item">
+      <h3>Specialization</h3>
+      <p>{{coach?.portfolio?.qualifications}}</p>
+    </div>
+    <div class="stat-item">
+      <h3>Rating</h3>
+      <p>{{ averageRating | number:'1.1-1'}}</p>
+    </div>
+  </div>
+
+  <div class="schedule-section">
+    <h3>Working Hours</h3>
+    <div class="schedule-grid">
+      <!-- Add schedule implementation here -->
+    </div>
+  </div>
+</div>
