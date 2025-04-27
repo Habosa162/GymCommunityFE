@@ -5,44 +5,65 @@ import { CoachFullProfile } from '../../../domain/models/CoachModels/coach-full-
 import { CoachService } from '../../../services/Coachservice/coach.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppUser, CoachClientsDTO } from '../../../domain/models/CoachModels/coachclient.model';
+import { CoachCleintsService } from '../../../services/Coachservice/coacclients.service';
 
 @Component({
   selector: 'app-coach-view-profile',
   templateUrl: './coachviewprofile.component.html',
   styleUrls: ['./coachviewprofile.component.css'],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule]
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, FormsModule]
 })
 export class CoachViewProfileComponent implements OnInit {
+  appUser!: AppUser;
   coach!: CoachFullProfile;
-
+  clients: CoachClientsDTO[] = [];
   coachId!: string;
-  userName = '';
+  activeTab: string = 'certificates';
+  username!: any;
 
-  constructor(
-    private coachservice: CoachService,
-    private authService: AuthService,
-    private route: ActivatedRoute
-  ) { }
+  constructor(private coachService: CoachService, private authservice: AuthService, private route: ActivatedRoute, private coachclientservice: CoachCleintsService) { }
 
   ngOnInit(): void {
-    this.loadCoachProfile();
+    this.loadCoachData();
 
   }
 
-  loadCoachProfile(): void {
-    this.coachId = this.authService.getUserId() || this.route.snapshot.paramMap.get('coachId')!;
-    this.userName = this.authService.getUserName() || 'Coach';
-    this.coachservice.getCoachFullProfile(this.coachId).subscribe({
-      next: (profile: any) => {
-        this.coach = profile;
-        console.log(this.coach.ratings)
+  loadCoachData(): void {
+    // Assuming your service returns all the needed data
+    this.coachId = this.authservice.getUserId() || this.route.snapshot.paramMap.get('coachId')!;
+    this.coachclientservice.getClientsByCoachId().subscribe({
+      next: (res: any) => {
+        this.clients = res;
       },
-      error: (error: any) => {
-        console.error('Error loading coach profile:', error);
+      error: (error) => {
+        console.error('Error loading coach clients data', error);
+      }
+    })
+
+    this.username = this.authservice.getUserName()
+
+    this.coachService.getCoachFullProfile(this.coachId).subscribe({
+      next: (response) => {
+        this.coach = response;
+        if (this.coach?.portfolio?.skillsJson && typeof this.coach.portfolio.skillsJson === 'string') {
+          this.coach.portfolio.skillsJson = JSON.parse(this.coach.portfolio.skillsJson);
+        }
+
+        if (this.coach?.portfolio?.socialMediaLinksJson && typeof this.coach.portfolio.socialMediaLinksJson === 'string') {
+          this.coach.portfolio.socialMediaLinksJson = JSON.parse(this.coach.portfolio.socialMediaLinksJson);
+        }
+
+      },
+      error: (error) => {
+        console.error('Error loading coach profile data', error);
       }
     });
+  }
 
+  setActiveTab(tabName: string): void {
+    this.activeTab = tabName;
   }
 
   get averageRating(): number {

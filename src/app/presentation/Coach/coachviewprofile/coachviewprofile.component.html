@@ -1,45 +1,81 @@
-<div class="profile-container">
-  <div class="profile-header">
-    <div class="profile-image">
-      <img [src]="coach?.portfolio?.aboutMeImageUrl" alt="Coach Profile">
+<div class="container mt-4">
+  <div class="text-center">
+    <img [src]="coach.portfolio.aboutMeImageUrl" alt="Profile" class="rounded-circle" width="150" height="150">
+    <h2 class="mt-2">{{ username }} </h2>
+    <p class="text-muted">{{ coach.portfolio.qualifications }}</p>
+    <p>{{coach. portfolio.aboutMeDescription }}</p>
+    <div class="mb-2">
+      <span class="badge bg-primary me-1" *ngFor="let skill of coach?.portfolio?.skillsJson">
+        {{ skill }}
+      </span>
     </div>
-
-    <div class="profile-info">
-      <h2>{{userName}}</h2>
-      <!-- <p class="username">{{userName}}</p> -->
-      <p class="bio">{{coach?.portfolio?.aboutMeDescription}}</p>
-
-
-    </div>
-  </div>
-
-  <div class="profile-tabs">
-    <div class="tab-buttons">
-      <button class="tab-btn active">Portfolio</button>
-      <button class="tab-btn" routerLink="/coach/dashboard/certificates">Certifications</button>
-      <button class="tab-btn">Clients</button>
+    <div>
+      <a *ngFor="let link of coach?.portfolio?.socialMediaLinksJson" [href]="link" target="_blank" class="me-2">
+        {{ link }}
+      </a>
     </div>
   </div>
 
-  <div class="profile-stats">
-    <div class="stat-item">
-      <h3>Experience</h3>
-      <p>{{coach?.portfolio?.experienceYears}} Years</p>
-    </div>
-    <div class="stat-item">
-      <h3>Specialization</h3>
-      <p>{{coach?.portfolio?.qualifications}}</p>
-    </div>
-    <div class="stat-item">
-      <h3>Rating</h3>
-      <p>{{ averageRating | number:'1.1-1'}}</p>
-    </div>
-  </div>
+  <ul class="nav justify-content-center">
 
-  <div class="schedule-section">
-    <h3>Working Hours</h3>
-    <div class="schedule-grid">
-      <!-- Add schedule implementation here -->
+
+    <li>
+      <button (click)="setActiveTab('certificates')" [class.active]="activeTab === 'certificates'">Certificates</button>
+    </li>
+    <li>
+      <button (click)="setActiveTab('workSamples')" [class.active]="activeTab === 'workSamples'">Work Samples</button>
+    </li>
+    <li>
+      <button (click)="setActiveTab('my-client')" [class.active]="activeTab === 'my-client'">Clients</button>
+    </li>
+
+    <li>
+      <button (click)="setActiveTab('ratings')" [class.active]="activeTab === 'ratings'">Ratings</button>
+    </li>
+  </ul>
+
+
+  <div class="tab-content mt-4">
+    <div *ngIf="activeTab === 'portfolio'">
+      <!-- Portfolio Details Here -->
     </div>
+
+    <div *ngIf="activeTab === 'certificates'" class="row">
+      <div class="col-md-4 mb-3" *ngFor="let cert of coach?.certificates">
+        <img [src]="cert.imageUrl" class="img-fluid rounded shadow" alt="Certificate" height="150px">
+      </div>
+    </div>
+
+    <div *ngIf="activeTab === 'workSamples'" class="row">
+      <div class="col-md-4 mb-3" *ngFor="let work of coach?.workSamples">
+        <div class="card h-100 shadow">
+          <img [src]="work.imageUrl" class="card-img-top " alt="Work Sample" height="150px">
+          <div class="card-body">
+            <p class="card-text">{{ work.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="activeTab === 'ratings'">
+      <div class="mb-3" *ngFor="let rating of coach?.ratings">
+        <div class="border p-3 rounded shadow-sm">
+          <strong>Rate:</strong> {{ rating.rate }} ⭐
+          <p class="mb-0">{{ rating.comment }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="activeTab === 'clients'" class="row">
+      <div class="col-md-4 mb-3" *ngFor="let client of clients">
+        <div class="card h-100 text-center shadow">
+          <img [src]="client.client.profileImg" class="rounded-circle mx-auto mt-3" width="80" height="80" alt="Client">
+          <div class="card-body">
+            <h5 class="card-title">{{ client.client.firstName }} {{ client.client.lastName }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

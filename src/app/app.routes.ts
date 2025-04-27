@@ -43,6 +43,7 @@ import { HomeComponent } from './presentation/home/home/home.component';
 import { PaymentSuccessComponent } from './presentation/Ecommerce/payment-success/payment-success.component';
 import { TrainingPlanComponent } from './presentation/traningPlans/training-plan/training-plan.component';
 import { OrderSummaryComponent } from './presentation/Ecommerce/order-summery/order-summary.component';
+import { CoachViewProfileComponent } from './presentation/Coach/coachviewprofile/coachviewprofile.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -184,7 +185,7 @@ export const routes: Routes = [
         path: 'dashboard',
         canActivate: [AuthGuard, CoachGuard],
         children: [
-          { path: '', component: PublicCoachProfileComponent },
+          { path: '', component: CoachViewProfileComponent },
           { path: 'portfolio', component: CoachPortfolioComponent },
           { path: 'certificates', component: CoachCertificatesComponent },
           { path: 'work-samples', component: CoachWorkSamplesComponent },
