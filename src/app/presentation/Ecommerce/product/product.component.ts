@@ -6,6 +6,7 @@ import { wishlistItem } from './../../../domain/models/Ecommerce/wishList.model'
 import { WishlistService } from './../../../services/Ecommerce/wishlist.service';
 import { AuthService } from '../../../services/auth.service';
 import { CartService } from '../../../services/Ecommerce/cart.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product',
@@ -23,18 +24,51 @@ export class ProductComponent {
   constructor(
     private wishlistService: WishlistService,
     protected authService: AuthService,
-    private cartService: CartService
+    private cartService: CartService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
     this.getWishlist();
   }
+  toasterSuccess(message: string, product: any) {
+    this.toastr.show(
+      `<div class="row justify-content-center align-items-center toaster custom-toast custom-toast.toast-success" id="toaster">
+        <div class="col-md-4">
+          <img src="${product.imageUrl}" 
+               class="img-fluid rounded" 
+               style="width: 50px; height:50px; object-fit: cover;" 
+               />
+        </div>
+
+        <div class="col-md-8 d-flex flex-column justify-content-center align-items-center">
+          <div class="fw-semibold text-light" style="font-size: 14px !important;"><small>${product.name}</small></div>
+          <p class="fw-semibold fw-small text-light" style="font-size: 10px !important;"><small>${message}</small></p>
+        </div>
+      </div>`,
+      '',
+      {
+        enableHtml: true,
+        toastClass: 'ngx-toastr',
+        positionClass: 'toast-top-right',
+        timeOut: 20000,
+        closeButton: false,
+        progressBar: true,
+        progressAnimation: 'decreasing',
+      }
+    );
+  }
+
+  
+  
   // Cart Methods
   addToCart(product:Product): void {    
     if (!this.cartService.isInCart(product.id)) {
       this.cartService.addToCart(product); 
+      this.toasterSuccess('was added to cart', product);
     } else {
       this.cartService.removeFromCart(product.id);
+      this.toasterSuccess('was removed from cart', product);
     }
   }
   isInCart(product: Product): boolean {
@@ -46,7 +80,7 @@ export class ProductComponent {
       next: (res) => {
         this.WishList = res;
       },
-      error: (err) => console.error('Failed to fetch wishlist:', err)
+      error: (err) => this.toastr.error('Failed to load wishlist', 'Error')
     });
   }
 
@@ -55,13 +89,13 @@ export class ProductComponent {
 
     this.wishlistService.addToWishlist(productId).subscribe({
       next: (res) => {
-        console.log('Added to wishlist', res);
+        this.toasterSuccess('was added to wishlist<i class="fa fa-cart"></i>', this.product);
         this.getWishlist();
         this.resetAnimation(productId);
       },
       error: (err) => {
-        console.error('Failed to add to wishlist:', err);
         this.resetAnimation(productId);
+        this.toastr.error('Failed to add to wishlist', 'Error');
       }
     });
   }
@@ -73,7 +107,7 @@ export class ProductComponent {
     this.animatedHeart[productId] = true;
 
     this.wishlistService.removeFromWishlist(wishListItem.wishListId).subscribe((res)=>{
-      console.log('Removed from wishlist', res);
+      this.toasterSuccess('was removed from cart', this.product);
       this.getWishlist();
       this.resetAnimation(productId);
       this.removedFromWishlist.emit(wishListItem.wishListId); 

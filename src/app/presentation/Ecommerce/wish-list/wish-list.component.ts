@@ -12,6 +12,7 @@ import { Component } from '@angular/core';
 })
 export class WishListComponent {
 
+  isLoading = true;
 
   wishlistProducts: Product[] = [];
   constructor(private WishlistService: WishlistService) {}
@@ -22,6 +23,10 @@ export class WishListComponent {
   getWishList(){
     this.WishlistService.getWishlist().subscribe((res)=>{
       this.wishlistProducts = res ;
+      this.isLoading = false;
+    },(err)=>{
+      console.log(err);
+      this.isLoading = false;
     })
   }
   ngOnInit(){

@@ -48,3 +48,20 @@
 
   color: red !important;
 }
+
+.toast-success::before {
+  display: none !important;
+}
+
+#toast-container .toast-success{
+  background-color: #D6D6D6 !important;
+}
+.toast-success{
+  background-color: #D6D6D6 !important;
+}
+.toast-container .toast-success{
+  color: #000 !important;
+}
+.toast-success::before {
+  display: none !important;
+}

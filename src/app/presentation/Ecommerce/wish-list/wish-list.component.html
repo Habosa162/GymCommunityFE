@@ -1,19 +1,27 @@
 <section id="wishlist" class="min-vh-100 py-5">
-<div class="container">
-  <div class="row">
-    <div class="col-12 text-center mb-4">
-      <h2 class="mainColor">My Wishlist</h2>
-      <p class="text-black-50">You have {{ wishlistProducts.length }} products in your wishlist.</p>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center mb-4">
+        <h2 class="mainColor">My Wishlist</h2>
+        <p class="text-black-50">You have {{ wishlistProducts.length }} products in your wishlist.</p>
+      </div>
+
+
+      <!-- Skeleton loading -->
+      <ng-container *ngIf="isLoading; else showProducts">
+        <div *ngFor="let skeleton of [1,2,3,4]" class="col-md-4 mb-4">
+          <div class="skeleton-card"></div>
+        </div>
+      </ng-container>
+
+      <ng-template #showProducts>
+        <div class="col-md-4" *ngFor="let product of wishlistProducts">
+          <app-product [product]="product" (removedFromWishlist)="removeItemFromWishlist($event)"></app-product>
+        </div>
+      </ng-template>
+
+
+
     </div>
-
-    <div class="col-md-4" *ngFor="let product of wishlistProducts">
-      <app-product
-       [product]="product"
-      (removedFromWishlist)="removeItemFromWishlist($event)"
-      ></app-product>
-    </div>
-
-
   </div>
-</div>
 </section>
