@@ -5,3 +5,22 @@
   background-color: #202020 !important;
   border: 1px solid hsl(0, 0%, 50%) !important;
 }
+
+
+
+:host-context(body.dark-mode) .skeleton-card{
+  background: linear-gradient(-90deg, #4d4b4b 0%, #000000 50%, #202020 100%);
+}
+.skeleton-card {
+  width: 100%;
+  height: 350px;
+  background: linear-gradient(-90deg, #e0e0e0 0%, #f8f8f8 50%, #e0e0e0 100%);
+  background-size: 400% 400%;
+  animation: shimmer 1.2s ease-in-out infinite;
+  border-radius: 10px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
