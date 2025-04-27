@@ -9,10 +9,12 @@ import { Product } from '../../../domain/models/Ecommerce/product.model';
 import { ProductComponent } from '../product/product.component';
 import { CommonModule } from '@angular/common';
 import { wishlistItem } from '../../../domain/models/Ecommerce/wishList.model';
+import { Review } from '../../../domain/models/Ecommerce/Review.model'; // Add this import
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-details',
-  imports: [ProductComponent, CommonModule, RouterModule],
+  imports: [ProductComponent, CommonModule, RouterModule, FormsModule],
   standalone: true,
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.css']
@@ -25,7 +27,12 @@ export class ProductDetailsComponent implements OnInit {
   WishList: wishlistItem[] = [];
   animatedHeart: { [productId: number]: boolean } = {};
   isHovering = false;
-  
+  newReview: Review = {
+    rating: 0,
+    comment: '',
+    productId: 0
+  };
+  isSubmitting = false;
 
 
   constructor(
@@ -43,6 +50,7 @@ export class ProductDetailsComponent implements OnInit {
       if (productId) {
         this.loadProductDetails(+productId);
         this.loadReviews(+productId);
+        this.newReview.productId = +productId; 
         this.loadWishlist();
       }
     });
@@ -110,7 +118,8 @@ removeFromWishList(productId: number): void {
 private loadReviews(productId: number): void {
   this.reviewService.getReviews(productId).subscribe({
     next: (reviews) => {
-      this.reviews = reviews; // Store the reviews here
+      console.log('Reviews loaded:', reviews); // Log to check if reviews are fetched correctly
+      this.reviews = reviews;  // Store the reviews here
     },
     error: (err) => {
       console.error('Error loading reviews:', err);
@@ -118,12 +127,14 @@ private loadReviews(productId: number): void {
   });
 }
 
+
 //prouct Methods
   private loadProductDetails(productId: number): void {
     this.productService.getOneProduct(productId).subscribe({
       next: (product) => {
         this.Product = product;
         this.loadCategoryProducts(product.categoryID);
+        this.newReview.productId = product.id; // Set product ID for new review
       },
       error: (err) => {
         console.error('Error loading product details:', err);
@@ -156,4 +167,28 @@ private loadReviews(productId: number): void {
       ...new Array(emptyStars).fill(0)  // Empty stars
     ];
   }
-}
+
+    // Submit Review
+    submitReview(): void {
+      if (this.newReview.comment.trim() === '' || this.newReview.rating === 0) {
+        return;
+      }
+      this.isSubmitting = true;
+    
+      this.reviewService.createReview(this.newReview).subscribe({
+        next: (review) => {
+          this.loadReviews(this.newReview.productId); // ✅ Reload all reviews after adding
+          alert('Review submitted successfully!');
+          this.newReview.comment = '';
+          this.newReview.rating = 0;
+        },
+        error: (err) => {
+          console.error('Error submitting review:', err);
+        },
+        complete: () => {
+          this.isSubmitting = false;
+        }
+      });
+    }
+    
+  }    

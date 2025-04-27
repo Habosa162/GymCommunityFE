@@ -1,3 +1,4 @@
+import { Review } from './Review.model'; // Add this import
 export interface Product{
   id: number;
   name: string;
@@ -12,6 +13,8 @@ export interface Product{
   brandId : number ;
   brandName : string ;
   discountAmount:number ;
+  reviews?: Review[]; // Add reviews array to product
+  averageRating?: number; // Add calculated rating
   // : number;
   // reviews: number;
   // updatedAt: Date;

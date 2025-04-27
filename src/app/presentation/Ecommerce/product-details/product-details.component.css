@@ -38,3 +38,34 @@
   transform: scale(1.8);
 }
 
+/* review*/
+/* product-details.component.css */
+.review-item {
+  background-color: white;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.stars {
+  color: gold;
+  font-size: 18px;
+}
+.fa-star {
+  color: gray; /* default color */
+}
+
+.checked {
+  color: gold; /* colored stars */
+}
+
+
+.comment {
+  margin-top: 8px;
+  font-size: 16px;
+  color: #333;
+}
+.checked {
+  color: gold;
+}
