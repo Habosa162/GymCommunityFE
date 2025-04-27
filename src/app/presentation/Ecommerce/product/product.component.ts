@@ -41,9 +41,9 @@ export class ProductComponent {
                />
         </div>
 
-        <div class="col-md-8 d-flex flex-column justify-content-center align-items-center">
-          <div class="fw-semibold text-light" style="font-size: 14px !important;"><small>${product.name}</small></div>
-          <p class="fw-semibold fw-small text-light" style="font-size: 10px !important;"><small>${message}</small></p>
+        <div class="col-md-8 d-flex flex-column justify-content-center align-items-start">
+          <div class="fw-semibold text-light" style="font-size: 14px !important;"><small>${product.name.toUpperCase()}</small></div>
+          <p class="fw-semibold fw-small text-light text-start" style="font-size: 10px !important;"><small>${message}</small></p>
         </div>
       </div>`,
       '',
@@ -51,8 +51,8 @@ export class ProductComponent {
         enableHtml: true,
         toastClass: 'ngx-toastr',
         positionClass: 'toast-top-right',
-        timeOut: 20000,
-        closeButton: false,
+        timeOut: 3000,
+        closeButton: true,
         progressBar: true,
         progressAnimation: 'decreasing',
       }
