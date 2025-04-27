@@ -177,7 +177,10 @@ private loadReviews(productId: number): void {
     
       this.reviewService.createReview(this.newReview).subscribe({
         next: (review) => {
-          this.loadReviews(this.newReview.productId); // ✅ Reload all reviews after adding
+          // this.loadReviews(this.newReview.productId); 
+          if(review) {
+            this.reviews.push(review);   
+          }
           alert('Review submitted successfully!');
           this.newReview.comment = '';
           this.newReview.rating = 0;

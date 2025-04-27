@@ -44,7 +44,7 @@
   background-color: white;
   border-radius: 8px;
   padding: 10px;
-  margin-bottom: 10px;
+  margin-top: 10px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
@@ -60,8 +60,13 @@
   color: gold; /* colored stars */
 }
 
-
+.submitReview{
+  border-bottom: #63CE34 5px solid;
+  padding: 5px;
+}
 .comment {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 600;
   margin-top: 8px;
   font-size: 16px;
   color: #333;
@@ -69,3 +74,40 @@
 .checked {
   color: gold;
 }
+
+.form-group textarea{
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 1.5rem;
+}
+/************Review Dark**********************/
+:host-context(body.dark-mode) .review-item {
+  background-color: #202020;
+  color : #ffffff !important;
+  border-radius: 8px;
+  box-shadow: 20px 20px 20px 20px rgba(241, 232, 232, 0.8);
+}
+
+:host-context(body.dark-mode) .comment {
+  color : #ffffff !important;
+}
+:host-context(body.dark-mode) .form-group textarea{
+  background-color: #202020;
+  color : #ffffff !important;
+}
+:host-context(body.dark-mode) .form-group select{
+  background-color: #202020;
+  color : #ffffff !important;
+}
+
+:host-context(body.dark-mode) option{
+  color: #ffffff;
+}
+
+:host-context(body.dark-mode) .text-muted{
+  color: rgba(185, 185, 185,0.6) !important;
+}
+
+.w-25{
+  width: 25% !important; 
+}
+

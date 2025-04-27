@@ -53,51 +53,65 @@
 
  <!-- Reviews Section -->
 <div *ngIf="Product" class="mt-4">
-  <h4 class="green-dark">Customer Reviews</h4>
+  <h4 class="green-dark text-center fs-1">Customer Reviews</h4>
 
 <!-- Review Form -->
 <div *ngIf="authService.isLoggedIn()" class="mt-4">
-  <h4 class="green-dark">Submit Your Review</h4>
+  <h4 class="green-dark mb-5"><span class="submitReview">Submit Your Review</span></h4>
   <form (ngSubmit)="submitReview()" #reviewForm="ngForm">
-    <div class="form-group">
-      <label for="rating">Rating</label>
-      <select [(ngModel)]="newReview.rating" name="rating" class="form-control" required>
-        <option value="1">1 Star</option>
-        <option value="2">2 Stars</option>
-        <option value="3">3 Stars</option>
-        <option value="4">4 Stars</option>
-        <option value="5">5 Stars</option>
+    <div class="form-group mb-3 ">
+      <label for="rating" class="fs-5 fw-bolder form-label">Rating</label>
+      <select [(ngModel)]="newReview.rating" name="rating" id="rating" class="form-select rounded" required>
+        <option value="" disabled selected>Select a Rating</option>
+        <option value="1">⭐ 1 Star</option>
+        <option value="2">⭐⭐ 2 Stars</option>
+        <option value="3">⭐⭐⭐ 3 Stars</option>
+        <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+        <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
       </select>
     </div>
-    <div class="form-group">
-      <label for="comment">Comment</label>
-      <textarea [(ngModel)]="newReview.comment" name="comment" class="form-control" rows="4" required></textarea>
+    <div class="form-group mb-3">
+      <label for="comment" class="fs-5 fw-bolder form-label">Comment</label>
+      <textarea [(ngModel)]="newReview.comment" name="comment" class="form-control rounded" rows="3" required></textarea>
     </div>
-    <button type="submit" class="btn btn-success mt-3" [disabled]="reviewForm.invalid || isSubmitting">
-      <span *ngIf="!isSubmitting">Submit Review</span>
-      <span *ngIf="isSubmitting">
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        Submitting...
-      </span>
-    </button>
+    <div class="d-flex justify-content-center align-items-center my-5">
+      <button type="submit" class="btn btn-outline-success mt-3 w-25" [disabled]="reviewForm.invalid || isSubmitting">
+        <span *ngIf="!isSubmitting">Submit Review</span>
+        <span *ngIf="isSubmitting">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Submitting...
+        </span>
+      </button>
+    </div>
   </form>
 </div>
 
   <!-- Display Reviews -->
-  <div *ngIf="reviews.length > 0">
-    <div *ngFor="let review of reviews" class="review-item">
-      <div class="stars">
-        <ng-container *ngFor="let star of [1,2,3,4,5]">
-          <i class="fa fa-star" [ngClass]="{'checked': star <= review.rating}"></i>
-        </ng-container>
-      </div>
-      <div class="comment">
-        {{ review.comment }}
+  <div *ngIf="reviews.length > 0" class="mt-4">
+    <div *ngFor="let review of reviews" class="review-item card shadow-sm mb-3">
+      <div class="card-body">
+        
+        <!-- Stars -->
+        <div class="mb-2">
+          <ng-container *ngFor="let star of [1,2,3,4,5]">
+            <i class="fa fa-star" [ngClass]="star <= review.rating ? 'text-warning' : 'text-secondary'"></i>
+          </ng-container>
+        </div>
+  
+        <!-- Comment -->
+        <p class="card-text mb-2">{{ review.comment }}</p>
+  
+        <!-- Comment Info (Date) -->
+        <div class="text-end text-muted" style="font-size: 0.8rem;">
+          {{ review.createdAt | date:'shortDate' }}
+        </div>
+  
       </div>
     </div>
-    
-    
   </div>
+  
+
+
   <div *ngIf="!reviews?.length">
     <p class="light-dark">No reviews yet. Be the first to review!</p>
   </div>
