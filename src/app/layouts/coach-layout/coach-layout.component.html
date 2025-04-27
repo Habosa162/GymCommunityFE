@@ -2,8 +2,8 @@
     <!-- Top Navigation Bar -->
     <header class="top-nav">
         <div class="nav-left">
-            <button class="sidebar-toggle" (click)="toggleSidebar()">
-                <i class="bi bi-list"></i>
+            <button class="sidebar-toggle btn " (click)="toggleSidebar()">
+                <i class="bi bi-list">Manage Account</i>
             </button>
             <div class="logo">
                 <a routerLink="/">
@@ -46,21 +46,21 @@
     <!-- Side Navigation -->
     <aside class="sidebar" [class.collapsed]="!isSidebarOpen">
         <div class="sidebar-header">
-            <div class="coach-profile">
-                <img [src]="userImage" alt="Coach Profile" class="coach-avatar">
-                <div class="coach-info" *ngIf="isSidebarOpen">
-                    <h3>{{ userName }}</h3>
-                    <p>Professional Coach</p>
-                </div>
+            <!-- <div class="coach-profile"> -->
+            <!-- <img [src]="userImage" alt="Coach Profile" class="coach-avatar"> -->
+            <div class="coach-info" *ngIf="isSidebarOpen">
+                <h3>Manage</h3>
+                <p>Professional Coach</p>
             </div>
         </div>
+        <!-- </div> -->
 
         <nav class="sidebar-nav">
             <ul>
                 <li>
                     <a routerLink="/coach/dashboard" routerLinkActive="active">
                         <i class="bi bi-speedometer2"></i>
-                        <span *ngIf="isSidebarOpen">Dashboard</span>
+                        <span *ngIf="isSidebarOpen">Profile</span>
                     </a>
                 </li>
                 <li>
@@ -101,7 +101,7 @@
     </aside>
 
     <!-- Main Content Area -->
-    <main class="main-content" [class.sidebar-collapsed]="!isSidebarOpen">
+    <main class="main-content mt-0" [class.sidebar-collapsed]="!isSidebarOpen">
         <router-outlet></router-outlet>
     </main>
 </div>
