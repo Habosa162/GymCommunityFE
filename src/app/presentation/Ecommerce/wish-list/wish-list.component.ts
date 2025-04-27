@@ -12,13 +12,12 @@ import { Component } from '@angular/core';
 })
 export class WishListComponent {
 
-  
+
   wishlistProducts: Product[] = [];
   constructor(private WishlistService: WishlistService) {}
 
   removeItemFromWishlist(wishListId: number) {
-    console.log("im here") ;  
-    this.getWishList() ; 
+    this.getWishList() ;
   }
   getWishList(){
     this.WishlistService.getWishlist().subscribe((res)=>{

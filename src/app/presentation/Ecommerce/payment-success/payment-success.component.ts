@@ -2,7 +2,7 @@ import { OrderRequestDTO } from './../../../domain/models/Ecommerce/order.model'
 import { PaymentDTO } from './../../../domain/models/Ecommerce/payment.mdoel';
 import { ShippingDTO } from './../../../domain/models/Ecommerce/shipping.model';
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PaymentService } from '../../../services/Ecommerce/payment.service';
 import { CartService } from '../../../services/Ecommerce/cart.service';
 import { OrderService } from '../../../services/Ecommerce/order.service';
@@ -10,10 +10,16 @@ import { ShippingService } from '../../../services/Ecommerce/shipping.service';
 
 @Component({
   selector: 'app-payment-sucess',
+  imports: [CommonModule,RouterModule],
   templateUrl: './payment-success.component.html',
   styleUrls: ['./payment-success.component.css']
 })
 export class PaymentSuccessComponent {
+  order: any = null;
+// Payment state
+paymentState: boolean = false;
+paymentDetails: any = null;
+errorMessage: string = 'Payment processing failed. Please try again.';
 
   paymentInfo = {
     pending: false,
@@ -45,11 +51,7 @@ export class PaymentSuccessComponent {
       this.createOrder();
     });
   }
-  test() {
-    console.log(this.cartService.getCart());
-    console.log(this.shippingService.getShipping());
 
-  }
   createOrder() {
     const cartTotal = this.cartService.getTotalPrice();
     const expectedAmount = this.paymentInfo.amount_cents / 100;
@@ -67,6 +69,7 @@ export class PaymentSuccessComponent {
       this.paymentService.CreatePayment(paymentObj).subscribe({
         next: (paymentRes) => {
           if (!paymentRes.id) {
+            this.paymentState = false;
             console.error('Payment ID is missing!');
             return;
           }
@@ -91,15 +94,22 @@ export class PaymentSuccessComponent {
 
           this.orderService.createOrder(orderRequest).subscribe({
             next: (orderRes) => {
-              console.log("Order Created Successfully", orderRes);
+              this.order = orderRes;
+              if (this.order.paymentId) {
+
+                this.paymentState = true ;
+
+                this.router.navigate(['/order-summary', this.order.id]);
+              } else {
+                this.paymentState = false;
+              }
               this.cartService.clearCart();
               this.shippingService.clearShipping();
-              this.router.navigate(['/']);
             },
             error: (err) => {
-              console.error("Order creation failed", err);
+              this.paymentState = false;
               if(err.error){
-                console.error("Error body:", err.error);
+                this.errorMessage = err.error.message;
               }
             }
           });
@@ -111,5 +121,8 @@ export class PaymentSuccessComponent {
     } else {
       console.warn("Payment validation failed.");
     }
+  }
+  goBack() {
+     this.router.navigate(['/shop']);
   }
 }

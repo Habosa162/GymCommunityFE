@@ -14,5 +14,8 @@ export class OrderService {
   createOrder(orderDto: OrderRequestDTO):Observable<any> {
     return this.http.post(this.apiUrl, orderDto);
   }
+  getOneOrder(orderId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${orderId}`);
+  }
 
 }

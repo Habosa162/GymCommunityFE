@@ -1,0 +1,51 @@
+.card {
+  border-radius: 15px;
+}
+
+/* Success State */
+.text-success {
+  color: #28a745 !important;
+}
+
+.border-success {
+  border-color: #28a745 !important;
+}
+
+.btn-primary {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-primary:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+/* Failed State */
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.border-danger {
+  border-color: #dc3545 !important;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Loading State */
+.text-primary {
+  color: #007bff !important;
+}

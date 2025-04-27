@@ -1,0 +1,102 @@
+/* Status badge styles */
+.status-badge {
+  padding: 0.35em 0.65em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-weight: 500;
+}
+
+.status-processing {
+  background-color: #fff3cd;
+  color: #664d03;
+}
+
+.status-shipped {
+  background-color: #cfe2ff;
+  color: #084298;
+}
+
+.status-delivered {
+  background-color: #d1e7dd;
+  color: #0a3622;
+}
+
+.status-cancelled {
+  background-color: #f8d7da;
+  color: #58151c;
+}
+
+/* Card styling */
+.card {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border: none;
+}
+
+.card-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Table styling */
+.table {
+  margin-top: 1rem;
+}
+
+.table thead th {
+  border-bottom-width: 1px;
+}
+
+/* Map container */
+.map-container {
+  min-height: 200px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card-body .row > div {
+    margin-bottom: 1.5rem;
+  }
+}
+/* Status badge styles */
+.status-pending {
+  background-color: #fff3cd;
+  color: #664d03;
+  padding: 0.35em 0.65em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-weight: 500;
+}
+
+.status-shipped {
+  background-color: #cfe2ff;
+  color: #084298;
+  padding: 0.35em 0.65em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-weight: 500;
+}
+
+.status-delivered {
+  background-color: #d1e7dd;
+  color: #016337;
+  padding: 0.35em 0.65em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-weight: 500;
+}
+
+.status-cancelled {
+  background-color: #f8d7da;
+  color: #58151c;
+  padding: 0.35em 0.65em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-weight: 500;
+}
+
+/* Rest of your CSS remains the same */
+.card {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border: none;
+}
+
+/* ... other existing styles ... */

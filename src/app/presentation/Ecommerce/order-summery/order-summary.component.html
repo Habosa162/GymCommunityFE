@@ -1,0 +1,126 @@
+<div class="container mt-4">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading order details...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="alert alert-danger">
+    {{ error }}
+    <button class="btn btn-sm btn-outline-danger ms-3" (click)="loadOrder(activatedRoute.snapshot.params['id'])">
+      Retry
+    </button>
+  </div>
+
+  <!-- Order Details -->
+  <div *ngIf="order && !loading" class="card">
+    <div class="card-header bg-primary text-white">
+      <h2>Order Summary #{{ order.id }}</h2>
+    </div>
+    <div class="card-body">
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <h4>Order Information</h4>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <strong>Order ID:</strong> {{ order.id }}
+            </li>
+            <li class="list-group-item">
+              <strong>Payment ID:</strong> {{ order.paymentId || 'Not specified' }}
+            </li>
+            <li class="list-group-item">
+              <strong>User ID:</strong> {{ order.userID }}
+            </li>
+            <li class="list-group-item">
+              <strong>Order Date:</strong> {{ order.orderDate | date:'medium' }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-md-6">
+          <h4>Shipping Information</h4>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <strong>Status:</strong>
+              <span [class]="getStatusClass(order.shipping.shippingStatus)">
+                {{ getShippingStatusText(order.shipping.shippingStatus) }}
+              </span>
+            </li>
+            <li class="list-group-item">
+              <strong>Carrier:</strong> {{ order.shipping.carrier }}
+            </li>
+            <li class="list-group-item">
+              <strong>Tracking Number:</strong>
+              <span class="font-monospace">{{ order.shipping.trackingNumber }}</span>
+            </li>
+            <li class="list-group-item">
+              <strong>Customer:</strong> {{ order.shipping.customerName }}
+            </li>
+            <li class="list-group-item">
+              <strong>Phone:</strong> {{ order.shipping.phoneNumber }}
+            </li>
+            <li class="list-group-item">
+              <strong>Address:</strong> {{ order.shipping.shippingAddress }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <h4>Order Items</h4>
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Product Name</th>
+                  <th>Quantity</th>
+                  <th>Unit Price</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of order.orderItems">
+                  <td>{{ item.productName }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.price | currency }}</td>
+                  <td>{{ item.price * item.quantity | currency }}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="table-info">
+                  <td colspan="3" class="text-end"><strong>Grand Total:</strong></td>
+                  <td><strong>{{ getTotal() | currency }}</strong></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4" *ngIf="order.shipping?.latitude && order.shipping?.longitude">
+        <div class="col-12">
+          <h4>Delivery Location</h4>
+          <div class="map-container bg-light p-3 rounded">
+            <div class="row">
+              <div class="col-md-6">
+                <p><strong>Latitude:</strong> {{ order.shipping.latitude }}</p>
+                <p><strong>Longitude:</strong> {{ order.shipping.longitude }}</p>
+              </div>
+              <div class="col-md-6">
+                <!-- Map placeholder - integrate with Google Maps or similar in production -->
+                <div class="text-center p-4 bg-secondary text-white rounded">
+                  <i class="bi bi-map fs-1"></i>
+                  <p class="mt-2">Delivery location map</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

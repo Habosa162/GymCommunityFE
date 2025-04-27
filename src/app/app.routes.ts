@@ -42,6 +42,7 @@ import { SelectRoleComponent } from './presentation/auth/components/select-role/
 import { HomeComponent } from './presentation/home/home/home.component';
 import { PaymentSuccessComponent } from './presentation/Ecommerce/payment-success/payment-success.component';
 import { TrainingPlanComponent } from './presentation/traningPlans/training-plan/training-plan.component';
+import { OrderSummaryComponent } from './presentation/Ecommerce/order-summery/order-summary.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -141,7 +142,11 @@ export const routes: Routes = [
     component: PaymentSuccessComponent,
     title: 'payment',
   },
-
+  {
+    path: 'order-summary/:id',
+    component: OrderSummaryComponent,
+    title: 'order summary',
+  },
   //Gym routes
   { path: 'gym-owner-dashboard', component: GymOwnerDashboardComponent },
 

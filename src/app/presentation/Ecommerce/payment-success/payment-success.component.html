@@ -1,9 +1,31 @@
-<p>payment-success works!</p>
-<button
-  type="button"
-  class="btn btn-outline-primary"
-  (click)="test()"
->
-  Button
-</button>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <!-- Success State -->
+      <div *ngIf="paymentState === 'success'" class="card shadow-sm">
+        <div class="card-body text-center p-5">
+          <i class="fas fa-check-circle fa-5x text-success mb-4"></i>
+          <h2 class="mb-3">Payment Successful!</h2>
 
+          <div class="alert alert-success">
+            <i class="fas fa-envelope me-2"></i>
+            A confirmation has been sent to your email.
+          </div>
+
+          <div class="d-flex gap-3 justify-content-center mt-4">
+            <a routerLink="/shop" class="btn btn-primary px-4">
+              <i class="fas fa-home me-2"></i>
+              Shop More
+            </a>
+            <a [routerLink]="['/orders', order?.id]" class="btn btn-outline-secondary px-4">
+              <i class="fas fa-receipt me-2"></i>
+              View Order
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading and Error states would be similar -->
+    </div>
+  </div>
+</div>
