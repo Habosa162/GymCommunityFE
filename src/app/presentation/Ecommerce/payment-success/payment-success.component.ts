@@ -7,6 +7,7 @@ import { PaymentService } from '../../../services/Ecommerce/payment.service';
 import { CartService } from '../../../services/Ecommerce/cart.service';
 import { OrderService } from '../../../services/Ecommerce/order.service';
 import { ShippingService } from '../../../services/Ecommerce/shipping.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-payment-sucess',
