@@ -86,6 +86,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'plan/:id',
+    component: TrainingPlanComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'trainingPlan/:id',
     component: TrainingPlanComponent,
     canActivate: [AuthGuard],
@@ -172,7 +177,7 @@ export const routes: Routes = [
       },
       {
         path: 'profile/:coachId',
-        component: PublicCoachProfileComponent,
+        component: CoachViewProfileComponent,
       },
       {
         path: 'rate/:coachId',
