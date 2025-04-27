@@ -1,3 +1,6 @@
+/* ===================================================
+   ================ HERO SECTION START ====================
+   =================================================== */
 .blur-background {
   background: rgb(0 0 0 / 80%); /* semi-transparent black */
   backdrop-filter: blur(8px); /* apply blur */
@@ -127,9 +130,77 @@
     font-size: 0.75rem;
   }
 } */
+/* ===================================================
+   ================ HERO SECTION END ====================
+   =================================================== */
 
-/*media query */
-@media (max-width: 768px) {
-  .right-side h1 {
-  }
+/* ===================================================
+   ================ PLANS SECTION END ====================
+   =================================================== */
+/*radio btn*/
+.radio-input input {
+  display: none;
 }
+
+.radio-input {
+  --container_width: 250px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  background-color: #212121;
+  color: #eee;
+  width: var(--container_width);
+  overflow: hidden;
+  border: 2px solid #fff;
+}
+
+.radio-input label {
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  font-weight: 600;
+  letter-spacing: -1px;
+  font-size: 14px;
+}
+
+.selection {
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: calc(var(--container_width) / 2);
+  z-index: 0;
+  left: 0;
+  top: 0;
+  transition: 0.15s ease;
+}
+
+.radio-input label:nth-child(1):has(input:checked) {
+  color: #fff;
+}
+.radio-input label:nth-child(2):has(input:checked) {
+  color: #212121;
+}
+.radio-input label:nth-child(1):has(input:checked) ~ .selection {
+  background-color: #080;
+  display: inline-block;
+}
+.radio-input label:nth-child(2):has(input:checked) ~ .selection {
+  background-color: #fd0;
+  display: inline-block;
+}
+.radio-input label:nth-child(1):has(input:checked) ~ .selection {
+  transform: translateX(calc(var(--container_width) * 0 / 2));
+}
+
+.radio-input label:nth-child(2):has(input:checked) ~ .selection {
+  transform: translateX(calc(var(--container_width) * 1 / 2));
+}
+
+/* ===================================================
+   ================ PLANS SECTION END ====================
+   =================================================== */
