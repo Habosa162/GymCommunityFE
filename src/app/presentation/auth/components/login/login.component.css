@@ -52,26 +52,6 @@ button[type="submit"]:hover {
   }
 }
 
-.metal-text {
-  font-size: 1.5rem !important;
-  font-weight: 700;
-
-  background: linear-gradient(
-    135deg,
-    #d7d7d7,
-    #f0f0f0,
-    #a8a8a8,
-    #e0e0e0,
-    #bcbcbc
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-  font-size: 40px;
-}
-
 @media (max-width: 768px) {
   .left-side {
     display: none;
@@ -99,18 +79,22 @@ button:disabled {
   font-style: italic;
 }
 
-:host-context(body.dark-mode) #login , :host-context(body.dark-mode) form{
+:host-context(body.dark-mode) #login,
+:host-context(body.dark-mode) form {
   background-color: #201f1f;
 }
 
-:host-context(body.dark-mode) h1, :host-context(body.dark-mode) label ,:host-context(body.dark-mode) .or{
-
+:host-context(body.dark-mode) h1,
+:host-context(body.dark-mode) label,
+:host-context(body.dark-mode) .or {
   color: white !important;
-
 }
 :host-context(body.dark-mode) input {
-
   background-color: #201f1f !important;
   color: white !important;
+}
 
+.metal-text {
+  font-size: 2.5rem !important;
+  font-weight: 700;
 }

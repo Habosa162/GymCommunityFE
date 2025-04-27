@@ -1,11 +1,11 @@
-@import 'ngx-toastr/toastr';
+@import "ngx-toastr/toastr";
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-.h-100vh{
+.h-100vh {
   height: 100vh !important;
 }
 .bgColor {
@@ -13,10 +13,10 @@
 }
 
 .mainColor {
-  color: limegreen;
+  color: limegreen !important;
 }
 .mainBg {
-  background-color: limegreen;
+  background-color: limegreen !important;
 }
 
 html,
@@ -33,17 +33,34 @@ body {
   box-shadow: 0 0 0 0.25rem rgba(50, 205, 50, 0.3) !important;
 }
 
+/* meatal text style */
+.metal-text {
+  line-height: normal;
+  background: linear-gradient(
+    135deg,
+    #d7d7d7,
+    #f0f0f0,
+    #a8a8a8,
+    #e0e0e0,
+    #bcbcbc
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
 
 /*main dark colors*/
-.dark-mode .bgColor{
+.dark-mode .bgColor {
   background-color: black;
 }
-.dark-mode .text-black-50{
-color: rgba(255, 255, 255, 0.5) !important;
+.dark-mode .text-black-50 {
+  color: rgba(255, 255, 255, 0.5) !important;
 }
-.colorBlack{
+.colorBlack {
   color: black;
 }
-.dark-mode .colorBlack{
-color: white ;
+.dark-mode .colorBlack {
+  color: white;
 }
