@@ -1,0 +1,158 @@
+<section id="myOrders">
+<div class="container p-4">
+  <h2 class="mb-4">My Orders</h2>
+
+  <!-- Filters Section -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label for="statusFilter" class="form-label">Status</label>
+          <select id="statusFilter" class="form-select p-2" [(ngModel)]="statusFilter" (change)="applyFilters()">
+            <option *ngFor="let option of statusOptions" [value]="option.value">{{option.label}}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="dateFilter" class="form-label">Date</label>
+          <select id="dateFilter" class="form-select p-2" [(ngModel)]="dateFilter" (change)="applyFilters()">
+            <option *ngFor="let option of dateOptions" [value]="option.value">{{option.label}}</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="searchQuery" class="form-label">Search</label>
+          <div class="input-group">
+            <input type="text" id="searchQuery" class="form-control p-2"
+                   [(ngModel)]="searchQuery"
+                   (input)="applyFilters()"
+                   placeholder="Search by order ID or product name">
+            <button class="btn btn-danger" type="button" (click)="searchQuery = ''; applyFilters()">
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Skeleton -->
+  <div *ngIf="isLoading" class="loading-skeleton">
+    <div *ngFor="let item of [1,2,3,4,5]" class="list-group-item mb-3">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="placeholder-glow mb-2">
+          <span class="placeholder col-3"></span>
+        </h5>
+        <small class="text-muted placeholder-glow">
+          <span class="placeholder col-4"></span>
+        </small>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-2 placeholder-glow">
+            <span class="placeholder col-2"></span>
+            <ul class="list-unstyled mt-2">
+              <li *ngFor="let i of [1,2]" class="placeholder-glow">
+                <span class="placeholder col-8"></span>
+              </li>
+            </ul>
+          </div>
+          <div class="mb-2 placeholder-glow">
+            <span class="placeholder col-2"></span>
+            <span class="placeholder col-3 ms-2"></span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="mb-2 placeholder-glow">
+            <span class="placeholder col-3"></span>
+            <span class="placeholder col-6 ms-2"></span>
+          </div>
+          <div class="mb-2 placeholder-glow">
+            <span class="placeholder col-3"></span>
+            <span class="placeholder col-4 ms-2"></span>
+          </div>
+          <div class="mb-2 placeholder-glow">
+            <span class="placeholder col-6"></span>
+            <span class="placeholder col-5 ms-2"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Orders Message -->
+  <div *ngIf="!isLoading && filteredOrders.length === 0" class="alert alert-info">
+    No orders found matching your criteria.
+  </div>
+
+  <!-- Orders List -->
+  <div *ngIf="!isLoading && filteredOrders.length > 0">
+    <div class="list-group">
+      <div *ngFor="let order of paginatedOrders"
+           (click)="viewOrderDetails(order.id)"
+           class="list-group-item list-group-item-action flex-column align-items-start mb-3 order-item">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-2">Order #{{order.id}}</h5>
+          <small class="text-muted">Placed on {{order.orderDate | date:'mediumDate'}}</small>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-2">
+              <strong>Items:</strong>
+              <ul class="list-unstyled">
+                <li *ngFor="let item of order.orderItems">
+                  {{item.quantity}} x {{item.productName}} - {{item.price | currency}}
+                </li>
+              </ul>
+            </div>
+            <div class="mb-2">
+              <strong>Total:</strong>
+              {{getOrderTotal(order) | currency}}
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="mb-2">
+              <strong>Shipping:</strong> {{order.shipping.shippingAddress}}
+            </div>
+            <div class="mb-2">
+              <strong>Status:</strong>
+              <span class="ms-2 badge" [ngClass]="{
+                'bg-warning': order.shipping.shippingStatus === 0,
+                'bg-info': order.shipping.shippingStatus === 1,
+                'bg-success': order.shipping.shippingStatus === 2
+              }">
+                {{getShippingStatusText(order.shipping.shippingStatus)}}
+              </span>
+            </div>
+            <div class="mb-2">
+              <strong>Estimated Delivery:</strong>
+              {{order.shipping.estimatedDeliveryDate | date:'mediumDate'}}
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-2">
+          <span class="badge bg-primary">View Details</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav *ngIf="totalPages > 1" class="mt-4">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+        </li>
+        <li *ngFor="let page of pageNumbers" class="page-item" [class.active]="page === currentPage">
+          <a class="page-link" (click)="changePage(page)">{{page}}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+</section>

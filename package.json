@@ -24,6 +24,7 @@
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@react-oauth/google": "^0.12.1",
     "bootstrap": "^5.3.5",
+    "bootstrap-icons": "^1.11.3",
     "g": "^2.0.1",
     "gym-community": "file:",
     "jquery": "^3.3.1",

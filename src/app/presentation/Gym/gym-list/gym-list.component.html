@@ -1,0 +1,63 @@
+<div class="gym-list-container">
+  
+  <div class="filter-options">
+    <button class="filter-btn" 
+            (click)="showAllGyms()" 
+            [class.active]="!showNearbyOnly">
+      <i class="bi bi-grid me-2"></i>All Gyms
+    </button>
+    <button class="filter-btn" 
+            (click)="loadNearbyGyms()" 
+            [class.active]="showNearbyOnly">
+      <i class="bi bi-geo-alt me-2"></i>Nearby Gyms
+    </button>
+  </div>
+
+  <div class="gyms-list">
+    <div *ngFor="let gym of (showNearbyOnly ? nearbyGyms : gyms)" class="gym-card">
+      <div class="gym-header">
+        <div class="name-distance">
+          <h2 class="gym-name" (click)="viewGymDetails(gym.id)">{{ gym.name }}</h2>
+          <div class="gym-distance" *ngIf="showNearbyOnly">
+            <i class="bi bi-signpost"></i>
+            {{ getDistance(gym.latitude, gym.longitude) < 1 
+                ? (getDistance(gym.latitude, gym.longitude) * 1000 | number:'1.0-0') + ' m' 
+                : (getDistance(gym.latitude, gym.longitude) | number:'1.1-1') + ' km' }}
+          </div>
+        </div>
+        <div class="rating-badge">
+          <i class="bi bi-star-fill"></i> 4.8
+        </div>
+      </div>
+      
+      <div class="gym-details">
+        <div class="detail-row">
+          <i class="bi bi-geo-alt-fill"></i>
+          <span>{{ gym.location }}</span>
+        </div>
+        <div class="detail-row">
+          <i class="bi bi-telephone-fill"></i>
+          <span>{{ gym.phoneNumber || 'Not available' }}</span>
+        </div>
+        <div class="detail-row" *ngIf="gym.website">
+          <i class="bi bi-globe"></i>
+          <a [href]="gym.website" target="_blank">{{ gym.website  }}</a>
+        </div>
+        <div class="detail-row">
+          <i class="bi bi-clock-fill"></i>
+          <span> 6:00AM - 12:00AM </span>
+        </div>
+      </div>
+
+    </div>
+    
+    <div *ngIf="(showNearbyOnly ? nearbyGyms : gyms).length === 0" class="empty-state">
+      <i class="bi bi-building"></i>
+      <h3>No Gyms Found</h3>
+      <p>{{ showNearbyOnly ? 'Try adjusting your location or view all gyms.' : 'Check back later for new gym listings.' }}</p>
+      <button class="refresh-btn" (click)="showNearbyOnly ? loadNearbyGyms() : showAllGyms()">
+        <i class="bi bi-arrow-repeat"></i> {{ showNearbyOnly ? 'Refresh Nearby' : 'View All Gyms' }}
+      </button>
+    </div>
+  </div>
+</div>

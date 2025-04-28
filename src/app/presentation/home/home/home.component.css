@@ -1,3 +1,6 @@
+/* ===================================================
+   ================ HERO SECTION START ====================
+   =================================================== */
 .blur-background {
   background: rgb(0 0 0 / 80%); /* semi-transparent black */
   backdrop-filter: blur(8px); /* apply blur */
@@ -127,9 +130,170 @@
     font-size: 0.75rem;
   }
 } */
+/* ===================================================
+   ================ HERO SECTION END ====================
+   =================================================== */
 
-/*media query */
-@media (max-width: 768px) {
-  .right-side h1 {
+/* ===================================================
+   ================ PLANS SECTION END ====================
+   =================================================== */
+/*radio btn*/
+.radio-input input {
+  display: none;
+}
+
+.radio-input {
+  --container_width: 250px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  background-color: white;
+  color: black;
+  width: var(--container_width);
+  overflow: hidden;
+  border: 2px solid #fff;
+}
+:host-context(body.dark-mode) .radio-input {
+  color: white;
+  background-color: black;
+}
+
+.radio-input label {
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  font-weight: 600;
+  letter-spacing: -1px;
+  font-size: 14px;
+}
+
+.selection {
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: calc(var(--container_width) / 2);
+  z-index: 0;
+  left: 0;
+  top: 0;
+  transition: 0.15s ease;
+}
+
+.radio-input label:nth-child(1):has(input:checked) {
+  color: white;
+}
+.radio-input label:nth-child(2):has(input:checked) {
+  color: white;
+}
+.radio-input label:nth-child(1):has(input:checked) ~ .selection {
+  background-color: #080;
+  display: inline-block;
+}
+.radio-input label:nth-child(2):has(input:checked) ~ .selection {
+  background-color: #fd0;
+  display: inline-block;
+}
+.radio-input label:nth-child(1):has(input:checked) ~ .selection {
+  transform: translateX(calc(var(--container_width) * 0 / 2));
+}
+
+.radio-input label:nth-child(2):has(input:checked) ~ .selection {
+  transform: translateX(calc(var(--container_width) * 1 / 2));
+}
+
+/* ===================================================
+   ================ PLANS SECTION END ====================
+   =================================================== */
+
+/* ===================================================
+   ================ Gyms SECTION START ====================
+   =================================================== */
+#gymsHub {
+  min-height: 70vh;
+  background-image: url("/assets/imgs/home/image.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+:host-context(body.dark-mode) #gymsHub {
+  background-image: url("/assets/imgs/home/gymSectionBg.png") !important;
+}
+.gymHub-text {
+  line-height: 1.5;
+}
+
+/*vertical slide cards*/
+.slider-wrapper {
+  display: flex;
+  gap: 2rem;
+  overflow: hidden;
+  height: 500px; /* height of slider */
+}
+
+.column {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 80%;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Card style */
+.column .inner .card {
+  background: #212121;
+  color: white;
+  font-size: 1.5rem;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px 0;
+  border: 2px solid #fff;
+}
+
+/* Animation for first column (up) */
+.column.up .inner {
+  animation: scroll-up 10s infinite linear;
+}
+
+/* Animation for second column (down) */
+.column.down .inner {
+  animation: scroll-down 10s infinite linear;
+}
+
+/* Scroll Up animation */
+@keyframes scroll-up {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%); /* Scroll upwards */
   }
 }
+
+/* Scroll Down animation */
+@keyframes scroll-down {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0); /* Scroll upwards */
+  }
+}
+
+/*button*/
+
+/*button*/
+
+/* ===================================================
+   ================ Gyms SECTION END ====================
+   =================================================== */

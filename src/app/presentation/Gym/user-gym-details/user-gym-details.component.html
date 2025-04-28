@@ -1,0 +1,152 @@
+<div class="gym-details-container" *ngIf="gym">
+  <!-- Gym Header -->
+  <div class="gym-header">
+    <h1>{{ gym.name }}</h1>
+    <div class="gym-meta">
+      <span class="location"><i class="bi bi-geo-alt"></i> {{ gym.location }}</span>
+      <span class="rating"><i class="bi bi-star-fill"></i> 4.8</span>
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <nav class="section-nav">
+    <a (click)="scrollTo('info')" class="nav-link">Info</a>
+    <a (click)="scrollTo('coaches')" class="nav-link">Coaches</a>
+    <a (click)="scrollTo('gallery')" class="nav-link">Gallery</a>
+    <a (click)="scrollTo('plans')" class="nav-link">Plans</a>
+    <a (click)="scrollTo('location')" class="nav-link">Location</a>
+  </nav>
+
+  <!-- Info Section -->
+  <section id="info" class="section">
+    <h2 class="section-title">About Us</h2>
+    <div class="section-content">
+      <div class="about-content">
+        <p>{{ gym.description }}</p>
+        <div class="facilities">
+          <h3>Facilities</h3>
+          <div class="facility-badges">
+            <span class="badge"><i class="bi bi-dumbbell"></i> Weight Training</span>
+            <span class="badge"><i class="bi bi-heart-pulse"></i> Cardio</span>
+            <span class="badge"><i class="bi bi-droplet"></i> Pool</span>
+          </div>
+        </div>
+      </div>
+      <div class="contact-card">
+        <h3><i class="bi bi-telephone"></i> Contact</h3>
+        <ul>
+          <li><strong>Phone:</strong> {{ gym.phoneNumber || 'Not available' }}</li>
+          <li><strong>Email:</strong> {{ gym.email || 'Not available' }}</li>
+          <li *ngIf="gym.website"><strong>Website: </strong> <a [href]="gym.website" target="_blank">{{ gym.website }}</a></li>
+          <li><strong>Hours:</strong> 6:00AM - 12:00AM</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coaches Section -->
+  <section id="coaches" class="section">
+    <h2 class="section-title">Our Coaches</h2>
+    <div *ngIf="coaches && coaches.length > 0; else noCoaches" class="coaches-grid">
+      <div *ngFor="let coach of coaches" class="coach-card">
+        <div class="coach-img">
+          <img [src]="coachImages[coach.coachID] || 'assets/default-coach.jpg'" alt="{{coach.coachName}}">
+        </div>
+        <div class="coach-info">
+          <h3>{{ coach.coachName }}</h3>
+          <p class="specialty">{{ coach.specialty || 'General Trainer' }}</p>
+          <div class="rating">
+            <i class="bi bi-star-fill"></i>
+            <span>4.8</span>
+          </div>
+          <button class="btn btn-outline-success" (click)="viewCoachProfile(coach.coachID)">
+            Contact Coach
+          </button>
+        </div>
+      </div>
+    </div>
+    <ng-template #noCoaches>
+      <div class="empty-state">
+        <i class="bi bi-person-x"></i>
+        <p>No coaches available at this time</p>
+      </div>
+    </ng-template>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery" class="section">
+    <h2 class="section-title">Photo Gallery</h2>
+    <div *ngIf="images && images.length > 0; else noGallery" class="gallery-grid">
+      <div *ngFor="let image of images" class="gallery-item">
+        <img [src]="image.imageUrl" 
+             (click)="openImageInNewTab(image.imageUrl)" 
+             alt="Gym facility photo">
+      </div>
+    </div>
+    <ng-template #noGallery>
+      <div class="empty-state">
+        <i class="bi bi-images"></i>
+        <p>No gallery images available</p>
+      </div>
+    </ng-template>
+  </section>
+
+  <!-- Plans Section -->
+  <section id="plans" class="section">
+    <h2 class="section-title">Membership Plans</h2>
+    <div *ngIf="plans && plans.length > 0; else noPlans" class="plans-grid">
+      <div *ngFor="let plan of plans" 
+           class="plan-card" 
+           [class.selected]="selectedPlan?.id === plan.id"
+           (click)="selectPlan(plan)">
+        <h3>{{ plan.title }}</h3>
+        <p class="price">EGP {{ plan.price }}</p>
+        <p class="duration">{{ plan.durationMonths }} months</p>
+        <p class="description">{{ plan.description }}</p>
+        <div class="features">
+          <span *ngIf="plan.hasPrivateCoach"><i class="bi bi-check-circle"></i> Private Coach</span>
+          <span *ngIf="plan.hasNutritionPlan"><i class="bi bi-check-circle"></i> Nutrition Plan</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="selectedPlan" class="selected-plan">
+      <div class="plan-details">
+        <h3>Selected: {{ selectedPlan.title }}</h3>
+        <p>{{ selectedPlan.description }}</p>
+      </div>
+      <button class="btn-subscribe" (click)="subscribeToPlan()">
+        Subscribe for EGP {{ selectedPlan.price }}
+      </button>
+    </div>
+
+    <ng-template #noPlans>
+      <div class="empty-state">
+        <i class="bi bi-credit-card"></i>
+        <p>No membership plans available</p>
+      </div>
+    </ng-template>
+  </section>
+
+  <!-- Location Section -->
+  <section id="location" class="section">
+    <h2 class="section-title">Our Location</h2>
+    <div class="map-container" *ngIf="mapInitialized">
+      <google-map 
+        [options]="mapOptions"
+        height="400px"
+        width="100%">
+        <map-marker 
+          *ngIf="markerPosition"
+          [position]="markerPosition">
+        </map-marker>
+      </google-map>
+    </div>
+    <div class="location-info">
+      <p><i class="bi bi-geo-alt-fill"></i> {{ gym.location }}</p>
+      <button class="btn-directions" (click)="openDirections()">
+        <i class="bi bi-compass"></i> Get Directions
+      </button>
+    </div>
+  </section>
+</div>
