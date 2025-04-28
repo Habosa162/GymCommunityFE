@@ -2,20 +2,20 @@
   <div class="container">
     <div class="row">
       <div class="col-12 text-center mb-4">
-        <h2 class="mainColor">My Wishlist</h2>
+        <h2 class="mainColor">Your Wishlist<i class="fa-solid fa-clipboard-list fs-1 ms-2"></i></h2>
         <p class="text-black-50">You have {{ wishlistProducts.length }} products in your wishlist.</p>
       </div>
 
 
       <!-- Skeleton loading -->
       <ng-container *ngIf="isLoading; else showProducts">
-        <div *ngFor="let skeleton of [1,2,3,4]" class="col-md-4 mb-4">
+        <div *ngFor="let skeleton of [1,2,3,4]" class="col-lg-3 col-md-6 col-sm-12 mb-4">
           <div class="skeleton-card"></div>
         </div>
       </ng-container>
 
       <ng-template #showProducts>
-        <div class="col-md-4" *ngFor="let product of wishlistProducts">
+        <div class="col-lg-3 col-md-6 col-sm-12" *ngFor="let product of wishlistProducts">
           <app-product [product]="product" (removedFromWishlist)="removeItemFromWishlist($event)"></app-product>
         </div>
       </ng-template>

@@ -12,11 +12,11 @@
             <h5 class="mb-1 text-capitalize">{{ item.name }}</h5>
             <p class="mb-1 text-black-50">Price: <strong>{{ item.finalPrice }} EGP</strong></p>
             <div class="d-flex align-items-center">
-              <span class="me-2">Quantity:</span>
+              <!-- <span class="me-2">Quantity:</span> -->
               <div class="btn-group btn-group-sm me-3" role="group">
-                <button class="btn btn-outline-secondary" (click)="decreaseQuantity(item.id)">-</button>
-                <button class="btn btn-light disabled">{{ item.quantity }}</button>
-                <button class="btn btn-outline-secondary" (click)="increaseQuantity(item.id)">+</button>
+                <button class="btn btn-outline-primary" (click)="decreaseQuantity(item.id)"><i class="fa-solid fa-minus"></i></button>
+                <button class="btn btn-primary ">{{ item.quantity }}</button>
+                <button class="btn btn-outline-primary" (click)="increaseQuantity(item.id)"><i class="fa-solid fa-plus fw-bold"></i></button>
               </div>
               <button class="btn btn-sm btn-danger removeBtn fw-bolder" (click)="removeItem(item.id)"><i class="fa-solid fa-trash"></i></button>
             </div>
@@ -27,7 +27,7 @@
           <h4>Total: <strong>{{ totalPrice }} EGP</strong></h4>
           <div class="d-flex justify-content-end gap-2 mt-3">
             <button class="btn btn-danger fw-bolder" (click)="clearCart()">Clear Cart</button>
-            <a [routerLink]="['/checkout']" routerLinkActive="router-link-active" class="btn btn-primary  fw-bolder">Proceed to Checkout</a>
+            <a [routerLink]="['/checkout']" routerLinkActive="router-link-active" class="btn btn-primary  fw-bolder rounded-circle-x">Proceed to Checkout</a>
           </div>
         </div>
       </div>
