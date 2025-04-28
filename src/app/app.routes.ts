@@ -44,7 +44,16 @@ import { PaymentSuccessComponent } from './presentation/Ecommerce/payment-succes
 import { TrainingPlanComponent } from './presentation/traningPlans/training-plan/training-plan.component';
 import { OrderSummaryComponent } from './presentation/Ecommerce/order-summery/order-summary.component';
 import { CoachViewProfileComponent } from './presentation/Coach/coachviewprofile/coachviewprofile.component';
+<<<<<<< Updated upstream
 import { MyOrdersComponent } from './presentation/Ecommerce/my-orders/my-orders.component';
+=======
+<<<<<<< HEAD
+import { UserGymDetailsComponent } from './presentation/Gym/user-gym-details/user-gym-details.component';
+import { GymListComponent } from './presentation/Gym/gym-list/gym-list.component';
+=======
+import { MyOrdersComponent } from './presentation/Ecommerce/my-orders/my-orders.component';
+>>>>>>> eb3ef86f970dd58320b75d1fd9309c9d87c486aa
+>>>>>>> Stashed changes
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -169,6 +178,10 @@ export const routes: Routes = [
     path: 'gym-owner/subscription/:id',
     component: SubscriptionDetailsComponent,
   },
+
+  {path: 'gyms/:id', component: UserGymDetailsComponent},
+  {path: 'gyms', component: GymListComponent},
+
 
   //coach
 
