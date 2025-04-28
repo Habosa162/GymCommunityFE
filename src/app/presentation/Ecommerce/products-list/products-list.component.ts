@@ -285,5 +285,32 @@ onProductSearch(): void {
   });
 }
   
+
+// filter select
+
+onSortChange(event: Event) {
+  const selectElement = event.target as HTMLSelectElement;
+  const selectedValue = selectElement.value;
+  console.log('Selected Sort Option:', selectedValue);
+
+  if (selectedValue === 'lowToHigh') {
+    this.filteredProducts.sort((a, b) => a.price - b.price);
+  } else if (selectedValue === 'highToLow') {
+    this.filteredProducts.sort((a, b) => b.price - a.price);
+  } else if (selectedValue === 'newest') {
+    this.filteredProducts.sort((a, b) => {
+      const dateA = new Date(a.createdAt || '');
+      const dateB = new Date(b.createdAt || '');
+      return dateB.getTime() - dateA.getTime(); // Newest first
+    });
+  } else if (selectedValue === 'bestRated') {
+    this.filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  } else {
+    // Featured (default) - maybe just reset the products to original
+    this.filteredProducts = [...this.products];
+  }
+}
+
+
   
 }
