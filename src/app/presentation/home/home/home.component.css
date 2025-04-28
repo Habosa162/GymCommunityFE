@@ -148,11 +148,15 @@
   display: flex;
   align-items: center;
   border-radius: 10px;
-  background-color: #212121;
-  color: #eee;
+  background-color: white;
+  color: black;
   width: var(--container_width);
   overflow: hidden;
   border: 2px solid #fff;
+}
+:host-context(body.dark-mode) .radio-input {
+  color: white;
+  background-color: black;
 }
 
 .radio-input label {
@@ -180,10 +184,10 @@
 }
 
 .radio-input label:nth-child(1):has(input:checked) {
-  color: #fff;
+  color: white;
 }
 .radio-input label:nth-child(2):has(input:checked) {
-  color: #212121;
+  color: white;
 }
 .radio-input label:nth-child(1):has(input:checked) ~ .selection {
   background-color: #080;
@@ -203,4 +207,93 @@
 
 /* ===================================================
    ================ PLANS SECTION END ====================
+   =================================================== */
+
+/* ===================================================
+   ================ Gyms SECTION START ====================
+   =================================================== */
+#gymsHub {
+  min-height: 70vh;
+  background-image: url("/assets/imgs/home/image.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+:host-context(body.dark-mode) #gymsHub {
+  background-image: url("/assets/imgs/home/gymSectionBg.png") !important;
+}
+.gymHub-text {
+  line-height: 1.5;
+}
+
+/*vertical slide cards*/
+.slider-wrapper {
+  display: flex;
+  gap: 2rem;
+  overflow: hidden;
+  height: 500px; /* height of slider */
+}
+
+.column {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 80%;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Card style */
+.column .inner .card {
+  background: #212121;
+  color: white;
+  font-size: 1.5rem;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px 0;
+  border: 2px solid #fff;
+}
+
+/* Animation for first column (up) */
+.column.up .inner {
+  animation: scroll-up 10s infinite linear;
+}
+
+/* Animation for second column (down) */
+.column.down .inner {
+  animation: scroll-down 10s infinite linear;
+}
+
+/* Scroll Up animation */
+@keyframes scroll-up {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%); /* Scroll upwards */
+  }
+}
+
+/* Scroll Down animation */
+@keyframes scroll-down {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0); /* Scroll upwards */
+  }
+}
+
+/*button*/
+
+/*button*/
+
+/* ===================================================
+   ================ Gyms SECTION END ====================
    =================================================== */
