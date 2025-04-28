@@ -1,20 +1,122 @@
-<section id="shop" class="min-vh-100 py-5">
-
-  <div class="container ">
-    <div class="row">
-
-
-      <!-- Skeleton loading -->
-      <ng-container *ngIf="isLoading; else showProducts">
-        <div *ngFor="let skeleton of [1,2,3,4]" class="col-md-4 mb-4">
-          <div class="skeleton-card"></div>
+<section id="shop" class="min-vh-100 py-4">
+  <div class="container">
+    <div class="row gx-4">
+      <!-- Filter Sidebar -->
+      <aside class="col-lg-3 col-md-4">
+        <div class="filter-card">
+          <div class="filter-header">
+            <h2 class="filter-title">Filters</h2>
+            <button class="filter-reset" (click)="clearAllFilters()">Reset All</button>
+          </div>
+          
+          <!-- Category Filter -->
+          <div class="filter-section">
+            <div class="filter-section-header">
+              <h3 class="section-title">Categories</h3>
+            </div>
+            <div class="filter-section-content">
+              <div class="search-box with-icon">
+                <input type="text" [(ngModel)]="categorySearchTerm" (input)="onCategorySearch()" placeholder="Search categories...">
+              </div>
+              <ul class="filter-list scrollable">
+                <li *ngFor="let category of filteredCategories" class="filter-item radio-item">
+                  <input type="radio" name="category" [id]="'category-' + category.categoryID"
+                         [value]="category.categoryID"
+                         [checked]="category.categoryID === selectedCategoryId"
+                         (change)="onCategorySelect(category.categoryID)">
+                  <label [for]="'category-' + category.categoryID">{{ category.name }} ({{ getCategoryCount(category.categoryID) }})</label>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- Brand Filter -->
+          <div class="filter-section">
+            <div class="filter-section-header">
+              <h3 class="section-title">Brands</h3>
+            </div>
+            <div class="filter-section-content">
+              <div class="search-box with-icon">
+                <input type="text" [(ngModel)]="searchTerm" (input)="onBrandSearch()" placeholder="Search brands...">
+              </div>
+              <ul class="filter-list scrollable">
+                <li *ngFor="let brand of filteredBrands" class="filter-item radio-item">
+                  <input type="radio" name="brand" [id]="'brand-' + brand.brandID"
+                         [value]="brand.brandID"
+                         [checked]="brand.brandID === selectedBrandId"
+                         (change)="onBrandSelect(brand.brandID)">
+                  <label [for]="'brand-' + brand.brandID">{{ brand.name }}</label>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- Price Filter -->
+          <div class="filter-section">
+            <div class="filter-section-header">
+              <h3 class="section-title">Price Range</h3>
+            </div>
+            <div class="filter-section-content">
+              <ul class="filter-list">
+                <li *ngFor="let range of priceRanges" class="filter-item checkbox-item">
+                  <input type="checkbox"
+                         [id]="'price-' + range.label"
+                         [checked]="range.selected"
+                         (change)="onPriceRangeChange(range)">
+                  <label [for]="'price-' + range.label">{{ range.label }}</label>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
-      </ng-container>
+      </aside>
 
-      <ng-template #showProducts>
-        <app-product class="col-md-4" *ngFor="let product of products" [product]="product" />
-      </ng-template>
+      <!-- Main Content -->
+      <main class="col-lg-9 col-md-8">
+        <div class="product-grid-header">
+          <div class="results-count">
+            Showing <strong>{{ filteredProducts.length }}</strong> products
+          </div>
+          <div class="sort-options">
+            <select class="form-select">
+              <option>Sort by: Featured</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+              <option>Newest Arrivals</option>
+              <option>Best Rated</option>
+            </select>
+          </div>
+        </div>
 
+        <!-- Loading State -->
+        <ng-container *ngIf="isLoading">
+          <div class="row g-3">
+            <div *ngFor="let skeleton of [1,2,3,4,5,6]" class="col-xl-4 col-md-6">
+              <div class="product-card-skeleton"></div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Products Grid -->
+        <ng-container *ngIf="!isLoading">
+          <div class="row g-3">
+            <div class="col-xl-4 col-md-6" *ngFor="let product of filteredProducts">
+              <app-product [product]="product"></app-product>
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="filteredProducts.length === 0" class="empty-state">
+            <div class="empty-state-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+            </div>
+            <h3 class="empty-state-title">No products found</h3>
+            <p class="empty-state-text">Try adjusting your filters or search criteria</p>
+            <button class="btn btn-primary" (click)="clearAllFilters()">Clear All Filters</button>
+          </div>
+        </ng-container>
+      </main>
     </div>
   </div>
 </section>
