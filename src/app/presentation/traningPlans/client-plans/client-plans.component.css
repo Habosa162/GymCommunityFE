@@ -25,6 +25,9 @@
 .plan-summary {
   margin: 3px 0;
   font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .plan-type {
@@ -258,4 +261,36 @@
   .exercise-details, .meal-details {
     grid-template-columns: 1fr;
   }
+}
+
+/* Plan Item Name styles */
+.plan-item-name {
+  font-size: 11px;
+  color: #444;
+  margin-top: 2px;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+}
+
+/* Tips Section in Modal */
+.tips {
+  background-color: #fff9e6;
+  border-left: 4px solid #f0ad4e;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border-radius: 3px;
+}
+
+/* No data message */
+.no-data {
+  text-align: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  margin-top: 20px;
+  color: #666;
 } 

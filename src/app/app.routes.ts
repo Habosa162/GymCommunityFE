@@ -46,6 +46,7 @@ import { UserGymDetailsComponent } from './presentation/Gym/user-gym-details/use
 import { DashboardComponent } from './presentation/admin/dashboard/dashboard.component';
 import { SelectRoleComponent } from './presentation/auth/components/select-role/select-role.component';
 import { HomeComponent } from './presentation/home/home/home.component';
+import { ClientPlansComponent } from './presentation/traningPlans/client-plans/client-plans.component';
 import { TrainingPlanComponent } from './presentation/traningPlans/training-plan/training-plan.component';
 
 export const routes: Routes = [
@@ -91,7 +92,12 @@ export const routes: Routes = [
   {
     path: 'plan/:id',
     component: TrainingPlanComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, AdminCoachGuard],
+  },
+  {
+    path: 'client-plan/:id',
+    component: ClientPlansComponent,
+    canActivate: [AuthGuard, clientGuard],
   },
   {
     path: 'trainingPlan/:id',
@@ -114,7 +120,6 @@ export const routes: Routes = [
     component: TrainingPlansComponent,
     canActivate: [AuthGuard, AdminCoachGuard],
   },
-
   //Ecommerce routes
 
   { path: 'shop', component: ProductsListComponent },
