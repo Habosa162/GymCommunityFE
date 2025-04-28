@@ -126,7 +126,7 @@ export class MyOrdersComponent {
   }
 
   viewOrderDetails(orderId: number): void {
-    this.router.navigate(['/order-details', orderId]);
+    this.router.navigate(['/order-summary', orderId]);
   }
 
   // Pagination methods
