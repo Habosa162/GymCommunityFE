@@ -22,4 +22,14 @@ export class ShippingService {
   clearShipping(): void {
     localStorage.removeItem(this.STORAGE_KEY);
   }
+  getShippingStatusText(status: number): string {
+    switch(status) {
+      case 0: return 'Pending';
+      case 1: return 'Shipped';
+      case 2: return 'Delivered';
+      case 3: return 'Cancelled';
+      default: return 'Unknown';
+    }
+  }
+
 }
