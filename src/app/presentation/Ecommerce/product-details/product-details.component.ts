@@ -142,7 +142,7 @@ private loadReviews(productId: number): void {
     });
   }
   private loadCategoryProducts(categoryId: number): void {
-    this.productService.getProductByCategory(categoryId).subscribe({
+    this.productService.getProductsByCategory(categoryId).subscribe({
       next: (products) => {
         this.CategoryProducts = products;
       },

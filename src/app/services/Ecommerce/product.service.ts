@@ -25,8 +25,9 @@ export class ProductService {
   getOneProduct(id:number) : Observable<any> {
     return this.HttpClient.get(`${this.apiUrl}/${id}`);
   }
-  getProductByCategory(categoryId:number) : Observable<any> {
-    return this.HttpClient.get(`${this.apiUrl}/category/${categoryId}`);
+  //filter by category 
+  getProductsByCategory(categoryId: number): Observable<Product[]> {
+    return this.HttpClient.get<Product[]>(`${this.apiUrl}/by-category/${categoryId}`);
   }
   updateProduct(Product:Product) : Observable<any> {
     return this.HttpClient.put(`${this.apiUrl}`, Product);
@@ -37,5 +38,7 @@ export class ProductService {
   searchProducts(searchTerm: string): Observable<Product[]> {
     return this.HttpClient.get<Product[]>(`${this.apiUrl}/search?term=${searchTerm}`);
   }
-
+  getProductsByBrand(brandId: number): Observable<Product[]> {
+    return this.HttpClient.get<Product[]>(`${this.apiUrl}/by-brand/${brandId}`);
+  }
 }
