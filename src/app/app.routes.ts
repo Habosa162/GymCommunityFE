@@ -44,6 +44,7 @@ import { PaymentSuccessComponent } from './presentation/Ecommerce/payment-succes
 import { TrainingPlanComponent } from './presentation/traningPlans/training-plan/training-plan.component';
 import { OrderSummaryComponent } from './presentation/Ecommerce/order-summery/order-summary.component';
 import { CoachViewProfileComponent } from './presentation/Coach/coachviewprofile/coachviewprofile.component';
+import { MyOrdersComponent } from './presentation/Ecommerce/my-orders/my-orders.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -152,6 +153,11 @@ export const routes: Routes = [
     path: 'order-summary/:id',
     component: OrderSummaryComponent,
     title: 'order summary',
+  },
+  {
+    path: 'my-orders',
+    component: MyOrdersComponent,
+    title: 'My Orders',
   },
   //Gym routes
   { path: 'gym-owner-dashboard', component: GymOwnerDashboardComponent },
