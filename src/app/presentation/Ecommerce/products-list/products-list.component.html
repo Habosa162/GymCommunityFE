@@ -81,14 +81,16 @@
             Showing <strong>{{ filteredProducts.length }}</strong> products
           </div>
           <div class="sort-options">
-            <select class="form-select">
-              <option>Sort by: Featured</option>
-              <option>Price: Low to High</option>
-              <option>Price: High to Low</option>
-              <option>Newest Arrivals</option>
-              <option>Best Rated</option>
+            <label for="sortSelect" class="form-label me-2">Sort by:</label>
+            <select id="sortSelect" class="form-select" (change)="onSortChange($event)">
+              <option value="featured">Featured</option>
+              <option value="lowToHigh">Price: Low to High</option>
+              <option value="highToLow">Price: High to Low</option>
+              <option value="newest">Newest Arrivals</option>
+              <option value="bestRated">Best Rated</option>
             </select>
           </div>
+          
         </div>
 
           <!-- Product Search -->

@@ -1,77 +1,140 @@
-.card {
-    border: none;
-    border-radius: 1.5rem;
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.img-fluid {
-    max-height: 200px;
-    object-fit: cover;
+.animate-fade-in {
+    animation: fadeIn 1s ease-in;
 }
 
-.badge {
-    font-size: 0.9rem;
-    padding: 0.5em 0.75em;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
 }
 
-.list-group-item {
-    border-radius: 0.75rem;
-    margin-bottom: 0.75rem;
-    background-color: #f8f9fa;
+::-webkit-scrollbar-thumb {
+    background-color: #6c757d;
+    border-radius: 10px;
 }
 
-.card-img-top {
-    height: 200px;
-    object-fit: cover;
-    border-top-left-radius: 1.5rem;
-    border-top-right-radius: 1.5rem;
+::-webkit-scrollbar-track {
+    background: #343a40;
 }
 
-.card-body {
-    background-color: #fff;
+/* Position the header */
+#header {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    height: auto;
+    width: 200px;
+    /* Adjust this based on your desired header width */
+    background-color: transparent;
+    /* Set your desired header background */
+    /* box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); */
+    /* Optional for shadow */
+    z-index: 1000;
 }
 
-.btn {
-    border-radius: 0.75rem;
-    padding: 0.5rem 1rem;
+nav a span {
+    visibility: hidden;
+    /* Hide text */
+    opacity: 0;
+    /* Ensure text is invisible */
+    transform: translateX(-20px);
+    /* Optional: slide text to the left */
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    /* Smooth transition */
 }
 
-.btn-outline-dark {
-    border-color: #212529;
-    color: #212529;
+/* When hovering over the link, make the text visible */
+nav a:hover span {
+    visibility: visible;
+    /* Make text visible */
+    opacity: 1;
+    /* Fade in the text */
+    transform: translateX(0);
+    /* Slide text back to original position */
 }
 
-.btn-outline-dark:hover {
-    background-color: #212529;
-    color: #fff;
+#navmenu ul {
+    padding-left: 0;
 }
 
-h3,
-h5 {
-    font-weight: 700;
-    color: #212529;
+#navmenu ul li {
+    list-style: none;
 }
 
-.shadow-sm {
-    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+#navmenu ul li a {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    text-decoration: none;
+    color: #000;
 }
 
-.shadow {
-    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+nav a:hover {
+    color: blue;
 }
 
-.text-warning {
-    color: #ffc107 !important;
+/* Change the icon color to blue on hover */
+nav a:hover i {
+    color: blue;
 }
 
-.text-muted {
-    font-size: 0.875rem;
+/* Optional: Change the background color on hover */
+nav a:hover {
+    background-color: #e0f7ff;
+    /* Light blue background (optional) */
+    transition: all 0.3s ease;
+    /* Smooth transition effect */
 }
 
-.card-text {
-    color: #6c757d;
-    line-height: 1.6;
+#navmenu ul li a:hover {
+    background-color: #5e0808;
+    /* Optional hover effect */
 }
 
-.rounded-circle {
-    border: 4px solid #fff;
+/* Push content to the right */
+.main {
+    margin-left: 220px;
+    /* Adjust this to match the header width */
+    padding: 20px;
+}
+
+/* Optional: make the header toggle appear on smaller screens */
+.header-toggle {
+    display: none;
+    /* Hide on larger screens */
+}
+
+/* Adjust for smaller screen sizes */
+@media (max-width: 1200px) {
+    .main {
+        margin-left: 60px;
+        /* Adjust content spacing on smaller screens */
+    }
+
+    #header {
+        width: 60px;
+        /* Narrow down the header on smaller screens */
+    }
+
+    .header-toggle {
+        display: block;
+        /* Show toggle icon on smaller screens */
+    }
+}
+
+html {
+    scroll-behavior: smooth;
 }

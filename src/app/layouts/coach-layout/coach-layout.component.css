@@ -361,6 +361,11 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* .dark-mode .main-content {
+    background-color: #2d2d2d;
+
+} */
+
 .dark-mode .logo a,
 .dark-mode .username {
     color: #fff;
