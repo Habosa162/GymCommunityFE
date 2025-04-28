@@ -454,3 +454,15 @@
 .radio-item label {
   cursor: pointer;
 }
+/* filter */
+
+.sort-options {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.sort-options select.form-select {
+  width: 200px;
+}

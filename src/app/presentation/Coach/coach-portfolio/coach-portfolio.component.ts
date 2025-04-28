@@ -30,7 +30,7 @@ export class CoachPortfolioComponent implements OnInit {
 
   ngOnInit(): void {
     this.coachId = this.authservice.getUserId() || this.route.snapshot.paramMap.get('coachId')!;
-    
+
     this.certservice.getPortfolioIdByCoachId(this.coachId).subscribe({
       next: (res: any) => {
         this.portfolioid = res;

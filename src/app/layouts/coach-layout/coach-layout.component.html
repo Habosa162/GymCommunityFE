@@ -2,9 +2,9 @@
     <!-- Top Navigation Bar -->
     <header class="top-nav">
         <div class="nav-left">
-            <button class="sidebar-toggle btn " (click)="toggleSidebar()">
+            <!-- <button class="sidebar-toggle btn " (click)="toggleSidebar()">
                 <i class="bi bi-list">Manage Account</i>
-            </button>
+            </button> -->
             <div class="logo">
                 <a routerLink="/">
                     <img src="/assets/imgs/logo.png" alt="GymCommunity Logo">
@@ -17,9 +17,7 @@
         <div class="nav-right">
 
             <div class="theme-toggle" (click)="toggleDarkMode()">
-                <i class="bi" [class.bi-moon-fill]="!isDarkMode" [class.bi-sun-fill]="isDarkMode"> <i
-                        class="fas fa-sun"></i>
-                    <i class="fas fa-moon"></i></i>
+                <i class="bi" [class.bi-moon-fill]="!isDarkMode" [class.bi-sun-fill]="isDarkMode"> </i>
             </div>
 
 
@@ -44,17 +42,16 @@
     </header>
 
     <!-- Side Navigation -->
-    <aside class="sidebar" [class.collapsed]="!isSidebarOpen">
+    <!-- <aside class="sidebar" [class.collapsed]="!isSidebarOpen">
         <div class="sidebar-header">
-            <!-- <div class="coach-profile"> -->
-            <!-- <img [src]="userImage" alt="Coach Profile" class="coach-avatar"> -->
+          
             <div class="coach-info" *ngIf="isSidebarOpen">
                 <h3>Manage</h3>
                 <p>Professional Coach</p>
             </div>
-        </div>
-        <!-- </div> -->
-
+        </div> -->
+    <!-- </div> -->
+    <!-- 
         <nav class="sidebar-nav">
             <ul>
                 <li>
@@ -89,19 +86,19 @@
                 </li>
 
             </ul>
-        </nav>
-
-        <div class="sidebar-footer" *ngIf="isSidebarOpen">
-            <div class="help-support">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-            </div>
-            <a href="#" class="support-link">Contact Support</a>
+        </nav> -->
+    <!-- 
+    <div class="sidebar-footer" *ngIf="isSidebarOpen">
+        <div class="help-support">
+            <i class="bi bi-question-circle"></i>
+            <span>Need Help?</span>
         </div>
-    </aside>
+        <a href="#" class="support-link">Contact Support</a>
+    </div>
+    </aside> -->
 
     <!-- Main Content Area -->
-    <main class="main-content mt-0" [class.sidebar-collapsed]="!isSidebarOpen">
+    <main class="main-content m-0" [class.sidebar-collapsed]="!isSidebarOpen">
         <router-outlet></router-outlet>
     </main>
 </div>
