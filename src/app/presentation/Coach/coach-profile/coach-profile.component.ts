@@ -1,95 +1,78 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { CoachportfolioService } from '../../../services/Coachservice/coachportfolio.service';
-import { CoachcertficateService } from '../../../services/Coachservice/coachcertficate.service';
-import { Coachrating } from '../../../domain/models/CoachModels/coachrating.model';
-import { CoachworksampleService } from '../../../services/Coachservice/coachworksample.service';
+import { CoachService } from '../../../services/Coachservice/coach.service';
+import { CoachFullProfile } from '../../../domain/models/CoachModels/coach-full-profile.model';
 import { Coachportfolio } from '../../../domain/models/CoachModels/coachportfolio.model';
 import { Coachcertficate } from '../../../domain/models/CoachModels/coachcertficate.model';
 import { Coachworksample } from '../../../domain/models/CoachModels/coachworksample.model';
-import { CoachratingService } from '../../../services/Coachservice/coachrating.service';
+import { Coachrating } from '../../../domain/models/CoachModels/coachrating.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-coach-profile',
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule],
   templateUrl: './coach-profile.component.html',
-  styleUrl: './coach-profile.component.css'
+  styleUrls: ['./coach-profile.component.css'],
+  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule]
 })
 export class CoachProfileComponent implements OnInit {
-  coachId!: string;
-  portfolio!: Coachportfolio;
+  coachId: string = '';
+  portfolio: Coachportfolio | null = null;
   certificates: Coachcertficate[] = [];
   workSamples: Coachworksample[] = [];
   ratings: Coachrating[] = [];
   averageRating: number = 0;
+  isLoading: boolean = true;
+  currentYear: number = new Date().getFullYear();
+  coach: CoachFullProfile | null = null;
 
   constructor(
     private route: ActivatedRoute,
-    private portfolioService: CoachportfolioService,
-    private certificateService: CoachcertficateService,
-    private ratingService: CoachratingService,
-    private sampleService: CoachworksampleService,
-    private authService: AuthService
+    private coachService: CoachService,
+    private authservice: AuthService
   ) { }
 
   ngOnInit(): void {
-    this.coachId = this.authService.getUserId() || this.route.snapshot.paramMap.get('coachId')!;
-    console.log(this.coachId)
+    this.coachId = this.authservice.getUserId() || this.route.snapshot.paramMap.get('coachId')!;
+
     if (this.coachId) {
-      this.loadCoachData();
-    } else {
-      console.error('Coach ID not found in token');
+      this.loadCoachProfile();
     }
-
-
   }
 
-  loadCoachData(): void {
+  loadCoachProfile(): void {
+    this.isLoading = true;
+    this.coachService.getCoachFullProfile(this.coachId).subscribe({
+      next: (data) => {
+        this.coach = data;
+        this.portfolio = data.portfolio;
+        this.certificates = data.certificates;
+        this.workSamples = data.workSamples;
+        this.ratings = data.ratings;
+        console.log(this.ratings)
+        this.calculateAverageRating();
+        this.isLoading = false;
+      },
+      error: (error: any) => {
+        console.error('Error fetching coach profile:', error);
+        this.isLoading = false;
+      }
+    });
+  }
 
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.portfolioService.getByCoachId(id).subscribe((res) => {
-        this.portfolio = res;
-      })
+  calculateAverageRating(): void {
+    if (this.ratings.length > 0) {
+      const sum = this.ratings.reduce((total, rating) => total + rating.rate, 0);
+      this.averageRating = sum / this.ratings.length;
     }
-    // Load portfolio
-    this.portfolioService.getByCoachId(this.coachId).subscribe((res) => {
-      this.portfolio = res;
-
-
-      // Load certificates and worksamples using portfolioId
-      this.loadCertificates(this.portfolio.id!);
-      console.log(this.portfolio)
-      this.loadWorkSamples(this.portfolio.id!);
-    });
-
-    // Load ratings
-    // this.ratingService.getByCoachId(this.coachId).subscribe((res) => {
-    //   this.ratings = res;
-    //   this.calculateAverageRating();
-    // });
   }
 
-  loadCertificates(portfolioId: number): void {
-    this.certificateService.getByPortfolioId(portfolioId).subscribe((res) => {
-      this.certificates = res;
-    });
+  getSkills(): string[] {
+    return this.portfolio?.skillsJson || [];
   }
 
-  loadWorkSamples(portfolioId: number): void {
-    this.sampleService.getByPortfolioId(portfolioId).subscribe((res) => {
-      this.workSamples = res;
-    });
+  getSocialMediaLinks(): string[] {
+    return this.portfolio?.socialMediaLinksJson || [];
   }
-
-  // calculateAverageRating(): void {
-  //   if (this.ratings.length > 0) {
-  //     const total = this.ratings.reduce((sum, r) => sum + r.rate, 0);
-  //     this.averageRating = total / this.ratings.length;
-  //   }
-  // }
-
 }
