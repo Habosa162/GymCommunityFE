@@ -50,25 +50,30 @@
             </div>
           </div>
           <!-- Price Filter -->
-          <div class="filter-section">
-            <div class="filter-section-header">
-              <h3 class="section-title">Price Range</h3>
-            </div>
-            <div class="filter-section-content">
-              <ul class="filter-list">
-                <li *ngFor="let range of priceRanges" class="filter-item checkbox-item">
-                  <input type="checkbox"
-                         [id]="'price-' + range.label"
-                         [checked]="range.selected"
-                         (change)="onPriceRangeChange(range)">
-                  <label [for]="'price-' + range.label">{{ range.label }}</label>
-                </li>
-              </ul>
-            </div>
-          </div>
+<!-- In your template -->
+<div class="filter-section">
+  <div class="filter-section-header">
+    <h3 class="section-title">Price Range</h3>
+  </div>
+  <div class="filter-section-content">
+    <ul class="filter-list">
+      <li *ngFor="let range of priceRanges" class="filter-item checkbox-item">
+        <input type="radio" 
+               name="priceRange"
+               [id]="'price-' + range.label"
+               [checked]="range.selected"
+               (change)="onPriceRangeChange(range)">
+        <label [for]="'price-' + range.label">{{ range.label }}</label>
+      </li>
+    </ul>
+  </div>
+</div>
         </div>
       </aside>
 
+
+
+      
       <!-- Main Content -->
       <main class="col-lg-9 col-md-8">
         <div class="product-grid-header">
@@ -86,6 +91,17 @@
           </div>
         </div>
 
+          <!-- Product Search -->
+  <div class="search-box with-icon mb-3">
+    <input 
+    type="text" 
+    [(ngModel)]="productSearchTerm"
+    (input)="onSearchInput()" 
+    class="form-control"
+    placeholder="Search products..."
+  />
+  </div>
+
         <!-- Loading State -->
         <ng-container *ngIf="isLoading">
           <div class="row g-3">
@@ -94,6 +110,8 @@
             </div>
           </div>
         </ng-container>
+        
+         
 
         <!-- Products Grid -->
         <ng-container *ngIf="!isLoading">
