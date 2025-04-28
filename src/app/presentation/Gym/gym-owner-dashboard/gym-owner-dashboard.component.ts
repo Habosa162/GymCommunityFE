@@ -33,6 +33,7 @@ export class GymOwnerDashboardComponent implements OnInit {
   };
   markerPosition: google.maps.LatLngLiteral | null = null;
   mapInitialized = false;
+  ownerId :string | null = null; 
 
   constructor(
     private gymService: GymService,
@@ -40,18 +41,19 @@ export class GymOwnerDashboardComponent implements OnInit {
     private authService: AuthService 
   ) {}
 
+
   ngOnInit(): void {
+    this.ownerId = this.authService.getUserId();
     this.loadGyms();
     this.initGoogleMaps();
   }
 
   loadGyms(): void {
-    const ownerId = this.authService.getUserId(); // Replace with actual owner ID 
-    if (!ownerId) {
+    if (!this.ownerId) {
       console.error('Owner ID not found');
       return;
     }
-    this.gymService.getByOwnerId(ownerId).subscribe({
+    this.gymService.getByOwnerId(this.ownerId).subscribe({
       next: (gyms) => this.gyms = gyms,
       error: (err) => console.error('Failed to load gyms', err)
     });
@@ -62,7 +64,15 @@ export class GymOwnerDashboardComponent implements OnInit {
   }
 
   addGym(): void {
-    this.newGym.ownerId = 'fd6a3800-35d3-4d8b-8595-2e82a4adf6d8'; // Replace with actual owner ID
+    if (!this.ownerId) {
+      console.error('Owner ID not found');
+      return;
+    }
+    this.newGym.ownerId = this.ownerId;
+    if (!this.newGym.name || !this.newGym.location || this.markerPosition === null) {
+      console.error('Please fill in all fields and select a location on the map.');
+      return;
+    }
     this.gymService.createGym(this.newGym).subscribe({
       next: (createdGym) => {
         this.gyms.push(createdGym);

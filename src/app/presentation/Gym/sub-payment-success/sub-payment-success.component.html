@@ -1,0 +1,65 @@
+<div class="payment-result-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Processing your payment...</p>
+  </div>
+
+  <!-- Success State -->
+  <div *ngIf="!isLoading && isSuccess" class="success-state">
+    <div class="success-icon">
+      <mat-icon>check_circle</mat-icon>
+    </div>
+    <h1>Payment Successful!</h1>
+    <p class="confirmation">Your transaction ID: {{paymentDetails?.transactionId}}</p>
+
+    <div class="payment-details" *ngIf="paymentDetails">
+      <h2>Payment Details</h2>
+      <div class="detail-row">
+        <span class="label">Amount:</span>
+        <span class="value">{{paymentDetails.amount}} {{paymentDetails.currency}}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Date:</span>
+        <span class="value">{{paymentDetails.createdAt | date:'medium'}}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Method:</span>
+        <span class="value">{{paymentDetails.paymentMethod | titlecase}}</span>
+      </div>
+    </div>
+
+    <div class="subscription-details" *ngIf="subscriptionDetails">
+      <h2>Subscription Details</h2>
+      <div class="detail-row">
+        <span class="label">Plan:</span>
+        <span class="value">{{subscriptionDetails.plan?.title}}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Valid Until:</span>
+        <span class="value">{{subscriptionDetails.expiresAt | date:'longDate'}}</span>
+      </div>
+      
+      <div class="qr-code" *ngIf="subscriptionDetails.qrCodeData">
+        <img [src]="subscriptionDetails.qrCodeData" alt="Membership QR Code">
+        <p>Show this QR code at the gym entrance</p>
+      </div>
+    </div>
+
+    <button class="btn btn-success" (click)="navigateToHome()">
+      Return Home
+    </button>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && !isSuccess" class="error-state">
+    <div class="error-icon">
+      <mat-icon>error</mat-icon>
+    </div>
+    <h1>Payment Failed</h1>
+    <p class="error-message">{{errorMessage}}</p>
+    
+    <button class="btn btn-success" (click)="navigateToHome()">
+      Return Home</button>
+  </div>
+</div>

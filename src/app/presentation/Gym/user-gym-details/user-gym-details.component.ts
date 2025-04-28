@@ -10,6 +10,12 @@ import { UserSubscriptionService } from '../../../services/Gym/user-subscription
 import { CommonModule, ViewportScroller } from '@angular/common';
 import { ClientProfileService } from '../../../services/Client/client-profile.service';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { switchMap } from 'rxjs';
+import { PaymentDTO } from '../../../domain/models/Ecommerce/payment.mdoel';
+import { UserSubscriptionCreate, UserSubscriptionRead, PaymentStatus } from '../../../domain/models/Gym/user-subscription.model';
+import { AuthService } from '../../../services/auth.service';
+import { FrontbaseUrl } from '../../../services/enviroment';
+import { GymPlanRead } from '../../../domain/models/Gym/gym-plan.model';
 
 @Component({
   selector: 'app-user-gym-details',
@@ -24,14 +30,17 @@ export class UserGymDetailsComponent {
   coaches: any[] = [];
   images: any[] = [];
   plans: any[] = [];
-  selectedPlan: any = null;
+  selectedPlan: GymPlanRead | null = null; 
   subscriptionData: any = {
-    userId: '', // Get from auth service
+    userId: '', 
     startDate: new Date(),
     expiresAt: new Date(new Date().setMonth(new Date().getMonth() + 1))
   };
 
+  userId: string ='';
+
   coachImages: { [key: string]: string } = {};
+  isLoading = false;
 
   // Google Maps
   mapOptions: google.maps.MapOptions = {
@@ -58,10 +67,18 @@ export class UserGymDetailsComponent {
     private userSubscriptionService: UserSubscriptionService,
     private paymentService: PaymentService,
     private clientProfileService: ClientProfileService ,
-    private viewportScroller: ViewportScroller
+    private viewportScroller: ViewportScroller,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
+    this.userId = this.authService.getUserId() || ''; // Get the user ID from the auth service
+    if (!this.userId) {
+      console.error('User ID not found');
+      return;
+    }
+
+
     this.initGoogleMaps();
     this.gymId = +this.route.snapshot.params['id'];
     this.loadGym();
@@ -131,9 +148,85 @@ export class UserGymDetailsComponent {
     this.scrollTo('plans');
   }
 
-  subscribeToPlan(): void {
-    
+  processSubscriptionAndPayment(): void {
+    if (!this.selectedPlan) {
+      alert('Please select a plan first');
+      return;
+    }
+  
+    this.isLoading = true;
+  
+    const startDate = new Date();
+    const expiresAt = new Date();
+    expiresAt.setMonth(expiresAt.getMonth() + 1);
+  
+    const subscriptionData: UserSubscriptionCreate = {
+      userId: this.userId,
+      gymId: this.gymId,
+      planId: this.selectedPlan.id,
+      startDate: startDate,
+      expiresAt: expiresAt
+    };
+  
+    this.userSubscriptionService.create(subscriptionData).pipe(
+      switchMap((subscription: UserSubscriptionRead) => {
+        // Create local payment record first
+        const paymentData: PaymentDTO = {
+          amount: this.selectedPlan?.price ?? 0,
+          currency: 'EGP',
+          paymentMethod: 'Paymob',
+          status: PaymentStatus.Completed,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+        localStorage.setItem('subscriptionId', subscription.id.toString());
+
+        return this.paymentService.CreatePayment(paymentData).pipe(
+          switchMap((createdPayment: PaymentDTO) => {
+            // Prepare Paymob request with both IDs in extras
+            const orderData = {
+              amount: (this.selectedPlan?.price ?? 0) * 100,
+              currency: "EGP",
+              payment_methods: [4419883, 4437311, 4437297],
+              billing_data: {
+                "first_name": "N/A",
+                "last_name": "N/A",
+                "phone_number": "N/A",
+              },
+              extras: { 
+                subscription_id: subscription.id,
+                payment_id: createdPayment.id,
+                user_id: this.userId
+              },
+              redirection_url:  `${FrontbaseUrl}/sub-payment-success`};
+            if (createdPayment.id !== undefined && createdPayment.id !== null) {
+              localStorage.setItem("paymentId", createdPayment.id.toString());
+            } else {
+              console.error('Payment ID is undefined or null');
+            }
+  
+            return this.paymentService.PaymobRequest(orderData);
+          })
+        );
+      })
+    ).subscribe({
+      next: (paymobResponse: any) => {
+        this.isLoading = false;
+        const clientSecret = paymobResponse.client_secret;
+        if (clientSecret) {
+          const paymentUrl = `https://accept.paymob.com/unifiedcheckout/?publicKey=egy_pk_test_jrlnWL5oJX8IRTp9xpeHq5mmQhAMfXES&clientSecret=${clientSecret}`;
+          window.location.href = paymentUrl;
+        }
+
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.error('Error:', err);
+        alert('There was an error processing your subscription. Please try again.');
+      }
+    });
   }
+  
 
   viewCoachProfile(coachId: string): void {
     this.router.navigate(['/coach/profile', coachId]);

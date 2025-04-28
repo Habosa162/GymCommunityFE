@@ -1,0 +1,46 @@
+.payment-result-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .loading-state, .success-state, .error-state {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .success-icon mat-icon {
+    font-size: 4rem;
+    width: 4rem;
+    height: 4rem;
+    color: #4CAF50;
+  }
+  
+  .error-icon mat-icon {
+    font-size: 4rem;
+    width: 4rem;
+    height: 4rem;
+    color: #F44336;
+  }
+  
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .qr-code img {
+    max-width: 200px;
+    margin: 1rem auto;
+    display: block;
+  }
+  
+  button {
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }

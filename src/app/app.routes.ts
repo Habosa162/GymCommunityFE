@@ -48,6 +48,7 @@ import { MyOrdersComponent } from './presentation/Ecommerce/my-orders/my-orders.
 import { GymListComponent } from './presentation/Gym/gym-list/gym-list.component';
 import { UserGymDetailsComponent } from './presentation/Gym/user-gym-details/user-gym-details.component';
 import { DashboardComponent } from './presentation/admin/dashboard/dashboard.component';
+import { SubPaymentSuccessComponent } from './presentation/Gym/sub-payment-success/sub-payment-success.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -175,6 +176,11 @@ export const routes: Routes = [
 
   {path: 'gyms/:id', component: UserGymDetailsComponent},
   {path: 'gyms', component: GymListComponent},
+  { 
+    path: 'sub-payment-success',
+    component: SubPaymentSuccessComponent 
+  },
+
 
 
   //coach
