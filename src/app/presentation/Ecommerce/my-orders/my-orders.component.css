@@ -74,7 +74,7 @@
   color: #63CE34 !important;
 }
 
-/* ////////////////////////////////////// */
+/************************************INPUTS DARK MODE***************************/
 :host-context(body.dark-mode) .card{
   background-color: #202020 !important;
   color: #ffffff !important;
@@ -84,11 +84,12 @@
   background-color: #000000 !important;
 }
 
-:host-context(body.dark-mode) .card-body {
-  background-color: #202020 !important;
+:host-context(body.dark-mode) .card-body{
+  background-color: black !important;
   color: #ffffff !important;
   border: none;
 }
+
 :host-context(body.dark-mode) select ,  :host-context(body.dark-mode) input{
   background-color: #202020 !important;
   color: #ffffff !important;
@@ -113,4 +114,28 @@
 
 :host-context(body.dark-mode) .badge {
   color: black !important;
+}
+
+
+/*****************************Dark Mode End Pagination**********************************/
+:host-context(body.dark-mode) nav ul.pagination {
+  background-color: transparent;
+}
+
+:host-context(body.dark-mode) nav ul.pagination .page-item .page-link {
+  background-color: #202020;
+  color: #ffffff;
+  border: 1px solid #444444;
+}
+
+:host-context(body.dark-mode) nav ul.pagination .page-item.active .page-link {
+  background-color: #3a3a3a;
+  border-color: #666666;
+}
+
+:host-context(body.dark-mode) nav ul.pagination .page-item.disabled .page-link {
+  background-color: #202020;
+  color: #777777;
+  pointer-events: none;
+  opacity: 0.6;
 }
