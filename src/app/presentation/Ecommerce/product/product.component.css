@@ -2,12 +2,12 @@
   animation: pop 0.4s ease-in-out;
 }
 .card {
-  border: 1px solid #E6E6E6;
+  /* border: 1px solid #E6E6E6; */
   transition: border-color 0.5s ease, box-shadow 0.5s ease;
   overflow: hidden;
 }
 .card:hover {
-  border-color: #D6D6D6;
+  /* border-color: #D6D6D6; */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
@@ -18,7 +18,7 @@
 }
 
 .card:hover img {
-  transform: scale(1.2);
+  transform: scale(1.05);
 }
 
 @keyframes pop {
@@ -64,4 +64,12 @@
 }
 .toast-success::before {
   display: none !important;
+}
+
+:host-context(body.dark-mode) .text-warning {
+  color: #ffca28 !important;
+}
+
+:host-context(body.dark-mode) .text-muted {
+  color: #777777 !important;
 }

@@ -98,7 +98,7 @@
         <!-- Products Grid -->
         <ng-container *ngIf="!isLoading">
           <div class="row g-3">
-            <div class="col-xl-4 col-md-6" *ngFor="let product of filteredProducts">
+            <div class="col-xl-3 col-md-6 col-sm-12" *ngFor="let product of filteredProducts">
               <app-product [product]="product"></app-product>
             </div>
           </div>
