@@ -305,3 +305,52 @@
   color: #f36100;
   font-weight: 500;
 }
+
+/* Crossed out styles */
+.crossed-out {
+  position: relative;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.crossed-out::before,
+.crossed-out::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #ff0000;
+  z-index: 1;
+}
+
+.crossed-out::before {
+  transform: rotate(45deg);
+}
+
+.crossed-out::after {
+  transform: rotate(-45deg);
+}
+
+.crossed-out .add-day-button {
+  display: none;
+}
+
+.crossed-out .day-plan-info {
+  opacity: 0.6;
+}
+
+.week-crossed-out {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.week-crossed-out td {
+  text-decoration: line-through;
+}
+
+.week-crossed-out .add-week-button,
+.week-crossed-out .add-day-button {
+  display: none;
+}

@@ -102,6 +102,7 @@ export class TrainingPlanComponent implements OnInit {
     this.trainingPlanService.getTrainingPlanById(Number(id)).subscribe({
       next: (response) => {
         this.trainingPlan = response;
+        this.generateMonths(); // Generate months based on durationMonths
         this.initializeWeeks();
         
         // If the plan has week plans, map them to our weeks
@@ -209,8 +210,13 @@ export class TrainingPlanComponent implements OnInit {
     
     console.log('Training plan start date:', startDate);
     
+    // Calculate total number of weeks based on duration months (30 days per month)
+    const daysPerMonth = 30;
+    const totalDays = this.trainingPlan.durationMonths * daysPerMonth;
+    const totalWeeks = Math.ceil(totalDays / 7);
+    
     // Create weeks for the training plan
-    for (let i = 1; i <= 12; i++) {
+    for (let i = 1; i <= totalWeeks; i++) {
       const weekStartDate = new Date(startDate);
       
       // Add (i-1) weeks to the start date to get this week's start date
@@ -226,19 +232,10 @@ export class TrainingPlanComponent implements OnInit {
         hasWeekPlan: false,
         dailyPlans: {}
       });
-      
-      // Get all months covered by the training plan
-      const month = weekStartDate.getMonth() + 1; // 1-12 format
-      if (!this.months.includes(month)) {
-        this.months.push(month);
-      }
     }
     
-    // Default to current month, or first month of plan if current month not covered
-    const currentMonth = new Date().getMonth() + 1;
-    if (this.months.includes(currentMonth)) {
-      this.selectedMonth = currentMonth;
-    } else if (this.months.length > 0) {
+    // Default to first month
+    if (this.months.length > 0) {
       this.selectedMonth = this.months[0];
     }
     
@@ -527,9 +524,26 @@ export class TrainingPlanComponent implements OnInit {
   }
 
   getWeeksForSelectedMonth(): Week[] {
+    // Calculate the start and end dates for the selected plan month
+    const startDate = new Date(this.trainingPlan.startDate);
+    const monthStartDate = new Date(startDate);
+    monthStartDate.setDate(startDate.getDate() + ((this.selectedMonth - 1) * 30)); // 30 days per month
+    
+    const monthEndDate = new Date(monthStartDate);
+    monthEndDate.setDate(monthStartDate.getDate() + 29); // 30 days per month
+    
+    console.log(`Plan Month ${this.selectedMonth} range:`, {
+      start: this.formatDate(monthStartDate),
+      end: this.formatDate(monthEndDate)
+    });
+    
+    // Get weeks that fall within this plan month
     return this.weeks.filter(week => {
-      const weekMonth = week.startDate.getMonth() + 1;
-      return weekMonth === this.selectedMonth;
+      const weekStartInMonth = this.isDateInRange(week.startDate, monthStartDate, monthEndDate);
+      const weekEndInMonth = this.isDateInRange(week.endDate, monthStartDate, monthEndDate);
+      const weekSpansMonth = week.startDate <= monthStartDate && week.endDate >= monthEndDate;
+      
+      return weekStartInMonth || weekEndInMonth || weekSpansMonth;
     });
   }
 
@@ -606,8 +620,22 @@ export class TrainingPlanComponent implements OnInit {
   submitWeekPlan(): void {
     if (!this.newWeekPlan.weekName) return;
     
-    const weekIndex = this.weeks.findIndex(w => w.weekNumber === parseInt(this.newWeekPlan.weekName, 10));
-    if (weekIndex === -1) return;
+    // Extract week number from the week name (e.g., "Week 1" -> 1)
+    const weekNumber = parseInt(this.newWeekPlan.weekName.split(' ')[1]);
+    if (isNaN(weekNumber)) {
+      console.error('Invalid week number in week name:', this.newWeekPlan.weekName);
+      return;
+    }
+    
+    // Find the week in our array
+    const weekIndex = this.weeks.findIndex(w => w.weekNumber === weekNumber);
+    if (weekIndex === -1) {
+      console.error('Could not find week with number:', weekNumber);
+      return;
+    }
+    
+    console.log('Creating week plan for week:', weekNumber);
+    console.log('Week plan data:', this.newWeekPlan);
     
     // Call the service to create a new week plan
     this.trainingPlanService.createWeekPlan(this.newWeekPlan).subscribe({
@@ -617,7 +645,7 @@ export class TrainingPlanComponent implements OnInit {
         // Update the week in our array
         this.weeks[weekIndex].hasWeekPlan = true;
         if (newWeekPlan.id) {
-          this.weeks[weekIndex].weekPlanId = newWeekPlan.id.toString(); // Convert to string
+          this.weeks[weekIndex].weekPlanId = newWeekPlan.id.toString();
         }
         
         // Initialize the daily plans object
@@ -625,11 +653,20 @@ export class TrainingPlanComponent implements OnInit {
           this.weeks[weekIndex].dailyPlans = {};
         }
         
+        // Also update the training plan's week plans array if it exists
+        if (!this.trainingPlan.weekPlans) {
+          this.trainingPlan.weekPlans = [];
+        }
+        this.trainingPlan.weekPlans.push(newWeekPlan);
+        
         this.closeWeekPopup();
+        
+        // Refresh the training plan data to ensure everything is in sync
+        this.getTrainingPlanById(this.trainingPlan.id);
       },
       error: (error) => {
         console.error('Error creating week plan:', error);
-      },
+      }
     });
   }
 
@@ -760,5 +797,28 @@ export class TrainingPlanComponent implements OnInit {
   
   removeMeal(index: number): void {
     this.dayPlanData.meals.splice(index, 1);
+  }
+
+  isDateCrossedOut(date: Date): boolean {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const endDate = new Date(this.trainingPlan.endDate);
+    endDate.setHours(0, 0, 0, 0);
+    
+    const checkDate = new Date(date);
+    checkDate.setHours(0, 0, 0, 0);
+    
+    return checkDate < today || checkDate > endDate;
+  }
+
+  isWeekCrossedOut(week: Week): boolean {
+    return this.isDateCrossedOut(week.startDate) || this.isDateCrossedOut(week.endDate);
+  }
+
+  isDayCrossedOut(week: Week, dayNumber: number): boolean {
+    const dayDate = new Date(week.startDate);
+    dayDate.setDate(dayDate.getDate() + (dayNumber - 1));
+    return this.isDateCrossedOut(dayDate);
   }
 }

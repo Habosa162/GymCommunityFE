@@ -41,10 +41,14 @@
                   [class.week-hover]="isWeekHovered(week.weekNumber)"
                   (mouseenter)="setHoveredWeek(week.weekNumber)" 
                   (mouseleave)="setHoveredWeek(null)">
-                  <!-- <div class="bg-danger"></div> -->
-                <td class="class-time ">
+                <td class="class-time">
                   Week {{ week.weekNumber }}<br>
                   <small>{{ week.startDate | date:'shortDate' }} - {{ week.endDate | date:'shortDate' }}</small>
+                  
+                  <!-- Add Week Button (if no week plan) -->
+                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button">
+                    <h5>Add Week</h5>
+                  </div>
                 </td>
                 
                 <!-- Monday -->
@@ -52,19 +56,14 @@
                     [class.week-disabled]="!week.hasWeekPlan && !isWeekHovered(week.weekNumber)"
                     [class.hover-bg]="!week.hasWeekPlan && isWeekHovered(week.weekNumber) || (week.hasWeekPlan && !hasDayPlan(week, 1) && isDayHovered(week.weekNumber, 1))" 
                     [class.has-plan]="week.hasWeekPlan"
+                    [class.crossed-out]="isDayCrossedOut(week, 1)"
                     (mouseenter)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, 1) : null"
                     (mouseleave)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, null) : null"
                     (click)="!week.hasWeekPlan && isWeekHovered(week.weekNumber) ? openAddWeekPopup(week) : 
-                           (week.hasWeekPlan && !hasDayPlan(week, 1) && isDayHovered(week.weekNumber, 1)) ? openAddDayPopup(week, 1) : null">
-                  
-                  <!-- Add Week Button (if no week plan) -->
-                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button ">
-                    <h5>Add Week</h5>
-                  </div>
-             
+                           (week.hasWeekPlan && !hasDayPlan(week, 1) && isDayHovered(week.weekNumber, 1) && !isDayCrossedOut(week, 1)) ? openAddDayPopup(week, 1) : null">
                   
                   <!-- Add Day Button (if has week plan but no day plan) -->
-                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 1) && isDayHovered(week.weekNumber, 1)" class="add-day-button">
+                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 1) && isDayHovered(week.weekNumber, 1) && !isDayCrossedOut(week, 1)" class="add-day-button">
                     <h5>Add Day Plan</h5>
                   </div>
                   
@@ -86,18 +85,14 @@
                     [class.week-disabled]="!week.hasWeekPlan && !isWeekHovered(week.weekNumber)"
                     [class.hover-bg]="!week.hasWeekPlan && isWeekHovered(week.weekNumber) || (week.hasWeekPlan && !hasDayPlan(week, 2) && isDayHovered(week.weekNumber, 2))" 
                     [class.has-plan]="week.hasWeekPlan"
+                    [class.crossed-out]="isDayCrossedOut(week, 2)"
                     (mouseenter)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, 2) : null"
                     (mouseleave)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, null) : null"
                     (click)="!week.hasWeekPlan && isWeekHovered(week.weekNumber) ? openAddWeekPopup(week) : 
-                           (week.hasWeekPlan && !hasDayPlan(week, 2) && isDayHovered(week.weekNumber, 2)) ? openAddDayPopup(week, 2) : null">
-                  
-                  <!-- Add Week Button (if no week plan) -->
-                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button">
-                    <h5>Add Week</h5>
-                  </div>
+                           (week.hasWeekPlan && !hasDayPlan(week, 2) && isDayHovered(week.weekNumber, 2) && !isDayCrossedOut(week, 2)) ? openAddDayPopup(week, 2) : null">
                   
                   <!-- Add Day Button (if has week plan but no day plan) -->
-                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 2) && isDayHovered(week.weekNumber, 2)" class="add-day-button">
+                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 2) && isDayHovered(week.weekNumber, 2) && !isDayCrossedOut(week, 2)" class="add-day-button">
                     <h5>Add Day Plan</h5>
                   </div>
                   
@@ -119,18 +114,14 @@
                     [class.week-disabled]="!week.hasWeekPlan && !isWeekHovered(week.weekNumber)"
                     [class.hover-bg]="!week.hasWeekPlan && isWeekHovered(week.weekNumber) || (week.hasWeekPlan && !hasDayPlan(week, 3) && isDayHovered(week.weekNumber, 3))" 
                     [class.has-plan]="week.hasWeekPlan"
+                    [class.crossed-out]="isDayCrossedOut(week, 3)"
                     (mouseenter)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, 3) : null"
                     (mouseleave)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, null) : null"
                     (click)="!week.hasWeekPlan && isWeekHovered(week.weekNumber) ? openAddWeekPopup(week) : 
-                           (week.hasWeekPlan && !hasDayPlan(week, 3) && isDayHovered(week.weekNumber, 3)) ? openAddDayPopup(week, 3) : null">
-                  
-                  <!-- Add Week Button (if no week plan) -->
-                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button">
-                    <h5>Add Week</h5>
-                  </div>
+                           (week.hasWeekPlan && !hasDayPlan(week, 3) && isDayHovered(week.weekNumber, 3) && !isDayCrossedOut(week, 3)) ? openAddDayPopup(week, 3) : null">
                   
                   <!-- Add Day Button (if has week plan but no day plan) -->
-                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 3) && isDayHovered(week.weekNumber, 3)" class="add-day-button">
+                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 3) && isDayHovered(week.weekNumber, 3) && !isDayCrossedOut(week, 3)" class="add-day-button">
                     <h5>Add Day Plan</h5>
                   </div>
                   
@@ -152,18 +143,14 @@
                     [class.week-disabled]="!week.hasWeekPlan && !isWeekHovered(week.weekNumber)"
                     [class.hover-bg]="!week.hasWeekPlan && isWeekHovered(week.weekNumber) || (week.hasWeekPlan && !hasDayPlan(week, 4) && isDayHovered(week.weekNumber, 4))" 
                     [class.has-plan]="week.hasWeekPlan"
+                    [class.crossed-out]="isDayCrossedOut(week, 4)"
                     (mouseenter)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, 4) : null"
                     (mouseleave)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, null) : null"
                     (click)="!week.hasWeekPlan && isWeekHovered(week.weekNumber) ? openAddWeekPopup(week) : 
-                           (week.hasWeekPlan && !hasDayPlan(week, 4) && isDayHovered(week.weekNumber, 4)) ? openAddDayPopup(week, 4) : null">
-                  
-                  <!-- Add Week Button (if no week plan) -->
-                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button">
-                    <h5>Add Week</h5>
-                  </div>
+                           (week.hasWeekPlan && !hasDayPlan(week, 4) && isDayHovered(week.weekNumber, 4) && !isDayCrossedOut(week, 4)) ? openAddDayPopup(week, 4) : null">
                   
                   <!-- Add Day Button (if has week plan but no day plan) -->
-                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 4) && isDayHovered(week.weekNumber, 4)" class="add-day-button">
+                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 4) && isDayHovered(week.weekNumber, 4) && !isDayCrossedOut(week, 4)" class="add-day-button">
                     <h5>Add Day Plan</h5>
                   </div>
                   
@@ -185,18 +172,14 @@
                     [class.week-disabled]="!week.hasWeekPlan && !isWeekHovered(week.weekNumber)"
                     [class.hover-bg]="!week.hasWeekPlan && isWeekHovered(week.weekNumber) || (week.hasWeekPlan && !hasDayPlan(week, 5) && isDayHovered(week.weekNumber, 5))" 
                     [class.has-plan]="week.hasWeekPlan"
+                    [class.crossed-out]="isDayCrossedOut(week, 5)"
                     (mouseenter)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, 5) : null"
                     (mouseleave)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, null) : null"
                     (click)="!week.hasWeekPlan && isWeekHovered(week.weekNumber) ? openAddWeekPopup(week) : 
-                           (week.hasWeekPlan && !hasDayPlan(week, 5) && isDayHovered(week.weekNumber, 5)) ? openAddDayPopup(week, 5) : null">
-                  
-                  <!-- Add Week Button (if no week plan) -->
-                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button">
-                    <h5>Add Week</h5>
-                  </div>
+                           (week.hasWeekPlan && !hasDayPlan(week, 5) && isDayHovered(week.weekNumber, 5) && !isDayCrossedOut(week, 5)) ? openAddDayPopup(week, 5) : null">
                   
                   <!-- Add Day Button (if has week plan but no day plan) -->
-                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 5) && isDayHovered(week.weekNumber, 5)" class="add-day-button">
+                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 5) && isDayHovered(week.weekNumber, 5) && !isDayCrossedOut(week, 5)" class="add-day-button">
                     <h5>Add Day Plan</h5>
                   </div>
                   
@@ -218,18 +201,14 @@
                     [class.week-disabled]="!week.hasWeekPlan && !isWeekHovered(week.weekNumber)"
                     [class.hover-bg]="!week.hasWeekPlan && isWeekHovered(week.weekNumber) || (week.hasWeekPlan && !hasDayPlan(week, 6) && isDayHovered(week.weekNumber, 6))" 
                     [class.has-plan]="week.hasWeekPlan"
+                    [class.crossed-out]="isDayCrossedOut(week, 6)"
                     (mouseenter)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, 6) : null"
                     (mouseleave)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, null) : null"
                     (click)="!week.hasWeekPlan && isWeekHovered(week.weekNumber) ? openAddWeekPopup(week) : 
-                           (week.hasWeekPlan && !hasDayPlan(week, 6) && isDayHovered(week.weekNumber, 6)) ? openAddDayPopup(week, 6) : null">
-                  
-                  <!-- Add Week Button (if no week plan) -->
-                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button">
-                    <h5>Add Week</h5>
-                  </div>
+                           (week.hasWeekPlan && !hasDayPlan(week, 6) && isDayHovered(week.weekNumber, 6) && !isDayCrossedOut(week, 6)) ? openAddDayPopup(week, 6) : null">
                   
                   <!-- Add Day Button (if has week plan but no day plan) -->
-                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 6) && isDayHovered(week.weekNumber, 6)" class="add-day-button">
+                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 6) && isDayHovered(week.weekNumber, 6) && !isDayCrossedOut(week, 6)" class="add-day-button">
                     <h5>Add Day Plan</h5>
                   </div>
                   
@@ -251,18 +230,14 @@
                     [class.week-disabled]="!week.hasWeekPlan && !isWeekHovered(week.weekNumber)"
                     [class.hover-bg]="!week.hasWeekPlan && isWeekHovered(week.weekNumber) || (week.hasWeekPlan && !hasDayPlan(week, 7) && isDayHovered(week.weekNumber, 7))" 
                     [class.has-plan]="week.hasWeekPlan"
+                    [class.crossed-out]="isDayCrossedOut(week, 7)"
                     (mouseenter)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, 7) : null"
                     (mouseleave)="week.hasWeekPlan ? setHoveredDay(week.weekNumber, null) : null"
                     (click)="!week.hasWeekPlan && isWeekHovered(week.weekNumber) ? openAddWeekPopup(week) : 
-                           (week.hasWeekPlan && !hasDayPlan(week, 7) && isDayHovered(week.weekNumber, 7)) ? openAddDayPopup(week, 7) : null">
-                  
-                  <!-- Add Week Button (if no week plan) -->
-                  <div *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)" class="add-week-button">
-                    <h5>Add Week</h5>
-                  </div>
+                           (week.hasWeekPlan && !hasDayPlan(week, 7) && isDayHovered(week.weekNumber, 7) && !isDayCrossedOut(week, 7)) ? openAddDayPopup(week, 7) : null">
                   
                   <!-- Add Day Button (if has week plan but no day plan) -->
-                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 7) && isDayHovered(week.weekNumber, 7)" class="add-day-button">
+                  <div *ngIf="week.hasWeekPlan && !hasDayPlan(week, 7) && isDayHovered(week.weekNumber, 7) && !isDayCrossedOut(week, 7)" class="add-day-button">
                     <h5>Add Day Plan</h5>
                   </div>
                   
