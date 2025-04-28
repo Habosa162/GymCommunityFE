@@ -47,6 +47,7 @@ import { CoachViewProfileComponent } from './presentation/Coach/coachviewprofile
 import { MyOrdersComponent } from './presentation/Ecommerce/my-orders/my-orders.component';
 import { GymListComponent } from './presentation/Gym/gym-list/gym-list.component';
 import { UserGymDetailsComponent } from './presentation/Gym/user-gym-details/user-gym-details.component';
+import { DashboardComponent } from './presentation/admin/dashboard/dashboard.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -207,6 +208,15 @@ export const routes: Routes = [
           { path: 'certificates', component: CoachCertificatesComponent },
           { path: 'work-samples', component: CoachWorkSamplesComponent },
           { path: 'my-client', component: MyClientsComponent },
+        ],
+      },
+
+      // Private coach routes (requires authentication and coach role)
+      {
+        path: 'admin',
+        canActivate: [AuthGuard, AdminGuard],
+        children: [
+          { path: '', component: DashboardComponent },
         ],
       },
     ],

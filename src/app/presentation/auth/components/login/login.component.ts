@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   submitted = false;
   isLoading = false;
   errMgs: string = '';
-  
+
 
   constructor(
     private fb: FormBuilder,
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
 
-        
+
   }
 ngAfterViewInit(): void {
   const tryRenderGoogleButton = () => {
@@ -109,7 +109,7 @@ ngAfterViewInit(): void {
   // }
 
 
-  
+
   onSubmit() {
     this.submitted = true;
     if (this.loginForm.valid) {
@@ -120,9 +120,11 @@ ngAfterViewInit(): void {
       this.isLoading = true;
       this.authService.login(userObj).subscribe(
         (response) => {
-          console.log('Login successful', response);
           localStorage.setItem('token', response.token);
           this.isLoading = false;
+          if(this.authService.getUserRole() == 'Admin'){
+            this.router.navigate(['/admin']);
+          }
           this.router.navigate(['/']);
           this.cartService.setUser(this.authService.getUserId());
         },
