@@ -29,6 +29,7 @@ import { CoachPortfolioComponent } from './presentation/Coach/coach-portfolio/co
 import { CoachRatingComponent } from './presentation/Coach/coach-rating/coach-rating.component';
 import { CoachWorkSamplesComponent } from './presentation/Coach/coach-work-samples/coach-work-samples.component';
 
+import { CoachProfileComponent } from './presentation/Coach/coach-profile/coach-profile.component';
 import { CoachesListComponent } from './presentation/Coach/coaches-list/coaches-list.component';
 import { CoachViewProfileComponent } from './presentation/Coach/coachviewprofile/coachviewprofile.component';
 import { MyClientsComponent } from './presentation/Coach/my-clients/my-clients/my-clients.component';
