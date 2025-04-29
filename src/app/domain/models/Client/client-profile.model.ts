@@ -19,3 +19,8 @@ export interface ClientProfile {
   coverImg: string;
 
 }
+
+export interface ProfileData {
+  clientProfile: ClientProfile;
+  isOwner: boolean;
+}

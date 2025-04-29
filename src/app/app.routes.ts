@@ -49,6 +49,8 @@ import { GymListComponent } from './presentation/Gym/gym-list/gym-list.component
 import { UserGymDetailsComponent } from './presentation/Gym/user-gym-details/user-gym-details.component';
 import { DashboardComponent } from './presentation/admin/dashboard/dashboard.component';
 import { SubPaymentSuccessComponent } from './presentation/Gym/sub-payment-success/sub-payment-success.component';
+import { ClientPresonalInfoComponent } from './presentation/client/components/client-presonal-info/client-presonal-info/client-presonal-info.component';
+import { ClientPostsComponent } from './presentation/client/components/client-posts/client-posts.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -64,8 +66,19 @@ export const routes: Routes = [
     path: 'profile/me',
     component: ClientProfileComponent,
     canActivate: [AuthGuard, clientGuard],
+    children: [
+      { path: '', redirectTo: 'info', pathMatch: 'full' },
+      { path: 'info', component: ClientPresonalInfoComponent },
+      { path: 'posts', component: ForumComponent },
+    ],
   },
-  { path: 'profile/:userId', component: ClientProfileComponent },
+  { path: 'profile/:userId', component: ClientProfileComponent, 
+    children:[
+      { path: '', redirectTo: 'info', pathMatch: 'full' },
+      { path: 'info', component: ClientPresonalInfoComponent },
+      { path: 'posts', component: ForumComponent },
+    ]
+  },
   //Forum routes
   { path: 'subjects', component: SubjectComponent, canActivate: [AuthGuard] },
   {

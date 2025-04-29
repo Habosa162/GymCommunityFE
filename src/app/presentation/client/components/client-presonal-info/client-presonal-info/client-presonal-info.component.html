@@ -1,0 +1,217 @@
+      <div class="profile-header mb-4">
+          <div class="d-flex  align-items-center">
+            <h2 class="clientName text-capitalize m-0">{{ clientProfile?.firstName }} {{ clientProfile?.lastName }} </h2>
+            <span class="m-2" title="Premium User"
+             style="width: 30px;">
+             <svg class="w-100 h-100" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800px" height="800px" viewBox="0 0 128 128" enable-background="new 0 0 128 128" xml:space="preserve" fill="#000000">
+
+            <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <g id="SVGRepo_iconCarrier"> <path fill="#32cd32" d="M112,36c-6.629,0-12,5.375-12,12c0,1.68,0.352,3.273,0.973,4.727L84,60L69.801,34.445 C73.48,32.391,76,28.508,76,24c0-6.625-5.371-12-12-12s-12,5.375-12,12c0,4.508,2.52,8.391,6.199,10.445L44,60l-16.973-7.273 C27.648,51.273,28,49.68,28,48c0-6.625-5.371-12-12-12S4,41.375,4,48s5.371,12,12,12c0.93,0,1.822-0.133,2.695-0.328L28,100v8 c0,4.422,3.582,8,8,8h56c4.418,0,8-3.578,8-8v-8l9.309-40.328C110.176,59.875,111.07,60,112,60c6.629,0,12-5.375,12-12 S118.629,36,112,36z M64,20c2.207,0,4,1.797,4,4s-1.793,4-4,4s-4-1.797-4-4S61.793,20,64,20z M12,48c0-2.203,1.793-4,4-4 s4,1.797,4,4s-1.793,4-4,4S12,50.203,12,48z M92,108H36v-8h56V108z M93.633,92H34.367L27.34,61.563l13.508,5.789 C41.871,67.789,42.941,68,43.996,68c2.828,0,5.547-1.5,6.996-4.117L64,40.477l13.008,23.406C78.457,66.5,81.176,68,84.004,68 c1.055,0,2.125-0.211,3.148-0.648l13.508-5.789L93.633,92z M112,52c-2.207,0-4-1.797-4-4s1.793-4,4-4s4,1.797,4,4S114.207,52,112,52 z"/> </g>
+
+            </svg>
+
+            </span>
+
+          </div>
+          <div style="width: 50px;">
+            
+          </div>
+          <div class="d-flex align-items-center mt-2">
+            <i class="fa-solid fa-calendar me-2 text-black-50" ></i>
+            <span class="text-black-50">Joined <span >{{ clientProfile?.createdAt | date:'MMM d y'}}</span></span>
+          </div>
+        </div>
+
+        <!-- Bio Section -->
+        <div class="card shadow-sm mb-4">
+          <div class="card-header text-white d-flex justify-content-between align-items-center text-black-50 border-0">
+            <h5 class="m-0"><i class="fa-solid fa-pen me-2 "></i>Bio</h5>
+            <button *ngIf="isOwner" class="btn  btn-sm" (click)="toggleBioEdit()">
+              <i class="fa-solid" [ngClass]="isBioEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
+              {{ isBioEditing ? 'Save' : 'Edit' }}
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="bio-content">
+              <div *ngIf="!isBioEditing">
+                <p class="mb-0 colorBlack">{{ clientProfile.bio }}</p>
+              </div>
+              <div *ngIf="isBioEditing">
+                <textarea class="form-control" [(ngModel)]="clientProfile.bio" rows="4"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <!-- Personal Info Card -->
+          <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+              <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center text-black-50 border-0">
+                <h5 class="m-0"><i class="fa-solid fa-user me-2"></i>Personal Information</h5>
+                <button *ngIf="isOwner" class="btn  btn-sm" (click)="togglePersonalInfoEdit()">
+                  <i class="fa-solid" [ngClass]="isPersonalInfoEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
+                  {{ isPersonalInfoEditing ? 'Save' : 'Edit' }}
+                </button>
+              </div>
+              <div class="card-body ">
+                <ul class="Personal-info list-unstyled d-flex flex-column justify-content-between h-100">
+                  <li class="mb-3 rounded-4">
+                    <i class="fa-solid fa-venus-mars me-2 text-primary"></i>
+                    <strong class="me-2">Gender:</strong>
+                    <span *ngIf="!isPersonalInfoEditing">{{ clientProfile?.gender==='m'?'Male':'Female' }}</span>
+                    <select *ngIf="isPersonalInfoEditing" class="form-select form-select-sm d-inline-block w-auto"
+                      [(ngModel)]="clientProfile.gender">
+                      <option value="m">Male</option>
+                      <option value="f">Female</option>
+                    </select>
+                  </li>
+                  <li class="mb-3 rounded-4">
+                    <i class="fa-solid fa-cake-candles me-2 text-primary"></i>
+                    <strong class="me-2">Birth Date:</strong>
+                    <span *ngIf="!isPersonalInfoEditing">{{ clientProfile?.birthDate | date:'MMM d y'  }}</span>
+                    <input *ngIf="isPersonalInfoEditing" type="date"
+                      class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="clientProfile.birthDate">
+                  </li>
+                  <li class="mb-3 rounded-4">
+                  
+                    <i class="fa-solid fa-flag me-2 text-primary"></i>
+                    <strong class="me-2">Nationality:</strong>
+                    <span *ngIf="!isPersonalInfoEditing">Egyptian</span>  
+                    <input *ngIf="isPersonalInfoEditing" type="text"
+                      class="form-control form-control-sm d-inline-block w-auto" >
+                  </li>
+                  <li class="mb-3 rounded-4">
+                    <i class="fa-solid fa-location-dot me-2 text-primary"></i>
+                    <strong class="me-2">Address:</strong>
+                    <span *ngIf="!isPersonalInfoEditing">{{ clientProfile.address }}</span>
+                    <input *ngIf="isPersonalInfoEditing" type="text"
+                      class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="clientProfile.address">
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fitness Stats Card -->
+          <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+              <div class="card-header bg-success text-white d-flex justify-content-between align-items-center text-black-50 border-0">
+                <h5 class="m-0"><i class="fa-solid fa-chart-line me-2"></i>Fitness Stats</h5>
+                <button *ngIf="isOwner" class="btn  btn-sm" (click)="toggleFitnessStatsEdit()">
+                  <i class="fa-solid" [ngClass]="isFitnessStatsEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
+                  {{ isFitnessStatsEditing ? 'Save' : 'Edit' }}
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="row text-center">
+                  <div class="col-6 mb-3">
+                    <div class="stat-box p-3 rounded bg-light">
+                      <i class="fa-solid fa-weight-scale fa-2x text-success mb-2"></i>
+                      <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.weight || 0 }} kg</h4>
+                      <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
+                        [(ngModel)]="clientProfile.weight">
+                      <small class="text-black-50">Current Weight</small>
+                    </div>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <div class="stat-box p-3 rounded bg-light">
+                      <i class="fa-solid fa-ruler-vertical fa-2x text-success mb-2"></i>
+                      <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.height || 0 }} cm</h4>
+                      <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
+                        [(ngModel)]="clientProfile.height">
+                      <small class="text-black-50">Height</small>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="stat-box p-3 rounded bg-light">
+                      <i class="fa-solid fa-dumbbell fa-2x text-success mb-2"></i>
+                      <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.workoutAvailability || 0 }}/7
+                      </h4>
+                      <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
+                        [(ngModel)]="clientProfile.workoutAvailability">
+                      <small class="text-black-50">Workout Days</small>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="stat-box p-3 rounded bg-light">
+                      <i class="fa-solid fa-fire fa-2x text-success mb-2"></i>
+                      <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.bodyFat || 0 }}%</h4>
+                      <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
+                        [(ngModel)]="clientProfile.bodyFat">
+                      <small class="text-black-50">Body Fat</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Goals Card -->
+          <!-- <div class="col-12">
+            <div class="card shadow-sm">
+              <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center text-black-50 border-0">
+                <h5 class="m-0"><i class="fa-solid fa-bullseye me-2"></i>Fitness Goals</h5>
+                <button *ngIf="isOwner" class="btn  btn-sm" (click)="toggleGoalsEdit()">
+                  <i class="fa-solid" [ngClass]="isGoalsEditing ? 'fa-check' : 'fa-pen-to-square'"></i>
+                  {{ isGoalsEditing ? 'Save' : 'Edit' }}
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="goal-item">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Weight Goal</span>
+                        <span class="badge bg-primary" *ngIf="!isGoalsEditing">{{ staticData?.goals?.weight || 0 }}
+                          kg</span>
+                        <input *ngIf="isGoalsEditing" type="number" class="form-control form-control-sm w-auto"
+                          [(ngModel)]="staticData.goals.weight">
+                      </div>
+                      <div class="progress">
+                        <div class="progress-bar bg-primary" role="progressbar"
+                          [style.width]="calculateProgress(clientProfile?.weight || 0, staticData?.goals?.weight || 0) + '%'">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="goal-item">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Muscle Mass</span>
+                        <span class="badge bg-success" *ngIf="!isGoalsEditing">+{{ staticData?.goals?.muscleMass || 0 }}
+                          kg</span>
+                        <input *ngIf="isGoalsEditing" type="number" class="form-control form-control-sm w-auto"
+                          [(ngModel)]="staticData.goals.muscleMass">
+                      </div>
+                      <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar"
+                          [style.width]="calculateProgress(staticData?.muscleMass || 0, staticData?.goals?.muscleMass || 0) + '%'">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="goal-item">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Body Fat</span>
+                        <span class="badge bg-info" *ngIf="!isGoalsEditing">{{ staticData?.goals?.bodyFat || 0
+                          }}%</span>
+                        <input *ngIf="isGoalsEditing" type="number" class="form-control form-control-sm w-auto"
+                          [(ngModel)]="staticData.goals.bodyFat">
+                      </div>
+                      <div class="progress">
+                        <div class="progress-bar bg-info" role="progressbar"
+                          [style.width]="calculateProgress(staticData?.bodyFat || 0, staticData?.goals?.bodyFat || 0) + '%'">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
