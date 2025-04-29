@@ -1,10 +1,20 @@
 <div class="portfolio-container">
-  <div class="portfolio-header">
-    <h2>Coach Portfolio</h2>
-    <p class="text-muted">Manage your professional profile and showcase your expertise</p>
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading your portfolio...</p>
   </div>
 
-  <div class="portfolio-content">
+  <!-- Main Content -->
+  <div *ngIf="!isLoading" class="portfolio-content">
+    <div class="portfolio-header">
+      <h2>{{ isNewPortfolio ? 'Create Your Portfolio' : 'Coach Portfolio' }}</h2>
+      <p class="text-muted">{{ isNewPortfolio ? 'Set up your professional profile to showcase your expertise' : 'Manage
+        your professional profile and showcase your expertise' }}</p>
+    </div>
+
     <!-- Profile Image Section -->
     <div class="profile-image-section">
       <div class="image-preview" *ngIf="existingImageUrl">
@@ -41,6 +51,11 @@
             aria-describedby="aboutMeDescriptionHint"></textarea>
           <small id="aboutMeDescriptionHint" class="form-hint">Share your coaching approach and what clients can expect
             from working with you</small>
+          <div
+            *ngIf="portfolioForm.get('aboutMeDescription')?.invalid && portfolioForm.get('aboutMeDescription')?.touched"
+            class="error-message">
+            About Me description is required
+          </div>
         </div>
 
         <div class="form-group">
@@ -52,6 +67,10 @@
             placeholder="Enter your years of experience" min="0" aria-describedby="experienceYearsHint">
           <small id="experienceYearsHint" class="form-hint">Enter the number of years you've been coaching
             professionally</small>
+          <div *ngIf="portfolioForm.get('experienceYears')?.invalid && portfolioForm.get('experienceYears')?.touched"
+            class="error-message">
+            Please enter a valid number of years
+          </div>
         </div>
 
         <div class="form-group">
@@ -64,6 +83,10 @@
             aria-describedby="qualificationsHint"></textarea>
           <small id="qualificationsHint" class="form-hint">Include all relevant certifications and educational
             background</small>
+          <div *ngIf="portfolioForm.get('qualifications')?.invalid && portfolioForm.get('qualifications')?.touched"
+            class="error-message">
+            Qualifications are required
+          </div>
         </div>
       </div>
 
@@ -93,13 +116,9 @@
       </div>
 
       <div class="form-actions">
-        <button type="button" class="btn btn-outline-secondary" (click)="resetForm()">
-          <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
-          Reset
-        </button>
         <button type="submit" class="btn btn-primary" [disabled]="portfolioForm.invalid">
           <i class="bi bi-save" aria-hidden="true"></i>
-          Save Portfolio
+          {{ isNewPortfolio ? 'Create Portfolio' : 'Save Changes' }}
         </button>
       </div>
     </form>
