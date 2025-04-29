@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaymentService } from '../../../services/Ecommerce/payment.service';
+import { GeneralUsersService } from '../../../services/GeneralUsers/general-users.service';
+import { LoaderComponent } from '../../../core/shared/components/Loader/loader/loader.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-premium-payment-success',
-  imports: [],
+  imports: [LoaderComponent , CommonModule],
   templateUrl: './premium-payment-success.component.html',
   styleUrl: './premium-payment-success.component.css'
 })
@@ -13,7 +16,9 @@ export class PremiumPaymentSuccessComponent {
 paymentState: boolean = false;
 paymentDetails: any = null;
 errorMessage: string = 'Payment processing failed. Please try again.';
-
+success: boolean = false;
+userName: string = '';
+message: string = '';
   paymentInfo = {
     pending: false,
     amount_cents: 0,
@@ -28,7 +33,8 @@ errorMessage: string = 'Payment processing failed. Please try again.';
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private paymentService: PaymentService,
- 
+    private generalUsersService: GeneralUsersService
+
   ) {}
 
   ngOnInit() {
@@ -39,7 +45,7 @@ errorMessage: string = 'Payment processing failed. Please try again.';
       this.paymentInfo.created_at = params.get('created_at') ?? '';
       this.paymentInfo.currency = params.get('currency') || 'EGP';
       this.paymentInfo.paymentMethod = params.get('source_data.sub_type') || 'Credit Card';
-
+      this.userName = params.get('first_name') || '';
       //create premium subscription
       this.createPremiumSubscription();
 
@@ -48,10 +54,26 @@ errorMessage: string = 'Payment processing failed. Please try again.';
 
   createPremiumSubscription() {
     if(this.paymentInfo.success){
-      console.log("create premium subscription done");
+      this.generalUsersService.givePremium().subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.success = response.success;
+          this.message = response.message +"🎉";
+          localStorage.setItem('token', response.token.result);
+
+          setTimeout(() => {
+            this.router.navigate(['/buy-premium']);
+          }, 5000);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
     }
     else{
       console.log("create premium subscription failed");
+      this.message = "Payment failed. Please try again.";
+      this.router.navigate(['/']);
     }
   }
 

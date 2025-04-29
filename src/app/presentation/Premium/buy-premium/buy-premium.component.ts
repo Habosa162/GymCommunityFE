@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { PaymentService } from '../../../services/Ecommerce/payment.service';
 import { FrontbaseUrl } from '../../../services/enviroment';
@@ -12,16 +12,26 @@ import { FrontbaseUrl } from '../../../services/enviroment';
   templateUrl: './buy-premium.component.html',
   styleUrl: './buy-premium.component.css'
 })
-export class BuyPremiumComponent {
+export class BuyPremiumComponent implements OnInit {
+  isPremium: boolean = false;
+  userName: string = '';
 
-  constructor(private router: Router, private authService: AuthService, private route: ActivatedRoute,private paymentService: PaymentService,
-) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private paymentService: PaymentService
+  ) {}
+
+  ngOnInit() {
+    // Check if user is premium
+    this.isPremium = this.authService.IsUserPremium();
+    this.userName = this.authService.getUserName()!;
+  }
 
   paymentMethod: string = 'Paymob';
   totalPrice: number = 500;
 
-
-    processPayment() {
+  processPayment() {
     if (this.paymentMethod === 'Paymob') {
       this.PaymobRequest();
     } else {
@@ -29,9 +39,7 @@ export class BuyPremiumComponent {
     }
   }
 
-    PaymobRequest() {
-
-
+  PaymobRequest() {
     const orderData = {
       amount: this.totalPrice * 100,
       currency: "EGP",
@@ -39,8 +47,8 @@ export class BuyPremiumComponent {
       orderItems: "Premium 500EGP",
       billing_data: {
         "apartment": "dumy",
-        "first_name": "mostafa" ,  // First Name, Last Name, Phone number, & Email are mandatory fields within sending the intention request
-        "last_name": "samir",
+        "first_name": this.userName,
+        "last_name": this.userName,
         "street": "dumy",
         "building": "dumy",
         "phone_number": "01228987781",
@@ -74,15 +82,7 @@ export class BuyPremiumComponent {
   }
 
   upgradeToPremium(): void {
-    this.processPayment();
-    // Here you would typically:
-    // 1. Call your payment service
-    // 2. Handle the payment process
-    // 3. Update the user's premium status
-    // 4. Redirect to success page or show confirmation
-    
-    // For now, we'll just log and redirect
-   
+    this.processPayment()
   }
 }
 
