@@ -54,7 +54,7 @@ import { GymOwnerGuard } from './core/guards/gym-owner.guard';
 import { ProductManagementComponent } from './presentation/admin/product-management/product-management.component';
 import { PremiumPaymentSuccessComponent } from './presentation/Premium/premium-payment-success/premium-payment-success.component';
 import { BuyPremiumComponent } from './presentation/Premium/buy-premium/buy-premium.component';
-
+import { ClientPlansComponent } from './presentation/traningPlans/client-plans/client-plans.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -77,12 +77,13 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'profile/:userId', component: ClientProfileComponent,
+    path: 'profile/:userId',
+    component: ClientProfileComponent,
     children: [
       { path: '', redirectTo: 'info', pathMatch: 'full' },
       { path: 'info', component: ClientPresonalInfoComponent },
       { path: 'posts', component: ForumComponent },
-    ]
+    ],
   },
   //Forum routes
   { path: 'subjects', component: SubjectComponent, canActivate: [AuthGuard] },
@@ -113,6 +114,12 @@ export const routes: Routes = [
     component: TrainingPlanComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'client-plan/:id',
+    component: ClientPlansComponent,
+    canActivate: [AuthGuard, clientGuard],
+  },
+
   {
     path: 'trainingPlan/:id',
     component: TrainingPlanComponent,
@@ -168,19 +175,21 @@ export const routes: Routes = [
     title: 'My Orders',
   },
 
-
   //Gym routes
   /// For Gym Owner
   {
-    path: 'gym-owner', component: GymOwnerDashboardComponent,
+    path: 'gym-owner',
+    component: GymOwnerDashboardComponent,
     canActivate: [AuthGuard, GymOwnerGuard],
   },
   {
-    path: 'gym-owner/gym/:id', component: GymDetailsComponent,
+    path: 'gym-owner/gym/:id',
+    component: GymDetailsComponent,
     canActivate: [AuthGuard, GymOwnerGuard],
   },
   {
-    path: 'gym-owner/plan/:id', component: PlanDetailsComponent,
+    path: 'gym-owner/plan/:id',
+    component: PlanDetailsComponent,
     canActivate: [AuthGuard, GymOwnerGuard],
   },
   {
@@ -194,7 +203,7 @@ export const routes: Routes = [
   {
     path: 'sub-payment-success',
     component: SubPaymentSuccessComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
 
   //AdminRoutes
@@ -262,15 +271,16 @@ export const routes: Routes = [
       {
         path: 'admin',
         canActivate: [AuthGuard, AdminGuard],
-        children: [
-          { path: '', component: DashboardComponent },
-        ],
+        children: [{ path: '', component: DashboardComponent }],
       },
     ],
   },
   //Premium routes
   { path: 'buy-premium', component: BuyPremiumComponent },
-  { path: 'premium-payment-success', component: PremiumPaymentSuccessComponent },
+  {
+    path: 'premium-payment-success',
+    component: PremiumPaymentSuccessComponent,
+  },
 
   // Default route
   { path: '', redirectTo: '/', pathMatch: 'full' },
