@@ -12,3 +12,6 @@
 :host-context(body.dark-mode) .product-card-skeleton {
   background: linear-gradient(-90deg, #2a2a2a 0%, #333 50%, #2a2a2a 100%);
 }
+:host-context(body.dark-mode) .totalPages{
+  color: white;
+}

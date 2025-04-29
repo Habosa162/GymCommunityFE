@@ -40,6 +40,13 @@ export class ProductsListComponent {
   categorySearchTerm: string = '';
   brandSearchTerm: string = '';
 
+
+  page: number = 1;
+  eleNo: number = 8;
+  totalCount: number = 0;
+  totalPages: number = 0;
+
+
   private searchSubject = new Subject<string>();
 
   priceRanges = [
@@ -76,8 +83,8 @@ export class ProductsListComponent {
 
     this.productService.getProducts(
       this.productSearchTerm.trim(),
-      1,
-      20,
+      this.page,
+      this.eleNo,
       this.selectedCategoryId,
       this.selectedBrandId,
       this.selectedSortOption,
@@ -88,6 +95,8 @@ export class ProductsListComponent {
         console.log(response);
         this.products = response.data;
         this.filteredProducts = [...response.data];
+        this.totalCount = response.totalCount;
+        this.totalPages = response.totalPages;
         this.isLoading = false;
       },
       error: (error) => {
@@ -97,6 +106,10 @@ export class ProductsListComponent {
     });
   }
 
+  onItemsPerPageChange(){
+    this.page = 1;
+    this.loadProducts() ;
+  }
   // Price Range selection
   onPriceRangeChange(range: any): void {
     this.priceRanges.forEach(r => r.selected = (r === range ? !r.selected : false));
@@ -191,5 +204,12 @@ export class ProductsListComponent {
     this.filteredCategories = [...this.categories];
     this.filteredBrands = [...this.brands];
     this.loadProducts();
+  }
+  // Navigate to the specific page
+  goToPage(pageNumber: number): void {
+    if (pageNumber >= 1 && pageNumber <= this.totalPages) {
+      this.page = pageNumber;
+      this.loadProducts();
+    }
   }
 }

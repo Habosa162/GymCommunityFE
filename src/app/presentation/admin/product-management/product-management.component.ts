@@ -88,7 +88,7 @@ export class ProductManagementComponent implements OnInit {
 
   // Triggered when items per page changes
   onItemsPerPageChange(): void {
-    this.page = 1; // Reset to page 1 on changing items per page
+    this.page = 1;
     this.getAllProducts();
   }
 
