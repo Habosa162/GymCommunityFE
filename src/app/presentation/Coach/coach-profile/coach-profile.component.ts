@@ -50,7 +50,7 @@ export class CoachProfileComponent implements OnInit {
         this.certificates = data.certificates;
         this.workSamples = data.workSamples;
         this.ratings = data.ratings;
-        console.log(this.ratings)
+        
         this.calculateAverageRating();
         this.isLoading = false;
       },
