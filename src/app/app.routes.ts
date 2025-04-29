@@ -50,6 +50,7 @@ import { UserGymDetailsComponent } from './presentation/Gym/user-gym-details/use
 import { DashboardComponent } from './presentation/admin/dashboard/dashboard.component';
 import { SubPaymentSuccessComponent } from './presentation/Gym/sub-payment-success/sub-payment-success.component';
 import { ClientPresonalInfoComponent } from './presentation/client/components/client-presonal-info/client-presonal-info/client-presonal-info.component';
+import { GymOwnerGuard } from './core/guards/gym-owner.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -175,22 +176,31 @@ export const routes: Routes = [
     component: MyOrdersComponent,
     title: 'My Orders',
   },
-  //Gym routes
-  { path: 'gym-owner-dashboard', component: GymOwnerDashboardComponent },
 
-  { path: 'gym-owner', component: GymOwnerDashboardComponent },
-  { path: 'gym-owner/gym/:id', component: GymDetailsComponent },
-  { path: 'gym-owner/plan/:id', component: PlanDetailsComponent },
+
+  //Gym routes
+  /// For Gym Owner
+  { path: 'gym-owner', component: GymOwnerDashboardComponent,
+    canActivate: [AuthGuard, GymOwnerGuard],
+  },
+  { path: 'gym-owner/gym/:id', component: GymDetailsComponent,
+    canActivate: [AuthGuard, GymOwnerGuard],
+  },
+  { path: 'gym-owner/plan/:id', component: PlanDetailsComponent,
+    canActivate: [AuthGuard, GymOwnerGuard],
+   },
   {
     path: 'gym-owner/subscription/:id',
     component: SubscriptionDetailsComponent,
   },
 
+  //For Users
   {path: 'gyms/:id', component: UserGymDetailsComponent},
   {path: 'gyms', component: GymListComponent},
   { 
     path: 'sub-payment-success',
-    component: SubPaymentSuccessComponent 
+    component: SubPaymentSuccessComponent,
+    canActivate: [AuthGuard] 
   },
 
 
