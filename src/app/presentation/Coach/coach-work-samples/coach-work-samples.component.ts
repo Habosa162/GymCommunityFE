@@ -18,10 +18,14 @@ export class CoachWorkSamplesComponent implements OnInit {
   protofolioId!: number;
   workSamples: Coachworksample[] = [];
   selectedFile!: File;
+  previewUrl: string | null = null;
   description: string = '';
   coachId!: string;
   loading = false;
   error: string | null = null;
+  success: string | null = null;
+  selectedWorkSample: Coachworksample | null = null;
+  showModal = false;
 
   constructor(
     private workSampleService: CoachworksampleService,
@@ -66,21 +70,32 @@ export class CoachWorkSamplesComponent implements OnInit {
     });
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+
+      // Validate file type
+      if (!file.type.match(/image\/(jpeg|png|jpg|gif)/)) {
+        this.error = 'Please select a valid image file (JPEG, PNG, JPG, GIF)';
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
         this.error = 'File size should not exceed 5MB';
-        event.target.value = '';
         return;
       }
-      if (!file.type.startsWith('image/')) {
-        this.error = 'Only image files are allowed';
-        event.target.value = '';
-        return;
-      }
+
       this.selectedFile = file;
       this.error = null;
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.previewUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
@@ -92,6 +107,7 @@ export class CoachWorkSamplesComponent implements OnInit {
 
     this.loading = true;
     this.error = null;
+    this.success = null;
 
     const formData = new FormData();
     formData.append('worksampleimg', this.selectedFile);
@@ -100,9 +116,11 @@ export class CoachWorkSamplesComponent implements OnInit {
 
     this.workSampleService.create(formData).subscribe({
       next: () => {
+        this.success = 'Work sample uploaded successfully!';
         this.loadSamples();
         this.description = '';
         this.selectedFile = undefined!;
+        this.previewUrl = null;
         this.loading = false;
       },
       error: (err) => {
@@ -117,9 +135,12 @@ export class CoachWorkSamplesComponent implements OnInit {
     if (confirm('Are you sure you want to delete this work sample?')) {
       this.loading = true;
       this.error = null;
+      this.success = null;
+
       this.workSampleService.delete(id).subscribe({
         next: () => {
           this.workSamples = this.workSamples.filter(s => s.id !== id);
+          this.success = 'Work sample deleted successfully!';
           this.loading = false;
         },
         error: (err) => {
@@ -129,5 +150,15 @@ export class CoachWorkSamplesComponent implements OnInit {
         }
       });
     }
+  }
+
+  viewWorkSample(sample: Coachworksample) {
+    this.selectedWorkSample = sample;
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.selectedWorkSample = null;
   }
 }

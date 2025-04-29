@@ -76,7 +76,7 @@ export class CoachLayoutComponent implements OnInit {
     toggleProfileDropdown(): void {
 
         this.isProfileDropdownOpen = !this.isProfileDropdownOpen;
-        // console.log("Dropdown toggled:", this.isProfileDropdownOpen);
+        console.log("Dropdown toggled:", this.isProfileDropdownOpen);
     }
 
     toggleDarkMode(): void {

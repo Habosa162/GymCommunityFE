@@ -364,7 +364,9 @@
                                             <i *ngFor="let i of [1,2,3,4,5]" [class.bi-star-fill]="i <= rating.rate"
                                                 [class.bi-star]="i > rating.rate" class="bi text-warning"></i>
                                         </div>
-                                        <h3>Client {{ rating.ClientFirstName }} {{ rating.ClientLastName }}</h3>
+                                        <h3>{{ rating.clientFirstName }} {{ rating.clientLastName }}</h3>
+
+
                                     </div>
                                 </div>
                             </div>

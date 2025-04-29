@@ -1,8 +1,8 @@
-<div class="container mt-4">
-  <h2 class="text-center">Create Product</h2>
+<div class="container p-4">
+  <h2 class="text-center mb-4">Create Product</h2>
 
-  <form (ngSubmit)="onCreateProduct()" class="row g-3">
-    
+  <form (ngSubmit)="onCreateProduct()" class="row g-3 create-product-form shadow-lg card">
+
     <div class="col-md-6">
       <label class="form-label">Name</label>
       <input type="text" class="form-control" [(ngModel)]="newProduct.name" name="name" required />
@@ -10,12 +10,15 @@
 
     <div class="col-md-6">
       <label class="form-label">Price</label>
-      <input type="number" class="form-control" [(ngModel)]="newProduct.price" name="price" required />
+      <div class="input-group">
+        <span class="input-group-text">$</span>
+        <input type="number" class="form-control" [(ngModel)]="newProduct.price" name="price" required step="0.01" />
+      </div>
     </div>
 
     <div class="col-md-12">
       <label class="form-label">Stock</label>
-      <input type="number" class="form-control" [(ngModel)]="newProduct.stock" name="stock" required />
+      <input type="number" class="form-control" [(ngModel)]="newProduct.stock" name="stock" required min="0" />
     </div>
 
     <div class="col-12">
@@ -26,6 +29,7 @@
     <div class="col-md-6">
       <label class="form-label">Category</label>
       <select class="form-select" [(ngModel)]="newProduct.categoryID" name="subCategoryId" required>
+        <option value="" disabled selected>Select a category</option>
         <option *ngFor="let category of categories" [value]="category.categoryID">{{ category.name }}</option>
       </select>
     </div>
@@ -33,17 +37,21 @@
     <div class="col-md-6">
       <label class="form-label">Brand</label>
       <select class="form-select" [(ngModel)]="newProduct.brandId" name="brand" required>
+        <option value="" disabled selected>Select a brand</option>
         <option *ngFor="let brand of brands" [value]="brand.brandID">{{ brand.name }}</option>
       </select>
     </div>
 
     <div class="col-12">
       <label class="form-label">Product Image</label>
-      <input type="file" class="form-control" (change)="onFileSelected($event)" />
+      <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*" />
+      <div class="form-text">Upload a high-quality product image (JPEG, PNG)</div>
     </div>
 
-    <div class="col-12 text-center">
-      <button class="btn btn-success w-50" type="submit">Create Product</button>
+    <div class="col-12 text-center mt-4">
+      <button class="btn btn-success px-4 py-2 submit-btn" type="submit">
+        <i class="bi bi-plus-circle me-2"></i>Create Product
+      </button>
     </div>
   </form>
 </div>

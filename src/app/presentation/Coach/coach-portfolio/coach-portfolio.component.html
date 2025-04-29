@@ -1,60 +1,107 @@
-<div class="container py-4">
-  <div class="card shadow rounded-4">
-    <div class="card-body">
-      <h3 class="card-title fw-bold mb-4">Edit Coach Portfolio</h3>
+<div class="portfolio-container">
+  <div class="portfolio-header">
+    <h2>Coach Portfolio</h2>
+    <p class="text-muted">Manage your professional profile and showcase your expertise</p>
+  </div>
 
-      <form [formGroup]="portfolioForm" (ngSubmit)="onSubmit()" class="portfolio-form">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="aboutMeDescription">About Me</label>
-              <textarea id="aboutMeDescription" formControlName="aboutMeDescription" class="form-control" rows="4"
-                placeholder="Tell us about yourself..."></textarea>
-            </div>
-
-            <div class="form-group">
-              <label for="experienceYears">Years of Experience</label>
-              <input type="number" id="experienceYears" formControlName="experienceYears" class="form-control"
-                placeholder="Enter your years of experience">
-            </div>
-
-            <div class="form-group">
-              <label for="qualifications">Qualifications</label>
-              <textarea id="qualifications" formControlName="qualifications" class="form-control" rows="3"
-                placeholder="Enter your qualifications"></textarea>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="skills">Skills (comma-separated)</label>
-              <input type="text" id="skills" formControlName="skills" class="form-control"
-                placeholder="Enter skills (comma separated)">
-              <small class="text-muted">Example: Personal Training, Nutrition, Yoga</small>
-            </div>
-
-            <div class="form-group">
-              <label for="socialLinks">Social Media Links (comma-separated)</label>
-              <input type="text" id="socialLinks" formControlName="socialLinks" class="form-control"
-                placeholder="Enter social media links (comma separated)">
-              <small class="text-muted">Example: https://linkedin.com/in/username</small>
-            </div>
-
-            <div class="form-group">
-              <label for="aboutMeImage">Profile Image</label>
-              <input type="file" id="aboutMeImage" (change)="onFileSelected($event)" class="form-control"
-                accept="image/*">
-              <small class="text-muted">Upload a professional photo of yourself</small>
-            </div>
-          </div>
+  <div class="portfolio-content">
+    <!-- Profile Image Section -->
+    <div class="profile-image-section">
+      <div class="image-preview" *ngIf="existingImageUrl">
+        <img [src]="existingImageUrl" alt="Profile Preview" class="profile-preview">
+        <div class="image-overlay">
+          <label for="aboutMeImage" class="change-image-btn" tabindex="0">
+            <i class="bi bi-camera" aria-hidden="true"></i>
+            Change Image
+          </label>
         </div>
-
-        <div class="text-end mt-4">
-          <button class="btn btn-primary px-4" type="submit" [disabled]="portfolioForm.invalid">
-            <i class="bi bi-save me-2"></i>Save Portfolio
-          </button>
-        </div>
-      </form>
+      </div>
+      <div class="image-upload" *ngIf="!existingImageUrl">
+        <label for="aboutMeImage" class="upload-btn" tabindex="0">
+          <i class="bi bi-cloud-upload" aria-hidden="true"></i>
+          <span>Upload Profile Image</span>
+        </label>
+      </div>
+      <input type="file" id="aboutMeImage" (change)="onFileSelected($event)" class="d-none" accept="image/*"
+        aria-label="Upload profile image">
+      <small class="image-hint">Recommended size: 500x500px, Max file size: 2MB</small>
     </div>
+
+    <!-- Portfolio Form -->
+    <form [formGroup]="portfolioForm" (ngSubmit)="onSubmit()" class="portfolio-form" novalidate>
+      <div class="form-section">
+        <h3>Basic Information</h3>
+        <div class="form-group">
+          <label for="aboutMeDescription">
+            <i class="bi bi-person-lines-fill" aria-hidden="true"></i>
+            About Me
+          </label>
+          <textarea id="aboutMeDescription" formControlName="aboutMeDescription" class="form-control" rows="4"
+            placeholder="Tell us about yourself, your coaching philosophy, and what makes you unique..."
+            aria-describedby="aboutMeDescriptionHint"></textarea>
+          <small id="aboutMeDescriptionHint" class="form-hint">Share your coaching approach and what clients can expect
+            from working with you</small>
+        </div>
+
+        <div class="form-group">
+          <label for="experienceYears">
+            <i class="bi bi-calendar-check" aria-hidden="true"></i>
+            Years of Experience
+          </label>
+          <input type="number" id="experienceYears" formControlName="experienceYears" class="form-control"
+            placeholder="Enter your years of experience" min="0" aria-describedby="experienceYearsHint">
+          <small id="experienceYearsHint" class="form-hint">Enter the number of years you've been coaching
+            professionally</small>
+        </div>
+
+        <div class="form-group">
+          <label for="qualifications">
+            <i class="bi bi-award" aria-hidden="true"></i>
+            Qualifications
+          </label>
+          <textarea id="qualifications" formControlName="qualifications" class="form-control" rows="3"
+            placeholder="List your certifications, degrees, and professional qualifications..."
+            aria-describedby="qualificationsHint"></textarea>
+          <small id="qualificationsHint" class="form-hint">Include all relevant certifications and educational
+            background</small>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Professional Details</h3>
+        <div class="form-group">
+          <label for="skills">
+            <i class="bi bi-tools" aria-hidden="true"></i>
+            Skills
+          </label>
+          <input type="text" id="skills" formControlName="skills" class="form-control"
+            placeholder="Enter skills separated by commas" aria-describedby="skillsHint">
+          <small id="skillsHint" class="form-hint">Example: Personal Training, Nutrition Counseling, Yoga
+            Instruction</small>
+        </div>
+
+        <div class="form-group">
+          <label for="socialLinks">
+            <i class="bi bi-link-45deg" aria-hidden="true"></i>
+            Social Media Links
+          </label>
+          <input type="text" id="socialLinks" formControlName="socialLinks" class="form-control"
+            placeholder="Enter your social media profile URLs" aria-describedby="socialLinksHint">
+          <small id="socialLinksHint" class="form-hint">Example: https://linkedin.com/in/yourname,
+            https://instagram.com/yourname</small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline-secondary" (click)="resetForm()">
+          <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+          Reset
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="portfolioForm.invalid">
+          <i class="bi bi-save" aria-hidden="true"></i>
+          Save Portfolio
+        </button>
+      </div>
+    </form>
   </div>
 </div>

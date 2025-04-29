@@ -51,6 +51,10 @@ import { DashboardComponent } from './presentation/admin/dashboard/dashboard.com
 import { SubPaymentSuccessComponent } from './presentation/Gym/sub-payment-success/sub-payment-success.component';
 import { ClientPresonalInfoComponent } from './presentation/client/components/client-presonal-info/client-presonal-info/client-presonal-info.component';
 import { GymOwnerGuard } from './core/guards/gym-owner.guard';
+import { ProductManagementComponent } from './presentation/admin/product-management/product-management.component';
+import { PremiumPaymentSuccessComponent } from './presentation/Premium/premium-payment-success/premium-payment-success.component';
+import { BuyPremiumComponent } from './presentation/Premium/buy-premium/buy-premium.component';
+
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -72,8 +76,9 @@ export const routes: Routes = [
       { path: 'posts', component: ForumComponent },
     ],
   },
-  { path: 'profile/:userId', component: ClientProfileComponent, 
-    children:[
+  {
+    path: 'profile/:userId', component: ClientProfileComponent,
+    children: [
       { path: '', redirectTo: 'info', pathMatch: 'full' },
       { path: 'info', component: ClientPresonalInfoComponent },
       { path: 'posts', component: ForumComponent },
@@ -132,21 +137,7 @@ export const routes: Routes = [
   //Ecommerce routes
 
   { path: 'shop', component: ProductsListComponent },
-  {
-    path: 'create-category',
-    component: CreateCategoryComponent,
-    canActivate: [AuthGuard, AdminGuard],
-  },
-  {
-    path: 'create-brand',
-    component: CreateBrandComponent,
-    canActivate: [AuthGuard, AdminGuard],
-  },
-  {
-    path: 'create-product',
-    component: CreateProductComponent,
-    canActivate: [AuthGuard, AdminCoachGuard],
-  },
+
   {
     path: 'wish-list',
     component: WishListComponent,
@@ -180,30 +171,58 @@ export const routes: Routes = [
 
   //Gym routes
   /// For Gym Owner
-  { path: 'gym-owner', component: GymOwnerDashboardComponent,
+  {
+    path: 'gym-owner', component: GymOwnerDashboardComponent,
     canActivate: [AuthGuard, GymOwnerGuard],
   },
-  { path: 'gym-owner/gym/:id', component: GymDetailsComponent,
+  {
+    path: 'gym-owner/gym/:id', component: GymDetailsComponent,
     canActivate: [AuthGuard, GymOwnerGuard],
   },
-  { path: 'gym-owner/plan/:id', component: PlanDetailsComponent,
+  {
+    path: 'gym-owner/plan/:id', component: PlanDetailsComponent,
     canActivate: [AuthGuard, GymOwnerGuard],
-   },
+  },
   {
     path: 'gym-owner/subscription/:id',
     component: SubscriptionDetailsComponent,
   },
 
   //For Users
-  {path: 'gyms/:id', component: UserGymDetailsComponent},
-  {path: 'gyms', component: GymListComponent},
-  { 
+  { path: 'gyms/:id', component: UserGymDetailsComponent },
+  { path: 'gyms', component: GymListComponent },
+  {
     path: 'sub-payment-success',
     component: SubPaymentSuccessComponent,
-    canActivate: [AuthGuard] 
+    canActivate: [AuthGuard]
   },
 
-
+  //AdminRoutes
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    // canActivate: [AuthGuard],
+  },
+  {
+    path: 'create-category',
+    component: CreateCategoryComponent,
+    canActivate: [AuthGuard, AdminGuard],
+  },
+  {
+    path: 'create-brand',
+    component: CreateBrandComponent,
+    canActivate: [AuthGuard, AdminGuard],
+  },
+  {
+    path: 'create-product',
+    component: CreateProductComponent,
+    canActivate: [AuthGuard, AdminCoachGuard],
+  },
+  {
+    path: 'product-management',
+    component: ProductManagementComponent,
+    canActivate: [AuthGuard],
+  },
 
   //coach
 
@@ -249,6 +268,9 @@ export const routes: Routes = [
       },
     ],
   },
+  //Premium routes
+  { path: 'buy-premium', component: BuyPremiumComponent },
+  { path: 'premium-payment-success', component: PremiumPaymentSuccessComponent },
 
   // Default route
   { path: '', redirectTo: '/', pathMatch: 'full' },

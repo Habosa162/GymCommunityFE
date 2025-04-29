@@ -1,47 +1,58 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav
-    #drawer
-    class="sidenav"
-    mode="side"
-    opened
-  >
-    <mat-toolbar color="primary" class="toolbar">
-      Admin Panel
-    </mat-toolbar>
+<div class="admin-sidebar">
+  <div class="sidebar-header">
+    <h3>Admin Panel</h3>
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <i class="bi bi-list"></i>
+    </button>
+  </div>
 
-    <mat-nav-list>
-      <a mat-list-item routerLink="/admin/dashboard" routerLinkActive="active">
-        <mat-icon>dashboard</mat-icon>
-        <span>Dashboard</span>
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/dashboard">
+        <i class="bi bi-speedometer2"></i>
+        <span class="link-text">Dashboard</span>
       </a>
-
-      <a mat-list-item routerLink="/admin/users" routerLinkActive="active">
-        <mat-icon>people</mat-icon>
-        <span>Users</span>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/admin/users">
+        <i class="bi bi-people"></i>
+        <span class="link-text">Users</span>
       </a>
-
-      <a mat-list-item routerLink="/admin/orders" routerLinkActive="active">
-        <mat-icon>shopping_cart</mat-icon>
-        <span>Orders</span>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/product-management">
+        <i class="bi bi-box-seam"></i>
+        <span class="link-text">Products</span>
       </a>
-
-      <a mat-list-item routerLink="/admin/settings" routerLinkActive="active">
-        <mat-icon>settings</mat-icon>
-        <span>Settings</span>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/admin/orders">
+        <i class="bi bi-cart-check"></i>
+        <span class="link-text">Orders</span>
       </a>
-    </mat-nav-list>
-  </mat-sidenav>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/admin/settings">
+        <i class="bi bi-gear"></i>
+        <span class="link-text">Settings</span>
+      </a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+        <i class="bi bi-collection"></i>
+        <span class="link-text">Reports</span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" routerLink="/admin/reports/sales">Sales</a></li>
+        <li><a class="dropdown-item" routerLink="/admin/reports/users">User Activity</a></li>
+      </ul>
+    </li>
+  </ul>
 
-  <mat-sidenav-content>
-    <mat-toolbar color="primary" class="toolbar">
-      <button mat-icon-button (click)="drawer.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span>Admin Dashboard</span>
-    </mat-toolbar>
-
-    <div class="content">
-      <router-outlet></router-outlet>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  <div class="sidebar-footer">
+    <a href="#" class="nav-link">
+      <i class="bi bi-box-arrow-right"></i>
+      <span class="link-text">Logout</span>
+    </a>
+  </div>
+</div>

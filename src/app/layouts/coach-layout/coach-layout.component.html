@@ -2,9 +2,7 @@
     <!-- Top Navigation Bar -->
     <header class="top-nav">
         <div class="nav-left">
-            <!-- <button class="sidebar-toggle btn " (click)="toggleSidebar()">
-                <i class="bi bi-list">Manage Account</i>
-            </button> -->
+           
             <div class="logo">
                 <a routerLink="/">
                     <img src="/assets/imgs/logo.png" alt="GymCommunity Logo">
@@ -15,6 +13,29 @@
         </div>
 
         <div class="nav-right">
+            <!-- Coach Navigation Menu -->
+            <div class="coach-nav" *ngIf="isAuthenticated">
+                <a routerLink="/coach/dashboard" routerLinkActive="active" class="nav-item">
+                    <i class="bi bi-person-circle"></i>
+                    <span>My Profile</span>
+                </a>
+                <a routerLink="/coach/dashboard/portfolio" routerLinkActive="active" class="nav-item">
+                    <i class="bi bi-file-earmark-person"></i>
+                    <span>Portfolio</span>
+                </a>
+                <a routerLink="/coach/dashboard/certificates" routerLinkActive="active" class="nav-item">
+                    <i class="bi bi-award"></i>
+                    <span>Certificates</span>
+                </a>
+                <a routerLink="/coach/dashboard/work-samples" routerLinkActive="active" class="nav-item">
+                    <i class="bi bi-images"></i>
+                    <span>Work Samples</span>
+                </a>
+                <a routerLink="/coach/dashboard/my-client" routerLinkActive="active" class="nav-item">
+                    <i class="bi bi-people"></i>
+                    <span>My Clients</span>
+                </a>
+            </div>
 
             <div class="theme-toggle" (click)="toggleDarkMode()">
                 <i class="bi" [class.bi-moon-fill]="!isDarkMode" [class.bi-sun-fill]="isDarkMode"> </i>
@@ -30,9 +51,14 @@
                 </div>
 
                 <div class="dropdown-menu" *ngIf="isProfileDropdownOpen">
-
-                    <!-- <div class="dropdown-divider"></div> -->
-                    <a (click)="logout()" class="dropdown-item">
+                    <a routerLink="/coach/profile" class="dropdown-item">
+                        <i class="bi bi-person"></i> My Profile
+                    </a>
+                    <a routerLink="/coach/settings" class="dropdown-item">
+                        <i class="bi bi-gear"></i> Settings
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a (click)="logout()" class="dropdown-item logout-item">
                         <i class="bi bi-box-arrow-right"></i> Logout
                     </a>
                 </div>
@@ -41,61 +67,7 @@
         </div>
     </header>
 
-    <!-- Side Navigation -->
-    <!-- <aside class="sidebar" [class.collapsed]="!isSidebarOpen">
-        <div class="sidebar-header">
-          
-            <div class="coach-info" *ngIf="isSidebarOpen">
-                <h3>Manage</h3>
-                <p>Professional Coach</p>
-            </div>
-        </div> -->
-    <!-- </div> -->
-    <!-- 
-        <nav class="sidebar-nav">
-            <ul>
-                <li>
-                    <a routerLink="/coach/dashboard" routerLinkActive="active">
-                        <i class="bi bi-speedometer2"></i>
-                        <span *ngIf="isSidebarOpen">Profile</span>
-                    </a>
-                </li>
-                <li>
-                    <a routerLink="/coach/dashboard/portfolio" routerLinkActive="active">
-                        <i class="bi bi-file-earmark-person"></i>
-                        <span *ngIf="isSidebarOpen">My Portfolio</span>
-                    </a>
-                </li>
-                <li>
-                    <a routerLink="/coach/dashboard/certificates" routerLinkActive="active">
-                        <i class="bi bi-award"></i>
-                        <span *ngIf="isSidebarOpen">Certificates</span>
-                    </a>
-                </li>
-                <li>
-                    <a routerLink="/coach/dashboard/work-samples" routerLinkActive="active">
-                        <i class="bi bi-images"></i>
-                        <span *ngIf="isSidebarOpen">Work Samples</span>
-                    </a>
-                </li>
-                <li>
-                    <a routerLink="/coach/dashboard/my-client" routerLinkActive="active">
-                        <i class="bi bi-images"></i>
-                        <span *ngIf="isSidebarOpen"> My Clients</span>
-                    </a>
-                </li>
-
-            </ul>
-        </nav> -->
-    <!-- 
-    <div class="sidebar-footer" *ngIf="isSidebarOpen">
-        <div class="help-support">
-            <i class="bi bi-question-circle"></i>
-            <span>Need Help?</span>
-        </div>
-        <a href="#" class="support-link">Contact Support</a>
-    </div>
-    </aside> -->
+  
 
     <!-- Main Content Area -->
     <main class="main-content m-0" [class.sidebar-collapsed]="!isSidebarOpen">

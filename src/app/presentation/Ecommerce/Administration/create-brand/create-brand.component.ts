@@ -25,7 +25,7 @@ getBrands(){
   });
 }
   ngOnInit(): void {
-    this.getBrands() ; 
+    this.getBrands() ;
   }
 
   onAddBrand() {
@@ -35,7 +35,7 @@ getBrands(){
     }
 
     this.brandService.createBrand(this.brandName.toUpperCase(), this.brandDesc.toLowerCase()).subscribe((brand) => {
-      this.getBrands() ;    
+      this.getBrands() ;
       this.brandName = '';
       this.brandDesc = '';
     });
