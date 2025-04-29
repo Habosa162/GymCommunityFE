@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CoachportfolioService } from '../../../services/Coachservice/coachportfolio.service';
 import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -12,7 +18,7 @@ import { Coachportfolio } from '../../../domain/models/CoachModels/coachportfoli
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule],
   templateUrl: './coach-portfolio.component.html',
-  styleUrl: './coach-portfolio.component.css'
+  styleUrl: './coach-portfolio.component.css',
 })
 export class CoachPortfolioComponent implements OnInit {
   portfolioForm!: FormGroup;
@@ -28,10 +34,12 @@ export class CoachPortfolioComponent implements OnInit {
     private portfolioService: CoachportfolioService,
     private authservice: AuthService,
     private certservice: CoachcertficateService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.coachId = this.authservice.getUserId() || this.route.snapshot.paramMap.get('coachId')!;
+    this.coachId =
+      this.authservice.getUserId() ||
+      this.route.snapshot.paramMap.get('coachId')!;
 
     this.certservice.getPortfolioIdByCoachId(this.coachId).subscribe({
       next: (res: any) => {
@@ -46,7 +54,7 @@ export class CoachPortfolioComponent implements OnInit {
       error: (err) => {
         console.error('Error getting portfolio ID:', err);
         this.isLoading = false;
-      }
+      },
     });
   }
 
@@ -56,7 +64,7 @@ export class CoachPortfolioComponent implements OnInit {
       qualifications: ['', Validators.required],
       experienceYears: [0, [Validators.required, Validators.min(0)]],
       skills: [''],
-      socialLinks: ['']
+      socialLinks: [''],
     });
   }
 
@@ -66,15 +74,20 @@ export class CoachPortfolioComponent implements OnInit {
       next: (data: Coachportfolio) => {
         if (data) {
           this.existingImageUrl = data.aboutMeImageUrl || '';
+          console.log(data);
 
           // Convert arrays to comma-separated strings
           const skillsString = Array.isArray(data.skillsJson)
             ? data.skillsJson.join(', ')
-            : (typeof data.skillsJson === 'string' ? data.skillsJson : '');
+            : typeof data.skillsJson === 'string'
+            ? data.skillsJson
+            : '';
 
           const socialLinksString = Array.isArray(data.socialMediaLinksJson)
             ? data.socialMediaLinksJson.join(', ')
-            : (typeof data.socialMediaLinksJson === 'string' ? data.socialMediaLinksJson : '');
+            : typeof data.socialMediaLinksJson === 'string'
+            ? data.socialMediaLinksJson
+            : '';
 
           // Update form with existing data
           this.portfolioForm.patchValue({
@@ -82,7 +95,7 @@ export class CoachPortfolioComponent implements OnInit {
             qualifications: data.qualifications || '',
             experienceYears: data.experienceYears || 0,
             skills: skillsString,
-            socialLinks: socialLinksString
+            socialLinks: socialLinksString,
           });
         }
         this.isLoading = false;
@@ -90,12 +103,16 @@ export class CoachPortfolioComponent implements OnInit {
       error: (err) => {
         console.error('Error loading portfolio:', err);
         this.isLoading = false;
-      }
+      },
     });
   }
 
   resetForm(): void {
-    if (confirm('Are you sure you want to reset the form? All unsaved changes will be lost.')) {
+    if (
+      confirm(
+        'Are you sure you want to reset the form? All unsaved changes will be lost.'
+      )
+    ) {
       this.loadPortfolio(); // Reload the original data
     }
   }
@@ -118,11 +135,36 @@ export class CoachPortfolioComponent implements OnInit {
       const formData = new FormData();
       formData.append('CoachId', this.coachId);
       formData.append('Id', this.portfolioid.toString());
-      formData.append('AboutMeDescription', this.portfolioForm.get('aboutMeDescription')?.value || '');
-      formData.append('Qualifications', this.portfolioForm.get('qualifications')?.value || '');
-      formData.append('ExperienceYears', this.portfolioForm.get('experienceYears')?.value?.toString() || '0');
-      formData.append('SkillsJson', JSON.stringify(this.portfolioForm.get('skills')?.value?.split(',').map((s: string) => s.trim()) || []));
-      formData.append('SocialMediaLinksJson', JSON.stringify(this.portfolioForm.get('socialLinks')?.value?.split(',').map((l: string) => l.trim()) || []));
+      formData.append(
+        'AboutMeDescription',
+        this.portfolioForm.get('aboutMeDescription')?.value || ''
+      );
+      formData.append(
+        'Qualifications',
+        this.portfolioForm.get('qualifications')?.value || ''
+      );
+      formData.append(
+        'ExperienceYears',
+        this.portfolioForm.get('experienceYears')?.value?.toString() || '0'
+      );
+      formData.append(
+        'SkillsJson',
+        JSON.stringify(
+          this.portfolioForm
+            .get('skills')
+            ?.value?.split(',')
+            .map((s: string) => s.trim()) || []
+        )
+      );
+      formData.append(
+        'SocialMediaLinksJson',
+        JSON.stringify(
+          this.portfolioForm
+            .get('socialLinks')
+            ?.value?.split(',')
+            .map((l: string) => l.trim()) || []
+        )
+      );
 
       if (this.selectedImage) {
         formData.append('AboutMeImageUrl', this.selectedImage);
@@ -139,7 +181,7 @@ export class CoachPortfolioComponent implements OnInit {
         error: (err) => {
           console.error('Error updating portfolio:', err);
           alert('Error: ' + (err.error?.message || 'Failed to save portfolio'));
-        }
+        },
       });
     }
   }
