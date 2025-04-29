@@ -42,8 +42,10 @@ export class SubPaymentSuccessComponent implements OnInit {
   }
 
   private processSuccessfulPayment(params: any): void {
+    const paymentId = localStorage.getItem("paymentId");
+    localStorage.removeItem("paymentId");
     this.paymentDetails = {
-      id: localStorage.getItem("paymentId") || '',
+      id: paymentId || '',
       amount: +params['amount_cents'] / 100, 
       currency: params['currency'],
       transactionId: params['order'],
@@ -53,6 +55,7 @@ export class SubPaymentSuccessComponent implements OnInit {
     };
 
     const subscriptionId = localStorage.getItem("subscriptionId"); 
+    localStorage.removeItem("subscriptionId");
     console.log('Payment details:', this.paymentDetails);
     console.log('Subscription ID:', subscriptionId);
     if (subscriptionId) {
