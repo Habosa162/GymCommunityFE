@@ -1,6 +1,6 @@
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { baseUrl } from '../enviroment';
 import { Review } from '../../domain/models/Ecommerce/Review.model';
 
@@ -12,8 +12,15 @@ export class ReviewService {
   constructor(private http:HttpClient) { }
 
   getReviews(productId: number): Observable<Review[]> {
-    return this.http.get<Review[]>(`${this.apiUrl}/${productId}`);
-}
+    return this.http.get<Review[]>(`${this.apiUrl}/${productId}`).pipe(
+      tap(reviews => console.log('Raw API response:', reviews)), // ✅ DEBUG HERE
+      map(reviews => reviews.map(review => ({
+        ...review,
+        userName: review.userName || 'Anonymous',
+        userAvatar: review.userAvatar || null
+      })))
+    );
+  }
 
   // createReview(review : Review) : Observable<any>{
   //   return this.http.post(`${this.apiUrl}`, review);

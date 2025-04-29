@@ -51,69 +51,139 @@
     </div>
   </div>
 
- <!-- Reviews Section -->
-<div *ngIf="Product" class="mt-4">
-  <h4 class="green-dark text-center fs-1">Customer Reviews</h4>
+ <!-- Rating and Review Section -->
+ <div *ngIf="Product" class="mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="green-dark fs-1">Rating & Reviews</h4>
+    <div class="average-rating d-flex align-items-center">
+      <div class="stars me-2">
+        <i *ngFor="let star of [1,2,3,4,5]" 
+           class="fa fa-star fs-4" 
+           [ngClass]="star <= averageRating ? 'text-warning' : 'text-secondary'"></i>
+      </div>
+      <span class="fw-bold fs-5">{{ averageRating | number:'1.1-1' }} out of 5</span>
+      <span class="text-muted ms-2">({{ reviews.length }} reviews)</span>
+    </div>
+  </div>
 
-<!-- Review Form -->
-<div *ngIf="authService.isLoggedIn()" class="mt-4">
-  <h4 class="green-dark mb-5"><span class="submitReview">Submit Your Review</span></h4>
-  <form (ngSubmit)="submitReview()" #reviewForm="ngForm">
-    <div class="form-group mb-3 ">
-      <label for="rating" class="fs-5 fw-bolder form-label">Rating</label>
-      <select [(ngModel)]="newReview.rating" name="rating" id="rating" class="form-select rounded" required>
-        <option value="" disabled selected>Select a Rating</option>
-        <option value="1">⭐ 1 Star</option>
-        <option value="2">⭐⭐ 2 Stars</option>
-        <option value="3">⭐⭐⭐ 3 Stars</option>
-        <option value="4">⭐⭐⭐⭐ 4 Stars</option>
-        <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
-      </select>
-    </div>
-    <div class="form-group mb-3">
-      <label for="comment" class="fs-5 fw-bolder form-label">Comment</label>
-      <textarea [(ngModel)]="newReview.comment" name="comment" class="form-control rounded" rows="3" required></textarea>
-    </div>
-    <div class="d-flex justify-content-center align-items-center my-5">
-      <button type="submit" class="btn btn-outline-success mt-3 w-25" [disabled]="reviewForm.invalid || isSubmitting">
-        <span *ngIf="!isSubmitting">Submit Review</span>
-        <span *ngIf="isSubmitting">
-          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          Submitting...
+  <!-- Rating Input Block -->
+  <div class="rating-input-block card shadow-sm mb-5">
+    <div class="card-body">
+      <h5 class="card-title">Rate this product</h5>
+      <div class="star-rating mb-3">
+        <span *ngFor="let star of [1,2,3,4,5]" 
+              (click)="newReview.rating = star" 
+              class="star fs-3"
+              [ngClass]="{'filled': star <= newReview.rating}">
+          ★
         </span>
+      </div>
+      <button class="btn btn-outline-primary" (click)="toggleReviewForm()">
+        {{ showReviewForm ? 'Cancel' : 'Write a Review' }}
       </button>
     </div>
-  </form>
-</div>
+  </div>
 
-  <!-- Display Reviews -->
-  <div *ngIf="reviews.length > 0" class="mt-4">
-    <div *ngFor="let review of reviews" class="review-item card shadow-sm mb-3">
+  <!-- Review Form (conditionally shown) -->
+  <div *ngIf="showReviewForm && authService.isLoggedIn()" class="review-form-block card shadow-sm mb-5">
+    <div class="card-body">
+      <h5 class="card-title">Write Your Review</h5>
+      <form (ngSubmit)="submitReview()" #reviewForm="ngForm">
+        <div class="form-group mb-4">
+          <textarea [(ngModel)]="newReview.comment" name="comment" 
+          class="form-control rounded" rows="4" 
+          placeholder="Share your experience with this product..."></textarea>
+
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+          <button type="button" class="btn btn-outline-secondary" (click)="toggleReviewForm()">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-success px-4" 
+                  [disabled]="reviewForm.invalid || isSubmitting">
+            <span *ngIf="!isSubmitting">Submit Review</span>
+            <span *ngIf="isSubmitting">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Submitting...
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Author Reviews Section -->
+  <div *ngIf="authService.isLoggedIn() && authorReviews.length > 0" class="author-reviews-section mt-5">
+    <h5 class="section-title mb-4">Your Reviews</h5>
+    <div *ngFor="let review of authorReviews" class="review-item card shadow-sm mb-4">
       <div class="card-body">
-        
-        <!-- Stars -->
-        <div class="mb-2">
-          <ng-container *ngFor="let star of [1,2,3,4,5]">
-            <i class="fa fa-star" [ngClass]="star <= review.rating ? 'text-warning' : 'text-secondary'"></i>
-          </ng-container>
+        <!-- Review content same as other reviews -->
+        <div class="d-flex align-items-center mb-3">
+          <!-- Same user display as other reviews -->
         </div>
-  
-        <!-- Comment -->
-        <p class="card-text mb-2">{{ review.comment }}</p>
-  
-        <!-- Comment Info (Date) -->
-        <div class="text-end text-muted" style="font-size: 0.8rem;">
-          {{ review.createdAt | date:'shortDate' }}
+        <p class="card-text comment">{{ review.comment }}</p>
+        <div class="d-flex justify-content-end gap-2">
+          <button class="btn btn-sm btn-outline-warning" (click)="editReview(review)">
+            Edit
+          </button>
+          <!-- Add *ngIf to ensure id exists -->
+<button *ngIf="review.id !== undefined"
+class="btn btn-sm btn-outline-danger"
+(click)="deleteReview(review.id!)">
+Delete
+</button>
+
         </div>
-  
       </div>
     </div>
   </div>
-  
 
-
-  <div *ngIf="!reviews?.length">
-    <p class="light-dark">No reviews yet. Be the first to review!</p>
+  <!-- All Reviews Section -->
+  <div class="all-reviews-section mt-5">
+    <h5 class="section-title mb-4">Customer Reviews</h5>
+    
+    <div *ngIf="reviews.length > 0">
+      <!-- Reviews display same as before -->
+<!-- In your review display section -->
+<div *ngFor="let review of reviews" class="review-item card shadow-sm mb-4">
+  <div class="card-body">
+    <div class="d-flex align-items-center mb-3">
+      <div class="user-avatar me-3">
+<img *ngIf="review.userAvatar" 
+     [src]="review.userAvatar" 
+     alt="User avatar" 
+     class="rounded-circle" 
+     width="50" 
+     height="50"
+     (error)="review.userAvatar = null">
+        <div *ngIf="!review.userAvatar" 
+             class="avatar-placeholder rounded-circle d-flex align-items-center justify-content-center" 
+             [style.background-color]="getRandomColor()">
+          {{ (review.userName || 'Anonymous').charAt(0).toUpperCase() }}
+        </div>
+      </div>
+      <div>
+        <h5 class="mb-0">{{ review.userName || 'Anonymous User' }}</h5>
+        <div class="stars">
+          <i *ngFor="let star of [1,2,3,4,5]" 
+             class="fa fa-star" 
+             [ngClass]="star <= review.rating ? 'text-warning' : 'text-secondary'"></i>
+        </div>
+      </div>
+      <div class="text-muted ms-auto" style="font-size: 0.9rem;">
+        {{ review.createdAt | date:'mediumDate' }}
+      </div>
+    </div>
+    
+    <p class="card-text comment">{{ review.comment }}</p>
+  </div>
+</div>
+      
+    </div>
+    
+    <div *ngIf="!reviews?.length" class="text-center py-4">
+      <p class="light-dark fs-5">No reviews yet. Be the first to review this product!</p>
+    </div>
   </div>
 </div>
 
