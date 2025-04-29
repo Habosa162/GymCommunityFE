@@ -1,0 +1,14 @@
+
+/* ============= Loading Skeletons ============= */
+.product-card-skeleton {
+  height: 380px;
+  background: linear-gradient(-90deg, #e9ecef 0%, #f8f9fa 50%, #e9ecef 100%);
+  background-size: 400% 400%;
+  animation: shimmer 1.2s ease-in-out infinite;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+:host-context(body.dark-mode) .product-card-skeleton {
+  background: linear-gradient(-90deg, #2a2a2a 0%, #333 50%, #2a2a2a 100%);
+}

@@ -72,7 +72,7 @@ export const routes: Routes = [
       { path: 'posts', component: ForumComponent },
     ],
   },
-  { path: 'profile/:userId', component: ClientProfileComponent, 
+  { path: 'profile/:userId', component: ClientProfileComponent,
     children:[
       { path: '', redirectTo: 'info', pathMatch: 'full' },
       { path: 'info', component: ClientPresonalInfoComponent },
@@ -132,21 +132,7 @@ export const routes: Routes = [
   //Ecommerce routes
 
   { path: 'shop', component: ProductsListComponent },
-  {
-    path: 'create-category',
-    component: CreateCategoryComponent,
-    canActivate: [AuthGuard, AdminGuard],
-  },
-  {
-    path: 'create-brand',
-    component: CreateBrandComponent,
-    canActivate: [AuthGuard, AdminGuard],
-  },
-  {
-    path: 'create-product',
-    component: CreateProductComponent,
-    canActivate: [AuthGuard, AdminCoachGuard],
-  },
+
   {
     path: 'wish-list',
     component: WishListComponent,
@@ -197,13 +183,38 @@ export const routes: Routes = [
   //For Users
   {path: 'gyms/:id', component: UserGymDetailsComponent},
   {path: 'gyms', component: GymListComponent},
-  { 
+  {
     path: 'sub-payment-success',
     component: SubPaymentSuccessComponent,
-    canActivate: [AuthGuard] 
+    canActivate: [AuthGuard]
   },
 
-
+ //AdminRoutes
+ {
+  path: 'dashboard',
+  component: DashboardComponent,
+  // canActivate: [AuthGuard],
+},
+{
+  path: 'create-category',
+  component: CreateCategoryComponent,
+  canActivate: [AuthGuard, AdminGuard],
+},
+{
+  path: 'create-brand',
+  component: CreateBrandComponent,
+  canActivate: [AuthGuard, AdminGuard],
+},
+{
+  path: 'create-product',
+  component: CreateProductComponent,
+  canActivate: [AuthGuard, AdminCoachGuard],
+},
+{
+  path: 'product-management',
+  component: ProductManagementComponent,
+  canActivate: [AuthGuard],
+},
 
   //coach
 
