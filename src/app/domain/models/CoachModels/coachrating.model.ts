@@ -1,7 +1,7 @@
 export class Coachrating {
     id?: number;
-    ClientFirstName!: string;
-    ClientLastName!: string;
+    clientFirstName!: string;
+    clientLastName!: string;
 
     clientId!: string;
     coachId!: string;
