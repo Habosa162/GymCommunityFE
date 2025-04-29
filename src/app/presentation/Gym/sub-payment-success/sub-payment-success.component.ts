@@ -47,7 +47,7 @@ export class SubPaymentSuccessComponent implements OnInit {
       amount: +params['amount_cents'] / 100, 
       currency: params['currency'],
       transactionId: params['order'],
-      status: params['success'] === 'true' ? PaymentStatus.Completed : PaymentStatus.Failed,
+      status: params['success'] === 'true' ? 2 : 3,
       createdAt: params['created_at'],
       paymentMethod: params['source_data']?.sub_type || 'card'
     };

@@ -165,7 +165,8 @@ export class UserGymDetailsComponent {
       gymId: this.gymId,
       planId: this.selectedPlan.id,
       startDate: startDate,
-      expiresAt: expiresAt
+      expiresAt: expiresAt,
+      paymentStatus : 2
     };
   
     this.userSubscriptionService.create(subscriptionData).pipe(
@@ -175,7 +176,7 @@ export class UserGymDetailsComponent {
           amount: this.selectedPlan?.price ?? 0,
           currency: 'EGP',
           paymentMethod: 'Paymob',
-          status: PaymentStatus.Completed,
+          status: 2,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
         };

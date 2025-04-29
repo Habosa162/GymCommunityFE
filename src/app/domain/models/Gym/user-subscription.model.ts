@@ -12,6 +12,8 @@ export interface UserSubscriptionCreate {
     planId: number;
     startDate: Date;
     expiresAt: Date;
+    paymentStatus: PaymentStatus;
+
 }
 
 export interface UserSubscriptionUpdate {

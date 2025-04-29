@@ -2,7 +2,7 @@
   *{
     color: #e2e8f0 !important;
   }
-  .success-state {
+  .success-state ,.error-state{
     background-color: #232528 !important;
     border: 1px solid #333 !important;
   }
