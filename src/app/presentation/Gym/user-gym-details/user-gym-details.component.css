@@ -1,4 +1,59 @@
-/* Main Container */
+:host-context(body.dark-mode) {
+  *{
+    color: #e2e8f0 !important;
+  }
+  .gym-card {
+    background-color: #232528 !important;
+    border: 1px solid #333 !important;
+  }
+  .section-nav{
+    background: #232528 !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+  }
+  .facility-badges .badge {
+    background: #0d2914 !important;
+    color: #32cd32 !important;
+  }
+  .contact-card, .plan-card, .empty-state, .gallery-item, .selected-plan, .location-info {
+    background: #232528 !important;
+    border: 1px solid #333 !important;
+  }
+  .nav-link:hover {
+    color: #32cd32 !important;
+    border-bottom-color: #32cd32;
+  }
+  .coach-card {
+    background: #232528 !important;
+    border: 1px solid #333 !important;
+  }
+  .btn-directions {
+    background: #232528 !important;
+
+    color: #32cd32 !important;
+  }
+  
+  .btn-directions:hover {
+    background: #b3e0bc !important;
+  }
+  .specialty,.contact-card h3,.badge ,.gym-meta i ,.price ,.features i,.location-info i  {
+    color: #32cd32 !important;
+  }
+  .rating {
+    color: #d97706 !important;
+
+  }
+  .contact-card a {
+    color: #3182ce !important;
+    text-decoration: none;
+  }
+  
+  .contact-card a:hover {
+    text-decoration: underline;
+  }
+  
+}
+
+
 .gym-details-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -206,7 +261,7 @@
 }
 
 .btn-contact {
-  /* background: #32cd32; */
+  background: #32cd32;
   color: white;
   border: none;
   padding: 0.5rem 1rem;

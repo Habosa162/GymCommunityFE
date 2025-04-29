@@ -1,3 +1,89 @@
+:host-context(body.dark-mode) {
+  *{
+    color: #e2e8f0 !important;
+  }
+  .refresh-btn {
+    margin: 0 auto;
+    background: #26282c;
+    color: #32cd32;
+    border: 1px solid #26282c;
+  }
+  
+  .refresh-btn:hover {
+    background: #26282c;
+  }
+  
+
+  button {
+    background: #26282c !important;
+    border: 1px solid #333 !important;
+  }
+
+  .gym-card {
+    background-color: #232528 !important;
+    border: 1px solid #333 !important;
+  }
+  .filter-btn.active {
+    background: #32cd32 !important;
+    color: white;
+    border-color: #32cd32 !important;
+    box-shadow: 0 4px 8px rgba(50, 205, 50, 0.2);
+  }
+
+  .gym-name:hover {
+    color: #32cd32 !important;
+  }
+  .gym-distance {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: #333;
+    color: #32cd32 !important;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .rating-badge {
+  background: #fff8e1;
+  color: #d97706 !important;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.bi-star-fill{
+  color: #d97706 !important;
+}
+.detail-row i {
+  color: #32cd32 !important;
+  font-size: 1.1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.detail-row a {
+  color: #3182ce !important;
+  text-decoration: none;
+  word-break: break-all;
+}
+.detail-row a:hover {
+  text-decoration: underline !important;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: #26282c;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+}
+
 .gym-list-container {
   max-width: 900px;
   margin: 0 auto;
