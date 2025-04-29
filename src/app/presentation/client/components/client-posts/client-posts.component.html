@@ -1,77 +1,11 @@
-<section class="bgColor">
-  <div *ngIf="!isProfilePage" class="text-center mb-3">
-    <h2 class="fw-bold text-success">🌱 Forum Hub</h2>
-    <p class="text-muted">Share knowledge, ask questions, and grow together!</p>
-  </div>
-  <div class="container py-5">
-    <!-- Create Post Form -->
-    <div *ngIf="!isProfilePage" class="card shadow-lg rounded-5 mb-5 border-0 post-card create-post-card">
-      <div class=" card-header bg-gradient bg-primary text-white rounded-top-5 py-3 px-4">
-        <h4 class="mb-0">📢 Create a New Post</h4>
-      </div>
-      <div class="card-body px-4 py-4 rounded-bottom-5 post-form-body">
-        <form (submit)="createPost(); $event.preventDefault()">
-          <div class="mb-3">
-            <input class="form-control form-control-lg rounded-pill shadow-sm" 
-                   [(ngModel)]="newPost.title" 
-                   name="title" 
-                   placeholder="Title" 
-                   required />
-          </div>
-          <div class="mb-3">
-            <textarea class="form-control shadow-sm rounded-4" 
-                     [(ngModel)]="newPost.content" 
-                     name="content" 
-                     placeholder="What's on your mind?" 
-                     rows="2" 
-                     required></textarea>
-          </div>
-          <div class="row g-2 mb-3 align-items-center">  <!-- Added row and alignment -->
-            <div class="col-md-6">  <!-- Subject select takes half width -->
-              <select class="form-select shadow-sm rounded-pill" 
-                      [(ngModel)]="newPost.subId" 
-                      name="subId" 
-                      required>
-                <option value="" disabled selected>Select a Subject</option>
-                <option *ngFor="let sub of subs" [value]="sub.id">{{ sub.name }}</option>
-              </select>
-            </div>
-            <div class="col-md-6">  
-              <input type="file" 
-                     class="form-control shadow-sm rounded-pill" 
-                     (change)="handleImageUpload($event)" />
-            </div>
-          </div>
-          <div class="text-end">
-            <button class="btn btn-success px-5 py-2 rounded-pill shadow hover-grow">
-              🚀 Publish
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  
-    <!-- Filter Options -->
-    <div *ngIf="!isProfilePage" class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
-      <select class="form-select w-auto rounded-pill shadow-sm" (change)="filterBySub($event)">
-        <option value="">All Subjects</option>
-        <option *ngFor="let sub of subs" [value]="sub.id">{{ sub.name }}</option>
-      </select>
-  
-      <div class="d-flex gap-2">
-        <button class="btn btn-outline-primary px-4 rounded-pill shadow-sm hover-grow" (click)="filterTopRated()">⭐ Top Rated</button>
-        <button class="btn btn-outline-dark px-4 rounded-pill shadow-sm hover-grow dark-mode-toggle" (click)="loadPosts()">🔄 Reset</button>
-      </div>
-    </div>
-  
     <!-- Posts -->
     <div *ngFor="let post of posts" class="card shadow-sm mb-5 border-0 rounded-5 hover-shadow post-card">
       <div *ngIf="editingPostId === post.id; else viewPost">
         <input [(ngModel)]="editPostData.title" class="form-control mb-2" name="editTitle" />
         <textarea [(ngModel)]="editPostData.content" class="form-control mb-2" name="editContent"></textarea>
-        <select [(ngModel)]="editPostData.subId" class="form-select mb-3" name="editSubId">
+        <!-- <select [(ngModel)]="editPostData.subId" class="form-select mb-3" name="editSubId">
           <option *ngFor="let sub of subs" [value]="sub.id">{{ sub.name }}</option>
-        </select>
+        </select> -->
       
         <!-- Updated Image Preview -->
         <div class="mb-3">
@@ -237,9 +171,3 @@
         </form>
       </div>
     </div>
-  </div>
-
-
-</section>
-
-

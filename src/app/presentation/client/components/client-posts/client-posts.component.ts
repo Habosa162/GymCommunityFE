@@ -1,41 +1,33 @@
-import { Component,OnInit } from '@angular/core';
-import { CommentReadDTO, CommentCreateDTO } from '../../../../domain/models/Forum/comment.model';
-import { PostReadDTO, PostCreateDTO } from '../../../../domain/models/Forum/post.model';
-import { Sub } from '../../../../domain/models/Forum/sub.model';
-import { VoteCreateDTO, VoteReadDTO } from '../../../../domain/models/Forum/vote.model';
-import { CommentService } from '../../../../services/Forum/comment.service';
+import { Component, OnInit } from '@angular/core';
 import { PostService } from '../../../../services/Forum/post.service';
-import { SubService } from '../../../../services/Forum/sub.service';
-import { VoteService } from '../../../../services/Forum/vote.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { PostCreateDTO, PostReadDTO } from '../../../../domain/models/Forum/post.model';
 import { AuthService } from '../../../../services/auth.service';
+import { SubService } from '../../../../services/Forum/sub.service';
+import { CommentService } from '../../../../services/Forum/comment.service';
+import { VoteService } from '../../../../services/Forum/vote.service';
+import { CommentCreateDTO, CommentReadDTO } from '../../../../domain/models/Forum/comment.model';
+import { VoteCreateDTO, VoteReadDTO } from '../../../../domain/models/Forum/vote.model';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+
 @Component({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatMenuModule,
-    MatIconModule
-  ],
-  templateUrl: './forum.component.html',
-  styleUrl: './forum.component.css'
+  selector: 'app-client-posts',
+  imports: [FormsModule, CommonModule, MatMenuModule, MatIconModule],
+  templateUrl: './client-posts.component.html',
+  styleUrl: './client-posts.component.css'
 })
-export class ForumComponent implements OnInit {
-//check if its in profile or not
-isProfilePage: boolean = false;
-userOfPosts:string = '';
-
-
+export class ClientPostsComponent implements OnInit {
+  userId!: string;
+  currentUserId!: string;
   posts: PostReadDTO[] = [];
   commentsMap: { [postId: number]: CommentReadDTO[] } = {};
-  subs: Sub[] = [];
+  userVotesMap: { [postId: number]: { isUpvote: boolean, voteId: number } | null } = {};
+  userCommentVotesMap: { [commentId: number]: { isUpvote: boolean, voteId: number } | null } = {};
   commentVisibility: Set<number> = new Set();
 
-  newPost: PostCreateDTO = { title: '', content: '', userId: '', subId: 7 };
-  selectedImage: File | null = null;
 
   editingPostId: number | null = null;
   editingCommentId: number | null = null;
@@ -43,99 +35,59 @@ userOfPosts:string = '';
   editCommentContent: string = '';
   editSelectedImage: File | null = null;
 
-
-
-  userVotesMap: { [postId: number]: { isUpvote: boolean, voteId: number } | null } = {};
-  userCommentVotesMap: { [commentId: number]: { isUpvote: boolean, voteId: number } | null } = {};
-  currentUserId : any = null;
-  constructor(
-    private subService: SubService,
-    private postService: PostService,
-    private commentService: CommentService,
-    private voteService: VoteService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private authService: AuthService
-
-  ) {}
-
-  async ngOnInit(): Promise<void> {
-    this.currentUserId = this.authService.getUserId();
-    console.log(this.currentUserId);
-    //check if its in profile or not
-    const currentUrl = this.router.url;
-    this.isProfilePage = currentUrl.includes('/profile/');
   
-    if(this.isProfilePage ){
-        this.route.parent?.paramMap.subscribe( (params) => {
-        const id = params.get('userId');
-        if (id) {
-          this.userOfPosts = id;
-        }else{
-          this.userOfPosts = this.currentUserId;
-        }
-      });
-    }
-    
+
+  constructor(private postService: PostService , private route: ActivatedRoute, private authService: AuthService, private subService: SubService,    private commentService: CommentService,    private voteService: VoteService
+) {}
+
+
   
-  
-    
+
+  // ngOnInit(): void {
+  //   if(this.route.snapshot.paramMap.get('userId')){
+  //   this.route.parent?.paramMap.subscribe(params => {
+  //     const id = params.get('userId');
+  //     if (id) {
+  //       this.userId = id;
+  //       console.log('User ID:', this.userId);
+  //     }
+  //   });
+  //   }else{
+  //     this.userId = this.authService.getUserId()!;
+  //   }
+  //     this.loadPosts(this.userId);
+
+  // }
+
+
+ async ngOnInit(): Promise<void> {
     try {
-      // await this.loadCurrentUser();
-      if(this.isProfilePage){
-        this.loadPostsByUserId(this.userOfPosts);
-      }else{
-        this.loadPosts();
-        this.loadSubs();
-      }
-      
+      await this.loadCurrentUser();
+      this.loadPosts();
     } catch (error) {
       console.error('Failed to load user:', error);
       // Redirect to login
     }
   }
-  // loadCurrentUser(): Promise<void> {
-  //   return new Promise((resolve, reject) => {
-  //     this.postService.getCurrentUserId().subscribe({
-  //       next: (response) => {
-  //         if (response.success) {
-  //           this.currentUserId = response.userId;
-  //           resolve();
-  //         } else {
-  //           reject('Not authenticated');
-  //         }
-  //       },
-  //       error: (err) => reject(err)
-  //     });
-  //   });
-  // }
-
-  loadSubs(): void {
-    this.subService.getAll().subscribe(res => this.subs = res);
-  }
-
-  loadPosts(): void {
-    this.postService.getAll().subscribe(posts => {
-      this.posts = posts;
-      this.posts.forEach(post => {
-        this.loadComments(post.id);
-        this.voteService.getByPost(post.id).subscribe(votes => {
-          const userVote = votes.find(v => v.userId === this.currentUserId);
-          if (userVote) {
-            this.userVotesMap[post.id] = {
-              isUpvote: userVote.isUpvote,
-              voteId: userVote.id
-            };
+  loadCurrentUser(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.postService.getCurrentUserId().subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.currentUserId = response.userId;
+            resolve();
           } else {
-            this.userVotesMap[post.id] = null;
+            reject('Not authenticated');
           }
-        });        
+        },
+        error: (err) => reject(err)
       });
     });
   }
 
-  loadPostsByUserId(userId: string): void {
-    this.postService.getByUser(userId).subscribe(posts => {
+
+  loadPosts(): void {
+    this.postService.getAll().subscribe(posts => {
       this.posts = posts;
       this.posts.forEach(post => {
         this.loadComments(post.id);
@@ -178,20 +130,7 @@ userOfPosts:string = '';
   }
   
 
-  handleImageUpload(event: any): void {
-    this.selectedImage = event.target.files[0];
-  }
 
-  createPost(): void {
-    this.newPost.userId = this.currentUserId;
-    this.postService.create(this.newPost, this.selectedImage!).subscribe(post => {
-      this.posts.unshift(post);
-      this.commentsMap[post.id] = []; 
-      this.loadComments(post.id);
-      this.newPost = { title: '', content: '', userId: this.currentUserId, subId: 0 };
-      this.selectedImage = null;
-    });
-  }
 
   createComment(postId: number, content: string): void {
       const comment: CommentCreateDTO = {
@@ -429,10 +368,4 @@ hideVoters() {
   this.hoveredCommentId = null;
   this.hoveredVotes = [];
 }
-
-
-  
-
-  
-
 }

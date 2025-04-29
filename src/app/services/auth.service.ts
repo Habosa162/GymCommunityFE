@@ -17,7 +17,7 @@ export class AuthService {
   private ForgotPasswordEndPoint = `${baseUrl}/Auth/ForgotPassword`;
   private ResetPasswordEndPoint = `${baseUrl}/Auth/ResetPassword`;
 
-  constructor(private http: HttpClient , private router: Router, private SocialAuthService: SocialAuthService) { }
+  constructor(private http: HttpClient , private router: Router, private SocialAuthService: SocialAuthService,) { }
 
   login(data: LoginRequest): Observable<any> {
     console.log(data);
