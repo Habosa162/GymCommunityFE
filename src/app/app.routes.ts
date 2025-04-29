@@ -51,6 +51,7 @@ import { DashboardComponent } from './presentation/admin/dashboard/dashboard.com
 import { SubPaymentSuccessComponent } from './presentation/Gym/sub-payment-success/sub-payment-success.component';
 import { ClientPresonalInfoComponent } from './presentation/client/components/client-presonal-info/client-presonal-info/client-presonal-info.component';
 import { GymOwnerGuard } from './core/guards/gym-owner.guard';
+import { ProductManagementComponent } from './presentation/admin/product-management/product-management.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
