@@ -55,6 +55,7 @@ import { ProductManagementComponent } from './presentation/admin/product-managem
 import { PremiumPaymentSuccessComponent } from './presentation/Premium/premium-payment-success/premium-payment-success.component';
 import { BuyPremiumComponent } from './presentation/Premium/buy-premium/buy-premium.component';
 import { ClientPlansComponent } from './presentation/traningPlans/client-plans/client-plans.component';
+import { OrderManagementComponent } from './presentation/admin/order-management/order-management.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -230,6 +231,11 @@ export const routes: Routes = [
   {
     path: 'product-management',
     component: ProductManagementComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'order-management',
+    component: OrderManagementComponent,
     canActivate: [AuthGuard],
   },
 
