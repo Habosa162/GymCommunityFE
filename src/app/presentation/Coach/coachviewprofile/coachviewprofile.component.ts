@@ -27,6 +27,11 @@ export class CoachViewProfileComponent implements OnInit {
   username: string = '';
   selectedWorkSample: Coachworksample | null = null;
   isLoading: boolean = false;
+  // Pagination properties
+  currentPage: number = 1;
+  pageSize: number = 9;
+  totalPages: number = 0;
+  totalCount: number = 0;
 
   constructor(
     private coachService: CoachService,
@@ -47,15 +52,16 @@ export class CoachViewProfileComponent implements OnInit {
     this.username = userName || '';
 
     // Load clients data
-    this.coachclientservice.getClientsByCoachId().subscribe({
-      next: (res: CoachClientsDTO[]) => {
-        this.clients = res.map(client => ({
-          ...client,
-          joinDate: new Date() // Set current date as join date
-        }));
+    this.coachclientservice.getClientsByCoachId(this.currentPage, this.pageSize).subscribe({
+      next: (response: any) => {
+        this.clients = response.data;
+        this.currentPage = response.currentPage;
+        this.totalPages = response.totalPages;
+        this.totalCount = response.totalCount;
+        console.log('Loaded clients:', this.clients);
       },
-      error: (error) => {
-        console.error('Error loading coach clients data', error);
+      error: (error: any) => {
+        console.error('Error loading clients:', error);
       }
     });
 

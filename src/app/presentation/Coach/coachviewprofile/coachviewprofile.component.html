@@ -4,7 +4,7 @@
     <div class="hero-overlay"></div>
     <div class="profile-header">
       <div class="profile-image-container">
-        <img [src]="coach.portfolio?.aboutMeImageUrl" alt="Profile" class="profile-image">
+        <img [src]="coach?.portfolio?.aboutMeImageUrl" alt="Profile" class="profile-image">
         <div class="profile-rating" *ngIf="averageRating > 0">
           <i class="fas fa-star"></i>
           <span>{{ averageRating | number:'1.1-1' }}</span>
@@ -12,11 +12,11 @@
       </div>
       <div class="profile-info">
         <h1 class="profile-name">{{ username }}</h1>
-        <p class="profile-title">{{ coach.portfolio?.qualifications }}</p>
+        <p class="profile-title">{{ coach?.portfolio?.qualifications }}</p>
         <div class="profile-stats">
           <div class="stat-item">
             <i class="fas fa-certificate"></i>
-            <span>{{ coach.certificates?.length || 0 }} Certificates</span>
+            <span>{{ coach?.certificates?.length || 0 }} Certificates</span>
           </div>
           <div class="stat-item">
             <i class="fas fa-users"></i>
@@ -24,7 +24,7 @@
           </div>
           <div class="stat-item">
             <i class="fas fa-star"></i>
-            <span>{{ coach.ratings?.length || 0 }} Ratings</span>
+            <span>{{ coach?.ratings?.length || 0 }} Ratings</span>
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@
         <i class="fas fa-user"></i>
         About Me
       </h2>
-      <p class="about-description">{{ coach.portfolio?.aboutMeDescription }}</p>
+      <p class="about-description">{{ coach?.portfolio?.aboutMeDescription }}</p>
 
       <div class="skills-section">
         <h3 class="subsection-title">Skills</h3>
@@ -90,7 +90,7 @@
         <div class="row">
           <div class="col-md-4 mb-4" *ngFor="let cert of coach?.certificates">
             <div class="certificate-card">
-              <img [src]="cert.imageUrl" class="certificate-image" alt="Certificate">
+              <img [src]="cert?.imageUrl" class="certificate-image" alt="Certificate">
             </div>
           </div>
         </div>

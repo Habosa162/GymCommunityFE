@@ -56,6 +56,7 @@ export class CoachPortfolioComponent implements OnInit {
         this.isLoading = false;
       },
     });
+    this.initForm();
   }
 
   private initForm() {

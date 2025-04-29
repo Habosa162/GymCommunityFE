@@ -21,7 +21,8 @@ export class CoachLayoutComponent implements OnInit {
 
     constructor(
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private authservice: AuthService
     ) {
         // Check authentication on component creation
         if (!this.authService.isLoggedIn() || this.authService.getUserRole() !== 'Coach') {
@@ -98,4 +99,14 @@ export class CoachLayoutComponent implements OnInit {
         this.authService.logout();
         this.router.navigate(['/login']);
     }
+
+
+
+    @HostListener('document:click', ['$event'])
+onClickOutside(event: Event) {
+  const target = event.target as HTMLElement;
+  if (!target.closest('.profile-dropdown')) {
+    this.isProfileDropdownOpen = false;
+  }
+}
 } 

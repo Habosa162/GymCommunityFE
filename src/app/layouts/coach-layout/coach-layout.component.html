@@ -1,8 +1,9 @@
 <div class="coach-layout" [class.dark-mode]="isDarkMode">
     <!-- Top Navigation Bar -->
-    <header class="top-nav">
+
+    <header class="top-nav d-flex">
         <div class="nav-left">
-           
+
             <div class="logo">
                 <a routerLink="/">
                     <img src="/assets/imgs/logo.png" alt="GymCommunity Logo">
@@ -12,9 +13,9 @@
             </div>
         </div>
 
-        <div class="nav-right">
+        <div class="nav-right d-flex">
             <!-- Coach Navigation Menu -->
-            <div class="coach-nav" *ngIf="isAuthenticated">
+            <div class="coach-nav d-flex" *ngIf="isAuthenticated">
                 <a routerLink="/coach/dashboard" routerLinkActive="active" class="nav-item">
                     <i class="bi bi-person-circle"></i>
                     <span>My Profile</span>
@@ -41,9 +42,7 @@
                 <i class="bi" [class.bi-moon-fill]="!isDarkMode" [class.bi-sun-fill]="isDarkMode"> </i>
             </div>
 
-
-
-            <div class="profile-dropdown" [class.active]="isProfileDropdownOpen">
+            <div class="profile-dropdown d-flex " [class.active]="isProfileDropdownOpen">
                 <div class="profile-trigger" (click)="toggleProfileDropdown()">
                     <img [src]="userImage" alt="Profile" class="profile-img">
                     <span class="username">{{ userName }}</span>
@@ -67,7 +66,7 @@
         </div>
     </header>
 
-  
+
 
     <!-- Main Content Area -->
     <main class="main-content m-0" [class.sidebar-collapsed]="!isSidebarOpen">
