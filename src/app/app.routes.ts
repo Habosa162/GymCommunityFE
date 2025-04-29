@@ -50,7 +50,6 @@ import { UserGymDetailsComponent } from './presentation/Gym/user-gym-details/use
 import { DashboardComponent } from './presentation/admin/dashboard/dashboard.component';
 import { SubPaymentSuccessComponent } from './presentation/Gym/sub-payment-success/sub-payment-success.component';
 import { ClientPresonalInfoComponent } from './presentation/client/components/client-presonal-info/client-presonal-info/client-presonal-info.component';
-import { ClientPostsComponent } from './presentation/client/components/client-posts/client-posts.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
