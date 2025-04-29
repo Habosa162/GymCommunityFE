@@ -1,0 +1,27 @@
+.sidenav-container {
+  height: 100vh;
+}
+
+.sidenav {
+  width: 250px;
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+mat-nav-list a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+a.active {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.content {
+  padding: 20px;
+}
