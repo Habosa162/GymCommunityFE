@@ -1,81 +1,169 @@
-<div class="container mt-4">
-  <div class="text-center">
-    <img [src]="coach.portfolio.aboutMeImageUrl" alt="Profile" class="rounded-circle" width="150" height="150">
-    <h2 class="mt-2">{{ username }} </h2>
-    <p class="text-muted">{{ coach.portfolio.qualifications }}</p>
-    <p>{{coach. portfolio.aboutMeDescription }}</p>
-    <div class="mb-2">
-      <span class="badge bg-primary me-1" *ngFor="let skill of coach?.portfolio?.skillsJson">
-        {{ skill }}
-      </span>
-    </div>
-    <div>
-      <a *ngFor="let link of coach?.portfolio?.socialMediaLinksJson" [href]="link" target="_blank" class="me-2">
-        {{ link }}
-      </a>
-    </div>
-  </div>
-
-  <ul class="nav justify-content-center">
-
-
-    <li>
-      <button (click)="setActiveTab('certificates')" [class.active]="activeTab === 'certificates'">Certificates</button>
-    </li>
-    <li>
-      <button (click)="setActiveTab('workSamples')" [class.active]="activeTab === 'workSamples'">Work Samples</button>
-    </li>
-    <li>
-      <button (click)="setActiveTab('my-client')" [class.active]="activeTab === 'my-client'">Clients</button>
-    </li>
-
-    <li>
-      <button (click)="setActiveTab('ratings')" [class.active]="activeTab === 'ratings'">Ratings</button>
-    </li>
-  </ul>
-
-
-  <div class="tab-content mt-4">
-    <div *ngIf="activeTab === 'portfolio'">
-      <!-- Portfolio Details Here -->
-    </div>
-
-    <div *ngIf="activeTab === 'certificates'" class="row">
-      <div class="col-md-4 mb-3" *ngFor="let cert of coach?.certificates">
-        <img [src]="cert.imageUrl" class="img-fluid rounded shadow" alt="Certificate" height="150px">
+<div class="coach-profile-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="profile-header">
+      <div class="profile-image-container">
+        <img [src]="coach.portfolio?.aboutMeImageUrl" alt="Profile" class="profile-image">
+        <div class="profile-rating" *ngIf="averageRating > 0">
+          <i class="fas fa-star"></i>
+          <span>{{ averageRating | number:'1.1-1' }}</span>
+        </div>
       </div>
-    </div>
-
-    <div *ngIf="activeTab === 'workSamples'" class="row">
-      <div class="col-md-4 mb-3" *ngFor="let work of coach?.workSamples">
-        <div class="card h-100 shadow">
-          <img [src]="work.imageUrl" class="card-img-top " alt="Work Sample" height="150px">
-          <div class="card-body">
-            <p class="card-text">{{ work.description }}</p>
+      <div class="profile-info">
+        <h1 class="profile-name">{{ username }}</h1>
+        <p class="profile-title">{{ coach.portfolio?.qualifications }}</p>
+        <div class="profile-stats">
+          <div class="stat-item">
+            <i class="fas fa-certificate"></i>
+            <span>{{ coach.certificates?.length || 0 }} Certificates</span>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-users"></i>
+            <span>{{ clients?.length || 0 }} Clients</span>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-star"></i>
+            <span>{{ coach.ratings?.length || 0 }} Ratings</span>
           </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <div *ngIf="activeTab === 'ratings'">
-      <div class="mb-3" *ngFor="let rating of coach?.ratings">
-        <div class="border p-3 rounded shadow-sm">
-          <strong>Rate:</strong> {{ rating.rate }} ⭐
-          <p class="mb-0">{{ rating.comment }}</p>
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- About Section -->
+    <section class="about-section">
+      <h2 class="section-title">
+        <i class="fas fa-user"></i>
+        About Me
+      </h2>
+      <p class="about-description">{{ coach.portfolio?.aboutMeDescription }}</p>
+
+      <div class="skills-section">
+        <h3 class="subsection-title">Skills</h3>
+        <div class="skills-container">
+          <div class="skill-badge" *ngFor="let skill of coach?.portfolio?.skillsJson">
+            <i class="fas fa-check"></i>
+            <span>{{ skill }}</span>
+          </div>
         </div>
       </div>
+
+      <div class="social-media-section">
+        <h3 class="subsection-title">Social Media</h3>
+        <div class="social-links">
+          <a *ngFor="let link of coach?.portfolio?.socialMediaLinksJson" [href]="link" target="_blank"
+            class="social-link">
+            <i class="fab fa-linkedin"></i>
+            <span>{{ link }}</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabs Navigation -->
+    <div class="profile-tabs">
+      <button (click)="setActiveTab('certificates')" [class.active]="activeTab === 'certificates'" class="tab-button">
+        <i class="fas fa-certificate"></i>
+        Certificates
+      </button>
+      <button (click)="setActiveTab('workSamples')" [class.active]="activeTab === 'workSamples'" class="tab-button">
+        <i class="fas fa-images"></i>
+        Work Samples
+      </button>
+      <button (click)="setActiveTab('my-client')" [class.active]="activeTab === 'my-client'" class="tab-button">
+        <i class="fas fa-users"></i>
+        Clients
+      </button>
+      <button (click)="setActiveTab('ratings')" [class.active]="activeTab === 'ratings'" class="tab-button">
+        <i class="fas fa-star"></i>
+        Ratings
+      </button>
     </div>
 
-    <div *ngIf="activeTab === 'clients'" class="row">
-      <div class="col-md-4 mb-3" *ngFor="let client of clients">
-        <div class="card h-100 text-center shadow">
-          <img [src]="client.client.profileImg" class="rounded-circle mx-auto mt-3" width="80" height="80" alt="Client">
-          <div class="card-body">
-            <h5 class="card-title">{{ client.client.firstName }} {{ client.client.lastName }}</h5>
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <!-- Certificates Tab -->
+      <div *ngIf="activeTab === 'certificates'" class="tab-pane">
+        <div class="row">
+          <div class="col-md-4 mb-4" *ngFor="let cert of coach?.certificates">
+            <div class="certificate-card">
+              <img [src]="cert.imageUrl" class="certificate-image" alt="Certificate">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Work Samples Tab -->
+      <div *ngIf="activeTab === 'workSamples'" class="tab-pane">
+        <div class="row">
+          <div class="col-md-4 mb-4" *ngFor="let work of coach?.workSamples">
+            <div class="work-sample-card">
+              <div class="work-sample-image" (click)="viewWorkSample(work)">
+                <img [src]="work.imageUrl" alt="Work Sample">
+                <div class="work-sample-overlay">
+                  <i class="fas fa-search-plus"></i>
+                </div>
+              </div>
+              <div class="work-sample-content">
+                <p class="work-sample-description">{{ work.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clients Tab -->
+      <div *ngIf="activeTab === 'my-client'" class="tab-pane">
+        <div class="row">
+          <div class="col-md-4 mb-4" *ngFor="let client of clients">
+            <div class="client-card">
+              <div class="client-info">
+                <img [src]="client.client.profileImg || 'assets/default-profile.png'" alt="Client Profile"
+                  class="client-image">
+                <div class="client-details">
+                  <h3>{{ client.client.firstName }} {{ client.client.lastName }}</h3>
+                  <p class="client-stats">Plan ID: {{ client.planId }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ratings Tab -->
+      <div *ngIf="activeTab === 'ratings'" class="tab-pane">
+        <div class="row">
+          <div class="col-md-6 mb-4" *ngFor="let rating of coach?.ratings">
+            <div class="rating-card">
+              <div class="rating-header">
+                <div class="rating-stars">
+                  <p class="rating-header">{{ rating.clientFirstName }} {{ rating.clientLastName }}</p>
+                  <i class="fas fa-star" *ngFor="let star of [].constructor(rating.rate)"></i>
+                </div>
+              </div>
+              <p class="rating-comment">{{ rating.comment }}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
+
+  <!-- Work Sample Modal -->
+  <ng-template #workSampleModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Work Sample</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <img [src]="selectedWorkSample?.imageUrl" class="img-fluid" alt="Work Sample">
+      <p class="mt-3">{{ selectedWorkSample?.description }}</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
 </div>

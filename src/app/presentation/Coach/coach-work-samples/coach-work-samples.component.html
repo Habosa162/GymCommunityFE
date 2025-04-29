@@ -6,28 +6,42 @@
     </div>
   </div>
 
-  <!-- Error Message -->
+  <!-- Messages -->
   <div class="alert alert-danger" *ngIf="error">
     {{ error }}
+  </div>
+  <div class="alert alert-success" *ngIf="success">
+    {{ success }}
   </div>
 
   <!-- Upload Work Sample Form -->
   <div class="row mb-5">
-    <div class="col-md-6 mx-auto">
+    <div class="col-md-8 mx-auto">
       <div class="card shadow">
         <div class="card-body">
           <h5 class="card-title mb-4">Upload New Work Sample</h5>
           <form (ngSubmit)="uploadSample()">
             <div class="mb-3">
-              <label for="description" class="form-label">Description</label>
+              <label for="description" class="form-label">Description*</label>
               <textarea class="form-control" id="description" [(ngModel)]="description" name="description" rows="3"
                 placeholder="Describe your work sample"></textarea>
             </div>
             <div class="mb-3">
-              <label for="image" class="form-label">Work Sample Image</label>
+              <label for="image" class="form-label">Work Sample Image*</label>
               <input type="file" class="form-control" id="image" (change)="onFileSelected($event)" accept="image/*">
+              <small class="text-muted">Supported formats: JPEG, PNG, JPG, GIF. Max size: 5MB</small>
             </div>
-            <button type="submit" class="btn btn-primary w-100" [disabled]="loading">
+
+            <!-- Image Preview -->
+            <div class="mb-3" *ngIf="previewUrl">
+              <label class="form-label">Preview</label>
+              <div class="work-sample-preview">
+                <img [src]="previewUrl" alt="Work Sample Preview" class="img-fluid rounded">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100"
+              [disabled]="loading || !selectedFile || !description.trim()">
               <span class="spinner-border spinner-border-sm me-2" *ngIf="loading"></span>
               {{ loading ? 'Uploading...' : 'Upload Work Sample' }}
             </button>
@@ -48,9 +62,14 @@
   <div class="row g-4" *ngIf="!loading || workSamples.length > 0">
     <div class="col-md-4" *ngFor="let sample of workSamples">
       <div class="card h-100 shadow-sm">
-        <img [src]="sample.imageUrl" class="card-img-top" alt="Work Sample">
+        <div class="work-sample-image" (click)="viewWorkSample(sample)">
+          <img [src]="sample.imageUrl" class="card-img-top" alt="Work Sample">
+          <div class="overlay">
+            <i class="bi bi-eye-fill"></i>
+          </div>
+        </div>
         <div class="card-body">
-          <p class="card-text">{{sample.description}}</p>
+          <p class="card-text">{{ sample.description }}</p>
           <div class="d-flex justify-content-end">
             <button class="btn btn-outline-danger btn-sm" (click)="deleteSample(sample.id)" [disabled]="loading">
               <span class="spinner-border spinner-border-sm me-1" *ngIf="loading"></span>
@@ -69,6 +88,25 @@
         <div class="card-body">
           <h5 class="card-title">No Work Samples Yet</h5>
           <p class="card-text text-muted">Start by uploading your first work sample using the form above.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Work Sample Modal -->
+  <div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Work Sample</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <img [src]="selectedWorkSample?.imageUrl" class="img-fluid rounded" alt="Work Sample">
+          <p class="mt-3">{{ selectedWorkSample?.description }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
         </div>
       </div>
     </div>

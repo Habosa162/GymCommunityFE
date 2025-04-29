@@ -5,6 +5,7 @@ import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CoachcertficateService } from '../../../services/Coachservice/coachcertficate.service';
+import { Coachportfolio } from '../../../domain/models/CoachModels/coachportfolio.model';
 
 @Component({
   selector: 'app-coach-portfolio',
@@ -19,6 +20,7 @@ export class CoachPortfolioComponent implements OnInit {
   coachId!: string;
   portfolioid!: number;
   existingImageUrl: string = '';
+  isLoading: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,14 +36,18 @@ export class CoachPortfolioComponent implements OnInit {
     this.certservice.getPortfolioIdByCoachId(this.coachId).subscribe({
       next: (res: any) => {
         this.portfolioid = res;
+        if (this.coachId) {
+          this.initForm();
+          this.loadPortfolio();
+        } else {
+          console.error('Coach ID not found in token');
+        }
       },
-    })
-    if (this.coachId) {
-      this.initForm();
-      this.loadPortfolio();
-    } else {
-      console.error('Coach ID not found in token');
-    }
+      error: (err) => {
+        console.error('Error getting portfolio ID:', err);
+        this.isLoading = false;
+      }
+    });
   }
 
   private initForm() {
@@ -55,31 +61,59 @@ export class CoachPortfolioComponent implements OnInit {
   }
 
   private loadPortfolio() {
+    this.isLoading = true;
     this.portfolioService.getByCoachId(this.coachId).subscribe({
-      next: (data) => {
+      next: (data: Coachportfolio) => {
         if (data) {
           this.existingImageUrl = data.aboutMeImageUrl || '';
+
+          // Convert arrays to comma-separated strings
+          const skillsString = Array.isArray(data.skillsJson)
+            ? data.skillsJson.join(', ')
+            : (typeof data.skillsJson === 'string' ? data.skillsJson : '');
+
+          const socialLinksString = Array.isArray(data.socialMediaLinksJson)
+            ? data.socialMediaLinksJson.join(', ')
+            : (typeof data.socialMediaLinksJson === 'string' ? data.socialMediaLinksJson : '');
+
+          // Update form with existing data
           this.portfolioForm.patchValue({
             aboutMeDescription: data.aboutMeDescription || '',
             qualifications: data.qualifications || '',
             experienceYears: data.experienceYears || 0,
-            skills: data.skillsJson?.join(', ') || '',
-            socialLinks: data.socialMediaLinksJson?.join(', ') || ''
+            skills: skillsString,
+            socialLinks: socialLinksString
           });
         }
+        this.isLoading = false;
       },
-      error: (err) => console.error('Error loading portfolio:', err)
+      error: (err) => {
+        console.error('Error loading portfolio:', err);
+        this.isLoading = false;
+      }
     });
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedImage = file;
+  resetForm(): void {
+    if (confirm('Are you sure you want to reset the form? All unsaved changes will be lost.')) {
+      this.loadPortfolio(); // Reload the original data
     }
   }
 
-  onSubmit() {
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedImage = file;
+      // Create a preview URL
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.existingImageUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  onSubmit(): void {
     if (this.portfolioForm.valid) {
       const formData = new FormData();
       formData.append('CoachId', this.coachId);
@@ -97,21 +131,11 @@ export class CoachPortfolioComponent implements OnInit {
         formData.append('AboutMeImageUrl', this.existingImageUrl);
       }
 
-      // Log the form data for debugging
-      console.log('Form data being sent:', {
-        CoachId: this.coachId,
-        Id: this.portfolioid,
-        AboutMeDescription: this.portfolioForm.get('aboutMeDescription')?.value,
-        Qualifications: this.portfolioForm.get('qualifications')?.value,
-        ExperienceYears: this.portfolioForm.get('experienceYears')?.value,
-        SkillsJson: this.portfolioForm.get('skills')?.value,
-        SocialMediaLinksJson: this.portfolioForm.get('socialLinks')?.value,
-        HasImage: !!this.selectedImage,
-        ExistingImageUrl: this.existingImageUrl
-      });
-
       this.portfolioService.update(this.portfolioid, formData).subscribe({
-        next: () => alert('Portfolio saved successfully!'),
+        next: () => {
+          alert('Portfolio updated successfully!');
+          this.loadPortfolio(); // Reload the updated data
+        },
         error: (err) => {
           console.error('Error updating portfolio:', err);
           alert('Error: ' + (err.error?.message || 'Failed to save portfolio'));
