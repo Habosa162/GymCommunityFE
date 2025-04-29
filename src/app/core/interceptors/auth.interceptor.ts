@@ -13,6 +13,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     '/api/WorkSample',
     '/api/CoachPortfolio',
     '/api/CoachClients',
+    '/api/CoachProfile',
     '/api/Brand',
     '/api/Category',
     '/api/Order',

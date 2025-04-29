@@ -295,6 +295,9 @@
 .plan-summary {
   margin: 3px 0;
   font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .plan-type {
@@ -304,4 +307,115 @@
   background-color: rgba(243, 97, 0, 0.15);
   color: #f36100;
   font-weight: 500;
+}
+
+.plan-item-name {
+  font-size: 11px;
+  color: #444;
+  margin-top: 2px;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+}
+
+/* Crossed out styles */
+.crossed-out {
+  position: relative;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.crossed-out::before,
+.crossed-out::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #ff0000;
+  z-index: 1;
+}
+
+.crossed-out::before {
+  transform: rotate(45deg);
+}
+
+.crossed-out::after {
+  transform: rotate(-45deg);
+}
+
+.crossed-out .add-day-button {
+  display: none;
+}
+
+.crossed-out .day-plan-info {
+  opacity: 0.6;
+}
+
+.week-crossed-out {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.week-crossed-out td {
+  text-decoration: line-through;
+}
+
+.week-crossed-out .add-week-button,
+.week-crossed-out .add-day-button {
+  display: none;
+}
+
+/* Single Exercise and Meal Form Styles */
+.single-exercise-form,
+.single-meal-form {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #eee;
+}
+
+.add-single-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.add-single-btn:hover {
+  background-color: #45a049;
+}
+
+.list-title {
+  font-size: 16px;
+  color: #333;
+  margin: 15px 0 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+}
+
+.empty-list-message {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.exercise-details p,
+.meal-details p {
+  margin: 5px 0;
+  font-size: 14px;
 }

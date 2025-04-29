@@ -1,5 +1,5 @@
-<div class="container py-4">
-    <!-- About Me -->
+<!-- <div class="container py-4">
+    About Me
     <div class="card mb-4 shadow rounded-4">
         <div class="row g-0">
             <div class="col-md-4 text-center p-4">
@@ -13,7 +13,7 @@
                     <p><strong>Qualifications:</strong> {{ portfolio?.qualifications }}</p>
                     <p><strong>Experience:</strong> {{ portfolio?.experienceYears }} years</p>
 
-                    <!-- Skills -->
+                    Skills
                     <div *ngIf="portfolio?.skillsJson?.length">
                         <h5>Skills</h5>
                         <div class="d-flex flex-wrap gap-2">
@@ -24,7 +24,7 @@
                         </div>
                     </div>
 
-                    <!-- Social Media -->
+                    Social Media
                     <div *ngIf="portfolio?.socialMediaLinksJson?.length" class="mt-3">
                         <h5>Find me on</h5>
                         <div class="d-flex gap-3">
@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <!-- Certificates -->
+    Certificates
     <div class="card mb-4 shadow rounded-4">
         <div class="card-body">
             <h3 class="card-title fw-bold mb-4">Certificates</h3>
@@ -53,7 +53,7 @@
         </div>
     </div>
 
-    <!-- Work Samples -->
+    Work Samples
     <div class="card mb-4 shadow rounded-4">
         <div class="card-body">
             <h3 class="card-title fw-bold mb-4">Work Samples</h3>
@@ -70,7 +70,7 @@
         </div>
     </div>
 
-    <!-- Ratings -->
+    Ratings
     <div class="card mb-4 shadow rounded-4">
         <div class="card-body">
             <h3 class="card-title fw-bold mb-4">Client Ratings</h3>
@@ -92,4 +92,329 @@
             <div *ngIf="ratings?.length === 0" class="text-muted">No ratings yet.</div>
         </div>
     </div>
+</div> -->
+<!-- <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center vh-100 ">
+    <div class="spinner-border text-light" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
 </div>
+
+<div *ngIf="!isLoading" class="container py-5 bg-dark text-light animate-fade-in">
+
+    About Me
+    <div class="card mb-4 bg-secondary text-light shadow-lg animate-fade-in">
+        <div class="card-body text-center">
+            <img [src]="portfolio?.aboutMeImageUrl" class="rounded-circle img-fluid mb-3" alt="About Me Image"
+                style="width: 150px; height: 150px; object-fit: cover;">
+            <h2 class="card-title">{{ portfolio?.qualifications }}</h2>
+            <p class="card-text">{{ portfolio?.aboutMeDescription }}</p>
+            <p><strong>Experience:</strong> {{ portfolio?.experienceYears }} years</p>
+        </div>
+    </div>
+
+    Skills
+    <div class="card mb-4 bg-secondary text-light shadow-lg animate-fade-in">
+        <div class="card-body">
+            <h3 class="card-title">Skills</h3>
+            <div class="d-flex flex-wrap gap-2">
+                <span *ngFor="let skill of portfolio?.skillsJson" class="badge bg-info">{{ skill }}</span>
+            </div>
+        </div>
+    </div>
+
+    Social Media Links
+    <div class="card mb-4 bg-secondary text-light shadow-lg animate-fade-in">
+        <div class="card-body">
+            <h3 class="card-title">Social Media</h3>
+            <div class="d-flex flex-wrap gap-3">
+                <a *ngFor="let link of portfolio?.socialMediaLinksJson" [href]="link" target="_blank" class="text-info">
+                    {{ link }}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    Certificates
+    <div class="card mb-4 bg-secondary text-light shadow-lg animate-fade-in">
+        <div class="card-body">
+            <h3 class="card-title">Certificates</h3>
+            <div class="row">
+                <div class="col-md-4 mb-3" *ngFor="let cert of certificates">
+                    <div class="card bg-dark text-light shadow-sm">
+                        <img [src]="cert.imageUrl" class="card-img-top" alt="Certificate">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    Work Samples
+    <div class="card mb-4 bg-secondary text-light shadow-lg animate-fade-in">
+        <div class="card-body">
+            <h3 class="card-title">Work Samples</h3>
+            <div class="row">
+                <div class="col-md-4 mb-3" *ngFor="let work of workSamples">
+                    <div class="card bg-dark text-light shadow-sm">
+                        <img [src]="work.imageUrl" class="card-img-top img-fluid" style="height: 200px;"
+                            alt="Work Sample">
+                        <div class="card-body">
+                            <p class="card-text">{{ work.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    Ratings
+    <div class="card mb-4 bg-secondary text-light shadow-lg animate-fade-in">
+        <div class="card-body">
+            <h3 class="card-title">Ratings</h3>
+            <div *ngIf="ratings.length > 0; else noRatings">
+                <div *ngFor="let rate of ratings" class="mb-3 p-3 rounded bg-dark text-light">
+                    <div class="d-flex justify-content-between">
+                        <strong>Rating:</strong>
+                        <span class="text-warning">{{ rate.rate }} ★</span>
+                    </div>
+                    <p class="mb-0"><strong>Comment:</strong> {{ rate.comment }}</p>
+                </div>
+            </div>
+            <ng-template #noRatings>
+                <p class="text-muted">No ratings yet.</p>
+            </ng-template>
+        </div>
+    </div>
+
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header id="header" class="header d-flex flex-column justify-content-center ">
+    <i class="header-toggle d-xl-none bi bi-list"></i>
+    <nav id="navmenu" class="navmenu">
+        <ul>
+            <li><a href="#hero" class="active mb-5"><i class="bi bi-house navicon"></i><span>Home</span></a></li>
+            <li><a href="#about"><i class="bi bi-person navicon mb-5"></i><span>About</span></a></li>
+            <li><a href="#portfolio"><i class="bi bi-images navicon mb-5"></i><span>Portfolio</span></a></li>
+            <li><a href="#testimonials"><i class="bi bi-star navicon mb-5"></i><span>Ratings</span></a></li>
+            <li><a href="#contact"><i class="bi bi-envelope navicon mb-5"></i><span>Contact</span></a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="main">
+    <!-- Hero Section -->
+    <section id="hero" class="hero section light-background ">
+        <div class="container" data-aos="zoom-out">
+            <div class="row justify-content-center">
+                <img [src]="portfolio?.aboutMeImageUrl" class="card-img-top rounded-3 img-fluid " alt="Coach Cover">
+            </div>
+        </div>
+
+        <div class="container" data-aos="zoom-out">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <h2>{{ portfolio?.coachFirstName }} {{ portfolio?.coachLastName }}</h2>
+                    <p>I'm a <span class="typed"
+                            data-typed-items="Professional Coach, Fitness Expert, Personal Trainer">Professional
+                            Coach</span></p>
+                    <div class="social-links">
+                        <a *ngFor="let link of getSocialMediaLinks()" [href]="link" target="_blank">
+                            <i class="bi bi-link-45deg"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>About</h2>
+            <p>{{ portfolio?.aboutMeDescription }}</p>
+        </div>
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row gy-4 justify-content-center">
+                <div class="col-lg-4">
+                    <img [src]="portfolio?.aboutMeImageUrl" class="img-fluid" alt="Coach Profile">
+                </div>
+                <div class="col-lg-8 content">
+                    <h2>Professional Coach</h2>
+                    <p class="fst-italic py-3">
+                        {{ portfolio?.aboutMeDescription }}
+                    </p>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul>
+                                <li><i class="bi bi-chevron-right"></i> <strong>Experience:</strong> <span>{{
+                                        portfolio?.experienceYears }} years</span></li>
+                                <li><i class="bi bi-chevron-right"></i> <strong>Qualifications:</strong> <span>{{
+                                        portfolio?.qualifications }}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="skills mt-4">
+                        <h3>Skills</h3>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span *ngFor="let skill of getSkills()" class="badge bg-primary rounded-pill px-3 py-2">
+                                {{ skill }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio section">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Portfolio</h2>
+            <p>Check out my work samples and certificates</p>
+        </div>
+
+        <div class="container">
+            <div class="row gy-4">
+                <!-- Work Samples -->
+                <div class="col-lg-6" *ngIf="workSamples.length > 0">
+                    <h3 class="mb-4">Work Samples</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6" *ngFor="let work of workSamples">
+                            <div class="card shadow-sm border-0 h-100">
+                                <img [src]="work.imageUrl" class="card-img-top rounded-3" alt="Work Sample">
+                                <div class="card-body">
+                                    <p class="card-text">{{ work.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificates -->
+                <div class="col-lg-6" *ngIf="certificates.length > 0">
+                    <h3 class="mb-4">Certificates</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6" *ngFor="let cert of certificates">
+                            <div class="card shadow-sm border-0 h-100">
+                                <img [src]="cert.imageUrl" class="card-img-top rounded-3" alt="Certificate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials section">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Client Ratings</h2>
+            <p>What my clients say about me</p>
+        </div>
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="text-center mb-4">
+                        <h3>Average Rating</h3>
+                        <div class="stars">
+                            <i *ngFor="let i of [1,2,3,4,5]" [class.bi-star-fill]="i <= averageRating"
+                                [class.bi-star]="i > averageRating" class="bi text-warning"></i>
+                        </div>
+                        <h4 class="mt-2">{{ averageRating.toFixed(1) }} / 5.0</h4>
+                    </div>
+
+                    <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" *ngFor="let rating of ratings">
+                                <div class="testimonial-item">
+                                    <div class="testimonial-content">
+                                        <p>
+                                            <i class="bi bi-quote quote-icon-left"></i>
+                                            {{ rating.comment }}
+                                            <i class="bi bi-quote quote-icon-right"></i>
+                                        </p>
+                                        <div class="stars">
+                                            <i *ngFor="let i of [1,2,3,4,5]" [class.bi-star-fill]="i <= rating.rate"
+                                                [class.bi-star]="i > rating.rate" class="bi text-warning"></i>
+                                        </div>
+                                        <h3>Client {{ rating.ClientFirstName }} {{ rating.ClientLastName }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Contact</h2>
+            <p>Get in touch with me</p>
+        </div>
+
+        <div class="container" data-aos="fade" data-aos-delay="100">
+            <div class="row gy-4">
+                <div class="col-lg-12">
+                    <div class="info-item d-flex justify-content-center" data-aos="fade-up" data-aos-delay="200">
+                        <i class="bi bi-envelope flex-shrink-0"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>Contact me through my social media links above</p>
+                            <div class="col-lg-6" *ngFor="let email of portfolio?.socialMediaLinksJson">
+                                <h3 class="mb-4">{{email}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer id="footer" class="footer position-relative light-background">
+    <div class="container">
+        <h3 class="sitename">{{ portfolio?.coachFirstName }} {{ portfolio?.coachLastName }}</h3>
+        <p>{{ portfolio?.aboutMeDescription }}</p>
+        <div class="social-links d-flex justify-content-center">
+            <a *ngFor="let link of getSocialMediaLinks()" [href]="link" target="_blank">
+                <i class="bi bi-link-45deg"></i>
+            </a>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <span>© {{ currentYear }} All Rights Reserved</span>
+            </div>
+        </div>
+    </div>
+</footer>

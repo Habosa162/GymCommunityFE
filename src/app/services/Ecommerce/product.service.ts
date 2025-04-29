@@ -35,10 +35,22 @@ export class ProductService {
   deleteProduct(id:number) : Observable<any> {
     return this.HttpClient.delete(`${this.apiUrl}/${id}`);
   }
-  searchProducts(searchTerm: string): Observable<Product[]> {
-    return this.HttpClient.get<Product[]>(`${this.apiUrl}/search?term=${searchTerm}`);
-  }
+// In product.service.ts
+searchProducts(searchTerm: string): Observable<Product[]> {
+  return this.HttpClient.get<Product[]>(`${this.apiUrl}/search?name=${searchTerm}`);
+}
   getProductsByBrand(brandId: number): Observable<Product[]> {
     return this.HttpClient.get<Product[]>(`${this.apiUrl}/by-brand/${brandId}`);
   }
+
+  // filter by price 
+  getProductsByPriceRange(minPrice: number, maxPrice: number, categoryId?: number): Observable<Product[]> {
+    let url = `${this.apiUrl}/by-price?minPrice=${minPrice}&maxPrice=${maxPrice}`;
+    if (categoryId !== undefined && categoryId !== null) {  // Ensure categoryId is valid
+      url += `&categoryId=${categoryId}`;
+    }
+    return this.HttpClient.get<Product[]>(url);
+  }
+  
+
 }

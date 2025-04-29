@@ -9,6 +9,7 @@ import { BrandService } from '../../../services/Ecommerce/brand.service'; // Imp
 import { Category } from '../../../domain/models/Ecommerce/category.model';
 import { Brand } from '../../../domain/models/Ecommerce/brand.model';
 import { FormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-products-list',
@@ -33,14 +34,53 @@ export class ProductsListComponent {
   categorySearchTerm: string = '';
   filteredCategories: Category[] = [];
   hasSelectedPriceRanges = false;
+  productSearchTerm: string = '';
+
 
   priceRanges = [
     { label: 'Under $100', min: 0, max: 100, selected: false },
     { label: '$100 - $200', min: 100, max: 200, selected: false },
     { label: '$200 - $300', min: 200, max: 300, selected: false },
     { label: '$300 - $500', min: 300, max: 500, selected: false },
-    { label: 'Over $500', min: 500, max: Infinity, selected: false }
+    { label: 'Over $500', min: 500, max: null, selected: false }
   ];
+
+  
+  // filter by price 
+  onPriceRangeChange(range: any): void {
+    // Deselect all other ranges
+    this.priceRanges.forEach(r => r.selected = (r === range ? !r.selected : false));
+    
+    if (range.selected) {
+      this.loadProductsByPrice(range.min, range.max);
+    } else {
+      this.loadProducts();
+    }
+  }
+
+  loadProductsByPrice(minPrice: number, maxPrice: number | null): void {
+    this.isLoading = true;
+  
+    // If maxPrice is null, set it to a valid number, e.g., 5000 or any default value
+    const maxPriceParam = maxPrice === null ? 5000 : maxPrice;
+  
+    this.productService.getProductsByPriceRange(
+      minPrice, 
+      maxPriceParam,  // Ensure it's a valid number here
+      this.selectedCategoryId || undefined
+    ).subscribe({
+      next: (products) => {
+        this.products = products;
+        this.filteredProducts = [...products];
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading = false;
+      }
+    });
+  }
+  
   
 
   constructor(private productService : ProductService , 
@@ -61,7 +101,20 @@ export class ProductsListComponent {
     this.loadProducts();
     this.loadCategories();
     this.loadBrands();
+    // Add debounced search
+  this.searchSubject.pipe(
+    debounceTime(300),
+    distinctUntilChanged()
+  ).subscribe(searchTerm => {
+    this.onProductSearch();
+  });
   }
+  // search product 
+  private searchSubject = new Subject<string>();
+
+onSearchInput(): void {
+  this.searchSubject.next(this.productSearchTerm.trim());
+}
 
   loadCategories(): void {
     this.categoryService.getAllCategories().subscribe(categories => {
@@ -70,14 +123,6 @@ export class ProductsListComponent {
     });
   }
 
-  // // Filter by category
-  // onCategoryChange(event: any) {
-  //   this.selectedCategoryId = event.target.value ? +event.target.value : null;
-  //   this.applyFilters();
-  // }
-
-
-
   // Filter by price range
   onPriceChange(event: any) {
     this.selectedPrice = event.target.value;
@@ -85,28 +130,22 @@ export class ProductsListComponent {
   }
 
   // Apply selected filters
+ 
   applyFilters() {
     this.filteredProducts = this.products.filter((product) => {
       const matchesCategory = this.selectedCategoryId ? product.categoryID === this.selectedCategoryId : true;
       const matchesBrand = this.selectedBrandId ? product.brandId === this.selectedBrandId : true;
       
-      // Check price range filters
       const matchesPriceRange = this.priceRanges.some(range => 
-        range.selected && product.price >= range.min && product.price <= range.max
+        range.selected && 
+        product.price >= range.min && 
+        (range.max === null ? true : product.price <= range.max)
       );
       
-      // If no price ranges are selected, show all products
       const noPriceFiltersSelected = !this.priceRanges.some(range => range.selected);
       
       return matchesCategory && matchesBrand && (matchesPriceRange || noPriceFiltersSelected);
     });
-  }
-
-  // Add this method to handle price range selection
-  onPriceRangeChange(range: any): void {
-    range.selected = !range.selected;
-    this.hasSelectedPriceRanges = this.priceRanges.some(r => r.selected);
-    this.applyFilters();
   }
 
 // Add this method to clear all price filters
@@ -118,66 +157,35 @@ clearPriceFilters(): void {
 
  // filter by brand and category 
 
-loadProducts(): void {
+ loadProducts(): void {
   this.isLoading = true;
   
+  let observable: Observable<Product[]>;
+  
   if (this.selectedBrandId) {
-    this.productService.getProductsByBrand(this.selectedBrandId).subscribe({
-      next: (products) => {
-        this.products = products;
-        this.filteredProducts = [...products];
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error(err);
-        this.isLoading = false;
-      }
-    });
+    observable = this.productService.getProductsByBrand(this.selectedBrandId);
   } else if (this.selectedCategoryId) {
-    this.productService.getProductsByCategory(this.selectedCategoryId).subscribe({
-      next: (products) => {
-        this.products = products;
-        this.filteredProducts = [...products];
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error(err);
-        this.isLoading = false;
-      }
-    });
+    observable = this.productService.getProductsByCategory(this.selectedCategoryId);
   } else {
-    this.productService.getProducts().subscribe({
-      next: (products) => {
-        this.products = products;
-        this.filteredProducts = [...products];
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error(err);
-        this.isLoading = false;
-      }
-    });
+    observable = this.productService.getProducts();
   }
+
+  observable.subscribe({
+    next: (products) => {
+      this.products = products;
+      this.filteredProducts = [...products];
+      this.isLoading = false;
+    },
+    error: (err) => {
+      console.error(err);
+      this.isLoading = false;
+    }
+  });
 }
 
 onCategorySelect(categoryId: number): void {
   this.selectedCategoryId = categoryId;
-  
-  if (categoryId) {
-    this.productService.getProductsByCategory(categoryId).subscribe({
-      next: (products) => {
-        this.products = products;
-        this.filteredProducts = [...products];
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error(err);
-        this.isLoading = false;
-      }
-    });
-  } else {
-    this.loadProducts();
-  }
+  this.loadProducts(); // <<< Only call loadProducts()
 }
 
 clearCategoryFilter(): void {
@@ -234,12 +242,6 @@ loadBrands(): void {
     });
   }
 
-  // onBrandSelect(brandId: number): void {
-  //   this.selectedBrandId = brandId;
-  //   this.applyFilters(); // If doing client-side filtering
-  //   // OR this.loadProducts(); // If doing server-side filtering
-  // }
-
   onBrandSelect(brandId: number): void {
     this.selectedBrandId = brandId;
     this.loadProducts();
@@ -255,5 +257,60 @@ loadBrands(): void {
     this.filteredBrands = [...this.brands];
     this.loadProducts(); // Reload all products without any filters
   }
+
+  ///// search by product 
+
+  // In products-list.component.ts
+onProductSearch(): void {
+  const searchTerm = this.productSearchTerm.trim();
+  
+  if (searchTerm.length === 0) {
+    this.loadProducts();
+    return;
+  }
+
+  this.isLoading = true;
+  
+  this.productService.searchProducts(searchTerm).subscribe({
+    next: (products) => {
+      this.products = products; // Update main products array
+      this.filteredProducts = [...products]; // Update filtered products
+      this.isLoading = false;
+    },
+    error: (error) => {
+      console.error('Search error:', error);
+      this.isLoading = false;
+      // Optionally show error message to user
+    }
+  });
+}
+  
+
+// filter select
+
+onSortChange(event: Event) {
+  const selectElement = event.target as HTMLSelectElement;
+  const selectedValue = selectElement.value;
+  console.log('Selected Sort Option:', selectedValue);
+
+  if (selectedValue === 'lowToHigh') {
+    this.filteredProducts.sort((a, b) => a.price - b.price);
+  } else if (selectedValue === 'highToLow') {
+    this.filteredProducts.sort((a, b) => b.price - a.price);
+  } else if (selectedValue === 'newest') {
+    this.filteredProducts.sort((a, b) => {
+      const dateA = new Date(a.createdAt || '');
+      const dateB = new Date(b.createdAt || '');
+      return dateB.getTime() - dateA.getTime(); // Newest first
+    });
+  } else if (selectedValue === 'bestRated') {
+    this.filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  } else {
+    // Featured (default) - maybe just reset the products to original
+    this.filteredProducts = [...this.products];
+  }
+}
+
+
   
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
-  CanActivate,
   ActivatedRouteSnapshot,
-  RouterStateSnapshot,
+  CanActivate,
   Router,
+  RouterStateSnapshot,
 } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
@@ -18,10 +18,10 @@ export class clientGuard implements CanActivate {
     state: RouterStateSnapshot
   ): boolean {
     const role = this.authService.getUserRole();
-    if (role !== 'Admin') {
+    if (role === 'Client') {
       return true;
     }
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/home']);
     return false;
   }
 }
