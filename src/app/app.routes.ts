@@ -52,6 +52,8 @@ import { SubPaymentSuccessComponent } from './presentation/Gym/sub-payment-succe
 import { ClientPresonalInfoComponent } from './presentation/client/components/client-presonal-info/client-presonal-info/client-presonal-info.component';
 import { GymOwnerGuard } from './core/guards/gym-owner.guard';
 import { ProductManagementComponent } from './presentation/admin/product-management/product-management.component';
+import { PremiumPaymentSuccessComponent } from './presentation/Premium/premium-payment-success/premium-payment-success.component';
+import { BuyPremiumComponent } from './presentation/Premium/buy-premium/buy-premium.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -261,6 +263,9 @@ export const routes: Routes = [
       },
     ],
   },
+    //Premium routes
+  { path: 'buy-premium', component: BuyPremiumComponent },
+  { path: 'premium-payment-success', component: PremiumPaymentSuccessComponent },
 
   // Default route
   { path: '', redirectTo: '/', pathMatch: 'full' },
