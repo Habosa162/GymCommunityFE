@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { baseUrl } from '../enviroment';
 import { Observable } from 'rxjs';
@@ -12,36 +12,65 @@ export class ProductService {
 
   private apiUrl = `${baseUrl}/Product`;
 
-  constructor(private HttpClient:HttpClient,
-              private toastr: ToastrService
-            ) { }
+  constructor(private HttpClient: HttpClient,
+    private toastr: ToastrService
+  ) { }
+  getProducts(
+    query: string,
+    page: number,
+    eleNo: number,
+    categoryId: number | null,
+    brandId: number | null,
+    sort: string,
+    minPrice: number | null,
+    maxPrice: number | null
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('query', query)
+      .set('page', page.toString())
+      .set('eleNo', eleNo.toString())
+      .set('sort', sort);
 
-  getProducts() : Observable<any> {
-    return this.HttpClient.get(`${this.apiUrl}`);
+    if (categoryId !== null) {
+      params = params.set('categoryId', categoryId.toString());
+    }
+    if (brandId !== null) {
+      params = params.set('brandId', brandId.toString());
+    }
+    if (minPrice !== null) {
+      params = params.set('minPrice', minPrice.toString());
+    }
+    if (maxPrice !== null) {
+      params = params.set('maxPrice', maxPrice.toString());
+    }
+
+    return this.HttpClient.get(`${this.apiUrl}`, { params });
   }
-  getUserProducts() : Observable<any>{
+
+  
+  getUserProducts(): Observable<any> {
     return this.HttpClient.get(`${this.apiUrl}/user`);
   }
-  createProduct(Product:FormData) : Observable<any> {
+  createProduct(Product: FormData): Observable<any> {
     return this.HttpClient.post(`${this.apiUrl}`, Product);
   }
-  getOneProduct(id:number) : Observable<any> {
+  getOneProduct(id: number): Observable<any> {
     return this.HttpClient.get(`${this.apiUrl}/${id}`);
   }
   //filter by category
   getProductsByCategory(categoryId: number): Observable<Product[]> {
     return this.HttpClient.get<Product[]>(`${this.apiUrl}/by-category/${categoryId}`);
   }
-  updateProduct(Product:Product) : Observable<any> {
+  updateProduct(Product: Product): Observable<any> {
     return this.HttpClient.put(`${this.apiUrl}`, Product);
   }
-  deleteProduct(id:number) : Observable<any> {
+  deleteProduct(id: number): Observable<any> {
     return this.HttpClient.delete(`${this.apiUrl}/${id}`);
   }
-// In product.service.ts
-searchProducts(searchTerm: string): Observable<Product[]> {
-  return this.HttpClient.get<Product[]>(`${this.apiUrl}/search?name=${searchTerm}`);
-}
+  // In product.service.ts
+  searchProducts(searchTerm: string): Observable<Product[]> {
+    return this.HttpClient.get<Product[]>(`${this.apiUrl}/search?name=${searchTerm}`);
+  }
   getProductsByBrand(brandId: number): Observable<Product[]> {
     return this.HttpClient.get<Product[]>(`${this.apiUrl}/by-brand/${brandId}`);
   }

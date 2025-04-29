@@ -16,20 +16,31 @@
             </div>
             <div class="filter-section-content">
               <div class="search-box with-icon">
-                <input type="text" [(ngModel)]="categorySearchTerm" (input)="onCategorySearch()"
-                  placeholder="Search categories...">
+                <input
+                  type="text"
+                  [(ngModel)]="categorySearchTerm"
+                  (input)="onCategorySearch()"
+                  placeholder="Search categories..."
+                >
               </div>
               <ul class="filter-list scrollable">
                 <li *ngFor="let category of filteredCategories" class="filter-item radio-item">
-                  <input type="radio" name="category" [id]="'category-' + category.categoryID"
-                    [value]="category.categoryID" [checked]="category.categoryID === selectedCategoryId"
-                    (change)="onCategorySelect(category.categoryID)">
-                  <label [for]="'category-' + category.categoryID">{{ category.name }} ({{
-                    getCategoryCount(category.categoryID) }})</label>
+                  <input
+                    type="radio"
+                    name="category"
+                    [id]="'category-' + category.categoryID"
+                    [value]="category.categoryID"
+                    [checked]="category.categoryID === selectedCategoryId"
+                    (change)="onCategorySelect(category.categoryID)"
+                  >
+                  <label [for]="'category-' + category.categoryID">
+                    {{ category.name }} ({{ getCategoryCount(category.categoryID) }})
+                  </label>
                 </li>
               </ul>
             </div>
           </div>
+
           <!-- Brand Filter -->
           <div class="filter-section">
             <div class="filter-section-header">
@@ -37,19 +48,30 @@
             </div>
             <div class="filter-section-content">
               <div class="search-box with-icon">
-                <input type="text" [(ngModel)]="searchTerm" (input)="onBrandSearch()" placeholder="Search brands...">
+                <input
+                  type="text"
+                  [(ngModel)]="brandSearchTerm"
+                  (input)="onBrandSearch()"
+                  placeholder="Search brands..."
+                >
               </div>
               <ul class="filter-list scrollable">
                 <li *ngFor="let brand of filteredBrands" class="filter-item radio-item">
-                  <input type="radio" name="brand" [id]="'brand-' + brand.brandID" [value]="brand.brandID"
-                    [checked]="brand.brandID === selectedBrandId" (change)="onBrandSelect(brand.brandID)">
+                  <input
+                    type="radio"
+                    name="brand"
+                    [id]="'brand-' + brand.brandID"
+                    [value]="brand.brandID"
+                    [checked]="brand.brandID === selectedBrandId"
+                    (change)="onBrandSelect(brand.brandID)"
+                  >
                   <label [for]="'brand-' + brand.brandID">{{ brand.name }}</label>
                 </li>
               </ul>
             </div>
           </div>
+
           <!-- Price Filter -->
-          <!-- In your template -->
           <div class="filter-section">
             <div class="filter-section-header">
               <h3 class="section-title">Price Range</h3>
@@ -57,9 +79,15 @@
             <div class="filter-section-content">
               <ul class="filter-list">
                 <li *ngFor="let range of priceRanges" class="filter-item checkbox-item">
-                  <input type="radio" name="priceRange" [id]="'price-' + range.label" [checked]="range.selected"
-                    (change)="onPriceRangeChange(range)">
-                  <label [for]="'price-' + range.label">{{ range.label }}</label>
+                  <input
+                    type="checkbox"
+                    name="priceRange"
+                    [id]="'price-' + range.label"
+                    [checked]="range.selected"
+                    (change)="onPriceRangeChange(range)"
+                    class="form-check-input p-2"
+                  >
+                  <label class="form-check-label" [for]="'price-' + range.label">{{ range.label }}</label>
                 </li>
               </ul>
             </div>
@@ -67,56 +95,52 @@
         </div>
       </aside>
 
-
-
-
       <!-- Main Content -->
       <main class="col-lg-9 col-md-8">
-        <div class="product-grid-header">
+        <div class="product-grid-header d-flex justify-content-between align-items-center mb-3">
           <div class="results-count">
             Showing <strong>{{ filteredProducts.length }}</strong> products
           </div>
-          <div class="sort-options">
-            <label for="sortSelect" class="form-label me-2">Sort by:</label>
+          <div class="sort-options d-flex align-items-center">
+            <label for="sortSelect" class="form-label me-2 fw-bold">Sort by:</label>
             <select id="sortSelect" class="form-select" (change)="onSortChange($event)">
-              <option value="featured">Featured</option>
-              <option value="lowToHigh">Price: Low to High</option>
-              <option value="highToLow">Price: High to Low</option>
-              <option value="newest">Newest Arrivals</option>
-              <option value="bestRated">Best Rated</option>
+              <option value="asc">Price: Low to High</option>
+              <option value="desc">Price: High to Low</option>
             </select>
           </div>
-
         </div>
 
         <!-- Product Search -->
         <div class="search-box with-icon mb-3">
-          <input type="text" [(ngModel)]="productSearchTerm" (input)="onSearchInput()" class="form-control"
-            placeholder="Search products..." />
+          <input
+            type="text"
+            [(ngModel)]="productSearchTerm"
+            (input)="onSearchInput()"
+            class="form-control"
+            placeholder="Search products..."
+          />
         </div>
 
         <!-- Loading State -->
         <ng-container *ngIf="isLoading">
           <div class="row g-3">
-            <div *ngFor="let skeleton of [1,2,3,4,5,6]" class="col-xl-3 col-md-6">
+            <div *ngFor="let skeleton of [1,2,3,4,5,6]" class="col-xl-3 col-md-6 col-sm-12">
               <div class="product-card-skeleton"></div>
             </div>
           </div>
         </ng-container>
 
-
-
         <!-- Products Grid -->
         <ng-container *ngIf="!isLoading">
           <div class="row g-3">
-            <div class="col-xl-3 col-md-6 col-sm-12" *ngFor="let product of filteredProducts">
+            <div *ngFor="let product of filteredProducts" class="col-xl-3 col-md-6 col-sm-12">
               <app-product [product]="product"></app-product>
             </div>
           </div>
 
           <!-- Empty State -->
-          <div *ngIf="filteredProducts.length === 0" class="empty-state">
-            <div class="empty-state-icon">
+          <div *ngIf="filteredProducts.length === 0" class="empty-state text-center mt-5">
+            <div class="empty-state-icon mb-3">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
@@ -124,7 +148,7 @@
             </div>
             <h3 class="empty-state-title">No products found</h3>
             <p class="empty-state-text">Try adjusting your filters or search criteria</p>
-            <button class="btn btn-primary" (click)="clearAllFilters()">Clear All Filters</button>
+            <button class="btn btn-primary mt-3" (click)="clearAllFilters()">Clear All Filters</button>
           </div>
         </ng-container>
       </main>
