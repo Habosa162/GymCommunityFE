@@ -1,60 +1,99 @@
-<div class="container mt-4">
-  <h2 class="text-center">Brand Administration</h2>
+<section id="createBrand">
+<div class="container p-4 brand-admin">
+  <h2 class="text-center mb-4">Brand Administration</h2>
 
   <!-- Brand Form -->
-  <form (ngSubmit)="onAddBrand()" class="row g-3">
-    <div class="col-md-4">
-      <label for="brandName" class="form-label">Brand Name</label>
-      <input
-        type="text"
-        id="brandName"
-        class="form-control"
-        [(ngModel)]="brandName"
-        name="brandName"
-        required
-      />
-    </div>
+  <div class="card mb-4 card shadow-lg">
+    <div class="card-body">
+      <form (ngSubmit)="onAddBrand()" class="row g-3">
+        <div class="col-md-4">
+          <label for="brandName" class="form-label">Brand Name</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-tag"></i></span>
+            <input
+              type="text"
+              id="brandName"
+              class="form-control"
+              [(ngModel)]="brandName"
+              name="brandName"
+              placeholder="Enter brand name"
+              required
+            />
+          </div>
+        </div>
 
-    <div class="col-md-4">
-      <label for="brandDesc" class="form-label">Brand Description</label>
-      <textarea
-        id="brandDesc"
-        class="form-control"
-        [(ngModel)]="brandDesc"
-        name="brandDesc"
-        required
-      ></textarea>
-    </div>
+        <div class="col-md-4">
+          <label for="brandDesc" class="form-label">Brand Description</label>
+          <textarea
+            id="brandDesc"
+            class="form-control"
+            [(ngModel)]="brandDesc"
+            name="brandDesc"
+            placeholder="Enter brand description"
+            rows="1"
+            required
+          ></textarea>
+        </div>
 
-    <div class="col-md-4 d-flex align-items-end">
-      <button type="submit" class="btn btn-primary w-100" [disabled]="!brandName.trim() || !brandDesc.trim()">Add Brand</button>
+        <div class="col-md-4 d-flex align-items-end">
+          <button
+            type="submit"
+            class="btn btn-primary w-100 py-2"
+            [disabled]="!brandName?.trim() || !brandDesc?.trim()"
+          >
+            <i class="bi bi-plus-circle me-2"></i>Add Brand
+          </button>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 
   <!-- Brand Table -->
-  <div class="mt-4">
-    <table class="table table-bordered">
-      <thead class="table-light">
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Description</th>
-          <th style="width: 150px;">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let brand of brands">
-          <td>{{ brand.brandID }}</td>
-          <td>{{ brand.name }}</td>
-          <td>{{ brand.description }}</td>
-          <td>
-            <button class="btn btn-danger btn-sm" (click)="onRemoveBrand(brand.brandID)">Remove</button>
-          </td>
-        </tr>
-        <tr *ngIf="brands.length === 0">
-          <td colspan="4" class="text-center">No brands available.</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="card shadow-lg card">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th scope="col" class="ps-4">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+              <th scope="col" style="width: 150px;" class="text-end pe-4">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let brand of brands">
+              <td class="ps-4">{{ brand.brandID }}</td>
+              <td>{{ brand.name }}</td>
+              <td>{{ brand.description}}</td>
+              <td class="text-end pe-4">
+                <div class="d-flex gap-2 justify-content-end">
+                  <!-- <button
+                    class="btn btn-outline-primary btn-sm"
+                    (click)="onEditBrand(brand)"
+                    title="Edit brand"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </button> -->
+                  <button
+                    class="btn btn-outline-danger btn-sm"
+                    (click)="onRemoveBrand(brand.brandID)"
+                    title="Remove brand"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="brands.length === 0">
+              <td colspan="4" class="text-center py-4 text-muted">
+                <i class="bi bi-exclamation-circle me-2"></i>No brands available
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
+</section>

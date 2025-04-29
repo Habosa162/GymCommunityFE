@@ -1,3 +1,4 @@
+import { Category } from './../../../domain/models/Ecommerce/category.model';
 import { CategoryService } from './../../../services/Ecommerce/category.service';
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../../services/Ecommerce/product.service';
@@ -38,9 +39,12 @@ export class ProductManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllProducts();
+    this.getAllCategories() ;
+    this.getAllBrand() ;
   }
   getAllCategories(){
     this.categoryService.getAllCategories().subscribe((res)=>{
+
       this.categories = res ;
     },(err)=>{
       this.toastr.error("Error Load Categories","Error");
@@ -48,14 +52,18 @@ export class ProductManagementComponent implements OnInit {
   }
   getAllBrand(){
     this.brandService.getAllBrands().subscribe((res)=>{
+      console.log(res);
+
       this.brands = res
     },(err)=>{
       this.toastr.error("Error Load Categories","Error");
     })
   }
   // Function to fetch products
-  getAllProducts(): void {
+  getAllProducts(){
     this.isLoading = true;
+
+
     this.productService.getProducts(
       this.query,
       this.page,
@@ -101,13 +109,11 @@ export class ProductManagementComponent implements OnInit {
   }
   // Category selection handler
 onCategoryChange(): void {
-  this.page = 1; // Reset to page 1 on category change
   this.getAllProducts();
 }
 
 // Brand selection handler
 onBrandChange(): void {
-  this.page = 1; // Reset to page 1 on brand change
   this.getAllProducts();
 }
 
@@ -122,5 +128,14 @@ onSortChange(): void {
   this.page = 1; // Reset to page 1 on sorting change
   this.getAllProducts();
 }
-
+ // Clear All Filters
+ clearAllFilters(): void {
+  this.categoryId = null;
+  this.brandId = null;
+  this.sort = 'asc';
+  this.query = '';
+  this.minPrice = null ;
+  this.maxPrice = null ;
+  this.getAllProducts();
+}
 }

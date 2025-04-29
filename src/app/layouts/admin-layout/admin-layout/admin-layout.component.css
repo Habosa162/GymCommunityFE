@@ -25,3 +25,12 @@
     width: calc(100% - 250px);
   }
 }
+
+:host-context(body.dark-mode) .main-content{
+  background-color: black !important;
+  color: white !important;
+}
+:host-context(body.dark-mode) .admin-layout{
+  background-color: black;
+  color: white !important;
+}
