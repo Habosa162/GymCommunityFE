@@ -83,6 +83,10 @@ export class AuthService {
     const decoded = this.getDecodedToken();
     return decoded?.Name || null;
   }
+  IsUserPremium(): boolean {
+    const decoded = this.getDecodedToken();
+    return decoded?.IsPremium==="True"? true:false;
+  }
 
   getProfileImg(): string | null {
     const decoded = this.getDecodedToken();
