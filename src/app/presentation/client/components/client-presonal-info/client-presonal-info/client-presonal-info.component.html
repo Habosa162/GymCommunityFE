@@ -37,7 +37,7 @@
           <div class="card-body">
             <div class="bio-content">
               <div *ngIf="!isBioEditing">
-                <p class="mb-0 colorBlack">{{ clientProfile.bio }}</p>
+                <p class="mb-0 colorBlack">{{ clientProfile?.bio }}</p>
               </div>
               <div *ngIf="isBioEditing">
                 <textarea class="form-control" [(ngModel)]="clientProfile.bio" rows="4"></textarea>
@@ -87,7 +87,7 @@
                   <li class="mb-3 rounded-4">
                     <i class="fa-solid fa-location-dot me-2 text-primary"></i>
                     <strong class="me-2">Address:</strong>
-                    <span *ngIf="!isPersonalInfoEditing">{{ clientProfile.address }}</span>
+                    <span *ngIf="!isPersonalInfoEditing">{{ clientProfile?.address }}</span>
                     <input *ngIf="isPersonalInfoEditing" type="text"
                       class="form-control form-control-sm d-inline-block w-auto" [(ngModel)]="clientProfile.address">
                   </li>
