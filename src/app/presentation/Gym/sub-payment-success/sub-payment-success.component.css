@@ -1,6 +1,27 @@
+:host-context(body.dark-mode) {
+  *{
+    color: #e2e8f0 !important;
+  }
+  .success-state {
+    background-color: #232528 !important;
+    border: 1px solid #333 !important;
+  }
+  .success-icon mat-icon {
+    font-size: 4rem;
+    width: 4rem;
+    height: 4rem;
+    color: #4CAF50 !important;
+  }
+  .error-icon mat-icon {
+    font-size: 4rem;
+    width: 4rem;
+    height: 4rem;
+    color: #F44336 !important;
+  }
+}
 .payment-result-container {
     max-width: 600px;
-    margin: 2rem auto;
+    margin: 0 auto;
     padding: 2rem;
     text-align: center;
   }

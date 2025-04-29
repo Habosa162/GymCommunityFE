@@ -61,36 +61,8 @@
         </div>
         <button type="submit" class="btn btn-success">💾 Save Changes</button>
       </form>
-  
-      <!-- Subscriptions -->
-      <button class="btn btn-success" (click)="toggleSubscriptionList()">
-        {{ viewSubList ? 'Hide' : 'View Plan Subscriptions' }}
-      </button>
-       
-      <div *ngIf="viewSubList" class="mt-5">
-        <div *ngIf="subscriptions.length === 0" class="alert alert-warning">
-          No subscriptions for this plan yet.
-        </div>
-  
-        <div *ngIf="subscriptions.length > 0" class="row gy-4 gap-2">
-          <div *ngFor="let sub of subscriptions" class="col-md-4 sub-card" routerLink="/gym-owner/subscription/{{sub.id}}" style="cursor: pointer;">
-            <div class="card shadow-sm border-success">
-              <div class="card-body">
-                <h5 class="card-title">User ID: {{ sub.userId }}</h5>
-                <p><strong>Payment Status:</strong> {{ getStatusName(sub.paymentStatus) }}</p>
-                  <!-- <select class="form-select" [(ngModel)]="sub.paymentStatus" (change)="updateSubscriptionStatus(sub)">
-                    <option *ngFor="let status of paymentStatuses" [value]="status">{{ getStatusName(status) }}</option>
-                  </select>
-                </p> -->
-                <p><strong>Purchase Date:</strong> {{ sub.purchaseDate | date }}</p>
-                <p><strong>Valid From:</strong> {{ sub.startDate | date }}</p>
-                <p><strong>Expires At:</strong> {{ sub.expiresAt | date }}</p>
-                <p><strong>Expired:</strong> <span [class.text-danger]="sub.isExpired">{{ sub.isExpired ? 'Yes' : 'No' }}</span></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+      <button class="btn btn-outline-success mt-3 px-5 " [routerLink]="['/gym-owner/gym/', plan.gymId]">Back To Gym</button>
     </div>
   
   </div>
