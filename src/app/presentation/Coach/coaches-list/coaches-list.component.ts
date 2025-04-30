@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoachportfolioService } from '../../../services/Coachservice/coachportfolio.service';
 import { CoachratingService } from '../../../services/Coachservice/coachrating.service';
 import { Coachportfolio } from '../../../domain/models/CoachModels/coachportfolio.model';
@@ -25,7 +25,7 @@ interface CoachDisplay {
     templateUrl: './coaches-list.component.html',
     styleUrls: ['./coaches-list.component.css'],
     standalone: true,
-    imports: [CommonModule, FormsModule]
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule]
 })
 export class CoachesListComponent implements OnInit {
     coaches: CoachDisplay[] = [];
