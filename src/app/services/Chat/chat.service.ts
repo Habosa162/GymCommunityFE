@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+import { catchError, map, tap, timeout } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 
 export interface ChatMessage {
@@ -199,6 +200,9 @@ export class ChatService {
   ): Promise<void> {
     console.log('Sending message to group:', senderId, groupId, message);
 
+    // Get current user's name from JWT
+    const senderName = this.authService.getUserName() || 'Anonymous User';
+
     // Check connection status
     if (this.hubConnection.state !== 'Connected') {
       console.log('Connection not established, attempting to reconnect...');
@@ -208,13 +212,14 @@ export class ChatService {
           'SendMessageToGroup',
           senderId,
           groupId,
-          message
+          message,
+          senderName
         );
       });
     }
 
     return this.hubConnection
-      .invoke('SendMessageToGroup', senderId, groupId, message)
+      .invoke('SendMessageToGroup', senderId, groupId, message, senderName)
       .catch((err) => {
         console.error('Error sending message to group:', err);
         throw err;
@@ -247,5 +252,125 @@ export class ChatService {
 
   getUserGroups(): Observable<any[]> {
     return this.http.get<ChatGroup[]>(`${this.apiUrl}/group/groups`);
+  }
+
+  /**
+   * Fetches a user's name by their user ID
+   * @param userId The ID of the user to fetch
+   * @returns Observable of the user's name or error
+   */
+  getUserNameById(
+    userId: string
+  ): Observable<{ Name: string; ProfileImage: string }> {
+    console.log(`Fetching user info for: ${userId}`);
+
+    // If no userId is provided, return default values
+    if (!userId) {
+      console.error('Invalid user ID provided');
+      return of({ Name: 'Unknown User', ProfileImage: '' });
+    }
+
+    return this.http.get<any>(`${this.apiUrl}/group/user/${userId}`).pipe(
+      // Add timeout to prevent hanging requests
+      timeout(5000),
+      // Log the response for debugging
+      tap((response) => {
+        console.log(`Raw user info response for ${userId}:`, response);
+        // Log structure to help debug
+        if (response && typeof response === 'object') {
+          console.log(`Response keys for ${userId}:`, Object.keys(response));
+        }
+      }),
+      // Transform the response to match our expected format
+      map((response) => {
+        // For debugging - log entire response object
+        console.log(
+          `Full response object for ${userId}:`,
+          JSON.stringify(response)
+        );
+
+        // Check different possible response formats
+        if (response && typeof response === 'object') {
+          // Format 1: { Name: "...", ProfileImage: "..." }
+          if (response.Name !== undefined) {
+            return {
+              Name: response.Name,
+              ProfileImage: response.ProfileImage || '',
+            };
+          }
+
+          // Format 2: { name: "...", profileImage: "..." }
+          if (response.name !== undefined) {
+            return {
+              Name: response.name,
+              ProfileImage:
+                response.profileImage || response.ProfileImage || '',
+            };
+          }
+
+          // Format 3: { userName: "...", profileImg: "..." }
+          if (response.userName !== undefined) {
+            return {
+              Name: response.userName,
+              ProfileImage: response.profileImg || response.profileImage || '',
+            };
+          }
+
+          // Try case-insensitive search for name properties
+          for (const key of Object.keys(response)) {
+            const lowerKey = key.toLowerCase();
+            if (
+              lowerKey === 'name' ||
+              lowerKey === 'username' ||
+              lowerKey.includes('name')
+            ) {
+              console.log(
+                `Found name property "${key}" with value "${response[key]}"`
+              );
+              return {
+                Name: response[key],
+                ProfileImage:
+                  response.profileImage ||
+                  response.ProfileImage ||
+                  response.profileImg ||
+                  response.ProfileImg ||
+                  '',
+              };
+            }
+          }
+
+          // If we have a single key, assume it might be the response
+          if (Object.keys(response).length === 1) {
+            const onlyKey = Object.keys(response)[0];
+            console.log(
+              `Single property response: ${onlyKey} = ${response[onlyKey]}`
+            );
+            return {
+              Name: response[onlyKey],
+              ProfileImage: '',
+            };
+          }
+        } else if (typeof response === 'string') {
+          // If response is just a string, assume it's the name
+          return {
+            Name: response,
+            ProfileImage: '',
+          };
+        }
+
+        // Last resort - log the full response for debugging
+        console.warn(`Unrecognized user info response format:`, response);
+        return {
+          Name: 'Unknown User',
+          ProfileImage: '',
+        };
+      }),
+      // Handle errors
+      catchError((err) => {
+        console.error(`Error fetching user info for ${userId}:`, err);
+        // Return a default value instead of propagating the error
+        return of({ Name: 'User', ProfileImage: '' });
+      })
+    );
   }
 }

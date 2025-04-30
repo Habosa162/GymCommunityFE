@@ -130,6 +130,34 @@
       }
     }
   }
+
+  .debug-controls {
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+    border-top: 1px solid #eaeaea;
+
+    .debug-button {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 12px;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        background-color: #e0e0e0;
+        color: #333;
+      }
+
+      i {
+        margin-right: 4px;
+      }
+    }
+  }
 }
 
 // Chat main area
@@ -225,7 +253,6 @@
     .message-sent {
       align-self: flex-end;
       margin-right: 10px;
-      padding-left: 50px; // Create space on the left for better contrast
 
       .message-bubble {
         background: linear-gradient(135deg, #3949ab, #3f51b5);
@@ -237,18 +264,6 @@
 
         &:hover {
           transform: translateY(-2px);
-        }
-        
-        &::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          right: -8px;
-          width: 16px;
-          height: 16px;
-          background-color: #3f51b5;
-          border-radius: 0 0 16px 0;
-          z-index: -1;
         }
       }
 
@@ -273,23 +288,41 @@
 
     .message-received {
       align-self: flex-start;
-      margin-left: 50px; // Increase margin to make space for avatar
-      padding-right: 50px; // Create space on the right for better contrast
+      max-width: 70%;
+      display: flex; // Use flexbox for better alignment with avatar
+      align-items: flex-start; // Align items to the top
+      margin-left: 10px;
+
+      .message-content-wrapper {
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+      }
 
       .message-avatar {
         width: 36px;
         height: 36px;
         border-radius: 50%;
         background-color: #e0e0e0;
-        position: absolute;
-        left: -46px;
-        top: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #757575;
-        font-size: 16px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        margin-right: 8px;
+        flex-shrink: 0;
+
+        i {
+          color: #757575;
+          font-size: 18px;
+        }
+        
+        .user-avatar {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid #fff;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
       }
 
       &::before {
@@ -305,18 +338,6 @@
 
         &:hover {
           transform: translateY(-2px);
-        }
-        
-        &::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: -8px;
-          width: 16px;
-          height: 16px;
-          background-color: #e8eaf6;
-          border-radius: 0 0 0 16px;
-          z-index: -1;
         }
       }
       

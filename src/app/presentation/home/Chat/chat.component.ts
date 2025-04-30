@@ -8,8 +8,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Subscription, timer } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import { of, Subject, Subscription, timer } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  takeWhile,
+  throttleTime,
+} from 'rxjs/operators';
 import { ChatMessage, ChatService } from '../../../services/Chat/chat.service';
 import { AuthService } from '../../../services/auth.service';
 import { ChatDiagnostics } from './chat-diagnostics';
@@ -39,6 +44,17 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   private componentActive = true;
   public isConnected = false;
 
+  // Add a cache for user names
+  private userNameCache: { [userId: string]: string } = {};
+  public userAvatarCache: { [userId: string]: string } = {};
+
+  // Add a map to track pending user info requests
+  private pendingUserRequests: { [userId: string]: boolean } = {};
+
+  // Add a throttled subject for user info requests
+  private userInfoRequestSubject = new Subject<string>();
+  private userInfoSubscription?: Subscription;
+
   constructor(
     private chatService: ChatService,
     private authService: AuthService,
@@ -51,6 +67,13 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     // Get current user ID from JWT token
     this.currentUserId = this.authService.getUserId() || 'anonymous-user';
     this.currentUserName = this.authService.getUserName() || 'Anonymous User';
+    const profileImage = this.authService.getProfileImg();
+
+    // Add current user to cache
+    this.userNameCache[this.currentUserId] = this.currentUserName;
+    if (profileImage) {
+      this.userAvatarCache[this.currentUserId] = profileImage;
+    }
 
     // Log authentication info
     console.log('Auth User ID:', this.currentUserId);
@@ -59,6 +82,16 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     // Initialize the diagnostics and chat service
     this.chatDiagnostics.initialize();
+
+    // Setup throttled user info requests - process at most once per second
+    this.userInfoSubscription = this.userInfoRequestSubject
+      .pipe(
+        throttleTime(1000), // Throttle to once per second
+        debounceTime(300) // Wait for a pause in the stream
+      )
+      .subscribe((userId) => {
+        this.fetchUserInfo(userId);
+      });
 
     this.connectionSubscription = this.chatService
       .connectionStatus()
@@ -110,6 +143,19 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
           if (!this.messages.find((m) => m.id === message.id && m.id !== 0)) {
             this.messages.push(message);
             this.shouldScrollToBottom = true;
+
+            // Queue user info request if needed
+            if (
+              message.senderId !== this.currentUserId &&
+              message.senderId !== 'system' &&
+              message.senderId !== 'system-diagnostic' &&
+              !this.userNameCache[message.senderId] &&
+              !this.pendingUserRequests[message.senderId]
+            ) {
+              // Set initial name and queue the request
+              this.userNameCache[message.senderId] = 'User';
+              this.queueUserInfoRequest(message.senderId);
+            }
           }
         }
       },
@@ -181,6 +227,10 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     if (this.diagnosticTimerSubscription) {
       this.diagnosticTimerSubscription.unsubscribe();
+    }
+
+    if (this.userInfoSubscription) {
+      this.userInfoSubscription.unsubscribe();
     }
 
     // Leave the current group when component is destroyed
@@ -284,6 +334,9 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
         console.log('Group history loaded:', messages);
         this.messages = messages;
         this.shouldScrollToBottom = true;
+
+        // Preload user information for all messages
+        this.preloadUserInfo(messages);
       },
       error: (err) => {
         console.error('Error loading message history:', err);
@@ -297,6 +350,33 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
           timestamp: new Date(),
         });
       },
+    });
+  }
+
+  // Preload user information for all messages
+  private preloadUserInfo(messages: ChatMessage[]): void {
+    // Get unique user IDs from messages (excluding current user and system)
+    const userIds = [
+      ...new Set(
+        messages
+          .filter(
+            (m) =>
+              m.senderId !== this.currentUserId &&
+              m.senderId !== 'system' &&
+              m.senderId !== 'system-diagnostic' &&
+              !this.userNameCache[m.senderId] &&
+              !this.pendingUserRequests[m.senderId]
+          )
+          .map((m) => m.senderId)
+      ),
+    ];
+
+    console.log(`Preloading user info for ${userIds.length} users`);
+
+    // Queue user info requests for each unique user ID - will be throttled
+    userIds.forEach((userId) => {
+      this.userNameCache[userId] = 'User';
+      this.queueUserInfoRequest(userId);
     });
   }
 
@@ -402,6 +482,91 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
         console.error('Error creating group:', err);
       },
     });
+  }
+
+  // Add a function to get user name - simplified to just return cached value or trigger a fetch
+  getUserName(userId: string): string {
+    // Return cached name if available
+    if (this.userNameCache[userId]) {
+      return this.userNameCache[userId];
+    }
+
+    // Return placeholder for system messages
+    if (userId === 'system' || userId === 'system-diagnostic') {
+      return userId === 'system' ? 'System' : 'Chat System';
+    }
+
+    // Set a temporary name and queue a fetch if not already pending
+    if (!this.pendingUserRequests[userId]) {
+      this.userNameCache[userId] = 'User';
+      this.queueUserInfoRequest(userId);
+    }
+
+    return this.userNameCache[userId];
+  }
+
+  // Queue a request to fetch user info - will be throttled
+  private queueUserInfoRequest(userId: string): void {
+    this.pendingUserRequests[userId] = true;
+    this.userInfoRequestSubject.next(userId);
+  }
+
+  // Actually fetch the user info from the API
+  private fetchUserInfo(userId: string): void {
+    console.log(`Fetching user info for: ${userId}`);
+
+    this.chatService
+      .getUserNameById(userId)
+      .pipe(
+        catchError((err) => {
+          console.error(`Error fetching user info for ${userId}:`, err);
+          return of({ Name: 'User', ProfileImage: '' });
+        })
+      )
+      .subscribe({
+        next: (result) => {
+          console.log(`Received user info for ${userId}:`, result);
+
+          // Only update if we got a real name (not 'User' or empty)
+          if (result.Name && result.Name !== 'User') {
+            this.userNameCache[userId] = result.Name;
+            console.log(`Updated username for ${userId} to "${result.Name}"`);
+
+            if (result.ProfileImage) {
+              this.userAvatarCache[userId] = result.ProfileImage;
+              console.log(`Updated profile image for ${userId}`);
+            }
+          } else {
+            console.warn(
+              `Received invalid name for user ${userId}: "${result.Name}"`
+            );
+          }
+
+          this.pendingUserRequests[userId] = false;
+        },
+        error: () => {
+          // On error, mark request as not pending so we can try again later
+          this.pendingUserRequests[userId] = false;
+        },
+      });
+  }
+
+  // Debug method for inspecting chat state
+  inspectChatState(): void {
+    console.group('Chat Component State');
+    console.log('User caches:', {
+      names: this.userNameCache,
+      avatars: this.userAvatarCache,
+      pending: this.pendingUserRequests,
+    });
+    console.log('Current messages:', this.messages);
+    console.log('Connection status:', this.isConnected);
+    console.groupEnd();
+  }
+
+  // Add function to get user avatar - simplified to just return cached value or default
+  getUserAvatar(userId: string): string {
+    return this.userAvatarCache[userId] || 'assets/images/default-avatar.png';
   }
 
   // Check if the message is from the current user

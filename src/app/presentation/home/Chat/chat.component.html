@@ -18,6 +18,13 @@
         <i class="fas fa-info-circle"></i> No groups available
       </li>
     </ul>
+    
+    <!-- Add debug button at bottom of groups section -->
+    <div class="debug-controls">
+      <button (click)="inspectChatState()" class="debug-button" title="Inspect chat state in console">
+        <i class="fas fa-bug"></i>
+      </button>
+    </div>
   </div>
   <div class="chat-section">
     <div class="messages-header" *ngIf="selectedGroupId">
@@ -33,23 +40,43 @@
     <div class="messages" #messagesContainer *ngIf="selectedGroupId; else noGroup">
       <div *ngFor="let message of messages" 
            [ngClass]="{'message-sent': isMessageFromCurrentUser(message), 'message-received': !isMessageFromCurrentUser(message)}">
-        <div class="message-avatar" *ngIf="!isMessageFromCurrentUser(message)">
-          <i class="fas fa-user"></i>
-        </div>
-        <div class="message-bubble">
-          <p class="message-content">{{ message.content }}</p>
-        </div>
-        <div class="message-info">
-          <small class="message-sender" *ngIf="!isMessageFromCurrentUser(message)">
-            {{ message.senderName || 'User' }}
-          </small>
-          <small class="message-time">
-            <i class="far fa-clock"></i> {{ message.timestamp | date:'short' }}
-          </small>
-          <small class="message-status" *ngIf="isMessageFromCurrentUser(message)">
-            <i class="fas fa-check"></i>
-          </small>
-        </div>
+        
+        <!-- For received messages, show avatar and content in a flex layout -->
+        <ng-container *ngIf="!isMessageFromCurrentUser(message)">
+          <div class="message-avatar">
+            <img *ngIf="userAvatarCache[message.senderId]" [src]="userAvatarCache[message.senderId]" alt="Avatar" class="user-avatar">
+            <i *ngIf="!userAvatarCache[message.senderId]" class="fas fa-user"></i>
+          </div>
+          <div class="message-content-wrapper">
+            <div class="message-bubble">
+              <p class="message-content">{{ message.content }}</p>
+            </div>
+            <div class="message-info">
+              <small class="message-sender">
+                {{ message.senderName || getUserName(message.senderId) }}
+              </small>
+              <small class="message-time">
+                <i class="far fa-clock"></i> {{ message.timestamp | date:'short' }}
+              </small>
+            </div>
+          </div>
+        </ng-container>
+        
+        <!-- For sent messages -->
+        <ng-container *ngIf="isMessageFromCurrentUser(message)">
+          <div class="message-bubble">
+            <p class="message-content">{{ message.content }}</p>
+          </div>
+          <div class="message-info">
+            <small class="message-time">
+              <i class="far fa-clock"></i> {{ message.timestamp | date:'short' }}
+            </small>
+            <small class="message-status">
+              <i class="fas fa-check"></i>
+            </small>
+          </div>
+        </ng-container>
+        
       </div>
       <div *ngIf="messages.length === 0" class="no-messages">
         <p><i class="far fa-comment-dots"></i> No messages yet</p>
