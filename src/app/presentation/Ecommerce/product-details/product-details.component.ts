@@ -295,6 +295,12 @@ calculateAverageRating(): void {
     getRandomColor(): string {
       return this.colors[Math.floor(Math.random() * this.colors.length)];
     }
-
+    // getStars(rating: number): number[] {
+    //   return Array(Math.floor(rating)).fill(0).map((_, i) => i);
+    // }
+    getStarClass(star: number, rating: number): string {
+      return (rating >= star) ? 'fa-solid text-warning' : 'fa-regular text-muted';
+    }
+    
     
   }    

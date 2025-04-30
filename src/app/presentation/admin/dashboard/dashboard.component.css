@@ -42,9 +42,23 @@
   background-color: rgba(255, 255, 255, 0.8);
   z-index: 100;
 }
+:host-context(body.dark-mode) .loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+}
 
 .loading-spinner {
-  border: 5px solid #f3f3f3;
+  border-color: limegreen !important;
+  color:limegreen !important ; 
   border-top: 5px solid var(--primary);
   border-radius: 50%;
   width: 50px;

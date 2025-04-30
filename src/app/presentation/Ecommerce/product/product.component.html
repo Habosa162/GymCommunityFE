@@ -104,7 +104,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <div>
           <span class="text-dark fw-bold fs-5">
-            EGP {{ (product.price - product.discountAmount) | number:'1.2-2' }}
+            EGP {{ (product.price) | number:'1.2-2' }}
           </span>
           <span
             *ngIf="product.discountAmount > 0"

@@ -1,6 +1,10 @@
-:host-context(body.dark-mode) #product-detailes{
-  background-color: black;
+:host-context(body.dark-mode) #product-detailes ,  :host-context(body.dark-mode) .rating-input-block{
+  background-color: black; 
   color: #ffffff !important;
+  border: none;
+}
+:host-context(body.dark-mode) .username{
+  color: white;
 }
 :host-context(body.dark-mode) .green-dark{
   color: #63CE34 !important;
