@@ -40,4 +40,7 @@ export interface UserSubscriptionRead {
     userName:string;
     userEmail:string;
     planDuration : number;
+    hasPrivateCoach : boolean;
+    hasNutritionPlan : boolean;
+    hasAccessToAllAreas : boolean;
   }

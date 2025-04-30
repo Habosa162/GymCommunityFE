@@ -62,6 +62,7 @@ import { GymSubscriptionsComponent } from './presentation/Gym/gym-subscriptions/
 import { CoachOffersComponent } from './presentation/Coach/coach-offers/coach-offers.component';
 import { UpdateProductComponent } from './presentation/Ecommerce/Administration/update-product/update-product.component';
 import { PlanPaymentSuccessComponent } from './presentation/Coach/plan-payment-success/plan-payment-success.component';
+import { UserGymSubComponent } from './presentation/Gym/user-gym-sub/user-gym-sub.component';
 
 
 export const routes: Routes = [
@@ -222,6 +223,7 @@ export const routes: Routes = [
   //For Users
   { path: 'gyms/:id', component: UserGymDetailsComponent },
   { path: 'gyms', component: GymListComponent },
+  {path: 'user/gym-subs', component: UserGymSubComponent},
   {
     path: 'sub-payment-success',
     component: SubPaymentSuccessComponent,

@@ -1,0 +1,35 @@
+.membership-card {
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  
+  .membership-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .membership-card.expired {
+    opacity: 0.8;
+  }
+  
+  .qr-code-container {
+    border: 1px dashed #ddd;
+    display: inline-block;
+  }
+  
+  .card-header {
+    font-weight: 600;
+  }
+  
+  .list-group-item {
+    padding: 0.75rem 1.25rem;
+  }
+  .gym-link {
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .gym-link:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+    color: #007bff; /* Blue text color on hover */
+  }

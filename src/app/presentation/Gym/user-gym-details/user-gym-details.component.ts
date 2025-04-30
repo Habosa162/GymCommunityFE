@@ -78,6 +78,12 @@ export class UserGymDetailsComponent {
       return;
     }
 
+    // Scroll to the fragment if it exists
+    this.route.fragment.subscribe((fragment) => {
+      if (fragment) {
+        this.viewportScroller.scrollToAnchor(fragment);
+      }
+    });
 
     this.initGoogleMaps();
     this.gymId = +this.route.snapshot.params['id'];
@@ -85,6 +91,8 @@ export class UserGymDetailsComponent {
     this.loadCoaches();
     this.loadImages();
     this.loadPlans();
+
+
   }
 
   loadGym(): void {

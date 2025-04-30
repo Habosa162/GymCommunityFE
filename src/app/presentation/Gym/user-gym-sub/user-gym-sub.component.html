@@ -1,0 +1,137 @@
+<section id="gym-memberships" class="gym-memberships py-5 bg-light min-vh-100">
+    <div class="container">
+      <!-- Header -->
+      <div class="text-center mb-5">
+        <h2 class="section-title text-primary">My Gym Memberships 🏋️</h2>
+        <p class="section-subtitle text-muted">Access your subscriptions and entry passes</p>
+      </div>
+  
+      <!-- Active Memberships -->
+      <div class="row g-4">
+        <div class="col-12">
+          <h4 class="mb-3">Active Memberships</h4>
+        </div>
+        
+        <!-- Membership Card -->
+        <div class="col-md-6 col-lg-4" *ngFor="let membership of activeMemberships">
+          <div class="card membership-card shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">{{membership.planTitle}}</h5>
+                <span class="badge bg-light text-primary">{{membership.status}}</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <!-- QR Code Section -->
+              <div class="text-center mb-4">
+                <div class="qr-code-container p-3 bg-white rounded">
+                    <img class="qr-data" [src]="membership.qrCodeData" [alt]="membership.qrCodeData">
+                    <p class="small text-muted mt-2 mb-0">Scan at gym entrance</p>
+                </div>
+              </div>
+              
+              <!-- Membership Details -->
+              <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item d-flex justify-content-between">
+                  <span><i class="fas fa-calendar-alt me-2"></i>Start Date</span>
+                  <span>{{membership.startDate | date}}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span><i class="fas fa-calendar-times me-2"></i>Expiry Date</span>
+                  <span [class.text-danger]="isExpiringSoon(membership.endDate)">
+                    {{membership.expiresAt | date}}
+                    <span *ngIf="isExpiringSoon(membership.endDate)" class="badge bg-warning text-dark ms-2">Expiring soon</span>
+                  </span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span><i class="fas fa-clock me-2"></i>Remaining</span>
+                  <span>{{getRemainingDays(membership.expiresAt)}} days</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between gym-link" [routerLink]="['/gyms', membership.gymId]">
+                    <span><i class="fas fa-dumbbell me-2"></i>Gym Name</span>
+                    <span>{{membership.gymName}}</span>
+                  </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span><i class="fas fa-door-open me-2"></i>Access</span>
+                  <span>6AM-10PM</span>
+                </li>
+              </ul>
+              
+              <!-- Features -->
+              <div class="membership-features mb-3">
+                <h6 class="text-muted">Plan Features:</h6>
+                <ul class="list-unstyled">
+                  <li *ngIf="membership.hasPrivateCoach">
+                    <i class="fas fa-check-circle text-success me-2"></i>Has Private Coach
+                  </li>
+                  <li *ngIf="membership.hasNutritionPlan">
+                    <i class="fas fa-check-circle text-success me-2"></i>Has Nutrition Plan
+                  </li>
+                  <li *ngIf="membership.hasAccessToAllAreas">
+                    <i class="fas fa-check-circle text-success me-2"></i>Has Access To All Areas
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- <div class="card-footer bg-transparent">
+              <div class="d-flex justify-content-between">
+                <button class="btn btn-sm btn-outline-primary" (click)="showDetails(membership)">
+                  <i class="fas fa-info-circle me-1"></i> Details
+                </button>
+                <button class="btn btn-sm btn-success" (click)="renewMembership(membership)">
+                  <i class="fas fa-sync-alt me-1"></i> Renew
+                </button>
+              </div>
+            </div> -->
+          </div>
+        </div>
+        
+        <!-- No Memberships Message -->
+        <div class="col-12" *ngIf="activeMemberships.length === 0">
+          <div class="alert alert-info text-center">
+            <h5>No active memberships found</h5>
+            <p>You don't have any active gym memberships at this time.</p>
+            <button class="btn btn-primary" routerLink="/plans">Browse Membership Plans</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Expired Memberships (Collapsible) -->
+      <div class="row mt-5" *ngIf="expiredMemberships.length > 0">
+        <div class="col-12">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4>Previous Memberships</h4>
+            <button class="btn btn-sm btn-outline-secondary" (click)="showExpired = !showExpired">
+              {{showExpired ? 'Hide' : 'Show'}} Expired
+            </button>
+          </div>
+          
+          <div class="row g-4" *ngIf="showExpired">
+            <div class="col-md-6 col-lg-4" *ngFor="let membership of expiredMemberships">
+              <div class="card membership-card expired">
+                <div class="card-header bg-secondary text-white">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">{{membership.planTitle}}</h5>
+                    <span class="badge bg-light text-dark">Expired</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                      <span><i class="fas fa-calendar-alt me-2"></i>Expired On</span>
+                      <span>{{membership.expiresAt | date}}</span>
+                    </li>
+                    <li class="list-group-item">
+                      <button class="btn btn-sm btn-primary w-100" [routerLink]="['/gyms', membership.gymId]" fragment="plans">
+                        Renew Membership
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
