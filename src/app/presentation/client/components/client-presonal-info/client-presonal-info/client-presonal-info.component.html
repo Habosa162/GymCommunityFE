@@ -111,7 +111,7 @@
                   <div class="col-6 mb-3">
                     <div class="stat-box p-3 rounded bg-light">
                       <i class="fa-solid fa-weight-scale fa-2x text-success mb-2"></i>
-                      <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.weight || 0 }} kg</h4>
+                      <h4 class="m-0 colorBlack" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.weight || 0 }} kg</h4>
                       <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
                         [(ngModel)]="clientProfile.weight">
                       <small class="text-black-50">Current Weight</small>
@@ -120,7 +120,7 @@
                   <div class="col-6 mb-3">
                     <div class="stat-box p-3 rounded bg-light">
                       <i class="fa-solid fa-ruler-vertical fa-2x text-success mb-2"></i>
-                      <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.height || 0 }} cm</h4>
+                      <h4 class="m-0 colorBlack" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.height || 0 }} cm</h4>
                       <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
                         [(ngModel)]="clientProfile.height">
                       <small class="text-black-50">Height</small>
@@ -129,7 +129,7 @@
                   <div class="col-6">
                     <div class="stat-box p-3 rounded bg-light">
                       <i class="fa-solid fa-dumbbell fa-2x text-success mb-2"></i>
-                      <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.workoutAvailability || 0 }}/7
+                      <h4 class="m-0 colorBlack" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.workoutAvailability || 0 }}/7
                       </h4>
                       <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
                         [(ngModel)]="clientProfile.workoutAvailability">
@@ -139,7 +139,7 @@
                   <div class="col-6">
                     <div class="stat-box p-3 rounded bg-light">
                       <i class="fa-solid fa-fire fa-2x text-success mb-2"></i>
-                      <h4 class="m-0" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.bodyFat || 0 }}%</h4>
+                      <h4 class="m-0 colorBlack" *ngIf="!isFitnessStatsEditing">{{ clientProfile?.bodyFat || 0 }}%</h4>
                       <input *ngIf="isFitnessStatsEditing" type="number" class="form-control text-center"
                         [(ngModel)]="clientProfile.bodyFat">
                       <small class="text-black-50">Body Fat</small>

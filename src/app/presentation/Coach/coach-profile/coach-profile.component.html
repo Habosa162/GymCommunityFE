@@ -252,32 +252,57 @@
 <!-- blog -->
 <section class="py-5" id="blog">
   <div class="container">
-    <h1 class="text-center fw-bold">Products</h1>
+    <h1 class="text-center fw-bold mb-3">Special Offers</h1>
     <p class="heading-p text-center position-relative mb-5">
-      Quality is never an accident; it is always the result of intelligent effort.
+      Your body can stand almost anything. It's your mind you have to convince.
     </p>
 
-    <div class="row gy-3">
-      <div class="col-md-4" *ngFor="let product of coachproducts">
-        <div class="card shadow">
-          <picture class="position-relative">
-            <img [src]="product.imageUrl" class="card-img-top" [alt]="product.name" />
-            <div class="category position-absolute text-uppercase fw-medium p-2 rounded-1 bg-light text-dark">
-              {{ product.categoryName }}
+    <div class="row gy-4" *ngIf="coachoffers && coachoffers.length > 0">
+      <div class="col-md-4" *ngFor="let offer of coachoffers">
+        <div
+          class="offer-card shadow-lg border-0 rounded-4 overflow-hidden position-relative bg-white d-flex flex-column h-100">
+          <div class="offer-image-container position-relative">
+            <img [src]="offer.imageUrl" class="w-100 offer-image" [alt]="offer.title" />
+            <div class="offer-title-badge position-absolute top-0 start-0 m-2 px-3 py-1 rounded-pill fw-bold">
+              {{ offer.title }}
             </div>
-          </picture>
-          <div class="card-body py-4">
-            <h5 class="fw-medium mb-2">{{ product.name }}</h5>
-            <p class="card-text text-body-secondary">{{ product.description }}</p>
-            <p class="fw-bold text-success mb-1">$ {{ product.price }}</p>
-            <p class="mb-1"><small class="text-muted">Stock: {{ product.stock }}</small></p>
-            <p *ngIf="product.averageRating"><small class="text-warning">★ {{ product.averageRating.toFixed(1) }} ({{
-                product.reviewCount || 0 }} reviews)</small></p>
+            <div class="offer-price-badge position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill">
+              <span class="fw-bold text-success">${{ offer.price }}</span>
+            </div>
           </div>
-          <div class="card-footer text-muted small">
-            Brand: {{ product.brandName }} | Created: {{ product.createdAt | date:'mediumDate' }}
+          <div class="flex-grow-1 d-flex flex-column justify-content-between p-4">
+            <div>
+              <div class="description-container mb-3">
+                <p class="card-text text-muted mb-2" [class.expanded]="offer.id && isOfferExpanded(offer.id)">
+                  {{ offer.desc && offer.desc.length > 120 ?
+                  (offer.id && isOfferExpanded(offer.id) ? offer.desc : (offer.desc | slice:0:120) + '...') :
+                  (offer.desc || 'No description available') }}
+                </p>
+                <button *ngIf="offer.desc && offer.desc.length > 120 && offer.id"
+                  class="btn btn-link text-primary p-0 mb-2" (click)="toggleOfferExpansion(offer.id)">
+                  {{ isOfferExpanded(offer.id) ? 'Show Less' : 'Read More' }}
+                </button>
+              </div>
+            </div>
+            <div class="d-flex flex-column align-items-stretch mt-auto">
+              <button class="btn btn-primary rounded-pill mb-3 py-2 fs-6 fw-bold">
+                Book Now
+              </button>
+              <div class="d-flex align-items-center justify-content-start small text-muted">
+                <i class="fas fa-user-circle me-2 text-primary"></i>
+                Coach: {{ offer.coachName }}
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="text-center py-5" *ngIf="!coachoffers || coachoffers.length === 0">
+      <div class="empty-state">
+        <i class="fas fa-gift fa-3x text-muted mb-3"></i>
+        <h3 class="text-muted">No Offers available yet</h3>
+        <p class="lead text-muted">This coach hasn't added any Offers to their profile yet.</p>
       </div>
     </div>
   </div>

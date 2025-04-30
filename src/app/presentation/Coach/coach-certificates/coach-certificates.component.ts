@@ -64,7 +64,7 @@ export class CoachCertificatesComponent implements OnInit {
         });
       },
       error: (err) => {
-        this.error = 'Failed to get portfolio ID';
+        this.error = 'You must create a portfolio before adding certificates';
         this.loading = false;
         console.error('Failed to get portfolio ID:', err);
       }

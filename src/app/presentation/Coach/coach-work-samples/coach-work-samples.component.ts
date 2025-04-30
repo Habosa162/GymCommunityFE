@@ -63,7 +63,7 @@ export class CoachWorkSamplesComponent implements OnInit {
         });
       },
       error: (err) => {
-        this.error = 'Failed to get portfolio ID';
+        this.error = 'You must create a portfolio before adding work samples';
         this.loading = false;
         console.error('Failed to get portfolio ID:', err);
       }
