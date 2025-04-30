@@ -14,6 +14,7 @@ import { ChatMessage, ChatService } from '../../../services/Chat/chat.service';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
+  styleUrls: ['./chat.component.scss'],
   imports: [CommonModule, FormsModule],
   standalone: true,
 })
@@ -29,7 +30,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   private shouldScrollToBottom = false;
   private messageSubscription?: Subscription;
   private connectionSubscription?: Subscription;
-  private isConnected = false;
+  public isConnected = false;
 
   constructor(private chatService: ChatService) {}
 
@@ -96,9 +97,14 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   loadUserGroups(): void {
-    this.chatService.getUserGroups().subscribe((groups) => {
-      this.groups = groups;
-      console.log('User groups loaded:', this.groups);
+    this.chatService.getUserGroups().subscribe({
+      next: (groups) => {
+        this.groups = groups;
+        console.log('User groups loaded:', this.groups);
+      },
+      error: (err) => {
+        console.error('Error loading groups:', err);
+      },
     });
   }
 
@@ -126,9 +132,14 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.joinGroup(groupId);
 
     // Load message history
-    this.chatService.getGroupHistory(groupId).subscribe((messages) => {
-      this.messages = messages;
-      this.shouldScrollToBottom = true;
+    this.chatService.getGroupHistory(groupId).subscribe({
+      next: (messages) => {
+        this.messages = messages;
+        this.shouldScrollToBottom = true;
+      },
+      error: (err) => {
+        console.error('Error loading message history:', err);
+      },
     });
   }
 
@@ -138,7 +149,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   sendMessage(): void {
-    if (this.newMessage.trim() && this.selectedGroupId) {
+    if (this.newMessage.trim() && this.selectedGroupId && this.isConnected) {
       // Add message to UI immediately for better UX
       const tempMessage: ChatMessage = {
         id: 0, // Temporary ID
@@ -173,18 +184,28 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   createGroup(): void {
     if (this.newGroupName.trim()) {
-      this.chatService.createGroup(this.newGroupName).subscribe((group) => {
-        this.chatService
-          .addToGroup(group.groupId, this.currentUserId)
-          .subscribe(() => {
-            this.loadUserGroups();
-            this.newGroupName = '';
+      this.chatService.createGroup(this.newGroupName).subscribe({
+        next: (group) => {
+          this.chatService
+            .addToGroup(group.groupId, this.currentUserId)
+            .subscribe({
+              next: () => {
+                this.loadUserGroups();
+                this.newGroupName = '';
 
-            // Automatically select the new group
-            setTimeout(() => {
-              this.selectGroup(group.groupId);
-            }, 500);
-          });
+                // Automatically select the new group
+                setTimeout(() => {
+                  this.selectGroup(group.groupId);
+                }, 500);
+              },
+              error: (err) => {
+                console.error('Error adding user to group:', err);
+              },
+            });
+        },
+        error: (err) => {
+          console.error('Error creating group:', err);
+        },
       });
     }
   }
