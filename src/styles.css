@@ -18,7 +18,9 @@
 .mainBg {
   background-color: limegreen !important;
 }
-
+::placeholder{
+  color: rgba(111, 111, 111, 0.5) !important;
+}
 html,
 body {
   height: 100%;
