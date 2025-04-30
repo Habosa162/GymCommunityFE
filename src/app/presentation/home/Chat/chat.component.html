@@ -1,28 +1,42 @@
 <div class="chat-container">
   <div class="group-section">
     <h3>Groups</h3>
-    <div>
+    <div class="new-group-form">
       <input [(ngModel)]="newGroupName" placeholder="New group name" (keyup.enter)="createGroup()">
       <button (click)="createGroup()">Create Group</button>
     </div>
-    <ul>
+    <ul class="groups-list">
       <li *ngFor="let group of groups" 
           [class.selected]="group.groupId === selectedGroupId"
           (click)="selectGroup(group.groupId)">
         {{ group.groupName }}
       </li>
+      <li *ngIf="groups.length === 0" class="no-groups">No groups available</li>
     </ul>
   </div>
   <div class="chat-section">
-    <div class="messages" *ngIf="selectedGroupId; else noGroup">
+    <div class="messages-header" *ngIf="selectedGroupId">
+      <h4>{{ getSelectedGroupName() }}</h4>
+    </div>
+    <div class="messages" #messagesContainer *ngIf="selectedGroupId; else noGroup">
       <div *ngFor="let message of messages" 
            [ngClass]="{'message-sent': message.senderId === currentUserId, 'message-received': message.senderId !== currentUserId}">
-        <p>{{ message.content }}</p>
-        <small>{{ message.timestamp | date:'short' }}</small>
+        <div class="message-bubble">
+          <p class="message-content">{{ message.content }}</p>
+        </div>
+        <div class="message-info">
+          <small class="message-sender" *ngIf="message.senderId !== currentUserId">{{ message.senderName || 'User' }}</small>
+          <small class="message-time">{{ message.timestamp | date:'short' }}</small>
+        </div>
+      </div>
+      <div *ngIf="messages.length === 0" class="no-messages">
+        No messages yet
       </div>
     </div>
     <ng-template #noGroup>
-      <p>Select a group to start chatting.</p>
+      <div class="select-group-prompt">
+        <p>Select a group to start chatting</p>
+      </div>
     </ng-template>
     <div class="input-area" *ngIf="selectedGroupId">
       <input [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" placeholder="Type a message...">
