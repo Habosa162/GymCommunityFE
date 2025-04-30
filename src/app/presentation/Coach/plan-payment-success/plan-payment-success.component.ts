@@ -103,6 +103,7 @@ errorMessage: string = 'Payment processing failed. Please try again.';
           this.trainingPlanService.createTrainingPlan(trainingPlan).subscribe({
             next: (planRes) => {
               console.log('Training plan created:', planRes);
+              this.router.navigate(['/my-plans']);
             },
             error: (error) => {
               console.error('Training plan creation failed:', error);
