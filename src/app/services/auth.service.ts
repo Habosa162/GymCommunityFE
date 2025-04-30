@@ -1,12 +1,15 @@
-import { LoginRequest, RegisterRequest } from './../domain/models/auth.model';
+import {
+  FacebookLoginProvider,
+  GoogleLoginProvider,
+  SocialAuthService,
+} from '@abacritt/angularx-social-login';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
+import { LoginRequest } from './../domain/models/auth.model';
 import { baseUrl } from './enviroment';
-import { Router } from '@angular/router';
-import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService } from '@abacritt/angularx-social-login';
-
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +20,11 @@ export class AuthService {
   private ForgotPasswordEndPoint = `${baseUrl}/Auth/ForgotPassword`;
   private ResetPasswordEndPoint = `${baseUrl}/Auth/ResetPassword`;
 
-  constructor(private http: HttpClient , private router: Router, private SocialAuthService: SocialAuthService,) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private SocialAuthService: SocialAuthService
+  ) {}
 
   login(data: LoginRequest): Observable<any> {
     console.log(data);
@@ -45,7 +52,12 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    // Try both storage keys for backwards compatibility
+    const token = localStorage.getItem('token') || localStorage.getItem('jwt');
+    if (!token) {
+      console.log('No token found in localStorage');
+    }
+    return token;
   }
 
   getDecodedToken(): any {
@@ -59,23 +71,27 @@ export class AuthService {
     }
     return null;
   }
-  getUserRole():string | null{
+  getUserRole(): string | null {
     const decoded = this.getDecodedToken();
     return decoded
       ? decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
       : 'Client';
   }
 
- public getUserId(): string | null {
+  public getUserId(): string | null {
     const decoded = this.getDecodedToken();
     return decoded
-      ? decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']
+      ? decoded[
+          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+        ]
       : null;
   }
   getUserEmail(): string | null {
     const decoded = this.getDecodedToken();
     return decoded
-      ? decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']
+      ? decoded[
+          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
+        ]
       : null;
   }
 
@@ -85,7 +101,7 @@ export class AuthService {
   }
   IsUserPremium(): boolean {
     const decoded = this.getDecodedToken();
-    return decoded?.IsPremium==="True"? true:false;
+    return decoded?.IsPremium === 'True' ? true : false;
   }
 
   getProfileImg(): string | null {
@@ -93,51 +109,60 @@ export class AuthService {
     return decoded?.ProfileImg || null;
   }
 
-isLoggedIn(): boolean {
-  const token = this.getToken();
-  if (!token) return false;
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    if (!token) return false;
 
-  const decodedToken = this.getDecodedToken();
-  if (!decodedToken || !decodedToken.exp) return false;
+    const decodedToken = this.getDecodedToken();
+    if (!decodedToken || !decodedToken.exp) return false;
 
-  const expirationDate = new Date(decodedToken.exp * 1000);
-  return expirationDate > new Date();
-}
+    const expirationDate = new Date(decodedToken.exp * 1000);
+    return expirationDate > new Date();
+  }
 
-logout(): void {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  this.router.navigate(['/login']);
-}
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.router.navigate(['/login']);
+  }
 
   loginWithGoogle() {
-    this.SocialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID).then(user => {
-      console.log('Google ID Token:', user.idToken);
-      this.externalLogin('Google', user.idToken);
-    });
-  }
-    loginWithFacebook() {
-    this.SocialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID).then(user => {
-      this.externalLogin('Facebook', user.authToken);
-    });
-  }
-
-    externalLogin(provider: string, token: string) {
-    this.http.post('https://localhost:7130/api/auth/externallogin', {
-      provider,
-      idToken: token
-    }).subscribe((res: any) => {
-      localStorage.setItem('jwt', res.token);
-      if (res.isNewUser) {
-        this.router.navigate(['/choose-role']);
-      } else {
-        this.router.navigate(['/']);
+    this.SocialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID).then(
+      (user) => {
+        console.log('Google ID Token:', user.idToken);
+        this.externalLogin('Google', user.idToken);
       }
-    },
-    (error: any) => {
-      console.error('External login failed:', error);
-    }
-  );
+    );
+  }
+  loginWithFacebook() {
+    this.SocialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID).then(
+      (user) => {
+        this.externalLogin('Facebook', user.authToken);
+      }
+    );
   }
 
+  externalLogin(provider: string, token: string) {
+    this.http
+      .post('https://localhost:7130/api/auth/externallogin', {
+        provider,
+        idToken: token,
+      })
+      .subscribe(
+        (res: any) => {
+          // Store token in both locations for compatibility
+          localStorage.setItem('jwt', res.token);
+          localStorage.setItem('token', res.token);
+
+          if (res.isNewUser) {
+            this.router.navigate(['/choose-role']);
+          } else {
+            this.router.navigate(['/']);
+          }
+        },
+        (error: any) => {
+          console.error('External login failed:', error);
+        }
+      );
+  }
 }
