@@ -295,7 +295,7 @@ export const routes: Routes = [
           { path: 'work-samples', component: CoachWorkSamplesComponent },
           { path: 'my-client', component: MyClientsComponent },
           { path: 'offers', component: CoachOffersComponent },
-
+          { path: 'Products', component: CreateProductComponent },
         ],
       },
 

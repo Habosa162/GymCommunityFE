@@ -66,7 +66,7 @@ export class CoachProfileComponent implements OnInit {
   loadcoachproducts(): void {
     this.productservice.getUserProducts(this.coachId).subscribe({
       next: (response: any) => {
-        this.coachproducts = response.data || [];
+        this.coachproducts = response || [];
         console.log(this.coachproducts)
       },
     })
