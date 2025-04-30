@@ -60,4 +60,14 @@ export class PaymentService {
     );
   }
 
+  getPaymentStatusText(status: number): string {
+    switch(status) {
+      case 0: return 'Unknown';
+      case 1: return 'Pending';
+      case 2: return 'Completed';
+      case 3: return 'Failed';
+      default: return 'Refunded';
+    }
+  }
+
 }
