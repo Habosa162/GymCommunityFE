@@ -217,7 +217,7 @@
       <div class="carousel-indicators">
         <button *ngFor="let rating of ratings; let i = index" type="button" data-bs-target="#carouselExampleIndicators"
           [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0 ? 'true' : null"
-          [attr.aria-label]="'Slide ' + (i + 1)">>
+          [attr.aria-label]="'Slide ' + (i + 1)">
         </button>
       </div>
 
@@ -227,7 +227,7 @@
           <div class="client-feedback text-center p-5 text-light">
             <!-- Optional: If you have an image per rating, bind it here -->
             <img class="rounded-circle" src={{rating?.clientimg}} alt="client" />
-            <h3 class="text-uppercase my-4 h4">Client {{ i + 1 }}</h3>
+            <h3 class="text-uppercase my-4 h4">{{rating?.clientFirstName}} {{rating?.clientLastName}}</h3>
 
             <!-- Display Stars or Rating Number -->
             <div class="mb-2">
