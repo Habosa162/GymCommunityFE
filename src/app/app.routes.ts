@@ -58,6 +58,9 @@ import { ClientPlansComponent } from './presentation/traningPlans/client-plans/c
 import { OrderManagementComponent } from './presentation/admin/order-management/order-management.component';
 import { MyPlansClientComponent } from './presentation/client/components/my-plans-client/my-plans-client.component';
 
+import { MainDashboardComponent } from './presentation/Gym/main-dashboard/main-dashboard.component';
+
+
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   //auth routes
@@ -203,6 +206,10 @@ export const routes: Routes = [
   {
     path: 'gym-owner/subscription/:id',
     component: SubscriptionDetailsComponent,
+  },
+  {
+    path: 'gym-owner/dashboard',
+    component: MainDashboardComponent,
   },
 
   //For Users

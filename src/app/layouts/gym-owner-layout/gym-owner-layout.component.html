@@ -1,53 +1,66 @@
-<nav class="navbar navbar-expand-lg shadow-sm border-top ">
-    <div class="container">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/gym-owner">Gyms</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/shop">Shop</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/wish-list">WhishList</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/cart">Cart</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/forum">Blog</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/profile/me">profile</a>
-          </li>
-  
-        </ul>
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-  
-          <li *ngIf="!authService.isLoggedIn()" class="nav-item">
-              <a class="nav-link" routerLink="/login">Login</a>
-          </li>
-  
-          <li *ngIf="!authService.isLoggedIn()" class="nav-item">
-                <a class="nav-link" routerLink="/register">Register</a>
-          </li>
-          <li *ngIf="authService.isLoggedIn()" class="nav-item">
-              <button class="btn " (click)="authService.logout()">Logout</button>
-          </li>
-        </ul>
-  
-  
+<div class="gym-owner-layout">
+  <!-- Navbar -->
+  <app-navbar class="navbar-compact">
+
+  </app-navbar>
+
+  <div class="content-wrapper">
+    <!-- Sidebar -->
+    <div class="admin-sidebar shadow-sm border-top" [class.collapsed]="sidebarCollapsed">
+      <div class="sidebar-header">
+        <h3 class="SidebarTitle">Gym Owner</h3>
+        <button class="toggle-btn" (click)="toggleSidebar()">
+          <i class="bi bi-list"></i>
+        </button>
       </div>
+
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/gym-owner/dashboard" routerLinkActive="active">
+            <i class="bi bi-speedometer2"></i>
+            <span class="link-text">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/gym-owner" routerLinkActive="active">
+            <i class="bi bi-building"></i>
+            <span class="link-text">My Gyms</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/gym/plans" routerLinkActive="active">
+            <i class="bi  bi-people "></i>
+            <span class="link-text">Subscriptions</span>
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="bi bi-graph-up"></i>
+            <span class="link-text">Analytics</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" routerLink="/gym/reports/attendance">Attendance</a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/gym/reports/payments">Payments</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+
     </div>
-  </nav>
-  
-<router-outlet></router-outlet>
+
+    <!-- Content Area -->
+    <main class="content-area" [class.collapsed]="sidebarCollapsed">
+      <div class="content-container">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
+</div>
+
 
 <app-footer></app-footer>
+
