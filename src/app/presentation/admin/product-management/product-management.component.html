@@ -133,12 +133,12 @@
           <app-product [product]="product"></app-product>
           <div class="card-footer bg-transparent border-top-0">
             <div class="d-flex justify-content-between gap-2">
-              <button class="btn btn-danger flex-grow-1">
+              <button class="btn btn-danger flex-grow-1"(click)="onRemoveProduct(product.id)">
                 <i class="bi bi-trash me-2"></i>Remove
               </button>
-              <button class="btn btn-warning flex-grow-1">
+              <a class="btn btn-warning flex-grow-1" [routerLink]="['/update-product',product.id]" >
                 <i class="bi bi-pencil me-2"></i>Update
-              </button>
+              </a>
             </div>
           </div>
         </div>

@@ -34,7 +34,7 @@
 }
 
 :host-context(body.dark-mode) #productManagementSection{
-  height: 130vh;
+  height: 180vh;
   background-color: black;
   color:white ;
 }

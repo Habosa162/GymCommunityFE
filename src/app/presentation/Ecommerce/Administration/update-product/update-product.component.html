@@ -1,0 +1,64 @@
+<div class="container p-4">
+  <h2 class="text-center mb-4">Create Product</h2>
+
+  <form (ngSubmit)="onUpdateProduct()" class="row g-3 create-product-form shadow-lg card">
+
+    <div class="col-md-6">
+      <label class="form-label">Name</label>
+      <input type="text" class="form-control" [(ngModel)]="updatedProduct.name" name="name" required />
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Price</label>
+      <div class="input-group">
+        <span class="input-group-text">$</span>
+        <input type="number" class="form-control" [(ngModel)]="updatedProduct.price" name="price" required step="0.01" />
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <label class="form-label">Stock</label>
+      <input type="number" class="form-control" [(ngModel)]="updatedProduct.stock" name="stock" required min="0" />
+    </div>
+
+    <div class="col-12">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" [(ngModel)]="updatedProduct.description" name="description" rows="3"></textarea>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Category</label>
+      <select class="form-select" [(ngModel)]="updatedProduct.categoryID" name="categoryID" required>
+        <option value="" disabled selected>Select a category</option>
+        <option *ngFor="let category of categories" [value]="category.categoryID">{{ category.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Brand</label>
+      <select class="form-select" [(ngModel)]="updatedProduct.brandId" name="brand" required>
+        <option value="" disabled selected>Select a brand</option>
+        <option *ngFor="let brand of brands" [value]="brand.brandID">{{ brand.name }}</option>
+      </select>
+    </div>
+
+     <div class="col-md-6">
+      <label class="form-label">Current Product Image</label>
+      <div *ngIf="updatedProduct.imageUrl">
+        <img [src]="updatedProduct.imageUrl" alt="Product Image" class="img-thumbnail" width="200" />
+      </div>
+    </div>
+
+    <div class="col-12">
+      <label class="form-label">Upload New Image</label>
+      <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*" />
+      <div class="form-text">Upload a high-quality product image (JPEG, PNG)</div>
+    </div>
+
+    <div class="col-12 text-center mt-4">
+      <button class="btn btn-success px-4 py-2 submit-btn" type="submit">
+        <i class="bi bi-plus-circle me-2"></i>Update Product
+      </button>
+    </div>
+  </form>
+</div>

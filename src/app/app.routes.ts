@@ -60,6 +60,7 @@ import { TrainingPlanComponent } from './presentation/traningPlans/training-plan
 import { MainDashboardComponent } from './presentation/Gym/main-dashboard/main-dashboard.component';
 import { GymSubscriptionsComponent } from './presentation/Gym/gym-subscriptions/gym-subscriptions.component';
 import { CoachOffersComponent } from './presentation/Coach/coach-offers/coach-offers.component';
+import { UpdateProductComponent } from './presentation/Ecommerce/Administration/update-product/update-product.component';
 
 
 export const routes: Routes = [
@@ -257,7 +258,12 @@ export const routes: Routes = [
     component: OrderManagementComponent,
     canActivate: [AuthGuard],
   },
-
+  {
+    path: 'update-product/:id',
+    component: UpdateProductComponent,
+    canActivate: [AuthGuard],
+  },
+  
   //coach
   {
     path: 'chat',

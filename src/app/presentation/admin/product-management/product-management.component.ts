@@ -34,7 +34,8 @@ export class ProductManagementComponent implements OnInit {
     private productService: ProductService,
     private toastr: ToastrService,
     private categoryService:CategoryService,
-    private brandService:BrandService
+    private brandService:BrandService,
+
   ) {}
 
   ngOnInit(): void {
@@ -137,5 +138,16 @@ onSortChange(): void {
   this.minPrice = null ;
   this.maxPrice = null ;
   this.getAllProducts();
+}
+onRemoveProduct(id:number){
+  console.log(id);
+  this.productService.deleteProduct(id).subscribe((res)=>{
+    console.log(res);
+    this.toastr.success("Product Removed Successfully !"); 
+    this.getAllProducts() ; 
+  },(err)=>{
+    console.log(err) ; 
+    this.toastr.error("Network Faild !","Error") ; 
+  })
 }
 }

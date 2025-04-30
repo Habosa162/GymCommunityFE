@@ -64,8 +64,8 @@ export class ProductService {
   getProductsByCategory(categoryId: number): Observable<Product[]> {
     return this.HttpClient.get<Product[]>(`${this.apiUrl}/by-category/${categoryId}`);
   }
-  updateProduct(Product: Product): Observable<any> {
-    return this.HttpClient.put(`${this.apiUrl}`, Product);
+  updateProduct(productId:number,Product: FormData): Observable<any> {
+    return this.HttpClient.put(`${this.apiUrl}/${productId}`, Product);
   }
   deleteProduct(id: number): Observable<any> {
     return this.HttpClient.delete(`${this.apiUrl}/${id}`);
