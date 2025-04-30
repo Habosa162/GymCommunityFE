@@ -51,6 +51,7 @@ export class ProductService {
   getUserProducts(): Observable<any> {
     return this.HttpClient.get(`${this.apiUrl}/user`);
   }
+  
   createProduct(Product: FormData): Observable<any> {
     return this.HttpClient.post(`${this.apiUrl}`, Product);
   }
