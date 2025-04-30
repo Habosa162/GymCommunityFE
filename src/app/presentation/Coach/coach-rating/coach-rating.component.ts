@@ -26,8 +26,7 @@ export class CoachRatingComponent implements OnInit {
 
   ngOnInit(): void {
     this.clientId = this.authService.getUserId()!;
-    this.coachId = this.coachIdFromParent || this.route.snapshot.paramMap.get('coachId')!;
-
+    this.coachId = this.route.snapshot.paramMap.get('coachId')!;
     this.ratingForm = this.fb.group({
       rate: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
       comment: ['', Validators.required]
@@ -38,7 +37,7 @@ export class CoachRatingComponent implements OnInit {
     if (this.ratingForm.valid) {
       const ratingData = {
         coachId: this.coachId,
-        clientId: this.clientId,
+        clientId: this.authService.getUserId(),
         rate: this.ratingForm.value.rate,
         comment: this.ratingForm.value.comment
       };
