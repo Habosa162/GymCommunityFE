@@ -57,6 +57,9 @@ import { HomeComponent } from './presentation/home/home/home.component';
 import { ClientPlansComponent } from './presentation/traningPlans/client-plans/client-plans.component';
 import { TrainingPlanComponent } from './presentation/traningPlans/training-plan/training-plan.component';
 
+import { MainDashboardComponent } from './presentation/Gym/main-dashboard/main-dashboard.component';
+
+
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   //auth routes
@@ -202,6 +205,10 @@ export const routes: Routes = [
   {
     path: 'gym-owner/subscription/:id',
     component: SubscriptionDetailsComponent,
+  },
+  {
+    path: 'gym-owner/dashboard',
+    component: MainDashboardComponent,
   },
 
   //For Users

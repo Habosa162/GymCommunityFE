@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from '../../core/shared/components/navbar/navbar.component';
 import { AuthService } from '../../services/auth.service';
@@ -7,13 +7,18 @@ import { FooterComponent } from '../../core/shared/components/footer/footer.comp
 
 @Component({
   selector: 'app-gym-owner-layout',
-  imports: [RouterModule,CommonModule,FooterComponent],
+
+  imports: [RouterModule, CommonModule, NavbarComponent,FooterComponent],
+
   templateUrl: './gym-owner-layout.component.html',
   styleUrl: './gym-owner-layout.component.css'
 })
 export class GymOwnerLayoutComponent {
-  constructor(protected authService: AuthService) {
-      
-      
-    }
+  sidebarCollapsed: boolean = false;
+
+  toggleSidebar() {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
+
+    
 }
