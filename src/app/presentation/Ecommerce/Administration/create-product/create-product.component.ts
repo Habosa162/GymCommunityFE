@@ -7,6 +7,7 @@ import { CategoryService } from './../../../../services/Ecommerce/category.servi
 import { ProductService } from './../../../../services/Ecommerce/product.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-product',
@@ -41,7 +42,8 @@ export class CreateProductComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
-    private brandService: BrandService
+    private brandService: BrandService,
+    private toastr:ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -82,9 +84,12 @@ export class CreateProductComponent implements OnInit {
     this.productService.createProduct(formData).subscribe({
       next: (response) => {
         console.log('Product created successfully:', response);
+        this.toastr.success("Product Created Successfully")
       },
       error: (error) => {
         console.error('Error creating product:', error);
+        this.toastr.success("Network Faild !","Error");  
+
       }
     });
   }

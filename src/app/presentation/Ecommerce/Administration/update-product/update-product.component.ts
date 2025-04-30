@@ -20,7 +20,7 @@ export class UpdateProductComponent {
   isLoading = true ; 
   categories: Category[] = [];
   brands: Brand[] = [];
-  selectedFile!: File;
+  selectedfile!: File;
   productForm!: FormGroup;
 
   updatedProduct: Product = {
@@ -52,6 +52,7 @@ constructor(
     const productId = Number(this.activeRoute.snapshot.paramMap.get('id'));
 this.productService.getOneProduct(productId).subscribe((res) => {
   this.updatedProduct = res;
+  console.log(res);
   this.isLoading = false;
 }, (err) => {
   this.toastrService.error("Network Connection Failed!", "Error");
@@ -76,35 +77,40 @@ this.productService.getOneProduct(productId).subscribe((res) => {
   }
 
   // onFileSelected(event: any): void {
-  //   this.selectedFile = event.target.files[0];
+  //   this.selectedfile = event.target.files[0];
   // }
   onFileSelected(event: any): void {
-    this.selectedFile = event.target.files[0];
-    if (this.selectedFile) {
+    this.selectedfile = event.target.files[0];
+    if (this.selectedfile) {
       const reader = new FileReader();
       reader.onload = () => {
         this.imagePreview = reader.result;
       };
-      reader.readAsDataURL(this.selectedFile);
+      reader.readAsDataURL(this.selectedfile);
     }
   }
 
   onUpdateProduct(): void {
     const formData = new FormData();
-    formData.append('Name', this.updatedProduct.name.toUpperCase() || '');
-    formData.append('Description', this.updatedProduct.description.toLowerCase() || '');
+    formData.append('id', this.updatedProduct.id.toString());
+    formData.append('Name', this.updatedProduct.name || '');
+    formData.append('Description', this.updatedProduct.description || '');
     formData.append('Price', this.updatedProduct.price.toString());
-    formData.append('CategoryID', this.updatedProduct.categoryID.toString());
     formData.append('Stock', this.updatedProduct.stock.toString());
-    formData.append('AverageRating', this.updatedProduct.rating.toString());
-    formData.append('BrandId', this.updatedProduct.brandId.toString());
-    // formData.append('DiscountAmount', this.newProduct.discountAmount.toString());
-    if (this.selectedFile) {
-      formData.append('productImg', this.selectedFile);
+    formData.append('AverageRating', (this.updatedProduct.averageRating ?? 3).toString());
+    if (this.updatedProduct.categoryID)
+      formData.append('categoryID', this.updatedProduct.categoryID.toString());
+    if (this.updatedProduct.brandId)
+      formData.append('brandId', this.updatedProduct.brandId.toString());
+    if (this.selectedfile) {
+      formData.append('productImg', this.selectedfile);
     }
 
+    console.log(formData);
+    
     this.productService.updateProduct(this.updatedProduct.id,formData).subscribe({
       next: (response) => {
+        console.log(response);
         this.toastrService.success('Product updated successfully!', 'Success');
       },
       error: (error) => {

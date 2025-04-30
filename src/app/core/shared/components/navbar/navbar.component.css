@@ -11,3 +11,6 @@
 :host-context(body.dark-mode) .nav-link,:host-context(body.dark-mode) button{
     color: hsla(0, 0%, 100%, 0.555) !important;
 }
+.logoImg{
+  width: 5%;
+}
