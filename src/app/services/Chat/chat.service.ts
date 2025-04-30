@@ -69,7 +69,7 @@ export class ChatService {
         console.log('SignalR connection started successfully');
         this.connectionEstablished.next(true);
       })
-      .catch((err :any) => {
+      .catch((err: any) => {
         console.error('Error while establishing SignalR connection: ', err);
         // Retry connection after 5 seconds
         setTimeout(() => this.startConnection(), 5000);
@@ -129,7 +129,7 @@ export class ChatService {
       this.joinCurrentGroup();
     });
 
-    this.hubConnection.onclose((error :any) => {
+    this.hubConnection.onclose((error: any) => {
       console.error('SignalR connection closed:', error);
       this.connectionEstablished.next(false);
       // Retry connection after a delay
@@ -169,7 +169,7 @@ export class ChatService {
       });
     }
 
-    return this.hubConnection.invoke('JoinGroup', groupId).catch((err :any) => {
+    return this.hubConnection.invoke('JoinGroup', groupId).catch((err: any) => {
       console.error('Error joining group:', err);
       throw err;
     });
@@ -183,11 +183,13 @@ export class ChatService {
     // Only try to leave if connection is active
     if (this.hubConnection.state === 'Connected') {
       console.log('Leaving group:', groupId);
-      return this.hubConnection.invoke('LeaveGroup', groupId).catch((err :any) => {
-        console.error('Error leaving group:', err);
-        // Return a resolved promise to avoid errors in calling code
-        return Promise.resolve();
-      });
+      return this.hubConnection
+        .invoke('LeaveGroup', groupId)
+        .catch((err: any) => {
+          console.error('Error leaving group:', err);
+          // Return a resolved promise to avoid errors in calling code
+          return Promise.resolve();
+        });
     }
 
     return Promise.resolve();
@@ -200,7 +202,7 @@ export class ChatService {
   ): Promise<void> {
     console.log('Sending message to group:', senderId, groupId, message);
 
-    // Get current user's name from JWT
+    // Get current user's name from JWT - we don't pass this to the server anymore
     const senderName = this.authService.getUserName() || 'Anonymous User';
 
     // Check connection status
@@ -212,16 +214,21 @@ export class ChatService {
           'SendMessageToGroup',
           senderId,
           groupId,
-          message,
-          senderName
+          message
         );
       });
     }
 
     return this.hubConnection
-      .invoke('SendMessageToGroup', senderId, groupId, message, senderName)
-      .catch((err:any) => {
+      .invoke('SendMessageToGroup', senderId, groupId, message)
+      .catch((err: any) => {
         console.error('Error sending message to group:', err);
+        // Log debug information including connection details
+        console.log('Debug info - connection state:', this.hubConnection.state);
+        console.log(
+          'Debug info - connectionId:',
+          this.hubConnection.connectionId
+        );
         throw err;
       });
   }
