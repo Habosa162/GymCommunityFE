@@ -23,6 +23,7 @@ export class OrderManagementComponent implements OnInit {
   date: Date | null = null;
   selectedOrder: any = null;
 
+  selctedStatus :string="Pending" ;
   ordersResponse!: any;
   orders: any[] = [];
   totalCount: number = 0;
@@ -30,7 +31,7 @@ export class OrderManagementComponent implements OnInit {
 
   constructor(
     private orderService: OrderService,
-    protected shippingService: ShippingService,
+    private shippingService: ShippingService,
     private paymentService: PaymentService
   ) {}
 
@@ -106,15 +107,28 @@ export class OrderManagementComponent implements OnInit {
   viewOrder(order: any) {
     this.selectedOrder = { ...order };
   }
+
+  onStatusChange(status: string) {
+    this.selctedStatus = status ; 
+  }
+  clearAllFilters(){
+    this.query="";
+    this.page = 1;
+    this.pageSize= 10;
+    this.status = null ; 
+    this.date = null ; 
+    this.loadOrders() ; 
+
+  }
   updateShippingStatus() {
     if (!this.selectedOrder) return;
-
-    this.shippingService.updateShippingStatus(this.selectedOrder.shipping.id, this.selectedOrder.shipping.shippingStatus)
+    console.log(status);
+    this.shippingService.updateShippingStatus(this.selectedOrder.shipping.id,this.selctedStatus )
       .subscribe({
         next: (res) => {
           console.log(res);
           alert('Shipping status updated successfully!');
-          this.loadOrders(); 
+          this.loadOrders();
         },
         error: err => {
           alert('Failed to update shipping status.');

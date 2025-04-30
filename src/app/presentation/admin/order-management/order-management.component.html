@@ -1,11 +1,4 @@
 <div class="container p-4" id="orderManagementSection">
-  <!-- Loading State -->
-  <div *ngIf="isLoading" class="d-flex flex-column align-items-center justify-content-center py-5">
-    <div class="spinner-border text-primary mb-2" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-    <p class="text-muted">Loading orders...</p>
-  </div>
 
   <!-- Error Message -->
   <div *ngIf="errorMessage" class="alert alert-danger">
@@ -13,7 +6,7 @@
   </div>
 
   <!-- Search and Filters -->
-  <div class="row g-3 shadow-lg align-items-end mb-4 p-4 filtersSection ">
+  <div class="row g-3 shadow-lg justify-content-end align-items-end mb-4 p-4 filtersSection ">
     <div class="col-md-4">
       <label for="query" class="form-label">Search Orders</label>
       <input type="text" id="query" [(ngModel)]="query" class="form-control" placeholder="Order ID or Email">
@@ -33,6 +26,9 @@
     </div>
     <div class="col-md-3 text-end">
       <button class="btn btn-outline-primary mt-2 w-100" (click)="onSearch()">Search</button>
+    </div>
+    <div class="col-md-3 text-end">
+      <button (click)="clearAllFilters()" class="btn btn-outline-warning w-100">Clear Filter</button>
     </div>
   </div>
 
@@ -55,7 +51,7 @@
         <tr *ngFor="let order of orders">
           <td>#{{ order.id }}</td>
           <td>{{ order.shipping.customerName }}</td>
-          <td>{{ order.orderDate | date:'short' }}</td>
+          <td>{{ order.orderDate | date:'dd-MM-yyyy' }}</td>
           <td>
             <span class="badge"
               [ngClass]="{
@@ -63,7 +59,7 @@
                 'bg-primary': order.shipping.shippingStatus === 1,
                 'bg-success': order.shipping.shippingStatus === 2
               }">
-              {{ this.shippingService.getShippingStatusText(order.shipping.shippingStatus) }}
+              {{ getShippingStatusText(order.shipping.shippingStatus) }}
             </span>
           </td>
           <td>
@@ -103,13 +99,15 @@
         <p>Order Date: {{ selectedOrder.orderDate | date: 'medium' }}</p>
 
         <h6 class="mt-3 my-2">Shipping Status</h6>
-        <select [(ngModel)]="selectedOrder.shipping.shippingStatus" class="form-select w-50">
-          <option [value]="0">Pending</option>
-          <option [value]="1">Shipped</option>
-          <option [value]="2">Delivered</option>
+        
+        <select [(ngModel)]="selctedStatus" class="form-select w-50">
+          <option [value]="'Pending'">Pending</option>
+          <option [value]="'Shipped'">Shipped</option>
+          <option [value]="'Delivered'">Delivered</option>
         </select>
+
         <div *ngIf="selectedOrder.shipping.latitude && selectedOrder.shipping.longitude" class="my-2">
-          <a href="https://www.google.com/maps?q={{selectedOrder.shipping.latitude}},{{selectedOrder.shipping.longitude}}" 
+          <a href="https://www.google.com/maps?q={{selectedOrder.shipping.latitude}},{{selectedOrder.shipping.longitude}}"
              target="_blank" class="btn btn-sm btn-primary">
             <i class="fas fa-map-marker-alt"></i> View on Map
           </a>
@@ -135,10 +133,25 @@
   </div>
 </div>
 
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="d-flex flex-column align-items-center justify-content-center py-5">
+    <div class="spinner-border text-success mb-2" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text-muted">Loading orders...</p>
+  </div>
 
   <!-- Empty State -->
   <div *ngIf="orders.length === 0 && !isLoading" class="text-center text-muted py-5">
-    <p>No orders found matching your criteria.</p>
+    <div class="empty-state-icon mb-3">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+    </div>
+    <h3 class="empty-state-title">No Orders found</h3>
+    <p class="empty-state-text">Try adjusting your filters or search criteria</p>
+    <button class="btn btn-primary mt-3" (click)="clearAllFilters()">Clear All Filters</button>
   </div>
 
   <!-- Pagination -->
