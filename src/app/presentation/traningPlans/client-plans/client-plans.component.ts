@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { trainingPlan } from '../../../domain/models/TraingingPlansModels/training-plan-model';
 import { WeekPlanDto } from '../../../services/Training Plans/dtos/weekly-plan-dto';
 import { TrainingPlansService } from '../../../services/Training Plans/training-plan.service';
@@ -40,12 +40,12 @@ interface Meal {
 @Component({
   selector: 'app-client-plans',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,RouterModule],
   templateUrl: './client-plans.component.html',
   styleUrl: './client-plans.component.css',
 })
 export class ClientPlansComponent implements OnInit {
-  trainingPlan!: trainingPlan & { weekPlans?: WeekPlanDto[] };
+  trainingPlan!: trainingPlan & { weekPlans?: WeekPlanDto[]; coach?: any };
   months: number[] = [];
   weeks: Week[] = [];
   selectedMonth: number = 1;
@@ -87,6 +87,7 @@ export class ClientPlansComponent implements OnInit {
 
     this.trainingPlanService.getTrainingPlanById(Number(id)).subscribe({
       next: (response) => {
+        console.log('Training plan response:', response);
         this.trainingPlan = response;
         this.generateMonths(); // Generate months based on durationMonths
         this.initializeWeeks();
