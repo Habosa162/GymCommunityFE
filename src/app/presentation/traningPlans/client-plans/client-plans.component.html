@@ -499,6 +499,7 @@
               <p><strong>Sets:</strong> {{ exercise.sets }}</p>
               <p><strong>Reps:</strong> {{ exercise.reps }}</p>
               <p><strong>Duration:</strong> {{ exercise.duration }} min</p>
+              <p *ngIf="exercise.videoLink"><strong>Video:</strong> <a [href]="exercise.videoLink" target="_blank">Watch Video</a></p>
             </div>
           </div>
         </div>
