@@ -773,10 +773,12 @@
 
 <!-- Add Week Plan Popup -->
 <div class="popup-overlay" *ngIf="showWeekPopup">
-  <div class="popup-container">
+  <div class="popup-container rounded-4">
     <div class="popup-header">
       <h3>Add Week Plan</h3>
-      <button class="close-btn" (click)="closeWeekPopup()">×</button>
+      <button class="close-btn" (click)="closeWeekPopup()">
+        <i class="fa-solid fa-circle-xmark"></i>
+      </button>
     </div>
     <div class="popup-body">
       <form (ngSubmit)="submitWeekPlan()">
@@ -793,17 +795,20 @@
         </div>
         <div class="form-group">
           <label for="startDate">Start Date</label>
-          <input
+          <!-- <input
             type="date"
             id="startDate"
             name="startDate"
             [(ngModel)]="newWeekPlan.startDate"
             class="form-control"
             readonly
-          />
+          /> -->
+          <p>{{ newWeekPlan.startDate }}</p>
         </div>
         <div class="form-group text-center">
-          <button type="submit" class="primary-btn">Create Week Plan</button>
+          <button type="submit" class="btn btn-outline-success">
+            Create Week
+          </button>
         </div>
       </form>
     </div>
@@ -815,24 +820,27 @@
   <div class="popup-container day-plan-popup">
     <div class="popup-header">
       <h3>Add Day Plan</h3>
-      <button class="close-btn" (click)="closeDayPopup()">×</button>
+      <button class="close-btn" (click)="closeDayPopup()">
+        <i class="fa-solid fa-circle-xmark"></i>
+      </button>
     </div>
     <div class="popup-body">
       <form (ngSubmit)="submitDayPlan()">
         <div class="form-group">
           <label for="dayDate">Day Date</label>
-          <input
+          <!-- <input
             type="date"
             id="dayDate"
             name="dayDate"
             [(ngModel)]="newDayPlan.dayDate"
             class="form-control"
             readonly
-          />
+          /> -->
+          <p class="fs-5">{{ newDayPlan.dayDate }}</p>
         </div>
 
         <div class="form-group">
-          <label for="extraTips">Extra Tips</label>
+          <label for="extraTips">Day Note</label>
           <textarea
             id="extraTips"
             name="extraTips"
@@ -851,7 +859,7 @@
               [class.active]="activeSection === 'exercises'"
               (click)="setActiveSection('exercises')"
             >
-              Exercises
+              <i class="fa-solid fa-dumbbell"></i> Exercises
             </button>
             <button
               type="button"
@@ -859,19 +867,19 @@
               [class.active]="activeSection === 'meals'"
               (click)="setActiveSection('meals')"
             >
-              Meals
+              <i class="fa-solid fa-bowl-food"></i> Meals
             </button>
           </div>
 
           <!-- Exercises Section -->
           <div class="section-content" *ngIf="activeSection === 'exercises'">
-            <h4>Exercises</h4>
+            <h4><i class="fa-solid fa-dumbbell"></i> Exercises</h4>
 
             <!-- Single Exercise Form -->
             <div class="single-exercise-form">
               <div class="form-row">
                 <div class="form-group">
-                  <label>Muscle Group</label>
+                  <label>💪 Muscle Group</label>
                   <select
                     class="form-control"
                     [(ngModel)]="selectedMuscleGroupId"
@@ -887,7 +895,7 @@
                   </select>
                 </div>
                 <div class="form-group">
-                  <label>Exercise</label>
+                  <label>🏋️ Exercise</label>
                   <select
                     class="form-control"
                     [(ngModel)]="selectedExercise"
@@ -941,7 +949,7 @@
                 class="add-single-btn"
                 (click)="addSingleExercise()"
               >
-                Add This Exercise
+                <i class="fa-solid fa-plus"></i> Add This Exercise
               </button>
             </div>
 
@@ -984,7 +992,7 @@
 
           <!-- Meals Section -->
           <div class="section-content" *ngIf="activeSection === 'meals'">
-            <h4>Meals</h4>
+            <h4><i class="fa-solid fa-bowl-food"></i> Meals</h4>
 
             <!-- Supplement Filter -->
             <div class="supplement-filter">
@@ -1052,7 +1060,7 @@
                 class="add-single-btn"
                 (click)="addSingleMeal()"
               >
-                Add This Meal
+                <i class="fa-solid fa-plus"></i> Add This Meal
               </button>
             </div>
 

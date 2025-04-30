@@ -40,7 +40,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(243, 97, 0, 0.2);
+  background-color: rgb(184 183 182 / 20%);
   border-radius: 4px;
 }
 
@@ -51,7 +51,8 @@
 
 .day-plan-info span {
   font-size: 12px;
-  color: #666;
+  color: white;
+  background-color: rgb(50 205 50 / 15%);
 }
 
 /* Week Hover State */
@@ -443,4 +444,11 @@
 .class-timetable table tbody tr td.class-time {
   color: white;
   font-size: 16px;
+}
+small {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: white;
+  width: 60px;
 }

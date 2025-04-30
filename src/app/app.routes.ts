@@ -56,6 +56,7 @@ import { PremiumPaymentSuccessComponent } from './presentation/Premium/premium-p
 import { BuyPremiumComponent } from './presentation/Premium/buy-premium/buy-premium.component';
 import { ClientPlansComponent } from './presentation/traningPlans/client-plans/client-plans.component';
 import { OrderManagementComponent } from './presentation/admin/order-management/order-management.component';
+import { MyPlansClientComponent } from './presentation/client/components/my-plans-client/my-plans-client.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -77,6 +78,12 @@ export const routes: Routes = [
       { path: 'posts', component: ForumComponent },
     ],
   },
+  {
+    path: 'my-plans',
+    component: MyPlansClientComponent,
+    canActivate: [AuthGuard, clientGuard],
+  },
+
   {
     path: 'profile/:userId',
     component: ClientProfileComponent,

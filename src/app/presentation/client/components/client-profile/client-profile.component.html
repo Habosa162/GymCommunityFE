@@ -1,58 +1,103 @@
 <section id="clientProfile" class="bgColor min-vh-100">
   <!-- Cover Section -->
   <div class="cover overflow-hidden position-relative">
-    <img class="w-100 cover-img"
+    <img
+      class="w-100 cover-img"
       src="https://img.freepik.com/free-photo/beautiful-deer-relaxing-valley-foggy-day_181624-5918.jpg?uid=R132930234&ga=GA1.1.GA1.2.263481332.1694631472&semt=ais_hybrid&w=740"
-      alt="profile cover" />
+      alt="profile cover"
+    />
     <div class="cover-overlay"></div>
   </div>
-  
 
   <div class="container mt-4">
     <div class="row">
       <!-- Left Side - Options Menu -->
       <div class="col-md-3">
-        <div  class="options-menu">
-          <div class="profilePic overflow-hidden shadow mb-2 z-3 position-relative">
-            <img class="w-100 h-100 object-fit-fill"
-              [src]="clientProfile?.profileImg || 'https://img.freepik.com/free-photo/waist-up-portrait-handsome-serious-unshaven-male-keeps-hands-together-dressed-dark-blue-shirt-has-talk-with-interlocutor-stands-against-white-wall-self-confident-man-freelancer_273609-16320.jpg?uid=R132930234&ga=GA1.1.GA1.2.263481332.1694631472&semt=ais_hybrid&w=740'"
-              alt="profile" />
-            </div>
-            <p *ngIf="isOwner" class="text-center mainColor mb-4"><i class="fa-solid fa-camera"></i> Change profile picture</p>
-          <div  class="card shadow-sm rounded-4  p-2">
+        <div class="options-menu">
+          <div
+            class="profilePic overflow-hidden shadow mb-2 z-3 position-relative"
+          >
+            <img
+              class="w-100 h-100 object-fit-fill"
+              [src]="
+                clientProfile?.profileImg ||
+                'https://img.freepik.com/free-photo/waist-up-portrait-handsome-serious-unshaven-male-keeps-hands-together-dressed-dark-blue-shirt-has-talk-with-interlocutor-stands-against-white-wall-self-confident-man-freelancer_273609-16320.jpg?uid=R132930234&ga=GA1.1.GA1.2.263481332.1694631472&semt=ais_hybrid&w=740'
+              "
+              alt="profile"
+            />
+          </div>
+          <p *ngIf="isOwner" class="text-center mainColor mb-4">
+            <i class="fa-solid fa-camera"></i> Change profile picture
+          </p>
+          <div class="card shadow-sm rounded-4 p-2">
             <div class="card-body p-0">
               <ul class="list-group list-group-flush bg-transparent">
-                <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
-                  <a routerLink="info" class="text-decoration-none w-100 px-3 py-2">
-                  <i class="fa-solid fa-user-pen me-3 "></i>
-                  <span>Account Info</span>
+                <li
+                  class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50"
+                >
+                  <a
+                    routerLink="info"
+                    class="text-decoration-none w-100 px-3 py-2"
+                  >
+                    <i class="fa-solid fa-user-pen me-3"></i>
+                    <span>Account Info</span>
                   </a>
                 </li>
-                <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
-                  <a routerLink="posts" class="text-decoration-none w-100 px-3 py-2">
-                  <i class="fa-solid fa-newspaper me-3"></i>
-                  <span>My Posts</span>
+                <li
+                  class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50"
+                >
+                  <a
+                    routerLink="posts"
+                    class="text-decoration-none w-100 px-3 py-2"
+                  >
+                    <i class="fa-solid fa-newspaper me-3"></i>
+                    <span>My Posts</span>
                   </a>
                 </li>
-                <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
-                  <i class="fa-solid fa-lock me-3 "></i>
-                  <span>Change Password</span>
-                </li>
-                <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
-                  <a routerLink="/buy-premium" class="text-decoration-none w-100 px-3 py-2">
-                  <i class="fa-solid fa-crown me-3 "></i>
-                  <span>Premium</span>
+                <li
+                  class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50"
+                >
+                  <a
+                    routerLink="pass"
+                    class="text-decoration-none w-100 px-3 py-2"
+                  >
+                    <i class="fa-solid fa-lock me-3"></i>
+                    <span>Change Password</span>
                   </a>
                 </li>
-                <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
-                  <i class="fa-solid fa-chart-line me-3 "></i>
-                  <span>Fitness Progress</span>
+                <li
+                  class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50"
+                >
+                  <a
+                    routerLink="/buy-premium"
+                    class="text-decoration-none w-100 px-3 py-2"
+                  >
+                    <i class="fa-solid fa-crown me-3"></i>
+                    <span>Premium</span>
+                  </a>
                 </li>
-                <li class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50">
-                  <i class="fa-solid fa-calendar-check me-3 "></i>
-                  <span>Workout Schedule</span>
+                <li
+                  class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50"
+                >
+                  <a
+                    routerLink="/my-plans"
+                    class="text-decoration-none w-100 px-3 py-2"
+                  >
+                    <i class="fa-solid fa-chart-line me-3"></i>
+                    <span>My Plans</span>
+                  </a>
                 </li>
-         
+                <li
+                  class="list-group-item rounded-4 bg-transparent d-flex align-items-center text-black-50"
+                >
+                  <a
+                    routerLink="/gym-sups"
+                    class="text-decoration-none w-100 px-3 py-2"
+                  >
+                    <i class="fa-solid fa-calendar-check me-3"></i>
+                    <span>Gym Subscriptions </span>
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -61,16 +106,10 @@
 
       <!-- Right Side - Profile Information -->
       <div class="col-md-9">
-      <router-outlet></router-outlet>
-
+        <router-outlet></router-outlet>
       </div>
     </div>
   </div>
 </section>
 
 <!-- <app-change-profile-img *ngIf="isOwner"></app-change-profile-img> -->
-
-
-
-
-

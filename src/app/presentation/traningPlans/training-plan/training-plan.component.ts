@@ -124,7 +124,7 @@ export class TrainingPlanComponent implements OnInit {
   tempMeal: Meal = {
     mealType: 'breakfast',
     mealName: '',
-    quantity: '1 serving',
+    quantity: '',
     isSupplement: false,
     notes: '',
   };
@@ -202,7 +202,7 @@ export class TrainingPlanComponent implements OnInit {
       currentMeal.mealName = meal.name;
       currentMeal.isSupplement = meal.isSupplement;
       currentMeal.notes = meal.description || '';
-      currentMeal.quantity = '1 serving';
+      currentMeal.quantity = '';
       this.selectedMeal = null; // Reset selection after applying
     }
   }
@@ -1023,7 +1023,7 @@ export class TrainingPlanComponent implements OnInit {
     this.dayPlanData.meals.push({
       mealType: 'breakfast',
       mealName: '',
-      quantity: '1 serving',
+      quantity: '',
       isSupplement: this.isSupplement,
       notes: '',
     });
@@ -1114,7 +1114,7 @@ export class TrainingPlanComponent implements OnInit {
     this.tempMeal = {
       mealType: 'breakfast',
       mealName: '',
-      quantity: '1 serving',
+      quantity: '',
       isSupplement: false,
       notes: '',
     };
