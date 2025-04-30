@@ -907,7 +907,7 @@
                       *ngFor="let availableExercise of availableExercises"
                       [ngValue]="availableExercise"
                     >
-                      {{ availableExercise.name }}
+                      {{ availableExercise.name }} {{ availableExercise.videoLink ? '(Has Video)' : '' }}
                     </option>
                   </select>
                 </div>
@@ -971,14 +971,9 @@
                 </div>
                 <div class="exercise-details">
                   <p><strong>Exercise:</strong> {{ exercise.exerciseName }}</p>
-                  <p>
-                    <strong>Muscle Group:</strong> {{ exercise.muscleGroup }}
-                  </p>
-                  <p>
-                    <strong>Sets:</strong> {{ exercise.sets }} |
-                    <strong>Reps:</strong> {{ exercise.reps }} |
-                    <strong>Duration:</strong> {{ exercise.duration }} min
-                  </p>
+                  <p><strong>Muscle Group:</strong> {{ exercise.muscleGroup }}</p>
+                  <p><strong>Sets:</strong> {{ exercise.sets }} | <strong>Reps:</strong> {{ exercise.reps }} | <strong>Duration:</strong> {{ exercise.duration }} min</p>
+                  <p *ngIf="exercise.videoLink"><strong>Video:</strong> <a [href]="exercise.videoLink" target="_blank">Watch Video</a></p>
                 </div>
               </div>
               <div

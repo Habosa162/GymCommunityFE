@@ -318,14 +318,28 @@
 
 .plan-item-name {
   font-size: 11px;
-  color: #444;
-  margin-top: 2px;
-  font-style: italic;
-  white-space: nowrap;
+  color: #333;
+  display: block;
+  margin-top: 3px;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
-  display: block;
+  white-space: nowrap;
+}
+
+.has-video {
+  color: #4CAF50;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+a[href^="http"] {
+  color: #f36100;
+  text-decoration: none;
+}
+
+a[href^="http"]:hover {
+  text-decoration: underline;
 }
 
 /* Crossed out styles */
