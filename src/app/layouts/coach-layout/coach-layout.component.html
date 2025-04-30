@@ -44,20 +44,23 @@
                     <i class="bi bi-people"></i>
                     <span>My Clients</span>
                 </a>
+
+                <a (click)="logout()" class="nav-item" style="cursor: pointer;">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Logout</span>
+                </a>
             </div>
 
-            <div class="theme-toggle" (click)="toggleDarkMode()">
-                <i class="bi" [class.bi-moon-fill]="!isDarkMode" [class.bi-sun-fill]="isDarkMode"> </i>
-            </div>
 
-            <div class="profile-dropdown d-flex " [class.active]="isProfileDropdownOpen">
+
+            <!-- <div class="profile-dropdown d-flex " [class.active]="isProfileDropdownOpen">
                 <div class="profile-trigger" (click)="toggleProfileDropdown()">
                     <img [src]="userImage" alt="Profile" class="profile-img">
                     <span class="username">{{ userName }}</span>
                     <i class="bi bi-chevron-down"></i>
-                </div>
+                </div> -->
 
-                <div class="dropdown-menu" *ngIf="isProfileDropdownOpen">
+            <!-- <div class="dropdown-menu" *ngIf="isProfileDropdownOpen">
                     <a routerLink="/coach/profile" class="dropdown-item">
                         <i class="bi bi-person"></i> My Profile
                     </a>
@@ -68,8 +71,8 @@
                     <a (click)="logout()" class="dropdown-item logout-item">
                         <i class="bi bi-box-arrow-right"></i> Logout
                     </a>
-                </div>
-            </div>
+                </div> -->
+            <!-- </div> -->
 
         </div>
     </nav>
