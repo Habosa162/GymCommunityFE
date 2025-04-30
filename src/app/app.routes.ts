@@ -55,6 +55,8 @@ import { ProductManagementComponent } from './presentation/admin/product-managem
 import { PremiumPaymentSuccessComponent } from './presentation/Premium/premium-payment-success/premium-payment-success.component';
 import { BuyPremiumComponent } from './presentation/Premium/buy-premium/buy-premium.component';
 import { ClientPlansComponent } from './presentation/traningPlans/client-plans/client-plans.component';
+import { OrderManagementComponent } from './presentation/admin/order-management/order-management.component';
+import { MyPlansClientComponent } from './presentation/client/components/my-plans-client/my-plans-client.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -76,6 +78,12 @@ export const routes: Routes = [
       { path: 'posts', component: ForumComponent },
     ],
   },
+  {
+    path: 'my-plans',
+    component: MyPlansClientComponent,
+    canActivate: [AuthGuard, clientGuard],
+  },
+
   {
     path: 'profile/:userId',
     component: ClientProfileComponent,
@@ -232,6 +240,11 @@ export const routes: Routes = [
     component: ProductManagementComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'order-management',
+    component: OrderManagementComponent,
+    canActivate: [AuthGuard],
+  },
 
   //coach
 
@@ -246,7 +259,7 @@ export const routes: Routes = [
       },
       {
         path: 'profile/:coachId',
-        component: CoachViewProfileComponent,
+        component: CoachProfileComponent,
       },
       {
         path: 'rate/:coachId',
@@ -259,7 +272,7 @@ export const routes: Routes = [
         path: 'dashboard',
         canActivate: [AuthGuard, CoachGuard],
         children: [
-          { path: '', component: CoachViewProfileComponent },
+          { path: '', component: CoachProfileComponent },
           { path: 'portfolio', component: CoachPortfolioComponent },
           { path: 'certificates', component: CoachCertificatesComponent },
           { path: 'work-samples', component: CoachWorkSamplesComponent },
