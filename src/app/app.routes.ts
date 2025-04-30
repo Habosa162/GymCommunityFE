@@ -61,6 +61,7 @@ import { MainDashboardComponent } from './presentation/Gym/main-dashboard/main-d
 import { GymSubscriptionsComponent } from './presentation/Gym/gym-subscriptions/gym-subscriptions.component';
 import { CoachOffersComponent } from './presentation/Coach/coach-offers/coach-offers.component';
 import { UpdateProductComponent } from './presentation/Ecommerce/Administration/update-product/update-product.component';
+import { PlanPaymentSuccessComponent } from './presentation/Coach/plan-payment-success/plan-payment-success.component';
 
 
 export const routes: Routes = [
@@ -315,6 +316,8 @@ export const routes: Routes = [
   },
   //Premium routes
   { path: 'buy-premium', component: BuyPremiumComponent },
+  //buy plan routes
+  { path: 'plan-payment-success', component: PlanPaymentSuccessComponent },
   {
     path: 'premium-payment-success',
     component: PremiumPaymentSuccessComponent,
