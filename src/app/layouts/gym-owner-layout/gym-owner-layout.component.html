@@ -1,14 +1,12 @@
 <div class="gym-owner-layout">
   <!-- Navbar -->
-  <app-navbar class="navbar-compact">
-
-  </app-navbar>
+  <app-navbar class="navbar-compact"></app-navbar>
 
   <div class="content-wrapper">
     <!-- Sidebar -->
     <div class="admin-sidebar shadow-sm border-top" [class.collapsed]="sidebarCollapsed">
       <div class="sidebar-header">
-        <h3 class="SidebarTitle">Gym Owner</h3>
+        <h3 class="sidebar-title">Gym Owner</h3>
         <button class="toggle-btn" (click)="toggleSidebar()">
           <i class="bi bi-list"></i>
         </button>
@@ -28,28 +26,12 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/gym/plans" routerLinkActive="active">
-            <i class="bi  bi-people "></i>
+          <a class="nav-link" routerLink="/gym-owner/dashboard/AllSub" routerLinkActive="active">
+            <i class="bi bi-people"></i>
             <span class="link-text">Subscriptions</span>
           </a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-            <i class="bi bi-graph-up"></i>
-            <span class="link-text">Analytics</span>
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <a class="dropdown-item" routerLink="/gym/reports/attendance">Attendance</a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/gym/reports/payments">Payments</a>
-            </li>
-          </ul>
-        </li>
       </ul>
-
-
     </div>
 
     <!-- Content Area -->
@@ -61,6 +43,4 @@
   </div>
 </div>
 
-
 <app-footer></app-footer>
-

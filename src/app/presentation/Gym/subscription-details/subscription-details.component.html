@@ -21,7 +21,7 @@
         <div class="card-header bg-light fw-semibold">Basic Information</div>
         <div class="card-body">
           <ng-container *ngIf="!editMode; else editForm">
-            <p><strong>User ID:</strong> {{ subscription.userId }}</p>
+            <p><strong>User Name:</strong> {{ subscription.userName }}</p>
             <p><strong>Payment Status:</strong> {{ getStatusName(subscription.paymentStatus) }}</p>
             <p><strong>Purchase Date:</strong> {{ subscription.purchaseDate | date:'medium' }}</p>
             <p><strong>Start Date:</strong> {{ subscription.startDate | date:'medium' }}</p>

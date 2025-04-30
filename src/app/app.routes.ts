@@ -59,6 +59,7 @@ import { OrderManagementComponent } from './presentation/admin/order-management/
 import { MyPlansClientComponent } from './presentation/client/components/my-plans-client/my-plans-client.component';
 
 import { MainDashboardComponent } from './presentation/Gym/main-dashboard/main-dashboard.component';
+import { GymSubscriptionsComponent } from './presentation/Gym/gym-subscriptions/gym-subscriptions.component';
 
 
 export const routes: Routes = [
@@ -210,6 +211,10 @@ export const routes: Routes = [
   {
     path: 'gym-owner/dashboard',
     component: MainDashboardComponent,
+  },
+  {
+    path: 'gym-owner/dashboard/AllSub',
+    component: GymSubscriptionsComponent
   },
 
   //For Users

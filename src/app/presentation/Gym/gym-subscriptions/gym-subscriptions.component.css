@@ -1,0 +1,251 @@
+:host-context(body.dark-mode) {
+  *{
+    color: white !important;
+  }
+
+  .subscriptions-container{
+      background-color: #1a1a1a;
+  }
+  input, select,.input-group-text,.loading-state,.subscription-table-container,.table{
+    background-color: #2d2d2d !important;
+    border-color: #314631 !important;
+  }
+  thead, tbody,.sortable,td,.pagination-container{
+    background-color: #2d2d2d !important;
+  }
+  .subscription-table-container {
+    box-shadow: 0 0.125rem 0.25rem rgba(50, 205, 50, 0.3) !important;
+  }
+
+  input::placeholder{
+    color: #ccc;
+  }
+  .bi{
+    color: #32CD32 !important;
+  }
+}
+
+.subscriptions-container {
+  padding: 2rem;
+  /* background-color: #f8fff8; */
+  min-height: calc(100vh - 56px);
+}
+
+.subscriptions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  .dashboard-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+
+    i {
+      font-size: 1.75rem;
+    }
+
+    span {
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    small {
+      font-size: 0.875rem;
+      color: #6c757d;
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+.filters-section {
+  margin-bottom: 1.5rem;
+
+  .search-box {
+    .input-group-text {
+      border-right: none;
+      border-radius: 0.375rem 0 0 0.375rem;
+      background-color: #f0fff0;
+    }
+
+    input {
+      border-left: none;
+      border-radius: 0 0.375rem 0.375rem 0;
+      background-color: white;
+    }
+  }
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+
+  p {
+    margin-top: 1rem;
+    color: #6c757d;
+  }
+}
+
+.subscription-table-container {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(50, 205, 50, 0.2);
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+
+  table {
+    margin-bottom: 0;
+
+    thead {
+      th {
+        padding: 1rem;
+        font-weight: 600;
+        border-bottom: 2px solid #e9ecef;
+
+        &.sortable {
+          cursor: pointer;
+          transition: background-color 0.2s;
+
+          &:hover {
+            background-color: #f0fff0;
+          }
+
+          i {
+            margin-left: 0.5rem;
+            font-size: 0.75rem;
+          }
+        }
+      }
+    }
+
+    tbody {
+      tr.subscription-row {
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #f8fff8;
+        }
+
+        td {
+          padding: 1rem;
+          vertical-align: middle;
+          border-top: 1px solid #e9ecef;
+
+          .gym-info, .member-info, .plan-info {
+            display: flex;
+            flex-direction: column;
+
+            small {
+              font-size: 0.75rem;
+              color: #6c757d;
+            }
+          }
+
+          .date {
+            font-family: monospace;
+          }
+
+          .status-badge {
+            display: inline-block;
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            border-radius: 0.25rem;
+
+            &.active {
+              background-color: rgba(50, 205, 50, 0.15);
+              color: #228B22;
+            }
+
+            &.expired {
+              background-color: rgba(220, 53, 69, 0.1);
+              color: #dc3545;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.empty-state {
+  padding: 3rem;
+  text-align: center;
+  color: #6c757d;
+
+  i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  h5 {
+    margin-bottom: 0.5rem;
+    color: #343a40;
+  }
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(50, 205, 50, 0.1);
+  border: 1px solid #e0e0e0;
+
+  .pagination-info {
+    font-size: 0.875rem;
+    color: #6c757d;
+  }
+
+  .pagination {
+    margin: 0;
+
+    .page-item {
+      &.active .page-link {
+        background-color: #32CD32;
+        border-color: #32CD32;
+        color: white;
+      }
+
+      .page-link {
+        color: #32CD32;
+        border: 1px solid #e0e0e0;
+        padding: 0.5rem 0.75rem;
+        margin: 0 0.25rem;
+        border-radius: 0.25rem;
+        transition: all 0.2s;
+
+        &:hover {
+          background-color: #f0fff0;
+          border-color: #32CD32;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .subscriptions-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

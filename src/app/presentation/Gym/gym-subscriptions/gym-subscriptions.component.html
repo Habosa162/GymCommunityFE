@@ -1,1 +1,162 @@
-<p>gym-subscriptions works!</p>
+<section class="bgColor " style="min-height: 100vh;">
+  <div class="subscriptions-container">
+    <!-- Header Section -->
+    <div class="subscriptions-header">
+      <h2 class="dashboard-title">
+        <i class="bi bi-people-fill" style="color: #32CD32;"></i> 
+        <span>Member Subscriptions</span>
+        <small class="text-muted">Manage all gym member subscriptions</small>
+      </h2>
+      <div class="header-actions">
+        <button class="btn btn-outline-success" (click)="refreshData()" style="border-color: #32CD32; color: #32CD32;">
+          <i class="bi bi-arrow-clockwise"></i> Refresh
+        </button>
+      </div>
+    </div>
+  
+    <!-- Filters Section -->
+    <div class="filters-section">
+      <div class="row g-2">
+        <div class="col-md-6">
+          <div class="search-box input-group">
+            <span class="input-group-text" style="background-color: #f0fff0; border-color: #32CD32;"><i class="bi bi-search" style="color: #32CD32;"></i></span>
+            <input type="text" class="form-control border-start-0" placeholder="Search members, plans or gyms..." 
+                  [(ngModel)]="searchTerm" (input)="applyFilters()" style="border-color: #32CD32;">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <select class="form-select" [(ngModel)]="statusFilter" (change)="applyFilters()" style="border-color: #32CD32;">
+            <option *ngFor="let option of statusOptions" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <select class="form-select" [(ngModel)]="itemsPerPage" (change)="currentPage = 1" style="border-color: #32CD32;">
+            <option value="10">Show 10</option>
+            <option value="25">Show 25</option>
+            <option value="50">Show 50</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner-border" style="color: #32CD32;" role="status"></div>
+      <p>Loading subscriptions...</p>
+    </div>
+  
+    <!-- Subscriptions Table -->
+    <div *ngIf="!isLoading" class="subscription-table-container">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr style="background-color: #f0fff0;">
+              <th (click)="onSort('gymName')" class="sortable" style="color: #228B22;">
+                <span>Gym</span>
+                <i class="bi" [class.bi-arrow-up]="sortColumn === 'gymName' && sortDirection === 'asc'" 
+                    [class.bi-arrow-down]="sortColumn === 'gymName' && sortDirection === 'desc'"></i>
+              </th>
+              <th (click)="onSort('userName')" class="sortable" style="color: #228B22;">
+                <span>Member</span>
+                <i class="bi" [class.bi-arrow-up]="sortColumn === 'userName' && sortDirection === 'asc'" 
+                    [class.bi-arrow-down]="sortColumn === 'userName' && sortDirection === 'desc'"></i>
+              </th>
+              <th (click)="onSort('planTitle')" class="sortable" style="color: #228B22;">
+                <span>Plan</span>
+                <i class="bi" [class.bi-arrow-up]="sortColumn === 'planTitle' && sortDirection === 'asc'" 
+                    [class.bi-arrow-down]="sortColumn === 'planTitle' && sortDirection === 'desc'"></i>
+              </th>
+              <th (click)="onSort('startDate')" class="sortable" style="color: #228B22;">
+                <span>Start Date</span>
+                <i class="bi" [class.bi-arrow-up]="sortColumn === 'startDate' && sortDirection === 'asc'" 
+                    [class.bi-arrow-down]="sortColumn === 'startDate' && sortDirection === 'desc'"></i>
+              </th>
+              <th (click)="onSort('expiresAt')" class="sortable" style="color: #228B22;">
+                <span>End Date</span>
+                <i class="bi" [class.bi-arrow-up]="sortColumn === 'expiresAt' && sortDirection === 'asc'" 
+                    [class.bi-arrow-down]="sortColumn === 'expiresAt' && sortDirection === 'desc'"></i>
+              </th>
+              <th (click)="onSort('isExpired')" class="sortable" style="color: #228B22;">
+                <span>Status</span>
+                <i class="bi" [class.bi-arrow-up]="sortColumn === 'isExpired' && sortDirection === 'asc'" 
+                    [class.bi-arrow-down]="sortColumn === 'isExpired' && sortDirection === 'desc'"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let sub of paginatedSubscriptions" 
+                (click)="viewSubscriptionDetails(sub.id)"
+                class="subscription-row">
+              <td>
+                <div class="gym-info">
+                  <span class="gym-name">{{ sub.gymName }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="member-info">
+                  <span class="member-name">{{ sub.userName }}</span>
+                  <small class="text-muted">{{ sub.userEmail }}</small>
+                </div>
+              </td>
+              <td>
+                <div class="plan-info">
+                  <strong>{{ sub.planTitle }}</strong>
+                  <small class="text-muted">{{ sub.planDuration }} months</small>
+                </div>
+              </td>
+              <td>
+                <span class="date">{{ sub.startDate | date:'mediumDate' }}</span>
+              </td>
+              <td>
+                <span class="date" [ngClass]="{'text-danger': sub.isExpired}">
+                  {{ sub.expiresAt | date:'mediumDate' }}
+                </span>
+              </td>
+              <td>
+                <span class="status-badge" [ngClass]="sub.isExpired ? 'expired' : 'active'">
+                  {{ sub.isExpired ? 'Expired' : 'Active' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <!-- Empty State -->
+      <div *ngIf="filteredSubscriptions.length === 0" class="empty-state">
+        <i class="bi bi-emoji-frown" style="color: #32CD32;"></i>
+        <h5>No subscriptions found</h5>
+        <p>Try adjusting your search or filters</p>
+      </div>
+    </div>
+  
+    <!-- Pagination -->
+    <div *ngIf="filteredSubscriptions.length > 0" class="pagination-container">
+      <div class="pagination-info">
+        Showing {{ (currentPage - 1) * itemsPerPage + 1 }}-{{ Math.min(currentPage * itemsPerPage, filteredSubscriptions.length) }} 
+        of {{ filteredSubscriptions.length }} subscriptions
+      </div>
+      <nav>
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="currentPage = currentPage - 1" style="color: #32CD32;">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          </li>
+          <li *ngFor="let page of getPageNumbers()" class="page-item" [class.active]="page === currentPage">
+            <a class="page-link" (click)="currentPage = page" 
+               [style.background-color]="page === currentPage ? '#32CD32' : 'transparent'"
+               [style.color]="page === currentPage ? 'white' : '#32CD32'">{{ page }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" (click)="currentPage = currentPage + 1" style="color: #32CD32;">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  </section>

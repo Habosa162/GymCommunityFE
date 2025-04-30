@@ -32,6 +32,11 @@ export class UserSubscriptionService {
     return this.http.get<UserSubscriptionRead[]>(`${this.apiUrl}/plan/${planId}`);
   }
 
+  getByOwnerId(ownerId: string): Observable<UserSubscriptionRead[]>{
+    return this.http.get<UserSubscriptionRead[]>(`${this.apiUrl}/ownerId/${ownerId}`);
+
+  }
+
   create(sub: UserSubscriptionCreate): Observable<UserSubscriptionRead> {
     return this.http.post<UserSubscriptionRead>(`${this.apiUrl}`, sub);
   }

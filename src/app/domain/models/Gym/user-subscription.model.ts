@@ -27,7 +27,9 @@ export interface UserSubscriptionRead {
     id: number;
     userId: string;
     gymId: number;
+    gymName:string;
     planId: number;
+    planTitle : string;
     purchaseDate: Date;
     paymentStatus: PaymentStatus;
     startDate: Date;
@@ -35,4 +37,7 @@ export interface UserSubscriptionRead {
     isExpired: boolean;
     qrCodeData: string;
     rawData: string;
+    userName:string;
+    userEmail:string;
+    planDuration : number;
   }
