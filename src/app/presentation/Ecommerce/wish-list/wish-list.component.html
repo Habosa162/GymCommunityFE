@@ -1,27 +1,203 @@
 <section id="wishlist" class="min-vh-100 py-5">
   <div class="container">
-    <div class="row">
-      <div class="col-12 text-center mb-4">
-        <h2 class="mainColor">Your Wishlist<i class="fa-solid fa-clipboard-list fs-1 ms-2"></i></h2>
-        <p class="text-black-50">You have {{ wishlistProducts.length }} products in your wishlist.</p>
-      </div>
+    <div class="row gx-4">
+      <!-- Filter Sidebar - Only shown when items exist -->
+      <aside class="col-lg-3 col-md-4" *ngIf="wishlistProducts.length > 0">
+        <div class="filter-card">
+          <div class="filter-header d-flex justify-content-between align-items-center">
+            <h2 class="filter-title mb-0">Filters</h2>
+            <button class="btn btn-sm btn-outline-secondary" (click)="clearAllFilters()">
+              <i class="fas fa-undo me-1"></i> Reset All
+            </button>
+          </div>
 
+          <!-- Category Filter -->
+          <div class="filter-section mt-3">
+            <div class="filter-section-header">
+              <h3 class="section-title">Categories</h3>
+            </div>
+            <div class="filter-section-content">
+              <div class="search-box with-icon mb-2">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  [(ngModel)]="categorySearchTerm"
+                  (input)="onCategorySearch()"
+                  placeholder="Search categories..."
+                  class="form-control form-control-sm"
+                >
+              </div>
+              <ul class="filter-list scrollable">
+                <li *ngFor="let category of filteredCategories" class="filter-item radio-item">
+                  <input
+                    type="radio"
+                    name="category"
+                    [id]="'category-' + category.categoryID"
+                    [value]="category.categoryID"
+                    [checked]="category.categoryID === selectedCategoryId"
+                    (change)="onCategorySelect(category.categoryID)"
+                  >
+                  <label [for]="'category-' + category.categoryID" class="d-flex justify-content-between w-100">
+                    <span>{{ category.name }}</span>
+                    <span class="badge bg-secondary ms-2">{{ getCategoryCount(category.categoryID) }}</span>
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div>
 
-      <!-- Skeleton loading -->
-      <ng-container *ngIf="isLoading; else showProducts">
-        <div *ngFor="let skeleton of [1,2,3,4]" class="col-lg-3 col-md-6 col-sm-12 mb-4">
-          <div class="skeleton-card"></div>
+          <!-- Brand Filter -->
+          <div class="filter-section mt-3">
+            <div class="filter-section-header">
+              <h3 class="section-title">Brands</h3>
+            </div>
+            <div class="filter-section-content">
+              <div class="search-box with-icon mb-2">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  [(ngModel)]="brandSearchTerm"
+                  (input)="onBrandSearch()"
+                  placeholder="Search brands..."
+                  class="form-control form-control-sm"
+                >
+              </div>
+              <ul class="filter-list scrollable">
+                <li *ngFor="let brand of filteredBrands" class="filter-item radio-item">
+                  <input
+                    type="radio"
+                    name="brand"
+                    [id]="'brand-' + brand.brandID"
+                    [value]="brand.brandID"
+                    [checked]="brand.brandID === selectedBrandId"
+                    (change)="onBrandSelect(brand.brandID)"
+                  >
+                  <label [for]="'brand-' + brand.brandID">{{ brand.name }}</label>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Price Filter -->
+          <div class="filter-section mt-3">
+            <div class="filter-section-header">
+              <h3 class="section-title">Price Range</h3>
+            </div>
+            <div class="filter-section-content">
+              <ul class="filter-list">
+                <li *ngFor="let range of priceRanges" class="filter-item checkbox-item">
+                  <div class="form-check">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      name="priceRange"
+                      [id]="'price-' + range.label"
+                      [checked]="range.selected"
+                      (change)="onPriceRangeChange(range)"
+                    >
+                    <label class="form-check-label" [for]="'price-' + range.label">{{ range.label }}</label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
-      </ng-container>
+      </aside>
 
-      <ng-template #showProducts>
-        <div class="col-lg-3 col-md-6 col-sm-12" *ngFor="let product of wishlistProducts">
-          <app-product [product]="product" (removedFromWishlist)="removeItemFromWishlist($event)"></app-product>
+      <!-- Main Content -->
+      <main [class.col-lg-9]="wishlistProducts.length > 0" [class.col-md-8]="wishlistProducts.length > 0" [class.col-12]="wishlistProducts.length === 0">
+        <!-- Header Section -->
+        <div class="d-flex justify-content-between align-items-center mb-4" *ngIf="wishlistProducts.length > 0">
+          <div>
+            <h2 class="mb-0">Your Wishlist</h2>
+            <p class="text-muted mb-0 small">
+              {{ filteredWishlist.length }} of {{ wishlistProducts.length }} items
+            </p>
+          </div>
+          
+          <!-- <div class="d-flex gap-3">
+            <div class="search-box with-icon">
+              <i class="fas fa-search"></i>
+              <input
+                type="text"
+                [(ngModel)]="productSearchTerm"
+                (input)="onSearchInput()"
+                class="form-control"
+                placeholder="Search wishlist..."
+              />
+            </div> 
+            
+             <div class="sort-options">
+              <select 
+                id="sortSelect" 
+                class="form-select"
+                [(ngModel)]="selectedSortOption"
+                (change)="onSortChange($event)"
+              >
+                <option value="asc">Price: Low to High</option>
+                <option value="desc">Price: High to Low</option>
+                <option value="newest">Newest First</option>
+                <option value="rating">Highest Rated</option>
+              </select>
+            </div> 
+          </div> -->
         </div>
-      </ng-template>
 
+        <!-- Loading State -->
+        <ng-container *ngIf="isLoading">
+          <div class="row g-3">
+            <div *ngFor="let skeleton of [1,2,3,4]" class="col-lg-3 col-md-6 col-sm-12">
+              <div class="skeleton-card h-100"></div>
+            </div>
+          </div>
+        </ng-container>
 
+        <!-- Content -->
+        <ng-container *ngIf="!isLoading">
+          <!-- When items exist -->
+          <ng-container *ngIf="wishlistProducts.length > 0; else emptyWishlist">
+            <div class="row g-3">
+              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12" *ngFor="let product of filteredWishlist">
+                <app-product 
+                  [product]="product" 
+                  (removedFromWishlist)="removeItemFromWishlist($event)"
+                ></app-product>
+              </div>
+            </div>
 
+            <!-- No Results State -->
+            <div *ngIf="filteredWishlist.length === 0" class="empty-state text-center mt-5 p-5">
+              <div class="empty-state-icon mb-4">
+                <i class="fas fa-search fa-4x text-muted"></i>
+              </div>
+              <h3 class="empty-state-title mb-3">No items match your filters</h3>
+              <p class="empty-state-text mb-4">Try adjusting your search or filters</p>
+              <button class="btn btn-primary" (click)="clearAllFilters()">
+                <i class="fas fa-filter-circle-xmark me-2"></i> Clear All Filters
+              </button>
+            </div>
+          </ng-container>
+
+          <!-- Empty Wishlist State -->
+          <ng-template #emptyWishlist>
+            <div class="card border-0 shadow-sm">
+              <div class="card-body text-center p-5">
+                <div class="empty-wishlist-icon mb-4">
+                  <i class="fas fa-heart-crack fa-4x text-danger"></i>
+                </div>
+                <h1 class="mb-3">Your wishlist is empty</h1>
+                <p class="text-muted mb-4">Start saving your favorite items for later</p>
+                <a 
+                  routerLink="/shop"  
+                  class="btn btn-success btn-lg px-4 py-2"
+                >
+                  <i class="fas fa-store me-2"></i>Browse Products
+                </a>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+      </main>
     </div>
   </div>
 </section>

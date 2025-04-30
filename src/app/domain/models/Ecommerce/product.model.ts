@@ -15,7 +15,7 @@ export interface Product{
   discountAmount:number ;
   reviews?: Review[]; // Add reviews array to product
   averageRating?: number; // Add calculated rating
-  // : number;
+  reviewCount?: number; // NEW - total number of reviews
   // reviews: number;
   // updatedAt: Date;
   // isActive: boolean;

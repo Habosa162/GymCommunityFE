@@ -73,3 +73,8 @@
 :host-context(body.dark-mode) .text-muted {
   color: #777777 !important;
 }
+
+.card .fa-star {
+  font-size: 0.85rem;
+  margin-right: 2px;
+}

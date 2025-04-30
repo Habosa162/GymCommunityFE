@@ -10,11 +10,11 @@ import { ProductComponent } from '../product/product.component';
 import { CommonModule } from '@angular/common';
 import { wishlistItem } from '../../../domain/models/Ecommerce/wishList.model';
 import { Review } from '../../../domain/models/Ecommerce/Review.model'; // Add this import
-import { FormsModule } from '@angular/forms';
 
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-product-details',
-  imports: [ProductComponent, CommonModule, RouterModule, FormsModule],
+  imports: [ProductComponent, CommonModule, RouterModule ,FormsModule  ],
   standalone: true,
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.css']
