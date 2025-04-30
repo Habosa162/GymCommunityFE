@@ -32,21 +32,21 @@
     </div>
     <div class="messages" #messagesContainer *ngIf="selectedGroupId; else noGroup">
       <div *ngFor="let message of messages" 
-           [ngClass]="{'message-sent': message.senderId === currentUserId, 'message-received': message.senderId !== currentUserId}">
-        <div class="message-avatar" *ngIf="message.senderId !== currentUserId">
+           [ngClass]="{'message-sent': isMessageFromCurrentUser(message), 'message-received': !isMessageFromCurrentUser(message)}">
+        <div class="message-avatar" *ngIf="!isMessageFromCurrentUser(message)">
           <i class="fas fa-user"></i>
         </div>
         <div class="message-bubble">
           <p class="message-content">{{ message.content }}</p>
         </div>
         <div class="message-info">
-          <small class="message-sender" *ngIf="message.senderId !== currentUserId">
+          <small class="message-sender" *ngIf="!isMessageFromCurrentUser(message)">
             {{ message.senderName || 'User' }}
           </small>
           <small class="message-time">
             <i class="far fa-clock"></i> {{ message.timestamp | date:'short' }}
           </small>
-          <small class="message-status" *ngIf="message.senderId === currentUserId">
+          <small class="message-status" *ngIf="isMessageFromCurrentUser(message)">
             <i class="fas fa-check"></i>
           </small>
         </div>
