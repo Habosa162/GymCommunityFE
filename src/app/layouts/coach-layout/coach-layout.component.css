@@ -1,5 +1,4 @@
-Coach Layout Styles
-:host {
+Coach Layout Styles:host {
     display: block;
     height: 100vh;
     width: 100%;
@@ -155,7 +154,7 @@ Coach Layout Styles
 .profile-dropdown {
     position: relative;
     margin-left: 1rem;
-  
+
 }
 
 .profile-trigger {
@@ -264,8 +263,8 @@ Coach Layout Styles
 
 /* Main Content */
 .main-content {
-    margin-top: 70px;
-    padding: 2rem;
+    /* margin-top: 70px;
+    padding: 2rem; */
     flex: 1;
     transition: all 0.3s ease;
 }
