@@ -47,11 +47,13 @@ export class ProductService {
     return this.HttpClient.get(`${this.apiUrl}`, { params });
   }
 
-  
-  getUserProducts(): Observable<any> {
-    return this.HttpClient.get(`${this.apiUrl}/user`);
+
+  getUserProducts(userid: any): Observable<any> {
+    return this.HttpClient.get(`${this.apiUrl}/user`, {
+      params: new HttpParams().set('userid', userid)
+    });
   }
-  
+
   createProduct(Product: FormData): Observable<any> {
     return this.HttpClient.post(`${this.apiUrl}`, Product);
   }
