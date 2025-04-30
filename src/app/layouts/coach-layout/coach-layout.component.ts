@@ -2,11 +2,12 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { FooterComponent } from '../../core/shared/components/footer/footer.component';
 
 @Component({
     selector: 'app-coach-layout',
     standalone: true,
-    imports: [CommonModule, RouterModule],
+    imports: [CommonModule, RouterModule,FooterComponent],
     templateUrl: './coach-layout.component.html',
     styleUrls: ['./coach-layout.component.css']
 })
