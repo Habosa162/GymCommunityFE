@@ -6,6 +6,8 @@ import { CoachportfolioService } from '../../../services/Coachservice/coachportf
 import { CoachratingService } from '../../../services/Coachservice/coachrating.service';
 import { Coachportfolio } from '../../../domain/models/CoachModels/coachportfolio.model';
 import { Coachrating } from '../../../domain/models/CoachModels/coachrating.model';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 interface CoachDisplay {
     id: string;
@@ -38,6 +40,7 @@ export class CoachesListComponent implements OnInit {
     specializations: string[] = ['Fitness Coach', 'Personal Trainer', 'Yoga Instructor', 'Nutritionist'];
     ratings: string[] = ['All', '4+', '3+', '2+', '1+'];
     experienceRanges: string[] = ['All', '0-2 years', '2-5 years', '5+ years'];
+    defaultProfileImage: string = 'assets/default-coach.jpg';
 
     constructor(
         private coachPortfolioService: CoachportfolioService,
@@ -46,61 +49,79 @@ export class CoachesListComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        console.log('Component initialized');
         this.loadCoaches();
     }
 
+    private parseJsonArray(value: any): string[] {
+        if (Array.isArray(value)) return value;
+        if (typeof value === 'string') {
+            try {
+                const parsed = JSON.parse(value);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch {
+                return [];
+            }
+        }
+        return [];
+    }
+
     loadCoaches(): void {
+        console.log('Loading coaches...');
         this.coachPortfolioService.getAll().subscribe({
             next: (portfolios: Coachportfolio[]) => {
-                const coachesWithDetails = portfolios.map(portfolio => {
-                    const coach: CoachDisplay = {
-                        id: portfolio.coachId,
-                        firstName: portfolio.coachFirstName || '',
-                        lastName: portfolio.coachLastName || '',
-                        profileImage: portfolio.aboutMeImageUrl,
-                        specialization: 'Fitness Coach', // Default specialization
-                        portfolio: portfolio,
-                        certificates: [],
-                        skills: portfolio.skillsJson || [],
-                        socialMediaLinks: portfolio.socialMediaLinksJson || []
-                    };
+                console.log('Portfolios loaded:', portfolios);
+                if (!portfolios || portfolios.length === 0) {
+                    console.log('No portfolios found');
+                    this.coaches = [];
+                    this.filteredCoaches = [];
+                    this.loading = false;
+                    return;
+                }
 
-                    this.coachRatingService.getByCoachId(portfolio.coachId).subscribe({
-                        next: (ratings: Coachrating[]) => {
-                            if (ratings && ratings.length > 0) {
-                                const totalRating = ratings.reduce((sum, rating) => sum + rating.rate, 0);
-                                coach.rating = (totalRating / ratings.length).toFixed(1);
-                            } else {
-                                coach.rating = 'New';
-                            }
-                        },
-                        error: (error: any) => {
-                            console.error(`Error loading ratings for coach ${portfolio.coachId}:`, error);
-                            coach.rating = 'New';
-                        }
-                    });
+                // Create coach objects first
+                this.coaches = portfolios.map(portfolio => ({
+                    id: portfolio.coachId,
+                    firstName: portfolio.coachFirstName || '',
+                    lastName: portfolio.coachLastName || '',
+                    profileImage: portfolio.aboutMeImageUrl || this.defaultProfileImage,
+                    specialization: 'Fitness Coach',
+                    portfolio: portfolio,
+                    certificates: [],
+                    skills: this.parseJsonArray(portfolio.skillsJson),
+                    socialMediaLinks: this.parseJsonArray(portfolio.socialMediaLinksJson),
+                    rating: 'New' // Default rating
+                }));
 
-                    return coach;
-                });
-
-                this.coaches = coachesWithDetails;
+                // Set filtered coaches immediately
                 this.filteredCoaches = [...this.coaches];
                 this.loading = false;
+
+                // Load ratings separately for each coach
+                this.coaches.forEach((coach, index) => {
+                    this.coachRatingService.getByCoachId(coach.id).subscribe({
+                        next: (ratings) => {
+                            if (ratings && ratings.length > 0) {
+                                const totalRating = ratings.reduce((sum, rating) => sum + rating.rate, 0);
+                                this.coaches[index].rating = (totalRating / ratings.length).toFixed(1);
+                                // Update filtered coaches with new rating
+                                this.filteredCoaches = [...this.coaches];
+                            }
+                        },
+                        error: (error) => {
+                            console.error(`Error loading ratings for coach ${coach.id}:`, error);
+                            // Keep the default 'New' rating if there's an error
+                        }
+                    });
+                });
             },
-            error: (error: any) => {
-                console.error('Error loading coach portfolios:', error);
+            error: (error) => {
+                console.error('Error loading portfolios:', error);
+                this.coaches = [];
+                this.filteredCoaches = [];
                 this.loading = false;
             }
         });
-    }
-
-    parseSkills(skillsJson: string): string[] {
-        try {
-            return JSON.parse(skillsJson);
-        } catch (error) {
-            console.error('Error parsing skills:', error);
-            return [];
-        }
     }
 
     applyFilters(): void {
@@ -143,4 +164,33 @@ export class CoachesListComponent implements OnInit {
     viewCoachProfile(coachId: string): void {
         this.router.navigate(['/coach/profile', coachId]);
     }
-} 
+
+    isEmail(link: string): boolean {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(link);
+    }
+
+    getSocialIcon(link: string): string {
+        if (this.isEmail(link)) {
+            return 'bi bi-envelope-fill';
+        }
+
+        // Check for social media platforms
+        if (link.includes('twitter.com') || link.startsWith('@')) {
+            return 'bi bi-twitter';
+        } else if (link.includes('facebook.com')) {
+            return 'bi bi-facebook';
+        } else if (link.includes('instagram.com')) {
+            return 'bi bi-instagram';
+        } else if (link.includes('linkedin.com')) {
+            return 'bi bi-linkedin';
+        } else if (link.includes('youtube.com')) {
+            return 'bi bi-youtube';
+        } else if (link.includes('github.com')) {
+            return 'bi bi-github';
+        }
+
+        // Default icon for other links
+        return 'bi bi-link-45deg';
+    }
+}
