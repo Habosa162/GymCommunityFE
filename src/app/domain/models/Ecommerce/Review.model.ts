@@ -4,7 +4,7 @@ export interface Review {
   comment: string;
   createdAt?: Date; // Made consistent casing
   productId: number;
-  userId?: number;
-  userName?: string;
-  userAvatar?: string;
+  userId?: string;
+  userName?: string | null;  // Allow null
+  userAvatar?: string | null; // Allow null
 }

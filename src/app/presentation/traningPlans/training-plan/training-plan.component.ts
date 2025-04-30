@@ -34,6 +34,7 @@ interface Exercise {
   reps: number;
   duration: number;
   exerciseId?: number;
+  videoLink?: string;
 }
 
 interface Meal {
@@ -119,12 +120,13 @@ export class TrainingPlanComponent implements OnInit {
     reps: 12,
     duration: 0,
     exerciseId: 0,
+    videoLink: '',
   };
 
   tempMeal: Meal = {
     mealType: 'breakfast',
     mealName: '',
-    quantity: '1 serving',
+    quantity: '',
     isSupplement: false,
     notes: '',
   };
@@ -183,6 +185,7 @@ export class TrainingPlanComponent implements OnInit {
       this.tempExercise.exerciseName = exercise.name;
       this.tempExercise.muscleGroup = exercise.muscleGroupName;
       this.tempExercise.exerciseId = exercise.id;
+      this.tempExercise.videoLink = exercise.videoLink || '';
     }
   }
 
@@ -202,7 +205,7 @@ export class TrainingPlanComponent implements OnInit {
       currentMeal.mealName = meal.name;
       currentMeal.isSupplement = meal.isSupplement;
       currentMeal.notes = meal.description || '';
-      currentMeal.quantity = '1 serving';
+      currentMeal.quantity = '';
       this.selectedMeal = null; // Reset selection after applying
     }
   }
@@ -1023,7 +1026,7 @@ export class TrainingPlanComponent implements OnInit {
     this.dayPlanData.meals.push({
       mealType: 'breakfast',
       mealName: '',
-      quantity: '1 serving',
+      quantity: '',
       isSupplement: this.isSupplement,
       notes: '',
     });
@@ -1060,25 +1063,29 @@ export class TrainingPlanComponent implements OnInit {
   }
 
   addSingleExercise(): void {
-    if (!this.selectedExercise) {
-      console.error('No exercise selected');
+    // Validate the exercise data
+    if (!this.tempExercise.exerciseName || !this.tempExercise.muscleGroup) {
+      alert('Please select an exercise first');
       return;
     }
 
-    // Create a new exercise object based on the temp values
-    const newExercise: Exercise = {
-      muscleGroup: this.selectedExercise.muscleGroupName,
-      exerciseName: this.selectedExercise.name,
+    if (this.tempExercise.sets <= 0 || this.tempExercise.reps <= 0) {
+      alert('Sets and reps must be greater than 0');
+      return;
+    }
+
+    // Add the exercise to the list
+    this.dayPlanData.exercises.push({
+      muscleGroup: this.tempExercise.muscleGroup,
+      exerciseName: this.tempExercise.exerciseName,
       sets: this.tempExercise.sets,
       reps: this.tempExercise.reps,
       duration: this.tempExercise.duration,
-      exerciseId: this.selectedExercise.id,
-    };
+      exerciseId: this.tempExercise.exerciseId,
+      videoLink: this.tempExercise.videoLink,
+    });
 
-    // Add to the exercises list
-    this.dayPlanData.exercises.push(newExercise);
-
-    // Reset the temp exercise
+    // Reset the form for the next entry
     this.tempExercise = {
       muscleGroup: '',
       exerciseName: '',
@@ -1086,9 +1093,8 @@ export class TrainingPlanComponent implements OnInit {
       reps: 12,
       duration: 0,
       exerciseId: 0,
+      videoLink: '',
     };
-
-    // Reset the selection
     this.selectedExercise = null;
   }
 
@@ -1114,7 +1120,7 @@ export class TrainingPlanComponent implements OnInit {
     this.tempMeal = {
       mealType: 'breakfast',
       mealName: '',
-      quantity: '1 serving',
+      quantity: '',
       isSupplement: false,
       notes: '',
     };

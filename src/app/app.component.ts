@@ -8,10 +8,11 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout/admin-
 import { CoachLayoutComponent } from './layouts/coach-layout/coach-layout.component';
 import { NavbarComponent } from "./core/shared/components/navbar/navbar.component";
 import { GymOwnerLayoutComponent } from './layouts/gym-owner-layout/gym-owner-layout.component';
+import { FooterComponent } from "./core/shared/components/footer/footer.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterModule, CommonModule, TopNavComponent, ClientLayoutComponent, AdminLayoutComponent, CoachLayoutComponent,GymOwnerLayoutComponent, NavbarComponent],
+  imports: [RouterModule, CommonModule, TopNavComponent, ClientLayoutComponent, AdminLayoutComponent, CoachLayoutComponent, GymOwnerLayoutComponent, NavbarComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

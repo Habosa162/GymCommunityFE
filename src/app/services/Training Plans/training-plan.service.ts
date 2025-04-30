@@ -73,4 +73,8 @@ export class TrainingPlansService {
   getTrainingPlanById(Id: number): Observable<trainingPlan> {
     return this.http.get<trainingPlan>(`${this.baseUrl}/get/${Id}`);
   }
+
+  getAllTrainingPlans(): Observable<trainingPlan[]> {
+    return this.http.get<trainingPlan[]>(`${this.baseUrl}/GetAll`);
+  }
 }

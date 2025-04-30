@@ -1,10 +1,5 @@
 <div class="container py-4">
-    <div class="row mb-4">
-        <div class="col">
-            <h2 class="fw-bold">Our Expert Coaches</h2>
-            <p class="text-muted">Discover and connect with our professional fitness coaches</p>
-        </div>
-    </div>
+
 
     <!-- Filter Controls -->
     <div class="row mb-4">
@@ -12,12 +7,12 @@
             <input type="text" class="form-control" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()"
                 placeholder="Search coaches...">
         </div>
-        <div class="col-md-3 mb-3">
+        <!-- <div class="col-md-3 mb-3">
             <select class="form-select" [(ngModel)]="selectedSpecialization" (ngModelChange)="applyFilters()">
                 <option value="">All Specializations</option>
                 <option *ngFor="let spec of specializations" [value]="spec">{{spec}}</option>
             </select>
-        </div>
+        </div> -->
         <div class="col-md-3 mb-3">
             <select class="form-select" [(ngModel)]="selectedRating" (ngModelChange)="applyFilters()">
                 <option value="">All Ratings</option>
@@ -86,9 +81,11 @@
                     <div class="mb-3" *ngIf="coach.socialMediaLinks?.length">
                         <h6 class="text-muted mb-2">Connect</h6>
                         <div class="d-flex flex-column gap-2">
-                            <a *ngFor="let link of coach.socialMediaLinks" [href]="'mailto:' + link"
-                                class="email-link d-flex align-items-center">
-                                <i class="bi bi-envelope-fill me-2"></i>
+                            <a *ngFor="let link of coach.socialMediaLinks"
+                                [href]="isEmail(link) ? 'mailto:' + link : link"
+                                [target]="isEmail(link) ? '_self' : '_blank'"
+                                class="social-link d-flex align-items-center">
+                                <i [class]="getSocialIcon(link)" class="me-2"></i>
                                 <span>{{link}}</span>
                             </a>
                         </div>

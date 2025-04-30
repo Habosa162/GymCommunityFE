@@ -37,3 +37,89 @@ button {
   border: 1px solid hsl(0, 0%, 50%) !important;
   color: white !important;
 }
+
+/*add styal*/
+
+.cart-item {
+  transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.img-thumbnail {
+  transition: transform 0.3s ease;
+}
+
+.img-thumbnail:hover {
+  transform: scale(1.05);
+}
+
+.btn-group .btn {
+  min-width: 36px;
+}
+
+.removeBtn {
+  transition: all 0.2s ease;
+}
+
+.removeBtn:hover {
+  transform: translateY(-1px);
+}
+
+.cart-summary {
+  border-top: 2px dashed #eee;
+}
+
+.empty-cart-icon {
+  opacity: 0.7;
+}
+
+/* Dark Mode Styles */
+:host-context(body.dark-mode) .card {
+  background-color: #2c2c2c !important;
+  border-color: #444 !important;
+}
+
+:host-context(body.dark-mode) .cart-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+:host-context(body.dark-mode) .cart-summary {
+  background-color: #333 !important;
+  border-top-color: #444 !important;
+}
+
+:host-context(body.dark-mode) h1, 
+:host-context(body.dark-mode) h2,
+:host-context(body.dark-mode) h4,
+:host-context(body.dark-mode) h5,
+:host-context(body.dark-mode) .text-black-50 {
+  color: #eee !important;
+}
+
+:host-context(body.dark-mode) .empty-cart-icon {
+  color: #4CAF50 !important;
+}
+
+:host-context(body.dark-mode) .text-muted {
+  color: #aaa !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+  .cart-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .cart-item > div {
+    width: 100%;
+  }
+  
+  .btn-group {
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+}

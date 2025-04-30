@@ -1,0 +1,141 @@
+<section id="my-plans" class="my-plans py-5 bgColor min-vh-100">
+  <div class="container">
+    <!-- Header -->
+    <div class="text-center mb-5">
+      <h2 class="section-title mainColor">My Training Plans 🎯</h2>
+      <p class="section-subtitle text-black-50">Track your fitness journey</p>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filters-section mb-4">
+      <div class="row">
+        <!-- Search -->
+        <div class="col-md-4 mb-3">
+          <div class="filter-group">
+            <label>Search Plans</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-search"></i>
+              </span>
+              <input type="text" class="form-control text-black-50" placeholder="Search by plan name..." [(ngModel)]="searchTerm" (input)="applyFilters()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Plan Type -->
+        <div class="col-md-4 mb-3">
+          <div class="filter-group">
+            <label>Plan Type</label>
+            <div class="btn-group w-100" role="group">
+              <button type="button" class="btn" [class.btn-primary]="planType === ''" [class.btn-outline-primary]="planType !== ''" (click)="planType = ''; applyFilters()">
+                All
+              </button>
+              <button type="button" class="btn" [class.btn-primary]="planType === 'true'" [class.btn-outline-primary]="planType !== 'true'" (click)="planType = 'true'; applyFilters()">
+                Voltmort
+              </button>
+              <button type="button" class="btn" [class.btn-primary]="planType === 'false'" [class.btn-outline-primary]="planType !== 'false'" (click)="planType = 'false'; applyFilters()">
+                Coach
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Duration -->
+        <div class="col-md-4 mb-3">
+          <div class="filter-group">
+            <label>Duration</label>
+            <div class="duration-buttons">
+              <button class="btn" [class.btn-primary]="durationFilter === ''" [class.btn-outline-primary]="durationFilter !== ''" (click)="durationFilter = ''; applyFilters()">
+                All
+              </button>
+              <button class="btn" [class.btn-primary]="durationFilter === '1-3'" [class.btn-outline-primary]="durationFilter !== '1-3'" (click)="durationFilter = '1-3'; applyFilters()">
+                1-3 Months
+              </button>
+              <button class="btn" [class.btn-primary]="durationFilter === '3-6'" [class.btn-outline-primary]="durationFilter !== '3-6'" (click)="durationFilter = '3-6'; applyFilters()">
+                3-6 Months
+              </button>
+              <button class="btn" [class.btn-primary]="durationFilter === '6-12'" [class.btn-outline-primary]="durationFilter !== '6-12'" (click)="durationFilter = '6-12'; applyFilters()">
+                6-12 Months
+              </button>
+              <button class="btn" [class.btn-primary]="durationFilter === '12+'" [class.btn-outline-primary]="durationFilter !== '12+'" (click)="durationFilter = '12+'; applyFilters()">
+                12+ Months
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-end">
+        <button class="btn btn-secondary" (click)="resetFilters()"><i class="fa-solid fa-filter"></i> Reset Filters</button>
+      </div>
+    </div>
+
+    <!-- Plans Grid -->
+    <div class="row g-4">
+      <ng-container *ngIf="filteredPlans.length > 0; else noPlans">
+        <div class="col-md-6 col-lg-4" *ngFor="let plan of getCurrentPagePlans()">
+          <div class="plan-card">
+            <div class="plan-card-header">
+              <h3 class="plan-title">{{plan.name}}</h3>
+              <span class="plan-type" [class.static]="plan.isStaticPlan">
+                {{plan.isStaticPlan ? 'Voltmort Plan' : 'Coach Plan'}}
+              </span>
+            </div>
+            <div class="plan-card-body">
+              <!-- Plan Details -->
+              <div class="plan-details">
+                <div class="detail-item">
+                  <i class="fas fa-calendar"></i>
+                  <span>Duration: {{plan.durationMonths}} months</span>
+                </div>
+                <div class="detail-item">
+                  <i class="fas fa-clock"></i>
+                  <span>Start: {{plan.startDate | date}}</span>
+                </div>
+                <div class="detail-item">
+                  <i class="fas fa-flag-checkered"></i>
+                  <span>End: {{plan.endDate | date}}</span>
+                </div>
+                <div class="detail-item">
+                  <i class="fas fa-user"></i>
+                  <span>Coach: {{plan.coach?.firstName}} {{plan.coach?.lastName}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="plan-card-footer">
+              <a routerLink="/client-plan/{{plan.id}}" class="btn btn-outline-primary">
+                View Details
+              </a>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #noPlans>
+        <div class="col-12 text-center py-5">
+          <h3>No plans found</h3>
+          <p>Try adjusting your filters or search criteria</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container" *ngIf="filteredPlans.length > 0">
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="goToPage(currentPage - 1)" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" *ngFor="let page of getPageNumbers()" [class.active]="page === currentPage">
+            <a class="page-link" (click)="goToPage(page)">{{page}}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" (click)="goToPage(currentPage + 1)" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</section>

@@ -10,11 +10,11 @@ import { ProductComponent } from '../product/product.component';
 import { CommonModule } from '@angular/common';
 import { wishlistItem } from '../../../domain/models/Ecommerce/wishList.model';
 import { Review } from '../../../domain/models/Ecommerce/Review.model'; // Add this import
-import { FormsModule } from '@angular/forms';
 
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-product-details',
-  imports: [ProductComponent, CommonModule, RouterModule, FormsModule],
+  imports: [ProductComponent, CommonModule, RouterModule ,FormsModule  ],
   standalone: true,
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.css']
@@ -32,8 +32,13 @@ export class ProductDetailsComponent implements OnInit {
     comment: '',
     productId: 0
   };
+  showReviewForm: boolean = false;
+  authorReviews: Review[] = [];
   isSubmitting = false;
-
+  averageRating: number = 0;
+  colors = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', 
+            '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D'];
+  
 
   constructor(
     private productService: ProductService,
@@ -118,8 +123,18 @@ removeFromWishList(productId: number): void {
 private loadReviews(productId: number): void {
   this.reviewService.getReviews(productId).subscribe({
     next: (reviews) => {
-      console.log('Reviews loaded:', reviews); // Log to check if reviews are fetched correctly
-      this.reviews = reviews;  // Store the reviews here
+      this.reviews = reviews.filter(r => 
+        !this.authService.isLoggedIn() || 
+        r.userId !== this.authService.getUserId()
+      );
+      
+      if (this.authService.isLoggedIn()) {
+        this.authorReviews = reviews.filter(r => 
+          r.userId === this.authService.getUserId()
+        );
+      }
+      
+      this.calculateAverageRating();
     },
     error: (err) => {
       console.error('Error loading reviews:', err);
@@ -127,7 +142,32 @@ private loadReviews(productId: number): void {
   });
 }
 
+calculateAverageRating(): void {
+  console.log('Calculating average rating...'); // Debug log
+  
+  if (!this.reviews || this.reviews.length === 0) {
+    this.averageRating = 0;
+    return;
+  }
 
+  // Filter out invalid ratings
+  const validReviews = this.reviews.filter(review => 
+    review.rating && !isNaN(review.rating) && review.rating >= 1 && review.rating <= 5
+  );
+
+  if (validReviews.length === 0) {
+    this.averageRating = 0;
+    return;
+  }
+
+  const sum = validReviews.reduce((acc, review) => acc + review.rating, 0);
+  this.averageRating = sum / validReviews.length;
+  
+  // Round to 1 decimal place
+  this.averageRating = Math.round(this.averageRating * 10) / 10;
+  
+  console.log('Average rating calculated:', this.averageRating); // Debug log
+}
 //prouct Methods
   private loadProductDetails(productId: number): void {
     this.productService.getOneProduct(productId).subscribe({
@@ -170,20 +210,43 @@ private loadReviews(productId: number): void {
 
     // Submit Review
     submitReview(): void {
-      if (this.newReview.comment.trim() === '' || this.newReview.rating === 0) {
+      if (this.newReview.rating === 0 && this.newReview.comment.trim() !== '') {
+        alert('Please select at least one star when submitting a comment.');
         return;
       }
+      
+      if (this.newReview.rating === 0 && this.newReview.comment.trim() === '') {
+        alert('You must provide a rating or a comment with at least one star.');
+        return;
+      }
+      
       this.isSubmitting = true;
     
-      this.reviewService.createReview(this.newReview).subscribe({
+      // Add user info to the review
+      const reviewToSubmit: Review = {
+        ...this.newReview,
+        userId: this.authService.getUserId() ?? undefined,
+        userName: this.authService.getUserName() ?? undefined,
+        userAvatar: this.authService.getProfileImg() ?? undefined
+      };
+    
+      this.reviewService.createReview(reviewToSubmit).subscribe({
         next: (review) => {
-          // this.loadReviews(this.newReview.productId); 
           if(review) {
-            this.reviews.push(review);   
+            // Add to both lists if it's the current user's review
+            if (review.userId === this.authService.getUserId()) {
+              this.authorReviews.push(review);
+            }
+            this.reviews.push(review);
+            this.calculateAverageRating();
+            
+            // Reload product details to update the average rating
+            this.loadProductDetails(this.Product!.id);
           }
           alert('Review submitted successfully!');
           this.newReview.comment = '';
           this.newReview.rating = 0;
+          this.showReviewForm = false;
         },
         error: (err) => {
           console.error('Error submitting review:', err);
@@ -193,5 +256,45 @@ private loadReviews(productId: number): void {
         }
       });
     }
+
+    toggleReviewForm(): void {
+      this.showReviewForm = !this.showReviewForm;
+      if (this.showReviewForm) {
+        this.newReview = {
+          rating: 0,
+          comment: '',
+          productId: this.Product?.id || 0
+        };
+      }
+    }
+
+    editReview(review: Review): void {
+      this.showReviewForm = true;
+      this.newReview = {
+        rating: review.rating,
+        comment: review.comment,
+        productId: review.productId,
+        id: review.id
+      };
+    }
+
+    deleteReview(reviewId: number): void {
+      if (!confirm('Are you sure you want to delete this review?')) return;
+    
+      this.reviewService.deleteReview(reviewId).subscribe({
+        next: () => {
+          // Remove from both lists
+          this.reviews = this.reviews.filter(r => r.id !== reviewId);
+          this.authorReviews = this.authorReviews.filter(r => r.id !== reviewId);
+          this.calculateAverageRating();
+        },
+        error: (err) => console.error('Error deleting review:', err)
+      });
+    }
+    
+    getRandomColor(): string {
+      return this.colors[Math.floor(Math.random() * this.colors.length)];
+    }
+
     
   }    

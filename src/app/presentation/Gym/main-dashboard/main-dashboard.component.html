@@ -1,0 +1,147 @@
+<section class="bgColor py-4" style="min-height: 100vh;">
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1 class="dashboard-title">
+      <i class="bi bi-graph-up"></i> Gym Performance Dashboard
+      <small class="text-muted">Last updated: {{ currentDate | date:'medium' }}</small>
+    </h1>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card bg-primary-gradient">
+      <div class="kpi-icon"><i class="bi bi-building"></i></div>
+      <div class="kpi-content">
+        <h3>{{ summary.totalGyms || 0 }}</h3>
+        <p>Total Gyms</p>
+      </div>
+    </div>
+    
+    <div class="kpi-card bg-success-gradient">
+      <div class="kpi-icon"><i class="bi bi-people-fill"></i></div>
+      <div class="kpi-content">
+        <h3>{{ summary.totalMembers || 0 }}</h3>
+        <p>Active Members</p>
+      </div>
+    </div>
+    
+    <div class="kpi-card bg-info-gradient">
+      <div class="kpi-icon"><i class="bi bi-card-checklist"></i></div>
+      <div class="kpi-content">
+        <h3>{{ summary.activePlans || 0 }}</h3>
+        <p>Membership Plans</p>
+      </div>
+    </div>
+    
+    <div class="kpi-card bg-warning-gradient">
+      <div class="kpi-icon"><i class="bi bi-cash-stack"></i></div>
+      <div class="kpi-content">
+        <h3>{{ summary.totalRevenue | currency:'EGP':'symbol':'1.0-0' }}</h3>
+        <p>Total Revenue</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Charts Section -->
+  <div class="chart-grid">
+    <!-- Revenue Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3><i class="bi bi-cash-coin"></i> Revenue Flow</h3>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="legend-color bg-primary"></span> Revenue</span>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart
+          [data]="revenueFlowChart.data"
+          [options]="revenueFlowChart.options"
+          [type]="revenueFlowChart.type">
+        </canvas>
+      </div>
+      <div class="chart-footer">
+        <div class="trend-indicator" [ngClass]="{'text-success': revenueTrend >= 0, 'text-danger': revenueTrend < 0}">
+          <i class="bi" [class.bi-arrow-up]="revenueTrend >= 0" [class.bi-arrow-down]="revenueTrend < 0"></i>
+          {{ getAbsoluteValue(revenueTrend) }}% {{ revenueTrend >= 0 ? 'increase' : 'decrease' }} from last period
+        </div>
+      </div>
+    </div>
+
+    <!-- Membership Distribution -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3><i class="bi bi-pie-chart-fill"></i> Plan Distribution</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart
+          [data]="membershipDistributionChart.data"
+          [options]="membershipDistributionChart.options"
+          [type]="membershipDistributionChart.type">
+        </canvas>
+      </div>
+      <div class="plan-list">
+        <div *ngFor="let plan of topPlans" class="plan-item">
+          <div class="plan-info">
+            <span class="plan-color" [style.background]="getPlanColor(plan.name)"></span>
+            <span>{{ plan.name }}</span>
+          </div>
+          <div class="plan-stats">
+            <span class="subscribers">{{ plan.subscribers }}</span>
+            <span class="percentage">{{ (plan.subscribers / summary.totalMembers) * 100 | number:'1.0-0' }}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Member Growth -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3><i class="bi bi-graph-up-arrow"></i> Member Growth</h3>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="legend-color bg-success"></span> New Members</span>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart
+          [data]="memberGrowthChart.data"
+          [options]="memberGrowthChart.options"
+          [type]="memberGrowthChart.type">
+        </canvas>
+      </div>
+      <div class="chart-footer">
+        <div class="trend-indicator" [ngClass]="{'text-success': memberTrend >= 0, 'text-danger': memberTrend < 0}">
+          <i class="bi" [class.bi-arrow-up]="memberTrend >= 0" [class.bi-arrow-down]="memberTrend < 0"></i>
+          {{ getAbsoluteValue(memberTrend) }}% {{ memberTrend >= 0 ? 'growth' : 'decline' }} from last period
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity Timeline -->
+  <div class="timeline-card">
+    <div class="timeline-header">
+      <h3><i class="bi bi-activity"></i> Recent Member Activity</h3>
+      <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+    </div>
+    <div class="timeline-container">
+      <div *ngFor="let member of recentMembers" class="timeline-item">
+        <div class="timeline-badge" [ngClass]="getMemberBadgeClass(member.plan)"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <strong>{{ member.name }}</strong>
+            <span class="badge" [ngClass]="'bg-' + getPlanBadgeClass(member.plan)">{{ member.plan }}</span>
+          </div>
+          <p class="timeline-text">Joined {{ member.joinDate | date:'mediumDate' }}</p>
+          <div class="timeline-footer">
+            <span class="text-muted"><i class="bi bi-clock"></i> {{ member.joinDate  }}</span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="recentMembers.length === 0" class="empty-state">
+        <i class="bi bi-emoji-frown"></i>
+        <p>No recent member activity</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

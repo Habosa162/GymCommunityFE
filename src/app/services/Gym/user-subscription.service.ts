@@ -20,6 +20,10 @@ export class UserSubscriptionService {
     return this.http.get<UserSubscriptionRead>(`${this.apiUrl}/${id}`);
   }
 
+  getByUserId(userId: string): Observable<UserSubscriptionRead[]> {
+    return this.http.get<UserSubscriptionRead[]>(`${this.apiUrl}/user/${userId}`);
+  }
+
   getByGymId(gymId: number): Observable<UserSubscriptionRead[]> {
     return this.http.get<UserSubscriptionRead[]>(`${this.apiUrl}/gym/${gymId}`);
   }

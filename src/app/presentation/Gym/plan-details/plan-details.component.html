@@ -1,7 +1,7 @@
 <section class="bgColor w-100" style="min-height: 100vh;">
-  <div class="container" *ngIf="plan">
-    <div class=" shadow-lg p-4">
-      <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+  <div class="container" style="min-height: 100vh; min-width: 100vh;" *ngIf="plan">
+    <div class=" shadow-lg p-4" style="min-height: 100vh; min-width: 100vh;">
+      <div class="d-flex justify-content-between align-items-center mb-4 " >
         <h1 class="text-success plan-title">{{ plan.title }}</h1>
         <div class="btn-group">
           <button class="btn btn-outline-success" (click)="editMode = !editMode">
@@ -12,7 +12,7 @@
       </div>
   
       <!-- Plan Details -->
-      <div *ngIf="!editMode" class="mb-4">
+      <div *ngIf="!editMode" class="mb-4 plan-details">
         <p><strong>Description:</strong> {{ plan.description }}</p>
         <p><strong>Price:</strong> <span class="text-success">${{ plan.price }}</span></p>
         <p><strong>Duration:</strong> {{ plan.durationMonths }} months</p>
