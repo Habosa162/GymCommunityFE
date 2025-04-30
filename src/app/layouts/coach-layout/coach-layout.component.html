@@ -1,81 +1,72 @@
 <div class="coach-layout" [class.dark-mode]="isDarkMode">
     <!-- Top Navigation Bar -->
-
-    <nav class="top-nav d-flex">
-        <div class="nav-left">
-
-            <div class="logo">
-                <a routerLink="/">
-                    <img src="/assets/imgs/logo.png" alt="GymCommunity Logo">
-
-                    <span>Voltmort</span>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-light px-3">
+            <div class="container-fluid">
+                <!-- Logo -->
+                <a class="navbar-brand d-flex align-items-center" routerLink="/">
+                    <img src="/assets/imgs/logo.png" alt="GymCommunity Logo" style="height: 40px;">
+                    <span class="ms-2 fw-bold">Voltmort</span>
                 </a>
+
+                <!-- Toggle button for mobile -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#coachNavbar"
+                    aria-controls="coachNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navigation Links -->
+                <div class="collapse navbar-collapse" id="coachNavbar">
+                    <ul class="navbar-nav ms-auto" *ngIf="isAuthenticated">
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink="/coach/dashboard" routerLinkActive="active">
+                                <i class="bi bi-person-circle"></i> My Profile
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink="/coach/dashboard/portfolio" routerLinkActive="active">
+                                <i class="bi bi-file-earmark-person"></i> Portfolio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink="/coach/dashboard/certificates" routerLinkActive="active">
+                                <i class="bi bi-award"></i> Certificates
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink="/coach/dashboard/work-samples" routerLinkActive="active">
+                                <i class="bi bi-images"></i> Work Samples
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink="/coach/dashboard/offers" routerLinkActive="active">
+                                <i class="bi bi-tags-fill"></i> My Offers
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink="/coach/dashboard/Products" routerLinkActive="active">
+                                <i class="bi bi-tags-fill me-2 text-warning"></i> My Products
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLink="/coach/dashboard/my-client" routerLinkActive="active">
+                                <i class="bi bi-people"></i> My Clients
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-danger" (click)="logout()" style="cursor: pointer;">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
             </div>
-        </div>
-
-        <div class="nav-right d-flex">
-            <!-- Coach Navigation Menu -->
-            <div class="coach-nav d-flex" *ngIf="isAuthenticated">
-                <a routerLink="/coach/dashboard" routerLinkActive="active" class="nav-item">
-                    <i class="bi bi-person-circle"></i>
-                    <span>My Profile</span>
-                </a>
-                <a routerLink="/coach/dashboard/portfolio" routerLinkActive="active" class="nav-item">
-                    <i class="bi bi-file-earmark-person"></i>
-                    <span>Portfolio</span>
-                </a>
-                <a routerLink="/coach/dashboard/certificates" routerLinkActive="active" class="nav-item">
-                    <i class="bi bi-award"></i>
-                    <span>Certificates</span>
-                </a>
-                <a routerLink="/coach/dashboard/work-samples" routerLinkActive="active" class="nav-item">
-                    <i class="bi bi-images"></i>
-                    <span>Work Samples</span>
-                </a>
-                <a routerLink="/coach/dashboard/offers" routerLinkActive="active" class="nav-item">
-                    <i class="bi bi-tags-fill"></i>
-                    <span>My Offers</span>
-                </a>
-                <a routerLink="/coach/dashboard/Products" routerLinkActive="active" class="nav-item">
-                    <i class="bi bi-tags-fill me-2 text-warning"></i>
-                    <span>My Products</span>
-                </a>
-                <a routerLink="/coach/dashboard/my-client" routerLinkActive="active" class="nav-item">
-                    <i class="bi bi-people"></i>
-                    <span>My Clients</span>
-                </a>
-
-                <a (click)="logout()" class="nav-item" style="cursor: pointer;">
-                    <i class="bi bi-box-arrow-right"></i>
-                    <span>Logout</span>
-                </a>
-            </div>
+        </nav>
+    </header>
 
 
-
-            <!-- <div class="profile-dropdown d-flex " [class.active]="isProfileDropdownOpen">
-                <div class="profile-trigger" (click)="toggleProfileDropdown()">
-                    <img [src]="userImage" alt="Profile" class="profile-img">
-                    <span class="username">{{ userName }}</span>
-                    <i class="bi bi-chevron-down"></i>
-                </div> -->
-
-            <!-- <div class="dropdown-menu" *ngIf="isProfileDropdownOpen">
-                    <a routerLink="/coach/profile" class="dropdown-item">
-                        <i class="bi bi-person"></i> My Profile
-                    </a>
-                    <a routerLink="/coach/settings" class="dropdown-item">
-                        <i class="bi bi-gear"></i> Settings
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a (click)="logout()" class="dropdown-item logout-item">
-                        <i class="bi bi-box-arrow-right"></i> Logout
-                    </a>
-                </div> -->
-            <!-- </div> -->
-
-        </div>
-    </nav>
 
 
 
