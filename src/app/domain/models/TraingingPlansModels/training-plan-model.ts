@@ -9,3 +9,10 @@ export interface trainingPlan {
   startDate: Date;
   endDate: Date;
 }
+export interface CreatetrainingPlan {
+  coachId: string;
+  clientId: string;
+  name: string;
+  durationMonths: number;
+  startDate: Date;
+}

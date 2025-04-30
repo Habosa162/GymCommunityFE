@@ -1,4 +1,4 @@
-import { trainingPlan } from './../../domain/models/TraingingPlansModels/training-plan-model';
+import { CreatetrainingPlan, trainingPlan } from './../../domain/models/TraingingPlansModels/training-plan-model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -76,5 +76,9 @@ export class TrainingPlansService {
 
   getAllTrainingPlans(): Observable<trainingPlan[]> {
     return this.http.get<trainingPlan[]>(`${this.baseUrl}/GetAll`);
+  }
+
+  createTrainingPlan(trainingPlan: CreatetrainingPlan): Observable<trainingPlan> {
+    return this.http.post<trainingPlan>(`${this.baseUrl}/create`, trainingPlan);
   }
 }

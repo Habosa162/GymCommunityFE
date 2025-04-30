@@ -15,6 +15,9 @@ import { ProductService } from '../../../services/Ecommerce/product.service';
 import { Product } from '../../../domain/models/Ecommerce/product.model';
 import { CoachOfferService } from '../../../services/Coachservice/coach-offer.service';
 import { CoachOffer } from '../../../domain/models/CoachModels/coach-offer.model';
+import { FrontbaseUrl } from '../../../services/enviroment';
+import { PaymentService } from '../../../services/Ecommerce/payment.service';
+import { SubscriptionToPlanService } from '../../../services/subscription-to-plan.service';
 
 @Component({
   selector: 'app-coach-profile',
@@ -49,7 +52,9 @@ export class CoachProfileComponent implements OnInit {
     private authservice: AuthService,
     private coachclientservice: CoachCleintsService,
     private productservice: ProductService,
-    private offersservice: CoachOfferService
+    private offersservice: CoachOfferService,
+    private paymentService: PaymentService,
+    private subscriptionToPlanService: SubscriptionToPlanService
   ) { }
 
   ngOnInit(): void {
@@ -143,4 +148,63 @@ export class CoachProfileComponent implements OnInit {
   isOfferExpanded(offerId: number): boolean {
     return this.expandedOffers[offerId] || false;
   }
+
+
+  //*********subscribe to offer*********
+
+
+
+  subscribeToOffer(price: number, title: string, duration: number, coachId: string): void {
+      this.subscriptionToPlanService.subscribeToOffer(price, title, duration, coachId);
+      this.paymobpayment(price, title,coachId,duration);
+  }
+
+  paymobpayment(price: number, title: string,coachId: string,duration: number,){
+    const userName = this.authservice.getUserName();
+      const userEmail = this.authservice.getUserEmail();
+      
+  
+     
+      const orderData = {
+      amount: price * 100,
+      currency: "EGP",
+      payment_methods: [4419883, 4437311, 4437297],
+      orderItems: title,
+      billing_data: {
+        "apartment": "dumy",
+        "first_name":userName ,
+        "last_name": userName,
+        "street": "dumy",
+        "building": "dumy",
+        "phone_number": "01228987781",
+        "city": "dumy",
+        "country": "dumy",
+        "email": userEmail,
+        "floor": "dumy",
+        "state": "dumy"
+      },
+      extras: {  },
+      redirection_url: `${FrontbaseUrl}/plan-payment-success`,
+    };
+ this.paymentService.PaymobRequest(orderData).subscribe({
+      next: (response: any) => {
+        const clientSecret = response.client_secret;
+        if (clientSecret) {
+          const paymentUrl = `https://accept.paymob.com/unifiedcheckout/?publicKey=egy_pk_test_jrlnWL5oJX8IRTp9xpeHq5mmQhAMfXES&clientSecret=${clientSecret}`;
+          window.location.href = paymentUrl;
+
+        } else {
+          console.error("Client secret not found in the response.");
+          alert("Failed to retrieve payment details.");
+        }
+      },
+      error: (error) => {
+        console.log(error);
+        console.error("Error in Paymob API request:", error);
+        alert("Failed to process payment. Please try again.");
+      }
+    });
+
+  }
+ 
 }
