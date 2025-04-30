@@ -75,6 +75,7 @@
                       <span *ngIf="getDayPlan(week, 1)?.parsedData?.exercises?.length > 0" class="plan-item-name">
                         {{ getDayPlan(week, 1)?.parsedData?.exercises[0]?.exerciseName }} 
                         <span *ngIf="getDayPlan(week, 1)?.parsedData?.exercises?.length > 1">+{{ getDayPlan(week, 1)?.parsedData?.exercises?.length - 1 }} more</span>
+                        <span *ngIf="getDayPlan(week, 1)?.parsedData?.exercises[0]?.videoLink" class="has-video">(Has Video)</span>
                       </span>
                     </div>
                     <div *ngIf="getDayPlan(week, 1)?.parsedData?.meals?.length > 0" class="plan-summary">
@@ -112,6 +113,7 @@
                       <span *ngIf="getDayPlan(week, 2)?.parsedData?.exercises?.length > 0" class="plan-item-name">
                         {{ getDayPlan(week, 2)?.parsedData?.exercises[0]?.exerciseName }} 
                         <span *ngIf="getDayPlan(week, 2)?.parsedData?.exercises?.length > 1">+{{ getDayPlan(week, 2)?.parsedData?.exercises?.length - 1 }} more</span>
+                        <span *ngIf="getDayPlan(week, 2)?.parsedData?.exercises[0]?.videoLink" class="has-video">(Has Video)</span>
                       </span>
                     </div>
                     <div *ngIf="getDayPlan(week, 2)?.parsedData?.meals?.length > 0" class="plan-summary">
@@ -149,6 +151,7 @@
                       <span *ngIf="getDayPlan(week, 3)?.parsedData?.exercises?.length > 0" class="plan-item-name">
                         {{ getDayPlan(week, 3)?.parsedData?.exercises[0]?.exerciseName }} 
                         <span *ngIf="getDayPlan(week, 3)?.parsedData?.exercises?.length > 1">+{{ getDayPlan(week, 3)?.parsedData?.exercises?.length - 1 }} more</span>
+                        <span *ngIf="getDayPlan(week, 3)?.parsedData?.exercises[0]?.videoLink" class="has-video">(Has Video)</span>
                       </span>
                     </div>
                     <div *ngIf="getDayPlan(week, 3)?.parsedData?.meals?.length > 0" class="plan-summary">
@@ -186,6 +189,7 @@
                       <span *ngIf="getDayPlan(week, 4)?.parsedData?.exercises?.length > 0" class="plan-item-name">
                         {{ getDayPlan(week, 4)?.parsedData?.exercises[0]?.exerciseName }} 
                         <span *ngIf="getDayPlan(week, 4)?.parsedData?.exercises?.length > 1">+{{ getDayPlan(week, 4)?.parsedData?.exercises?.length - 1 }} more</span>
+                        <span *ngIf="getDayPlan(week, 4)?.parsedData?.exercises[0]?.videoLink" class="has-video">(Has Video)</span>
                       </span>
                     </div>
                     <div *ngIf="getDayPlan(week, 4)?.parsedData?.meals?.length > 0" class="plan-summary">
@@ -223,6 +227,7 @@
                       <span *ngIf="getDayPlan(week, 5)?.parsedData?.exercises?.length > 0" class="plan-item-name">
                         {{ getDayPlan(week, 5)?.parsedData?.exercises[0]?.exerciseName }} 
                         <span *ngIf="getDayPlan(week, 5)?.parsedData?.exercises?.length > 1">+{{ getDayPlan(week, 5)?.parsedData?.exercises?.length - 1 }} more</span>
+                        <span *ngIf="getDayPlan(week, 5)?.parsedData?.exercises[0]?.videoLink" class="has-video">(Has Video)</span>
                       </span>
                     </div>
                     <div *ngIf="getDayPlan(week, 5)?.parsedData?.meals?.length > 0" class="plan-summary">
@@ -260,6 +265,7 @@
                       <span *ngIf="getDayPlan(week, 6)?.parsedData?.exercises?.length > 0" class="plan-item-name">
                         {{ getDayPlan(week, 6)?.parsedData?.exercises[0]?.exerciseName }} 
                         <span *ngIf="getDayPlan(week, 6)?.parsedData?.exercises?.length > 1">+{{ getDayPlan(week, 6)?.parsedData?.exercises?.length - 1 }} more</span>
+                        <span *ngIf="getDayPlan(week, 6)?.parsedData?.exercises[0]?.videoLink" class="has-video">(Has Video)</span>
                       </span>
                     </div>
                     <div *ngIf="getDayPlan(week, 6)?.parsedData?.meals?.length > 0" class="plan-summary">
@@ -297,6 +303,7 @@
                       <span *ngIf="getDayPlan(week, 7)?.parsedData?.exercises?.length > 0" class="plan-item-name">
                         {{ getDayPlan(week, 7)?.parsedData?.exercises[0]?.exerciseName }} 
                         <span *ngIf="getDayPlan(week, 7)?.parsedData?.exercises?.length > 1">+{{ getDayPlan(week, 7)?.parsedData?.exercises?.length - 1 }} more</span>
+                        <span *ngIf="getDayPlan(week, 7)?.parsedData?.exercises[0]?.videoLink" class="has-video">(Has Video)</span>
                       </span>
                     </div>
                     <div *ngIf="getDayPlan(week, 7)?.parsedData?.meals?.length > 0" class="plan-summary">
@@ -388,7 +395,7 @@
                   <select class="form-control" [(ngModel)]="selectedExercise" name="exerciseSelect" (ngModelChange)="onExerciseSelect($event)">
                     <option [ngValue]="null">Select an exercise</option>
                     <option *ngFor="let availableExercise of availableExercises" [ngValue]="availableExercise">
-                      {{ availableExercise.name }}
+                      {{ availableExercise.name }} {{ availableExercise.videoLink ? '(Has Video)' : '' }}
                     </option>
                   </select>
                 </div>
@@ -421,6 +428,7 @@
                   <p><strong>Exercise:</strong> {{ exercise.exerciseName }}</p>
                   <p><strong>Muscle Group:</strong> {{ exercise.muscleGroup }}</p>
                   <p><strong>Sets:</strong> {{ exercise.sets }} | <strong>Reps:</strong> {{ exercise.reps }} | <strong>Duration:</strong> {{ exercise.duration }} min</p>
+                  <p *ngIf="exercise.videoLink"><strong>Video:</strong> <a [href]="exercise.videoLink" target="_blank">Watch Video</a></p>
                 </div>
               </div>
               <div *ngIf="dayPlanData.exercises.length === 0" class="empty-list-message">

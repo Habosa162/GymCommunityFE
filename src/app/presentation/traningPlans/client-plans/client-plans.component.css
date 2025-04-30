@@ -276,6 +276,21 @@
   display: block;
 }
 
+.has-video {
+  color: #4CAF50;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+a[href^="http"] {
+  color: #f36100;
+  text-decoration: none;
+}
+
+a[href^="http"]:hover {
+  text-decoration: underline;
+}
+
 /* Tips Section in Modal */
 .tips {
   background-color: #fff9e6;
