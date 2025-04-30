@@ -252,7 +252,7 @@ export const routes: Routes = [
       },
       {
         path: 'profile/:coachId',
-        component: CoachViewProfileComponent,
+        component: CoachProfileComponent,
       },
       {
         path: 'rate/:coachId',
@@ -265,7 +265,7 @@ export const routes: Routes = [
         path: 'dashboard',
         canActivate: [AuthGuard, CoachGuard],
         children: [
-          { path: '', component: CoachViewProfileComponent },
+          { path: '', component: CoachProfileComponent },
           { path: 'portfolio', component: CoachPortfolioComponent },
           { path: 'certificates', component: CoachCertificatesComponent },
           { path: 'work-samples', component: CoachWorkSamplesComponent },
