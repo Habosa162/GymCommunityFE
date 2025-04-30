@@ -59,6 +59,7 @@ import { TrainingPlanComponent } from './presentation/traningPlans/training-plan
 
 import { MainDashboardComponent } from './presentation/Gym/main-dashboard/main-dashboard.component';
 import { GymSubscriptionsComponent } from './presentation/Gym/gym-subscriptions/gym-subscriptions.component';
+import { CoachOffersComponent } from './presentation/Coach/coach-offers/coach-offers.component';
 
 
 export const routes: Routes = [
@@ -293,6 +294,8 @@ export const routes: Routes = [
           { path: 'certificates', component: CoachCertificatesComponent },
           { path: 'work-samples', component: CoachWorkSamplesComponent },
           { path: 'my-client', component: MyClientsComponent },
+          { path: 'offers', component: CoachOffersComponent },
+
         ],
       },
 

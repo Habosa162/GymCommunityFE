@@ -1,0 +1,56 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Add New Offer</h2>
+  <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label class="form-label">Title</label>
+      <input class="form-control" formControlName="title" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" formControlName="desc"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Price</label>
+      <input type="number" class="form-control" formControlName="price" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Duration (Months)</label>
+      <input type="number" class="form-control" formControlName="durationMonths" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Offer Image</label>
+      <input type="file" (change)="onImageChange($event)" class="form-control" />
+      <img *ngIf="previewUrl" [src]="previewUrl" alt="Preview" class="img-thumbnail mt-2" width="150" />
+    </div>
+
+    <button class="btn btn-primary" type="submit" [disabled]="offerForm.invalid">Submit Offer</button>
+  </form>
+</div>
+
+<div class="container mt-5">
+  <h3 class="mb-4">Your Offers</h3>
+  <div class="row gy-4">
+    <div class="col-md-4" *ngFor="let offer of offers">
+      <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+        <img *ngIf="offer.imageUrl" [src]="offer.imageUrl" class="card-img-top object-fit-cover" alt="Offer Image"
+          style="height: 180px; object-fit: cover;">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title fw-bold">{{ offer.title }}</h5>
+          <p class="text-success fw-bold mb-1">${{ offer.price }}</p>
+          <p class="mb-1"><span class="badge bg-primary">{{ offer.durationMonths }} months</span></p>
+          <p class="card-text text-muted mb-2" style="min-height: 48px;">{{ offer.desc }}</p>
+          <div class="mt-auto d-flex gap-2">
+            <button class="btn btn-outline-primary btn-sm" (click)="startEditOffer(offer)"><i class="fa fa-edit"></i>
+              Edit</button>
+            <button class="btn btn-outline-danger btn-sm" (click)="deleteOffer(offer.id!)"><i class="fa fa-trash"></i>
+              Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

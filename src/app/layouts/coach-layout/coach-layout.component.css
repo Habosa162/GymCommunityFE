@@ -1,9 +1,7 @@
-
-
 .Coach Layout Styles:host {
-    display: block;
-    height: 100vh;
-    width: 100%;
+  display: block;
+  height: 100vh;
+  width: 100%;
 }
 
 .coach-layout {
@@ -154,8 +152,8 @@
 /* Profile Dropdown */
 .profile-dropdown {
 
-    position: relative;
-    margin-left: 1rem;
+  position: relative;
+  margin-left: 1rem;
 
 }
 
@@ -265,10 +263,10 @@
 /* Main Content */
 .main-content {
 
-    /* margin-top: 70px;
+  /* margin-top: 70px;
     padding: 2rem; */
-    flex: 1;
-    transition: all 0.3s ease;
+  flex: 1;
+  transition: all 0.3s ease;
 }
 
 .dark-mode .main-content {

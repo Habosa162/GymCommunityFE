@@ -1,7 +1,7 @@
 <div class="coach-layout" [class.dark-mode]="isDarkMode">
     <!-- Top Navigation Bar -->
 
-    <header class="top-nav d-flex">
+    <nav class="top-nav d-flex">
         <div class="nav-left">
 
             <div class="logo">
@@ -31,6 +31,10 @@
                 <a routerLink="/coach/dashboard/work-samples" routerLinkActive="active" class="nav-item">
                     <i class="bi bi-images"></i>
                     <span>Work Samples</span>
+                </a>
+                <a routerLink="/coach/dashboard/offers" routerLinkActive="active" class="nav-item">
+                    <i class="bi bi-tags-fill"></i>
+                    <span>My Offers</span>
                 </a>
                 <a routerLink="/coach/dashboard/my-client" routerLinkActive="active" class="nav-item">
                     <i class="bi bi-people"></i>
@@ -64,7 +68,7 @@
             </div>
 
         </div>
-    </header>
+    </nav>
 
 
 
@@ -73,7 +77,7 @@
         <router-outlet></router-outlet>
     </main>
 
-    
+
 </div>
 
 <!-- <app-footer></app-footer> -->

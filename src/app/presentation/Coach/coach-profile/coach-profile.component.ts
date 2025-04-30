@@ -13,12 +13,14 @@ import { CoachCleintsService } from '../../../services/Coachservice/coacclients.
 import { CoachClientsDTO } from '../../../domain/models/CoachModels/coachclient.model';
 import { ProductService } from '../../../services/Ecommerce/product.service';
 import { Product } from '../../../domain/models/Ecommerce/product.model';
+import { CoachOfferService } from '../../../services/Coachservice/coach-offer.service';
+import { CoachOffer } from '../../../domain/models/CoachModels/coach-offer.model';
 
 @Component({
   selector: 'app-coach-profile',
   templateUrl: './coach-profile.component.html',
   styleUrls: ['./coach-profile.component.css'],
-  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule ]
+  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule]
 })
 export class CoachProfileComponent implements OnInit {
   coachId: string = '';
@@ -38,13 +40,16 @@ export class CoachProfileComponent implements OnInit {
   totalPages: number = 0;
   totalCount: number = 0;
   coachproducts: Product[] = [];
+  coachoffers: CoachOffer[] = [];
+  expandedOffers: { [key: number]: boolean } = {};
 
   constructor(
     private route: ActivatedRoute,
     private coachService: CoachService,
     private authservice: AuthService,
     private coachclientservice: CoachCleintsService,
-    private productservice: ProductService
+    private productservice: ProductService,
+    private offersservice: CoachOfferService
   ) { }
 
   ngOnInit(): void {
@@ -54,6 +59,7 @@ export class CoachProfileComponent implements OnInit {
       this.loadCoachProfile();
       this.loadcoachclient();
       this.loadcoachproducts();
+      this.loadcoachoffers(this.coachId);
     }
   }
 
@@ -66,6 +72,14 @@ export class CoachProfileComponent implements OnInit {
     })
   }
 
+  loadcoachoffers(coachid: any): void {
+    this.offersservice.getByCoachId(this.coachId).subscribe({
+      next: (res: any) => {
+        this.coachoffers = res || [];
+        console.log(this.coachoffers)
+      }
+    })
+  }
   loadcoachclient(): void {
     this.coachclientservice.getClientsByCoachId(this.currentPage, this.pageSize).subscribe({
       next: (response: any) => {
@@ -120,5 +134,13 @@ export class CoachProfileComponent implements OnInit {
 
   getSocialMediaLinks(): string[] {
     return this.portfolio?.socialMediaLinksJson || [];
+  }
+
+  toggleOfferExpansion(offerId: number): void {
+    this.expandedOffers[offerId] = !this.expandedOffers[offerId];
+  }
+
+  isOfferExpanded(offerId: number): boolean {
+    return this.expandedOffers[offerId] || false;
   }
 }

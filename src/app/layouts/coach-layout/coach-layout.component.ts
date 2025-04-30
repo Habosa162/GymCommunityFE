@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FooterComponent } from '../../core/shared/components/footer/footer.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-coach-layout',
     standalone: true,
-    imports: [CommonModule, RouterModule,FooterComponent],
+    imports: [CommonModule, RouterModule, FooterComponent, ReactiveFormsModule, FormsModule],
     templateUrl: './coach-layout.component.html',
     styleUrls: ['./coach-layout.component.css']
 })
@@ -104,10 +105,10 @@ export class CoachLayoutComponent implements OnInit {
 
 
     @HostListener('document:click', ['$event'])
-onClickOutside(event: Event) {
-  const target = event.target as HTMLElement;
-  if (!target.closest('.profile-dropdown')) {
-    this.isProfileDropdownOpen = false;
-  }
-}
+    onClickOutside(event: Event) {
+        const target = event.target as HTMLElement;
+        if (!target.closest('.profile-dropdown')) {
+            this.isProfileDropdownOpen = false;
+        }
+    }
 } 
