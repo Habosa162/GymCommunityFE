@@ -168,6 +168,7 @@ main {
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
+  background-color: #2f2e2e;
 }
 
 .stat svg {
@@ -211,6 +212,7 @@ main {
       url(../imgs/overlay-bg.jpg); */
   background-position: center;
   background-attachment: fixed;
+  background-color: rgb(35, 35, 35);
 }
 
 #carouselExampleIndicators button {
