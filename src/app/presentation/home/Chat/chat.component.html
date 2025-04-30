@@ -1,0 +1,32 @@
+<div class="chat-container">
+  <div class="group-section">
+    <h3>Groups</h3>
+    <div>
+      <input [(ngModel)]="newGroupName" placeholder="New group name" (keyup.enter)="createGroup()">
+      <button (click)="createGroup()">Create Group</button>
+    </div>
+    <ul>
+      <li *ngFor="let group of groups" 
+          [class.selected]="group.groupId === selectedGroupId"
+          (click)="selectGroup(group.groupId)">
+        {{ group.groupName }}
+      </li>
+    </ul>
+  </div>
+  <div class="chat-section">
+    <div class="messages" *ngIf="selectedGroupId; else noGroup">
+      <div *ngFor="let message of messages" 
+           [ngClass]="{'message-sent': message.senderId === currentUserId, 'message-received': message.senderId !== currentUserId}">
+        <p>{{ message.content }}</p>
+        <small>{{ message.timestamp | date:'short' }}</small>
+      </div>
+    </div>
+    <ng-template #noGroup>
+      <p>Select a group to start chatting.</p>
+    </ng-template>
+    <div class="input-area" *ngIf="selectedGroupId">
+      <input [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" placeholder="Type a message...">
+      <button (click)="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>

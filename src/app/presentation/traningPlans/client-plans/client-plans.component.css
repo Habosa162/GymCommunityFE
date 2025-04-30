@@ -7,18 +7,29 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(243, 97, 0, 0.2);
-  border-radius: 4px;
+  background-color: rgb(16 230 9 / 30%) !important;
+  border-radius: 0.375rem;
+}
+:host-context(body.dark-mode) .day-plan-info {
+  background-color: rgb(46 171 42 / 25%) !important;
 }
 
 .day-plan-info h5 {
   margin-bottom: 5px;
-  color: #f36100;
+  color: black;
+}
+:host-context(body.dark-mode) .day-plan-info h5 {
+  margin-bottom: 5px;
+  color: limegreen;
 }
 
 .day-plan-info span {
   font-size: 12px;
-  color: #666;
+  color: black;
+  background-color: #0000004d;
+}
+:host-context(body.dark-mode) .day-plan-info span {
+  color: rgba(255, 255, 255, 0.5);
 }
 
 /* Plan Summary Display */
@@ -35,7 +46,7 @@
   padding: 2px 6px;
   border-radius: 3px;
   background-color: rgba(243, 97, 0, 0.15);
-  color: #f36100;
+  color: limegreen;
   font-weight: 500;
 }
 
@@ -54,13 +65,17 @@
 .class-timetable td {
   padding: 15px;
   text-align: center;
-  border: 1px solid #eee;
+  border: 1px solid gray;
 }
 
 .class-timetable th {
-  background-color: #f8f9fa;
+  background-color: rgb(192, 192, 192);
   font-weight: 600;
-  color: #333;
+  color: black;
+}
+:host-context(body.dark-mode) .class-timetable th {
+  background-color: #202020;
+  color: white;
 }
 
 .class-time {
@@ -91,20 +106,25 @@
 }
 
 .table-controls li {
-  padding: 8px 15px;
-  border-radius: 4px;
   cursor: pointer;
-  background-color: #f8f9fa;
+  font-weight: 400;
+  border: 2px solid limegreen;
+  background-color: transparent;
   transition: all 0.3s ease;
+  color: black;
+}
+:host-context(body.dark-mode) .table-controls li {
+  color: white;
 }
 
 .table-controls li:hover {
-  background-color: #e9ecef;
+  background-color: limegreen;
+  color: black;
 }
 
 .table-controls li.active {
-  background-color: #f36100;
-  color: white;
+  background-color: limegreen;
+  color: black;
 }
 
 /* Section Title */
@@ -113,7 +133,7 @@
 }
 
 .section-title span {
-  color: #f36100;
+  color: limegreen;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -130,19 +150,20 @@
 
 /* View Button Styles */
 .view-btn {
-  background-color: #f36100;
+  background-color: limegreen;
   color: white;
   border: none;
   padding: 5px 10px;
-  border-radius: 4px;
+  border-radius: 0.375rem;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: medium;
   margin-top: 10px;
   transition: background-color 0.3s;
 }
 
 .view-btn:hover {
-  background-color: #e25a00;
+  background-color: black;
 }
 
 /* Modal Styles */
@@ -191,35 +212,40 @@
 }
 
 .section h4 {
-  color: #f36100;
+  color: limegreen;
   margin-bottom: 15px;
   font-size: 18px;
 }
 
-.exercise-item, .meal-item {
+.exercise-item,
+.meal-item {
   background-color: #f8f9fa;
   border-radius: 4px;
   padding: 15px;
   margin-bottom: 15px;
 }
 
-.exercise-item h5, .meal-item h5 {
+.exercise-item h5,
+.meal-item h5 {
   color: #333;
   margin: 0 0 10px 0;
 }
 
-.exercise-details, .meal-details {
+.exercise-details,
+.meal-details {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 10px;
 }
 
-.exercise-details p, .meal-details p {
+.exercise-details p,
+.meal-details p {
   margin: 5px 0;
   font-size: 14px;
 }
 
-.exercise-details strong, .meal-details strong {
+.exercise-details strong,
+.meal-details strong {
   color: #666;
 }
 
@@ -258,7 +284,8 @@
     margin: 10px;
   }
 
-  .exercise-details, .meal-details {
+  .exercise-details,
+  .meal-details {
     grid-template-columns: 1fr;
   }
 }
@@ -274,6 +301,21 @@
   text-overflow: ellipsis;
   max-width: 100%;
   display: block;
+}
+
+.has-video {
+  color: #4CAF50;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+a[href^="http"] {
+  color: #f36100;
+  text-decoration: none;
+}
+
+a[href^="http"]:hover {
+  text-decoration: underline;
 }
 
 /* Tips Section in Modal */
@@ -293,4 +335,38 @@
   border-radius: 4px;
   margin-top: 20px;
   color: #666;
-} 
+}
+
+/*my changes*/
+.class-time {
+  color: rgb(114, 228, 114) !important;
+}
+.class-timetable table tbody tr td.class-time {
+  font-size: 12px;
+  background: white !important;
+  border: 1px solid #363636;
+}
+:host-context(body.dark-mode) .class-timetable table tbody tr td.class-time {
+  font-size: 12px;
+  background: black !important;
+  border: 1px solid #363636;
+}
+
+.class-timetable table tbody tr td.dark-bg {
+  background: #dadada;
+}
+:host-context(body.dark-mode) .class-timetable table tbody tr td.dark-bg {
+  background: #151515;
+}
+.class-timetable table tbody tr td.hover-bg:hover {
+  background: transparent !important;
+}
+.table > :not(caption) > * > * {
+  background-color: transparent !important;
+  color: black;
+}
+:host-context(body.dark-mode) .table > :not(caption) > * > * {
+  background-color: transparent !important;
+  color: white;
+  border-color: gray;
+}

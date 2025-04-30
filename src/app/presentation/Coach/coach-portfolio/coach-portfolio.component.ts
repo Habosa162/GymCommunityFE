@@ -94,8 +94,9 @@ export class CoachPortfolioComponent implements OnInit {
             aboutMeDescription: data.aboutMeDescription || '',
             qualifications: data.qualifications || '',
             experienceYears: data.experienceYears || 0,
-            skills: skillsString,
-            socialLinks: socialLinksString,
+            skills: this.safeParseArray(data.skillsJson).join(', '),
+            socialLinks: this.safeParseArray(data.socialMediaLinksJson).join(', ')
+
           });
         } else {
           this.isNewPortfolio = true;
@@ -111,7 +112,15 @@ export class CoachPortfolioComponent implements OnInit {
       },
     });
   }
-
+  private safeParseArray(value: any): string[] {
+    if (Array.isArray(value)) return value;
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {

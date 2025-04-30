@@ -21,7 +21,7 @@
   height: 100%;
   opacity: 0;
   transition: opacity 0.3s ease;
-  background-color: rgba(243, 97, 0, 0.1);
+  background-color: rgba(6, 16, 10, 0.46);
   padding: 10px;
   border-radius: 4px;
 }
@@ -40,23 +40,24 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(243, 97, 0, 0.2);
+  background-color: rgb(184 183 182 / 20%);
   border-radius: 4px;
 }
 
 .day-plan-info h5 {
   margin-bottom: 5px;
-  color: #f36100;
+  color: limegreen;
 }
 
 .day-plan-info span {
   font-size: 12px;
-  color: #666;
+  color: white;
+  background-color: rgb(50 205 50 / 15%);
 }
 
 /* Week Hover State */
 .week-hover td {
-  background-color: rgba(243, 97, 0, 0.05);
+  background-color: rgba(18, 205, 52, 0.05);
 }
 
 .week-hover .add-week-button {
@@ -72,6 +73,7 @@
 .has-plan {
   opacity: 1 !important;
   cursor: default;
+  padding: 10px;
 }
 
 .week-plan-info {
@@ -143,7 +145,7 @@
 }
 
 .primary-btn {
-  background-color: #f36100;
+  background-color: limegreen;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -184,12 +186,12 @@
 }
 
 .section-tab:hover {
-  color: #f36100;
+  color: limegreen;
 }
 
 .section-tab.active {
-  color: #f36100;
-  border-bottom-color: #f36100;
+  color: limegreen;
+  border-bottom-color: limegreen;
 }
 
 .section-content {
@@ -202,18 +204,21 @@
 }
 
 /* Exercise Items */
-.exercise-list, .meal-list {
+.exercise-list,
+.meal-list {
   margin-bottom: 15px;
 }
 
-.exercise-item, .meal-item {
+.exercise-item,
+.meal-item {
   border: 1px solid #eee;
   border-radius: 4px;
   margin-bottom: 15px;
   background-color: #f9f9f9;
 }
 
-.exercise-header, .meal-header {
+.exercise-header,
+.meal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -222,12 +227,14 @@
   border-bottom: 1px solid #eee;
 }
 
-.exercise-header h5, .meal-header h5 {
+.exercise-header h5,
+.meal-header h5 {
   margin: 0;
   color: #444;
 }
 
-.exercise-details, .meal-details {
+.exercise-details,
+.meal-details {
   padding: 15px;
 }
 
@@ -305,20 +312,34 @@
   padding: 2px 6px;
   border-radius: 3px;
   background-color: rgba(243, 97, 0, 0.15);
-  color: #f36100;
+  color: limegreen;
   font-weight: 500;
 }
 
 .plan-item-name {
   font-size: 11px;
-  color: #444;
-  margin-top: 2px;
-  font-style: italic;
-  white-space: nowrap;
+  color: #333;
+  display: block;
+  margin-top: 3px;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
-  display: block;
+  white-space: nowrap;
+}
+
+.has-video {
+  color: #4CAF50;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+a[href^="http"] {
+  color: #f36100;
+  text-decoration: none;
+}
+
+a[href^="http"]:hover {
+  text-decoration: underline;
 }
 
 /* Crossed out styles */
@@ -330,7 +351,7 @@
 
 .crossed-out::before,
 .crossed-out::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 0;
@@ -381,7 +402,7 @@
 }
 
 .add-single-btn {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   padding: 8px 15px;
@@ -418,4 +439,30 @@
 .meal-details p {
   margin: 5px 0;
   font-size: 14px;
+}
+
+/*my changes*/
+.class-timetable table thead tr th {
+  background: limegreen !important;
+}
+
+.class-timetable table tbody tr td.hover-bg:hover {
+  background: limegreen !important;
+}
+.add-day-button {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.class-timetable table tbody tr td.class-time {
+  color: white;
+  font-size: 16px;
+}
+small {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: white;
+  width: 60px;
 }
