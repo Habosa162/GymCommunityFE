@@ -203,27 +203,35 @@ export const routes: Routes = [
     canActivate: [AuthGuard, GymOwnerGuard],
   },
   {
-    path: 'gym-owner/plan/:id',
-    component: PlanDetailsComponent,
-    canActivate: [AuthGuard, GymOwnerGuard],
-  },
-  {
-    path: 'gym-owner/subscription/:id',
-    component: SubscriptionDetailsComponent,
-  },
-  {
     path: 'gym-owner/dashboard',
     component: MainDashboardComponent,
+    canActivate: [AuthGuard, GymOwnerGuard],
+
   },
   {
     path: 'gym-owner/dashboard/AllSub',
-    component: GymSubscriptionsComponent
+    component: GymSubscriptionsComponent,
+    canActivate: [AuthGuard, GymOwnerGuard],
+
+  },
+
+  {
+    path: 'gym-owner/subscription/:id',
+    component: SubscriptionDetailsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'gym-owner/plan/:id',
+    component: PlanDetailsComponent,
+    canActivate: [AuthGuard],
   },
 
   //For Users
   { path: 'gyms/:id', component: UserGymDetailsComponent },
   { path: 'gyms', component: GymListComponent },
-  {path: 'user/gym-subs', component: UserGymSubComponent},
+  {path: 'user/gym-subs', component: UserGymSubComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: 'sub-payment-success',
     component: SubPaymentSuccessComponent,

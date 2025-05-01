@@ -6,6 +6,7 @@ import { GymPlanService } from '../../../services/Gym/gym-plan.service';
 import { UserSubscriptionService } from '../../../services/Gym/user-subscription.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-plan-details',
@@ -40,14 +41,19 @@ export class PlanDetailsComponent implements OnInit {
     4: 'Refunded'
   };
 
+  isGymOwner: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private gymPlanService: GymPlanService,
-    private userSubscriptionService: UserSubscriptionService
+    private userSubscriptionService: UserSubscriptionService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    const userRole = this.authService.getUserRole(); 
+    this.isGymOwner = userRole === 'GymOwner';
     this.planId = +this.route.snapshot.params['id'];
     this.loadPlan();
     this.loadSubscriptions();

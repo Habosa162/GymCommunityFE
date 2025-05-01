@@ -1,107 +1,128 @@
-<section id="gym-memberships" class="gym-memberships py-5 bg-light min-vh-100">
+<section id="gym-memberships" class="bgColor gym-memberships py-4 min-vh-100">
     <div class="container">
       <!-- Header -->
-      <div class="text-center mb-5">
-        <h2 class="section-title text-primary">My Gym Memberships 🏋️</h2>
+      <div class="text-center mb-4">
+        <h2 class="section-title" style="color: #32CD32;">My Gym Memberships 🏋️</h2>
         <p class="section-subtitle text-muted">Access your subscriptions and entry passes</p>
       </div>
   
       <!-- Active Memberships -->
       <div class="row g-4">
         <div class="col-12">
-          <h4 class="mb-3">Active Memberships</h4>
+          <h4 class="mb-3" style="color: #32CD32;">Active Memberships</h4>
         </div>
-        
-        <!-- Membership Card -->
-        <div class="col-md-6 col-lg-4" *ngFor="let membership of activeMemberships">
-          <div class="card membership-card shadow-sm">
-            <div class="card-header bg-primary text-white">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">{{membership.planTitle}}</h5>
-                <span class="badge bg-light text-primary">{{membership.status}}</span>
-              </div>
+
+        <!-- Filters & Search -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+            <input type="text" class="form-control" placeholder="Search by Gym Name or Plan Title" [(ngModel)]="searchTerm">
             </div>
-            <div class="card-body">
-              <!-- QR Code Section -->
-              <div class="text-center mb-4">
-                <div class="qr-code-container p-3 bg-white rounded">
-                    <img class="qr-data" [src]="membership.qrCodeData" [alt]="membership.qrCodeData">
-                    <p class="small text-muted mt-2 mb-0">Scan at gym entrance</p>
+            <div class="col-md-6">
+            <select class="form-select" [(ngModel)]="filterOption">
+                <option value="">All Memberships </option>
+                <option value="privateCoach">Has Private Coach</option>
+                <option value="nutritionPlan">Has Nutrition Plan</option>
+                <option value="allAccess">Has All Area Access</option>
+                <option value="expiringSoon">Expiring Soon</option> 
+
+            </select>
+            </div>
+        </div>
+
+        <!-- Membership Card -->
+        <div class="col-md-6 col-lg-4" *ngFor="let membership of filteredActiveMemberships">
+            <div class="card membership-card shadow-sm d-flex flex-column h-100"> <!-- Added h-100 here -->
+              <div class="card-header" style="background-color: #32CD32; color: white;">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0">{{membership.planTitle}}</h5>
+                  <span class="badge" style="background-color: white; color: #32CD32;">{{membership.status}}</span>
                 </div>
               </div>
               
-              <!-- Membership Details -->
-              <ul class="list-group list-group-flush mb-3">
-                <li class="list-group-item d-flex justify-content-between">
-                  <span><i class="fas fa-calendar-alt me-2"></i>Start Date</span>
-                  <span>{{membership.startDate | date}}</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between">
-                  <span><i class="fas fa-calendar-times me-2"></i>Expiry Date</span>
-                  <span [class.text-danger]="isExpiringSoon(membership.endDate)">
-                    {{membership.expiresAt | date}}
-                    <span *ngIf="isExpiringSoon(membership.endDate)" class="badge bg-warning text-dark ms-2">Expiring soon</span>
-                  </span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between">
-                  <span><i class="fas fa-clock me-2"></i>Remaining</span>
-                  <span>{{getRemainingDays(membership.expiresAt)}} days</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between gym-link" [routerLink]="['/gyms', membership.gymId]">
-                    <span><i class="fas fa-dumbbell me-2"></i>Gym Name</span>
+              <div class="card-body d-flex flex-column flex-grow-1"> <!-- Added flex classes here -->
+                <!-- QR Code Section -->
+                <div class="qr-section card shadow-sm mb-3" *ngIf="membership.qrCodeData" style="border-color: #32CD32;">
+                  <div class="card-header fw-semibold" style="background-color: #f0fff0; color: #228B22;">QR Code</div>
+                  <div class="qr-code-container p-3">
+                    <div class="qr-wrapper">
+                      <img class="qr-data" [src]="membership.qrCodeData" [alt]="membership.qrCodeData" style="border-color: #32CD32;">
+                      <button class="btn scan-btn" style="background-color: #32CD32; color: white;" [routerLink]="['/gym-owner/subscription', membership.id]">Scan</button>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Membership Details -->
+                <ul class="list-group list-group-flush mb-3 flex-grow-0"> <!-- Added flex-grow-0 -->
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span><i class="fas fa-calendar-alt me-2" style="color: #32CD32;"></i>Start Date</span>
+                    <span>{{membership.startDate | date}}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span><i class="fas fa-calendar-times me-2" style="color: #32CD32;"></i>Expiry Date</span>
+                    <span [class.text-danger]="isExpiringSoon(membership.expiresAt)">
+                      {{membership.expiresAt | date}}
+                      <br>
+                      <span *ngIf="isExpiringSoon(membership.expiresAt)" class="badge bg-warning text-dark">Expiring soon</span>
+                    </span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span><i class="fas fa-clock me-2" style="color: #32CD32;"></i>Remaining</span>
+                    <span>{{getRemainingDays(membership.expiresAt)}} days</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between gym-link" [routerLink]="['/gyms', membership.gymId]">
+                    <span><i class="fas fa-dumbbell me-2" style="color: #32CD32;"></i>Gym Name</span>
                     <span>{{membership.gymName}}</span>
                   </li>
-                <li class="list-group-item d-flex justify-content-between">
-                  <span><i class="fas fa-door-open me-2"></i>Access</span>
-                  <span>6AM-10PM</span>
-                </li>
-              </ul>
-              
-              <!-- Features -->
-              <div class="membership-features mb-3">
-                <h6 class="text-muted">Plan Features:</h6>
-                <ul class="list-unstyled">
-                  <li *ngIf="membership.hasPrivateCoach">
-                    <i class="fas fa-check-circle text-success me-2"></i>Has Private Coach
-                  </li>
-                  <li *ngIf="membership.hasNutritionPlan">
-                    <i class="fas fa-check-circle text-success me-2"></i>Has Nutrition Plan
-                  </li>
-                  <li *ngIf="membership.hasAccessToAllAreas">
-                    <i class="fas fa-check-circle text-success me-2"></i>Has Access To All Areas
-                  </li>
                 </ul>
+                
+                <!-- Features -->
+                <div class="membership-features mb-3 flex-grow-0"> <!-- Added flex-grow-0 -->
+                  <h6 class="planf">Plan Features:</h6>
+                  <ul class="list-unstyled">
+                    <li *ngIf="membership.hasPrivateCoach">
+                      <i class="fas fa-check-circle me-2" style="color: #32CD32;"></i>Has Private Coach
+                    </li>
+                    <li *ngIf="membership.hasNutritionPlan">
+                      <i class="fas fa-check-circle me-2" style="color: #32CD32;"></i>Has Nutrition Plan
+                    </li>
+                    <li *ngIf="membership.hasAccessToAllAreas">
+                      <i class="fas fa-check-circle me-2" style="color: #32CD32;"></i>Has Access To All Areas
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <!-- Footer that sticks to bottom -->
+              <div class="card-footer bg-transparent mt-auto p-3"> <!-- Added mt-auto here -->
+                <div class="d-flex justify-content-between">
+                  <button class="btn btn-sm btn-outline-success" [routerLink]="['/gym-owner/plan/', membership.planId]">
+                    <i class="fas fa-info-circle me-1"></i> Plan Details
+                  </button>
+                  <button class="btn btn-sm btn-success" [routerLink]="['/gyms', membership.gymId]" fragment="plans">
+                    <i class="fas fa-sync-alt me-1"></i> Renew
+                  </button>
+                </div>
               </div>
             </div>
-            <!-- <div class="card-footer bg-transparent">
-              <div class="d-flex justify-content-between">
-                <button class="btn btn-sm btn-outline-primary" (click)="showDetails(membership)">
-                  <i class="fas fa-info-circle me-1"></i> Details
-                </button>
-                <button class="btn btn-sm btn-success" (click)="renewMembership(membership)">
-                  <i class="fas fa-sync-alt me-1"></i> Renew
-                </button>
-              </div>
-            </div> -->
           </div>
-        </div>
         
         <!-- No Memberships Message -->
         <div class="col-12" *ngIf="activeMemberships.length === 0">
-          <div class="alert alert-info text-center">
-            <h5>No active memberships found</h5>
+          <div class=" alert-info text-center">
+            <h5 class="noSub">No active memberships found</h5>
             <p>You don't have any active gym memberships at this time.</p>
-            <button class="btn btn-primary" routerLink="/plans">Browse Membership Plans</button>
+            <button class="btn" style="background-color: #32CD32; color: white;" routerLink="/gyms">Browse Membership Plans</button>
           </div>
         </div>
       </div>
   
-      <!-- Expired Memberships (Collapsible) -->
+      <!-- Expired Memberships  -->
       <div class="row mt-5" *ngIf="expiredMemberships.length > 0">
         <div class="col-12">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4>Previous Memberships</h4>
-            <button class="btn btn-sm btn-outline-secondary" (click)="showExpired = !showExpired">
+            <h4 style="color: #32CD32;">Previous Memberships</h4>
+            <button class="btn btn-sm" (click)="showExpired = !showExpired" 
+                    style="border: 1px solid #32CD32; color: #32CD32;">
               {{showExpired ? 'Hide' : 'Show'}} Expired
             </button>
           </div>
@@ -109,10 +130,10 @@
           <div class="row g-4" *ngIf="showExpired">
             <div class="col-md-6 col-lg-4" *ngFor="let membership of expiredMemberships">
               <div class="card membership-card expired">
-                <div class="card-header bg-secondary text-white">
+                <div class="card-header" style="background-color: #6c757d; color: white;">
                   <div class="d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">{{membership.planTitle}}</h5>
-                    <span class="badge bg-light text-dark">Expired</span>
+                    <span class="badge" style="background-color: white; color: #6c757d;">Expired</span>
                   </div>
                 </div>
                 <div class="card-body">
@@ -122,7 +143,7 @@
                       <span>{{membership.expiresAt | date}}</span>
                     </li>
                     <li class="list-group-item">
-                      <button class="btn btn-sm btn-primary w-100" [routerLink]="['/gyms', membership.gymId]" fragment="plans">
+                      <button class="btn btn-sm w-100" style="background-color: #32CD32; color: white;" [routerLink]="['/gyms', membership.gymId]" fragment="plans">
                         Renew Membership
                       </button>
                     </li>
@@ -134,4 +155,4 @@
         </div>
       </div>
     </div>
-  </section>
+</section>

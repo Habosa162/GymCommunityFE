@@ -3,7 +3,7 @@
     <div class=" shadow-lg p-4" style="min-height: 100vh; min-width: 100vh;">
       <div class="d-flex justify-content-between align-items-center mb-4 " >
         <h1 class="text-success plan-title">{{ plan.title }}</h1>
-        <div class="btn-group">
+        <div class="btn-group" *ngIf="isGymOwner">
           <button class="btn btn-outline-success" (click)="editMode = !editMode">
             {{ editMode ? 'Cancel' : 'Edit Plan' }}
           </button>

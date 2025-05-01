@@ -3,7 +3,7 @@
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
     <h1 class="display-5 title">Subscription Details</h1>
-    <div class="btn-group">
+    <div class="btn-group" *ngIf="isGymOwner">
       <button class="btn btn-outline-success" (click)="toggleEditMode()">
         <i class="bi bi-pencil-square me-1"></i>{{ editMode ? 'Cancel' : 'Edit' }}
       </button>

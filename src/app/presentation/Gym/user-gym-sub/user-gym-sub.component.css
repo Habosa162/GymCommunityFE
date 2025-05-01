@@ -1,35 +1,205 @@
+/* Light Mode Styles */
+.section-title, .section-subtitle{
+  margin-bottom: 10px;
+}
 .membership-card {
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #e0e0e0;
+  display: flex !important;
+  flex-direction: column !important;
+  /* height: 100% !important; */
+}
+.card-body {
+  /* flex-grow: 1 !important;  */
+}
+.card-footer {
+  /* margin-top: auto !important;  */
+  align-items: end;
+}
+.membership-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(50, 205, 50, 0.15);
+}
+
+.membership-card.expired {
+  opacity: 0.8;
+}
+.planf{
+  color:  rgb(143, 141, 141) !important;
+}
+.qr-code-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center; 
+  height: 100%; 
+}
+
+.card-header {
+  font-weight: 600;
+  padding: 1rem;
+}
+
+.list-group-item {
+  padding: 0.75rem 1.25rem;
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+.gym-link {
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.gym-link:hover {
+  background-color: #f0fff0;
+  color: #228B22;
+}
+
+.qr-wrapper {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.qr-data {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: filter 0.3s ease;
+}
+
+.scan-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.qr-wrapper:hover .scan-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.qr-wrapper:hover .qr-data {
+  filter: brightness(0.7);
+}
+
+/* Dark Mode Styles */
+:host-context(body.dark-mode) .membership-card {
+  background-color: #2d2d2d;
+  border-color: #32CD32;
+}
+:host-context(body.dark-mode) .section-subtitle{
+  color: rgb(143, 141, 141) !important;
+}
+
+:host-context(body.dark-mode) .membership-features, .planf{
+  color: white;
+}
+
+:host-context(body.dark-mode) .card-header {
+  background-color: #228B22 !important;
+}
+
+:host-context(body.dark-mode) .list-group-item {
+  background-color: #2d2d2d;
+  color: white !important;
+  border-color: #3d3d3d;
+}
+
+:host-context(body.dark-mode) .qr-code-container {
+  border-color: #32CD32;
+  background-color: #2d2d2d;
+}
+
+:host-context(body.dark-mode) .gym-link:hover {
+  background-color: #3d3d3d;
+  color: #32CD32 !important;
+}
+
+:host-context(body.dark-mode) .section-title,
+:host-context(body.dark-mode) h4 {
+  color: #32CD32 !important;
+}
+
+:host-context(body.dark-mode) .qr-section {
+  background-color: #2d2d2d;
+  border-color: #32CD32 !important;
+}
+
+:host-context(body.dark-mode) .qr-section .card-header {
+  background-color: #1a3e1a !important;
+  color: #32CD32 !important;
+}
+:host-context(body.dark-mode) .noSub{
+  color: white !important;
+}
+
+/* Filter Section Styles */
+.filter-label {
+  font-weight: 600;
+  color: #32CD32;
+  padding: 0.25rem 0;
+}
+
+.gym-filter-chip, .feature-filter-chip {
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.75rem;
+}
+
+.gym-filter-chip:hover, .feature-filter-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(50, 205, 50, 0.2);
+}
+
+/* Dark Mode Styles */
+:host-context(body.dark-mode) .filter-label {
+  color: #32CD32;
+}
+
+:host-context(body.dark-mode) .gym-filter-chip:not(.active),
+:host-context(body.dark-mode) .feature-filter-chip:not(.active) {
+  background-color: #2d2d2d !important;
+  color: #32CD32 !important;
+}
+
+:host-context(body.dark-mode) .input-group-text {
+  background-color: #2d2d2d !important;
+  border-color: #32CD32 !important;
+}
+
+:host-context(body.dark-mode) .form-control,
+:host-context(body.dark-mode) .form-select {
+  background-color: #2d2d2d !important;
+  border-color: #32CD32 !important;
+  color: white !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .membership-card {
+    margin-bottom: 20px;
   }
   
-  .membership-card:hover {
-    transform: translateY(-5px);
+  .qr-data {
+    width: 150px;
+    height: 150px;
+  }
+  .filter-label {
+    width: 100%;
+    margin-bottom: 0.5rem;
   }
   
-  .membership-card.expired {
-    opacity: 0.8;
+  .gym-filter-chip, .feature-filter-chip {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
   }
-  
-  .qr-code-container {
-    border: 1px dashed #ddd;
-    display: inline-block;
-  }
-  
-  .card-header {
-    font-weight: 600;
-  }
-  
-  .list-group-item {
-    padding: 0.75rem 1.25rem;
-  }
-  .gym-link {
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  
-  .gym-link:hover {
-    background-color: #f0f0f0; /* Light gray background on hover */
-    color: #007bff; /* Blue text color on hover */
-  }
+}
