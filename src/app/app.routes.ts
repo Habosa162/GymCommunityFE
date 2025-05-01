@@ -63,6 +63,7 @@ import { CoachOffersComponent } from './presentation/Coach/coach-offers/coach-of
 import { UpdateProductComponent } from './presentation/Ecommerce/Administration/update-product/update-product.component';
 import { PlanPaymentSuccessComponent } from './presentation/Coach/plan-payment-success/plan-payment-success.component';
 import { UserGymSubComponent } from './presentation/Gym/user-gym-sub/user-gym-sub.component';
+import { CoachproductsComponent } from './presentation/Coach/coachproducts/coachproducts.component';
 
 
 export const routes: Routes = [
@@ -229,7 +230,8 @@ export const routes: Routes = [
   //For Users
   { path: 'gyms/:id', component: UserGymDetailsComponent },
   { path: 'gyms', component: GymListComponent },
-  {path: 'user/gym-subs', component: UserGymSubComponent,
+  {
+    path: 'user/gym-subs', component: UserGymSubComponent,
     canActivate: [AuthGuard]
   },
   {
@@ -274,7 +276,7 @@ export const routes: Routes = [
     component: UpdateProductComponent,
     canActivate: [AuthGuard],
   },
-  
+
   //coach
   {
     path: 'chat',
@@ -312,7 +314,7 @@ export const routes: Routes = [
           { path: 'work-samples', component: CoachWorkSamplesComponent },
           { path: 'my-client', component: MyClientsComponent },
           { path: 'offers', component: CoachOffersComponent },
-          { path: 'Products', component: CreateProductComponent },
+          { path: 'Products', component: CoachproductsComponent },
         ],
       },
 
