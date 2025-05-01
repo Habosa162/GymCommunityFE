@@ -695,14 +695,100 @@
   <div class="modal-overlay" *ngIf="showDayDetailsModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>{{ selectedDayOfWeek }} Plan</h3>
+        <h3>
+          {{ selectedDayOfWeek }} Plan
+          <span class="fs-6">{{ selectedDayPlan.dayDate | date }}</span>
+        </h3>
         <button class="close-btn" (click)="closeDayDetailsModal()">×</button>
       </div>
-      <div>
-        <span> cal: {{ selectedDayPlan.totalCalories }}</span>
-        <span> protein: {{ selectedDayPlan.totalProtein }}</span>
-        <span> carbs: {{ selectedDayPlan.totalCarbs }}</span>
-        <span> fats: {{ selectedDayPlan.totalFats }}</span>
+      <div class="charts text-center p-3">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="paper rounded-4 shadow px-4 py-3">
+              <h4 class="mb-3">Coach Notes</h4>
+              <p class="text-start text-dark fw-bold" style="line-height: 2.8">
+                {{ selectedDayPlan.extraTips }}
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="d-flex gap-2 mb-2">
+              <!-- chart -->
+              <div class="p-2 shadow rounded-4 w-50">
+                <p class="text-start">
+                  <i class="fa-solid fa-bolt" style="color: #32cd32"></i> Total
+                  Calories
+                </p>
+                <div
+                  class="pie animate text-center"
+                  style="--p: 90; --c: #b9e6b9"
+                >
+                  <p class="m-0 text-black fw-bold fs-5">
+                    {{ selectedDayPlan.totalCalories }}
+                  </p>
+                  <p class="m-0 text-black fw-bold">KCal</p>
+                </div>
+              </div>
+              <!-- chart -->
+              <!-- chart -->
+              <div class="p-2 shadow rounded-4 w-50">
+                <p class="text-start">
+                  <i class="fa-solid fa-bacon" style="color: #ed0707"></i> Total
+                  Fats
+                </p>
+                <div
+                  class="pie animate text-center"
+                  style="--p: 90; --c: #efbbbb"
+                >
+                  <p class="m-0 text-black fw-bold fs-5">
+                    {{ selectedDayPlan.totalFats }}g
+                  </p>
+                  <p class="m-0 text-black fw-bold">Fats</p>
+                </div>
+              </div>
+              <!-- chart -->
+            </div>
+            <div class="d-flex gap-2">
+              <!-- chart -->
+              <div class="p-2 shadow rounded-4 w-50">
+                <p class="text-start">
+                  <i class="fa-solid fa-bowl-food" style="color: #3267c3"></i>
+                  Total Carbs
+                </p>
+                <div
+                  class="pie animate text-center"
+                  style="--p: 90; --c: #89a8dd"
+                >
+                  <p class="m-0 text-black fw-bold fs-5">
+                    {{ selectedDayPlan.totalCarbs }}g
+                  </p>
+                  <p class="m-0 text-black fw-bold">Carbs</p>
+                </div>
+              </div>
+              <!-- chart -->
+              <!-- chart -->
+              <div class="p-2 shadow rounded-4 w-50">
+                <p class="text-start">
+                  <i
+                    class="fa-solid fa-drumstick-bite"
+                    style="color: #c2752e"
+                  ></i>
+                  Total Protein
+                </p>
+                <div
+                  class="pie animate text-center"
+                  style="--p: 90; --c: #ebc6a4"
+                >
+                  <p class="m-0 text-black fw-bold fs-5">
+                    {{ selectedDayPlan.totalProtein }}g
+                  </p>
+                  <p class="m-0 text-black fw-bold">Protein</p>
+                </div>
+              </div>
+              <!-- chart -->
+            </div>
+          </div>
+        </div>
       </div>
       <div class="modal-body" *ngIf="selectedDayPlan">
         <p *ngIf="selectedDayPlan.extraTips" class="tips">
@@ -714,21 +800,58 @@
           class="section"
           *ngIf="selectedDayPlan.parsedData?.exercises?.length > 0"
         >
-          <h4>Exercises</h4>
-          <div
-            class="exercise-item"
-            *ngFor="let exercise of selectedDayPlan.parsedData.exercises"
-          >
-            <h5>{{ exercise.exerciseName }}</h5>
-            <div class="exercise-details">
-              <p><strong>Muscle Group:</strong> {{ exercise.muscleGroup }}</p>
-              <p><strong>Sets:</strong> {{ exercise.sets }}</p>
-              <p><strong>Reps:</strong> {{ exercise.reps }}</p>
-              <p><strong>Duration:</strong> {{ exercise.duration }} min</p>
-              <p *ngIf="exercise.videoLink">
+          <h4>🏋️ Today's Exercises</h4>
+          <div class="row">
+            <div
+              class="col-lg-6"
+              *ngFor="
+                let exercise of selectedDayPlan.parsedData.exercises;
+                let i = index
+              "
+            >
+              <div class="exercise-item rounded-4 shadow p-3 mb-3">
+                <h5>
+                  #<span class="fs-5">{{ i + 1 }}</span>
+                  {{ exercise.exerciseName }}
+                </h5>
+                <span class="badge text-bg-primary mb-2">
+                  <strong style="color: #666">💪 Muscle Target:</strong>
+                  {{ exercise.muscleGroup }}
+                </span>
+                <iframe
+                  class="rounded-4 w-100"
+                  *ngIf="exercise.videoLink"
+                  height="315"
+                  src="https://www.youtube.com/embed/gRVjAtPip0Y?si=2UY4Fu8TPecVnSs0"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
+
+                <div class="exercise-details d-flex gap-1">
+                  <span class="badge text-bg-primary">
+                    <strong
+                      ><i class="fa-solid fa-arrow-rotate-right"></i>
+                      Sets:</strong
+                    >
+                    {{ exercise.sets }}
+                  </span>
+                  <span class="badge text-bg-primary">
+                    <strong
+                      ><i class="fa-solid fa-arrow-up-1-9"></i> Reps:</strong
+                    >
+                    {{ exercise.reps }}
+                  </span>
+                  <span class="badge text-bg-primary">
+                    <strong>⏱️ Duration:</strong> {{ exercise.duration }} min
+                  </span>
+                  <!-- <p *ngIf="exercise.videoLink">
                 <strong>Video:</strong>
                 <a [href]="exercise.videoLink" target="_blank">Watch Video</a>
-              </p>
+              </p> -->
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -738,19 +861,35 @@
           class="section"
           *ngIf="selectedDayPlan.parsedData?.meals?.length > 0"
         >
-          <h4>Meals</h4>
-          <div
-            class="meal-item"
-            *ngFor="let meal of selectedDayPlan.parsedData.meals"
-          >
-            <h5>{{ meal.mealName }}</h5>
-            <div class="meal-details">
-              <p>
-                <strong>Type:</strong>
-                {{ capitalizeFirstLetter(meal.mealType) }}
-              </p>
-              <p><strong>Quantity:</strong> {{ meal.quantity }}</p>
-              <p *ngIf="meal.notes"><strong>Notes:</strong> {{ meal.notes }}</p>
+          <h4>🥗 Meals</h4>
+          <div class="row">
+            <div
+              class="col-lg-6"
+              *ngFor="
+                let meal of selectedDayPlan.parsedData.meals;
+                let i = index
+              "
+            >
+              <div class="meal-item rounded-4 shadow p-3 mb-3">
+                <h5>
+                  #<span class="fs-5">{{ i + 1 }}</span> {{ meal.mealName }}
+                </h5>
+                <div class="meal-details d-block">
+                  <div class="mb-2 d-flex gap-1 flex-wrap">
+                    <span class="badge text-bg-primary">
+                      <strong>Type:</strong>
+                      {{ capitalizeFirstLetter(meal.mealType) }}
+                    </span>
+                    <span class="badge text-bg-primary">
+                      <strong>Quantity:</strong> {{ meal.quantity }}</span
+                    >
+                  </div>
+
+                  <span class="text-dark-emphasis" *ngIf="meal.notes"
+                    ><strong>Notes:</strong> {{ meal.notes }}</span
+                  >
+                </div>
+              </div>
             </div>
           </div>
         </div>

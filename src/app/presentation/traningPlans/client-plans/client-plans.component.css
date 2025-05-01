@@ -184,7 +184,7 @@
   background-color: white;
   border-radius: 8px;
   width: 90%;
-  max-width: 800px;
+  max-width: 1000px;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
@@ -219,8 +219,8 @@
 
 .exercise-item,
 .meal-item {
-  background-color: #f8f9fa;
-  border-radius: 4px;
+  background-color: #32cd322b;
+  border: 2px solid limegreen;
   padding: 15px;
   margin-bottom: 15px;
 }
@@ -304,7 +304,7 @@
 }
 
 .has-video {
-  color: #4CAF50;
+  color: #4caf50;
   font-weight: bold;
   margin-left: 5px;
 }
@@ -338,6 +338,13 @@ a[href^="http"]:hover {
 }
 
 /*my changes*/
+
+.text-bg-primary {
+  color: #fff !important;
+  font-size: 13px !important;
+  border: 1px solid limegreen !important;
+  background-color: #32cd32 !important;
+}
 .class-time {
   color: rgb(114, 228, 114) !important;
 }
@@ -369,4 +376,85 @@ a[href^="http"]:hover {
   background-color: transparent !important;
   color: white;
   border-color: gray;
+}
+
+/*modal design*/
+/* charts */
+@property --p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.pie {
+  --p: 20;
+  --b: 10px;
+  --c: red;
+  --w: 100px;
+
+  width: var(--w);
+  aspect-ratio: 1;
+  position: relative;
+  display: inline-grid;
+  margin: 5px;
+  place-content: center;
+  font-size: 25px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+.pie:before,
+.pie:after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+.pie:before {
+  inset: 0;
+  background: radial-gradient(farthest-side, var(--c) 98%, #0000) top/var(--b)
+      var(--b) no-repeat,
+    conic-gradient(var(--c) calc(var(--p) * 1%), #0000 0);
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    #0000 calc(99% - var(--b)),
+    #000 calc(100% - var(--b))
+  );
+  mask: radial-gradient(
+    farthest-side,
+    #0000 calc(99% - var(--b)),
+    #000 calc(100% - var(--b))
+  );
+}
+.pie:after {
+  inset: calc(50% - var(--b) / 2);
+  background: var(--c);
+  transform: rotate(calc(var(--p) * 3.6deg))
+    translateY(calc(50% - var(--w) / 2));
+}
+.animate {
+  animation: p 1s 0.5s both;
+}
+.no-round:before {
+  background-size: 0 0, auto;
+}
+.no-round:after {
+  content: none;
+}
+@keyframes p {
+  from {
+    --p: 0;
+  }
+}
+
+body {
+  background: #f2f2f2;
+}
+
+/*paper*/
+.paper {
+  background-image: url(/assets/imgs/plans/paper.jpg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
 }
