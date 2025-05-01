@@ -1,81 +1,119 @@
 <div class="coach-layout" [class.dark-mode]="isDarkMode">
-    <!-- Top Navigation Bar -->
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-light px-3">
-            <div class="container-fluid">
-                <!-- Logo -->
-                <a class="navbar-brand d-flex align-items-center" routerLink="/">
-                    <img src="/assets/imgs/logo.png" alt="GymCommunity Logo" style="height: 40px;">
-                    <span class="ms-2 fw-bold">Voltmort</span>
-                </a>
+  <!-- Top Navigation Bar -->
+  <header>
+    <nav
+      class="navbar navbar-expand-lg navbar-light fixed-top bg-light px-3 position-static"
+    >
+      <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center" routerLink="/">
+          <img
+            src="/assets/imgs/logo.png"
+            alt="GymCommunity Logo"
+            style="height: 40px"
+          />
+          <span class="ms-2 fw-bold">Voltmort</span>
+        </a>
 
-                <!-- Toggle button for mobile -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#coachNavbar"
-                    aria-controls="coachNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <!-- Toggle button for mobile -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#coachNavbar"
+          aria-controls="coachNavbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-                <!-- Navigation Links -->
-                <div class="collapse navbar-collapse" id="coachNavbar">
-                    <ul class="navbar-nav ms-auto" *ngIf="isAuthenticated">
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/coach/dashboard" routerLinkActive="active">
-                                <i class="bi bi-person-circle"></i> My Profile
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/coach/dashboard/portfolio" routerLinkActive="active">
-                                <i class="bi bi-file-earmark-person"></i> Portfolio
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/coach/dashboard/certificates" routerLinkActive="active">
-                                <i class="bi bi-award"></i> Certificates
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/coach/dashboard/work-samples" routerLinkActive="active">
-                                <i class="bi bi-images"></i> Work Samples
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/coach/dashboard/offers" routerLinkActive="active">
-                                <i class="bi bi-tags-fill"></i> My Offers
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/coach/dashboard/Products" routerLinkActive="active">
-                                <i class="bi bi-tags-fill me-2 text-warning"></i> My Products
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" routerLink="/coach/dashboard/my-client" routerLinkActive="active">
-                                <i class="bi bi-people"></i> My Clients
-                            </a>
-                        </li>
+        <!-- Navigation Links -->
+        <div class="collapse navbar-collapse" id="coachNavbar">
+          <ul class="navbar-nav ms-auto" *ngIf="isAuthenticated">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/coach/dashboard"
+                routerLinkActive="active"
+              >
+                <i class="bi bi-person-circle"></i> My Profile
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/coach/dashboard/portfolio"
+                routerLinkActive="active"
+              >
+                <i class="bi bi-file-earmark-person"></i> Portfolio
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/coach/dashboard/certificates"
+                routerLinkActive="active"
+              >
+                <i class="bi bi-award"></i> Certificates
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/coach/dashboard/work-samples"
+                routerLinkActive="active"
+              >
+                <i class="bi bi-images"></i> Work Samples
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/coach/dashboard/offers"
+                routerLinkActive="active"
+              >
+                <i class="bi bi-tags-fill"></i> My Offers
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/coach/dashboard/Products"
+                routerLinkActive="active"
+              >
+                <i class="bi bi-tags-fill me-2 text-warning"></i> My Products
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/coach/dashboard/my-client"
+                routerLinkActive="active"
+              >
+                <i class="bi bi-people"></i> My Clients
+              </a>
+            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-danger" (click)="logout()" style="cursor: pointer;">
-                                <i class="bi bi-box-arrow-right"></i> Logout
-                            </a>
-                        </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-danger"
+                (click)="logout()"
+                style="cursor: pointer"
+              >
+                <i class="bi bi-box-arrow-right"></i> Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
 
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-
-
-
-
-    <!-- Main Content Area -->
-    <main class="main-content " [class.sidebar-collapsed]="!isSidebarOpen">
-        <router-outlet></router-outlet>
-    </main>
-
-
+  <!-- Main Content Area -->
+  <main class="main-content" [class.sidebar-collapsed]="!isSidebarOpen">
+    <router-outlet></router-outlet>
+  </main>
 </div>
 
 <!-- <app-footer></app-footer> -->

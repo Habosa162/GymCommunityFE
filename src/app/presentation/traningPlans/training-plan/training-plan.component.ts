@@ -57,6 +57,13 @@ interface DayPlanData {
   styleUrl: './training-plan.component.css',
 })
 export class TrainingPlanComponent implements OnInit {
+  //changes date 5/1/2025///
+  totalCalories: number = 0;
+  totalProtein: number = 0;
+  totalCarbs: number = 0;
+  totalFats: number = 0;
+  /////////////////////////
+
   trainingPlan!: trainingPlan & { weekPlans?: WeekPlanDto[] };
   months: number[] = [];
   weeks: Week[] = [];
@@ -94,6 +101,10 @@ export class TrainingPlanComponent implements OnInit {
     dayDate: '',
     extraTips: '',
     dailyPlanJson: '{}',
+    totalCalories: 0,
+    totalProtein: 0,
+    totalCarbs: 0,
+    totalFats: 0,
   };
 
   selectedWeek: Week | null = null;
@@ -807,6 +818,10 @@ export class TrainingPlanComponent implements OnInit {
       dayDate: this.formatDate(dayDate),
       extraTips: '',
       dailyPlanJson: '{}',
+      totalCalories: 0,
+      totalProtein: 0,
+      totalCarbs: 0,
+      totalFats: 0,
     };
 
     // Reset day plan data
@@ -895,6 +910,10 @@ export class TrainingPlanComponent implements OnInit {
     this.newDayPlan.dailyPlanJson = JSON.stringify(this.dayPlanData);
     console.log('Submitting day plan:', this.newDayPlan);
     console.log('Day plan data:', this.dayPlanData);
+    this.newDayPlan.totalCalories = this.totalCalories;
+    this.newDayPlan.totalProtein = this.totalProtein;
+    this.newDayPlan.totalCarbs = this.totalCarbs;
+    this.newDayPlan.totalFats = this.totalFats;
     this.createDayPlan(this.newDayPlan);
   }
 
@@ -1112,6 +1131,11 @@ export class TrainingPlanComponent implements OnInit {
       isSupplement: this.selectedMeal.isSupplement,
       notes: this.selectedMeal.description || '',
     };
+    //calc nutrition values
+    this.totalCalories += this.selectedMeal.calories || 0;
+    this.totalProtein += this.selectedMeal.protein || 0;
+    this.totalCarbs += this.selectedMeal.carbs || 0;
+    this.totalFats += this.selectedMeal.fats || 0;
 
     // Add to the meals list
     this.dayPlanData.meals.push(newMeal);

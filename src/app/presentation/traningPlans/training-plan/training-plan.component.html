@@ -826,6 +826,10 @@
     </div>
     <div class="popup-body">
       <form (ngSubmit)="submitDayPlan()">
+        <h5>total cal{{ totalCalories }}</h5>
+        <h5>total protein{{ totalProtein }}</h5>
+        <h5>total carbs{{ totalCarbs }}</h5>
+        <h5>total fat{{ totalFats }}</h5>
         <div class="form-group">
           <label for="dayDate">Day Date</label>
           <!-- <input
@@ -907,7 +911,8 @@
                       *ngFor="let availableExercise of availableExercises"
                       [ngValue]="availableExercise"
                     >
-                      {{ availableExercise.name }} {{ availableExercise.videoLink ? '(Has Video)' : '' }}
+                      {{ availableExercise.name }}
+                      {{ availableExercise.videoLink ? "(Has Video)" : "" }}
                     </option>
                   </select>
                 </div>
@@ -971,9 +976,20 @@
                 </div>
                 <div class="exercise-details">
                   <p><strong>Exercise:</strong> {{ exercise.exerciseName }}</p>
-                  <p><strong>Muscle Group:</strong> {{ exercise.muscleGroup }}</p>
-                  <p><strong>Sets:</strong> {{ exercise.sets }} | <strong>Reps:</strong> {{ exercise.reps }} | <strong>Duration:</strong> {{ exercise.duration }} min</p>
-                  <p *ngIf="exercise.videoLink"><strong>Video:</strong> <a [href]="exercise.videoLink" target="_blank">Watch Video</a></p>
+                  <p>
+                    <strong>Muscle Group:</strong> {{ exercise.muscleGroup }}
+                  </p>
+                  <p>
+                    <strong>Sets:</strong> {{ exercise.sets }} |
+                    <strong>Reps:</strong> {{ exercise.reps }} |
+                    <strong>Duration:</strong> {{ exercise.duration }} min
+                  </p>
+                  <p *ngIf="exercise.videoLink">
+                    <strong>Video:</strong>
+                    <a [href]="exercise.videoLink" target="_blank"
+                      >Watch Video</a
+                    >
+                  </p>
                 </div>
               </div>
               <div
