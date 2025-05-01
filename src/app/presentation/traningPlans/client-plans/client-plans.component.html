@@ -699,7 +699,9 @@
           {{ selectedDayOfWeek }} Plan
           <span class="fs-6">{{ selectedDayPlan.dayDate | date }}</span>
         </h3>
-        <button class="close-btn" (click)="closeDayDetailsModal()">×</button>
+        <button class="close-btn" (click)="closeDayDetailsModal()">
+          <i class="fa-solid fa-circle-xmark" style="color: #ff0000"></i>
+        </button>
       </div>
       <div class="charts text-center p-3">
         <div class="row">
