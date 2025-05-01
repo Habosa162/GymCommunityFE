@@ -155,24 +155,24 @@ export class CoachProfileComponent implements OnInit {
 
 
   subscribeToOffer(price: number, title: string, duration: number, coachId: string): void {
-      this.subscriptionToPlanService.subscribeToOffer(price, title, duration, coachId);
-      this.paymobpayment(price, title,coachId,duration);
+    this.subscriptionToPlanService.subscribeToOffer(price, title, duration, coachId);
+    this.paymobpayment(price, title, coachId, duration);
   }
 
-  paymobpayment(price: number, title: string,coachId: string,duration: number,){
+  paymobpayment(price: number, title: string, coachId: string, duration: number,) {
     const userName = this.authservice.getUserName();
-      const userEmail = this.authservice.getUserEmail();
-      
-  
-     
-      const orderData = {
+    const userEmail = this.authservice.getUserEmail();
+
+
+
+    const orderData = {
       amount: price * 100,
       currency: "EGP",
       payment_methods: [4419883, 4437311, 4437297],
       orderItems: title,
       billing_data: {
         "apartment": "dumy",
-        "first_name":userName ,
+        "first_name": userName,
         "last_name": userName,
         "street": "dumy",
         "building": "dumy",
@@ -183,10 +183,10 @@ export class CoachProfileComponent implements OnInit {
         "floor": "dumy",
         "state": "dumy"
       },
-      extras: {  },
+      extras: {},
       redirection_url: `${FrontbaseUrl}/plan-payment-success`,
     };
- this.paymentService.PaymobRequest(orderData).subscribe({
+    this.paymentService.PaymobRequest(orderData).subscribe({
       next: (response: any) => {
         const clientSecret = response.client_secret;
         if (clientSecret) {
@@ -206,5 +206,5 @@ export class CoachProfileComponent implements OnInit {
     });
 
   }
- 
+
 }

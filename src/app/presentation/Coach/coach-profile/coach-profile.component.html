@@ -207,48 +207,6 @@
   </div>
 </section>
 
-<!-- PORTFOLIO -->
-
-<!-- clinets -->
-<section class="d-flex align-items-center justify-content-center" id="clients">
-  <div class="container">
-    <h1 class="text-center fw-bold text-white">Ratings</h1>
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-      <!-- Carousel Indicators -->
-      <div class="carousel-indicators">
-        <button *ngFor="let rating of ratings; let i = index" type="button" data-bs-target="#carouselExampleIndicators"
-          [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0 ? 'true' : null"
-          [attr.aria-label]="'Slide ' + (i + 1)">
-        </button>
-      </div>
-
-      <!-- Carousel Inner -->
-      <div class="carousel-inner">
-        <div *ngFor="let rating of ratings; let i = index" class="carousel-item" [class.active]="i === 0">
-          <div class="client-feedback text-center p-5 text-light">
-            <!-- Optional: If you have an image per rating, bind it here -->
-            <img class="rounded-circle" src={{rating?.clientimg}} alt="client" />
-            <h3 class="text-uppercase my-4 h4">{{rating?.clientFirstName}} {{rating?.clientLastName}}</h3>
-
-            <!-- Display Stars or Rating Number -->
-            <div class="mb-2">
-              <ng-container *ngFor="let star of [1,2,3,4,5]; let j = index">
-                <i class="bi" [ngClass]="rating.rate > j ? 'bi-star-fill text-warning' : 'bi-star text-secondary'"></i>
-              </ng-container>
-            </div>
-
-            <!-- Display Comment -->
-            <p class="px-5 lead">
-              {{ rating.comment }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- clinets -->
 
 <!-- blog -->
 <section class="py-5" id="blog">
@@ -309,6 +267,120 @@
     </div>
   </div>
 </section>
+
+
+
+
+
+<!-- Products -->
+<section class="py-5" id="products">
+  <div class="container">
+    <h1 class="text-center fw-bold mb-4">My Products</h1>
+    <p class="heading-p text-center position-relative mb-5">
+      Discover my premium fitness products and supplements.
+    </p>
+    <div class="row gy-4">
+      <div class="col-md-4" *ngFor="let product of coachproducts">
+        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+          <div class="position-relative">
+            <img *ngIf="product.imageUrl" [src]="product.imageUrl" class="card-img-top object-fit-cover"
+              alt="Product Image" style="height: 200px; object-fit: cover;">
+            <div class="position-absolute top-0 end-0 m-2">
+              <span class="badge bg-success rounded-pill px-3 py-2">
+                <i class="fas fa-tag me-1"></i> ${{ product.price }}
+              </span>
+            </div>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title fw-bold mb-0">{{ product.name }}</h5>
+              <span class="badge bg-primary">{{ product.categoryName }}</span>
+            </div>
+            <p class="card-text text-muted mb-3" style="min-height: 48px;">
+              {{ product.description && product.description.length > 100 ?
+              (product.description | slice:0:100) + '...' :
+              product.description }}
+            </p>
+            <div class="mt-auto">
+              <div class="d-flex justify-content-between align-items-center mb-3"
+                *ngIf="product.rating && product.reviewCount">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-star text-warning me-1"></i>
+                  <span class="text-muted small">{{product.rating}} ({{product.reviewCount}} reviews)</span>
+                </div>
+                <span class="badge" [ngClass]="product.stock > 0 ? 'bg-info' : 'bg-danger'">
+                  <i class="fas fa-box me-1"></i> {{product.stock > 0 ? 'In Stock' : 'Out of Stock'}}
+                </span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mb-3"
+                *ngIf="!product.rating || !product.reviewCount">
+                <div class="d-flex align-items-center">
+                  <span class="text-muted small">No reviews yet</span>
+                </div>
+                <span class="badge" [ngClass]="product.stock > 0 ? 'bg-info' : 'bg-danger'">
+                  <i class="fas fa-box me-1"></i> {{product.stock > 0 ? 'In Stock' : 'Out of Stock'}}
+                </span>
+              </div>
+              <div class="d-grid gap-2">
+                <button class="btn btn-primary rounded-pill py-2">
+                  <i class="fas fa-shopping-cart me-2"></i> Buy Now
+                </button>
+                <button class="btn btn-outline-primary rounded-pill py-2">
+                  <i class="fas fa-info-circle me-2"></i> View Details
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- clinets -->
+<section class="d-flex align-items-center justify-content-center" id="clients">
+  <div class="container">
+    <h1 class="text-center fw-bold text-white">Ratings</h1>
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+      <!-- Carousel Indicators -->
+      <div class="carousel-indicators">
+        <button *ngFor="let rating of ratings; let i = index" type="button" data-bs-target="#carouselExampleIndicators"
+          [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0 ? 'true' : null"
+          [attr.aria-label]="'Slide ' + (i + 1)">
+        </button>
+      </div>
+
+      <!-- Carousel Inner -->
+      <div class="carousel-inner">
+        <div *ngFor="let rating of ratings; let i = index" class="carousel-item" [class.active]="i === 0">
+          <div class="client-feedback text-center p-5 text-light">
+            <!-- Optional: If you have an image per rating, bind it here -->
+            <img class="rounded-circle" src={{rating?.clientimg}} alt="client" />
+            <h3 class="text-uppercase my-4 h4">{{rating?.clientFirstName}} {{rating?.clientLastName}}</h3>
+
+            <!-- Display Stars or Rating Number -->
+            <div class="mb-2">
+              <ng-container *ngFor="let star of [1,2,3,4,5]; let j = index">
+                <i class="bi" [ngClass]="rating.rate > j ? 'bi-star-fill text-warning' : 'bi-star text-secondary'"></i>
+              </ng-container>
+            </div>
+
+            <!-- Display Comment -->
+            <p class="px-5 lead">
+              {{ rating.comment }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- clinets -->
+
 
 <!-- blog -->
 
