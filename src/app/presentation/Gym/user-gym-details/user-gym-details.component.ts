@@ -41,6 +41,7 @@ export class UserGymDetailsComponent {
 
   coachImages: { [key: string]: string } = {};
   isLoading = false;
+  isSubscribed: boolean = false;
 
   // Google Maps
   mapOptions: google.maps.MapOptions = {
@@ -72,11 +73,18 @@ export class UserGymDetailsComponent {
   ) {}
 
   ngOnInit(): void {
-    this.userId = this.authService.getUserId() || ''; // Get the user ID from the auth service
+    this.userId = this.authService.getUserId() || ''; 
     if (!this.userId) {
       console.error('User ID not found');
       return;
     }
+    this.initGoogleMaps();
+    this.gymId = +this.route.snapshot.params['id'];
+    this.loadGym();
+    this.loadCoaches();
+    this.loadImages();
+    this.loadPlans();
+    this.loadAllSubscriptions(); 
 
     // Scroll to the fragment if it exists
     this.route.fragment.subscribe((fragment) => {
@@ -84,14 +92,6 @@ export class UserGymDetailsComponent {
         this.viewportScroller.scrollToAnchor(fragment);
       }
     });
-
-    this.initGoogleMaps();
-    this.gymId = +this.route.snapshot.params['id'];
-    this.loadGym();
-    this.loadCoaches();
-    this.loadImages();
-    this.loadPlans();
-
 
   }
 
@@ -153,6 +153,7 @@ export class UserGymDetailsComponent {
     this.selectedPlan = plan;
     this.subscriptionData.planId = plan.id;
     this.subscriptionData.gymId = this.gymId;
+    this.loadAllSubscriptions(); 
     this.scrollTo('plans');
   }
 
@@ -163,75 +164,43 @@ export class UserGymDetailsComponent {
     }
   
     this.isLoading = true;
-  
-    const startDate = new Date();
-    const expiresAt = new Date();
-    expiresAt.setMonth(expiresAt.getMonth() + 1);
-  
-    const subscriptionData: UserSubscriptionCreate = {
-      userId: this.userId,
-      gymId: this.gymId,
-      planId: this.selectedPlan.id,
-      startDate: startDate,
-      expiresAt: expiresAt,
-      paymentStatus : 2
+    localStorage.setItem("planprice", this.selectedPlan.price.toString());
+    localStorage.setItem("gymId", this.gymId.toString());
+    localStorage.setItem("planId", this.selectedPlan.id.toString());
+    localStorage.setItem("userId", this.userId.toString());
+
+
+    // Prepare the redirection URL
+    const orderData = {
+      amount: (this.selectedPlan?.price ?? 0) * 100,
+      currency: "EGP",
+      payment_methods: [4419883, 4437311, 4437297],
+      billing_data: {
+        "first_name": "N/A",
+        "last_name": "N/A",
+        "phone_number": "N/A",
+      },
+      extras: { 
+        gym_id: this.gymId,
+        plan_id: this.selectedPlan.id,
+        user_id: this.userId
+      },
+      redirection_url: `${FrontbaseUrl}/sub-payment-success`
     };
   
-    this.userSubscriptionService.create(subscriptionData).pipe(
-      switchMap((subscription: UserSubscriptionRead) => {
-        // Create local payment record first
-        const paymentData: PaymentDTO = {
-          amount: this.selectedPlan?.price ?? 0,
-          currency: 'EGP',
-          paymentMethod: 'Paymob',
-          status: 2,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        };
-        localStorage.setItem('subscriptionId', subscription.id.toString());
-
-        return this.paymentService.CreatePayment(paymentData).pipe(
-          switchMap((createdPayment: PaymentDTO) => {
-            // Prepare Paymob request with both IDs in extras
-            const orderData = {
-              amount: (this.selectedPlan?.price ?? 0) * 100,
-              currency: "EGP",
-              payment_methods: [4419883, 4437311, 4437297],
-              billing_data: {
-                "first_name": "N/A",
-                "last_name": "N/A",
-                "phone_number": "N/A",
-              },
-              extras: { 
-                subscription_id: subscription.id,
-                payment_id: createdPayment.id,
-                user_id: this.userId
-              },
-              redirection_url:  `${FrontbaseUrl}/sub-payment-success`};
-            if (createdPayment.id !== undefined && createdPayment.id !== null) {
-              localStorage.setItem("paymentId", createdPayment.id.toString());
-            } else {
-              console.error('Payment ID is undefined or null');
-            }
-  
-            return this.paymentService.PaymobRequest(orderData);
-          })
-        );
-      })
-    ).subscribe({
+    this.paymentService.PaymobRequest(orderData).subscribe({
       next: (paymobResponse: any) => {
         this.isLoading = false;
         const clientSecret = paymobResponse.client_secret;
         if (clientSecret) {
           const paymentUrl = `https://accept.paymob.com/unifiedcheckout/?publicKey=egy_pk_test_jrlnWL5oJX8IRTp9xpeHq5mmQhAMfXES&clientSecret=${clientSecret}`;
-          window.location.href = paymentUrl;
+          window.location.href = paymentUrl; // Redirect to the payment URL
         }
-
       },
       error: (err) => {
         this.isLoading = false;
         console.error('Error:', err);
-        alert('There was an error processing your subscription. Please try again.');
+        alert('There was an error processing your payment. Please try again.');
       }
     });
   }
@@ -283,6 +252,33 @@ export class UserGymDetailsComponent {
       const url = `https://www.google.com/maps/dir/?api=1&destination=${this.gym.latitude},${this.gym.longitude}`;
       window.open(url, '_blank');
     }
+  }
+  subscriptions: any[] = []; 
+
+  loadAllSubscriptions(): void {
+    this.userSubscriptionService.getAll().subscribe({
+      next: (subscriptions) => {
+        this.subscriptions = subscriptions;
+        console.log("subscriptions",subscriptions)
+        this.checkSubscriptionStatus();
+      },
+      error: (err) => console.error('Failed to load subscriptions', err)
+    });
+  }
+
+  checkSubscriptionStatus(): void {
+    if (!this.userId || !this.gym?.id) return;
+    
+    // Check if user has any active subscription for this gym
+    const hasActiveSubscription = this.subscriptions.some(sub => 
+      sub.userId === this.userId &&
+      sub.gymId === this.gym?.id &&
+      new Date(sub.expiresAt) > new Date() 
+    );
+    
+    this.isSubscribed = hasActiveSubscription;
+    console.log("Subscription status:", this.isSubscribed);
+  
   }
 
 }
