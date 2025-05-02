@@ -3,19 +3,19 @@
     <div class="container">
       <span class="mainColor text-uppercase fw-bold">Coach 🏋🏼</span>
       <h2 class="colorBlack text-capitalize">
-        {{ trainingPlan?.coach.firstName }}
+        {{ coachData?.coachFirstName }}
       </h2>
-      <div class="row g-3 my-2">
+      <div class="row g-3 my-2 justify-content-center">
         <div class="col-md-3">
           <div>
             <img
               class="w-100 rounded-4"
-              [src]="trainingPlan?.coach.profileImg"
+              [src]="coachData?.aboutMeImageUrl"
               alt=""
             />
           </div>
         </div>
-        <div class="col-md-4 offset-1">
+        <div class="col-md-5">
           <table class="table">
             <tbody>
               <tr>
@@ -23,8 +23,8 @@
                   <i class="fa-regular fa-user"></i> Full Name
                 </th>
                 <td class="text-capitalize">
-                  {{ trainingPlan?.coach.firstName }}
-                  {{ trainingPlan?.coach.lastName }}
+                  {{ coachData?.coachFirstName }}
+                  {{ coachData?.coachLastName }}
                 </td>
               </tr>
               <tr>
@@ -33,12 +33,12 @@
                 </th>
                 <td>{{ trainingPlan?.coach.birthDate | date }}</td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <th scope="row" class="mainColor">
                   <i class="fa-solid fa-venus-mars"></i> Gender
                 </th>
                 <td class="text-uppercase">{{ trainingPlan?.coach.gender }}</td>
-              </tr>
+              </tr> -->
 
               <tr>
                 <th scope="row" class="mainColor">
@@ -52,6 +52,28 @@
                 </th>
                 <td>{{ trainingPlan?.coach.address }}</td>
               </tr>
+              <tr>
+                <th scope="row" class="mainColor">
+                  <i class="fa-solid fa-lightbulb"></i> Skills
+                </th>
+                <td>
+                  <!-- skills.component.html -->
+                  <div>
+                    <span
+                      *ngFor="let skill of coachSkills"
+                      class="badge border border-2 btn-outline-success me-2"
+                    >
+                      {{ skill }}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" class="mainColor">
+                  <i class="fa-solid fa-book"></i> Qualification
+                </th>
+                <td>{{ coachData?.qualifications }}</td>
+              </tr>
             </tbody>
           </table>
           <a
@@ -60,6 +82,24 @@
           >
             Go To Coach Profile <i class="fa-solid fa-arrow-right-long"></i>
           </a>
+        </div>
+        <div class="col-md-4 d-flex justify-content-center">
+          <!-- chart -->
+          <div class="p-2 text-center commRate">
+            <p class="text-start fs-5">
+              <i class="fa-solid fa-medal"></i>
+              Plan Commitment rate
+            </p>
+            <div
+              class="pie animate text-center"
+              style="--p: {{ progressPercentage }}; --c: limegreen"
+            >
+              <p class="m-0 text-black-50 fw-bold fs-3">
+                {{ progressPercentage }}%
+              </p>
+            </div>
+          </div>
+          <!-- chart -->
         </div>
       </div>
     </div>
@@ -140,6 +180,11 @@
                       *ngIf="week.hasWeekPlan && hasDayPlan(week, 1)"
                       class="day-plan-info"
                     >
+                      <i
+                        *ngIf="getDayPlan(week, 1)?.parsedData?.isDone"
+                        class="fa-solid fa-circle-check"
+                        style="color: #32cd32"
+                      ></i>
                       <h5>Monday</h5>
                       <div
                         *ngIf="
@@ -153,7 +198,7 @@
                             getDayPlan(week, 1)?.parsedData?.exercises?.length
                           }}</span
                         >
-                        <span
+                        <!-- <span
                           *ngIf="
                             getDayPlan(week, 1)?.parsedData?.exercises?.length >
                             0
@@ -183,7 +228,7 @@
                             class="has-video"
                             >(Has Video)</span
                           >
-                        </span>
+                        </span> -->
                       </div>
                       <div
                         *ngIf="
@@ -219,6 +264,11 @@
                       *ngIf="week.hasWeekPlan && hasDayPlan(week, 2)"
                       class="day-plan-info"
                     >
+                      <i
+                        *ngIf="getDayPlan(week, 2)?.parsedData?.isDone"
+                        class="fa-solid fa-circle-check"
+                        style="color: #32cd32"
+                      ></i>
                       <h5>Tuesday</h5>
                       <div
                         *ngIf="
@@ -232,7 +282,7 @@
                             getDayPlan(week, 2)?.parsedData?.exercises?.length
                           }}</span
                         >
-                        <span
+                        <!-- <span
                           *ngIf="
                             getDayPlan(week, 2)?.parsedData?.exercises?.length >
                             0
@@ -262,7 +312,7 @@
                             class="has-video"
                             >(Has Video)</span
                           >
-                        </span>
+                        </span> -->
                       </div>
                       <div
                         *ngIf="
@@ -298,6 +348,11 @@
                       *ngIf="week.hasWeekPlan && hasDayPlan(week, 3)"
                       class="day-plan-info"
                     >
+                      <i
+                        *ngIf="getDayPlan(week, 3)?.parsedData?.isDone"
+                        class="fa-solid fa-circle-check"
+                        style="color: #32cd32"
+                      ></i>
                       <h5>Wednesday</h5>
                       <div
                         *ngIf="
@@ -311,7 +366,7 @@
                             getDayPlan(week, 3)?.parsedData?.exercises?.length
                           }}</span
                         >
-                        <span
+                        <!-- <span
                           *ngIf="
                             getDayPlan(week, 3)?.parsedData?.exercises?.length >
                             0
@@ -341,7 +396,7 @@
                             class="has-video"
                             >(Has Video)</span
                           >
-                        </span>
+                        </span> -->
                       </div>
                       <div
                         *ngIf="
@@ -377,6 +432,11 @@
                       *ngIf="week.hasWeekPlan && hasDayPlan(week, 4)"
                       class="day-plan-info"
                     >
+                      <i
+                        *ngIf="getDayPlan(week, 4)?.parsedData?.isDone"
+                        class="fa-solid fa-circle-check"
+                        style="color: #32cd32"
+                      ></i>
                       <h5>Thursday</h5>
                       <div
                         *ngIf="
@@ -390,7 +450,7 @@
                             getDayPlan(week, 4)?.parsedData?.exercises?.length
                           }}</span
                         >
-                        <span
+                        <!-- <span
                           *ngIf="
                             getDayPlan(week, 4)?.parsedData?.exercises?.length >
                             0
@@ -420,7 +480,7 @@
                             class="has-video"
                             >(Has Video)</span
                           >
-                        </span>
+                        </span> -->
                       </div>
                       <div
                         *ngIf="
@@ -456,6 +516,11 @@
                       *ngIf="week.hasWeekPlan && hasDayPlan(week, 5)"
                       class="day-plan-info"
                     >
+                      <i
+                        *ngIf="getDayPlan(week, 5)?.parsedData?.isDone"
+                        class="fa-solid fa-circle-check"
+                        style="color: #32cd32"
+                      ></i>
                       <h5>Friday</h5>
                       <div
                         *ngIf="
@@ -469,7 +534,7 @@
                             getDayPlan(week, 5)?.parsedData?.exercises?.length
                           }}</span
                         >
-                        <span
+                        <!-- <span
                           *ngIf="
                             getDayPlan(week, 5)?.parsedData?.exercises?.length >
                             0
@@ -499,7 +564,7 @@
                             class="has-video"
                             >(Has Video)</span
                           >
-                        </span>
+                        </span> -->
                       </div>
                       <div
                         *ngIf="
@@ -535,6 +600,11 @@
                       *ngIf="week.hasWeekPlan && hasDayPlan(week, 6)"
                       class="day-plan-info"
                     >
+                      <i
+                        *ngIf="getDayPlan(week, 6)?.parsedData?.isDone"
+                        class="fa-solid fa-circle-check"
+                        style="color: #32cd32"
+                      ></i>
                       <h5>Saturday</h5>
                       <div
                         *ngIf="
@@ -548,7 +618,7 @@
                             getDayPlan(week, 6)?.parsedData?.exercises?.length
                           }}</span
                         >
-                        <span
+                        <!-- <span
                           *ngIf="
                             getDayPlan(week, 6)?.parsedData?.exercises?.length >
                             0
@@ -578,7 +648,7 @@
                             class="has-video"
                             >(Has Video)</span
                           >
-                        </span>
+                        </span> -->
                       </div>
                       <div
                         *ngIf="
@@ -614,6 +684,11 @@
                       *ngIf="week.hasWeekPlan && hasDayPlan(week, 7)"
                       class="day-plan-info"
                     >
+                      <i
+                        *ngIf="getDayPlan(week, 7)?.parsedData?.isDone"
+                        class="fa-solid fa-circle-check"
+                        style="color: #32cd32"
+                      ></i>
                       <h5>Sunday</h5>
                       <div
                         *ngIf="
@@ -627,7 +702,7 @@
                             getDayPlan(week, 7)?.parsedData?.exercises?.length
                           }}</span
                         >
-                        <span
+                        <!-- <span
                           *ngIf="
                             getDayPlan(week, 7)?.parsedData?.exercises?.length >
                             0
@@ -657,7 +732,7 @@
                             class="has-video"
                             >(Has Video)</span
                           >
-                        </span>
+                        </span> -->
                       </div>
                       <div
                         *ngIf="

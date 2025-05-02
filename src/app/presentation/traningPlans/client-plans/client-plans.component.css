@@ -402,6 +402,12 @@ a[href^="http"]:hover {
   font-weight: bold;
   font-family: sans-serif;
 }
+.commRate .pie {
+  --p: 100;
+  --b: 10px;
+  --c: limegreen;
+  --w: 200px;
+}
 .pie:before,
 .pie:after {
   content: "";
