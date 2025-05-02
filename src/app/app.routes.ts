@@ -67,7 +67,7 @@ import { CoachproductsComponent } from './presentation/Coach/coachproducts/coach
 
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent,canActivate:[clientGuard] },
   //auth routes
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -159,7 +159,7 @@ export const routes: Routes = [
   },
   //Ecommerce routes
 
-  { path: 'shop', component: ProductsListComponent },
+  { path: 'shop', component: ProductsListComponent,canActivate:[clientGuard] },
 
   {
     path: 'wish-list',
@@ -174,7 +174,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard, clientGuard],
   },
   { path: 'cart', component: CartComponent, title: 'Cart' },
-  { path: 'checkout', component: CheckoutComponent, title: 'Checkout' },
+  { path: 'checkout', component: CheckoutComponent, title: 'Checkout',canActivate:[AuthGuard,clientGuard] },
   {
     path: 'payment-success',
     component: PaymentSuccessComponent,
@@ -184,11 +184,13 @@ export const routes: Routes = [
     path: 'order-summary/:id',
     component: OrderSummaryComponent,
     title: 'order summary',
+    canActivate:[AuthGuard,clientGuard]
   },
   {
     path: 'my-orders',
     component: MyOrdersComponent,
     title: 'My Orders',
+    canActivate:[AuthGuard,clientGuard]
   },
 
   //Gym routes
@@ -244,7 +246,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard,AdminGuard],
   },
   {
     path: 'create-category',
@@ -264,17 +266,17 @@ export const routes: Routes = [
   {
     path: 'product-management',
     component: ProductManagementComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard,AdminGuard],
   },
   {
     path: 'order-management',
     component: OrderManagementComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard,AdminGuard],
   },
   {
     path: 'update-product/:id',
     component: UpdateProductComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard,AdminCoachGuard],
   },
 
   //coach

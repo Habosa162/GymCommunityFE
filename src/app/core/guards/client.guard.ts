@@ -18,10 +18,10 @@ export class clientGuard implements CanActivate {
     state: RouterStateSnapshot
   ): boolean {
     const role = this.authService.getUserRole();
-    if (role === 'Client') {
+    if ((role !== 'Admin')) {
       return true;
     }
-    this.router.navigate(['/home']);
+    this.router.navigate(['/dashboard']);
     return false;
   }
 }
