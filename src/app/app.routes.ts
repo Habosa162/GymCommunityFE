@@ -64,6 +64,7 @@ import { UpdateProductComponent } from './presentation/Ecommerce/Administration/
 import { PlanPaymentSuccessComponent } from './presentation/Coach/plan-payment-success/plan-payment-success.component';
 import { UserGymSubComponent } from './presentation/Gym/user-gym-sub/user-gym-sub.component';
 import { CoachproductsComponent } from './presentation/Coach/coachproducts/coachproducts.component';
+import { UsersManagementComponent } from './presentation/admin/users-management/users-management.component';
 
 
 export const routes: Routes = [
@@ -247,38 +248,50 @@ export const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [AuthGuard,AdminGuard],
+    title:"Dashboard"
   },
   {
     path: 'create-category',
     component: CreateCategoryComponent,
     canActivate: [AuthGuard, AdminGuard],
+    title:"create category"
   },
   {
     path: 'create-brand',
     component: CreateBrandComponent,
     canActivate: [AuthGuard, AdminGuard],
+    title:"create brand"
   },
   {
     path: 'create-product',
     component: CreateProductComponent,
     canActivate: [AuthGuard, AdminCoachGuard],
+    title:"create product"
   },
   {
     path: 'product-management',
     component: ProductManagementComponent,
     canActivate: [AuthGuard,AdminGuard],
+    title:"product management"
   },
   {
     path: 'order-management',
     component: OrderManagementComponent,
     canActivate: [AuthGuard,AdminGuard],
+    title:"order management"
   },
   {
     path: 'update-product/:id',
     component: UpdateProductComponent,
     canActivate: [AuthGuard,AdminCoachGuard],
+    title:"update-product"
   },
-
+  {
+    path: 'users-management',
+    component: UsersManagementComponent,
+    canActivate: [AuthGuard,AdminCoachGuard],
+    title:"users management"
+  },
   //coach
   {
     path: 'chat',
@@ -318,14 +331,9 @@ export const routes: Routes = [
           { path: 'offers', component: CoachOffersComponent },
           { path: 'Products', component: CoachproductsComponent },
         ],
-      },
+      }
 
       // Private coach routes (requires authentication and coach role)
-      {
-        path: 'admin',
-        canActivate: [AuthGuard, AdminGuard],
-        children: [{ path: '', component: DashboardComponent }],
-      },
     ],
   },
   //Premium routes
@@ -338,5 +346,5 @@ export const routes: Routes = [
   },
 
   // Default route
-  { path: '', redirectTo: '/', pathMatch: 'full' },
+  // { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
