@@ -78,15 +78,17 @@
                     <h5 class="card-title fw-bold text-truncate">{{ product.name }}</h5>
                     <p class="text-success fw-bold mb-2">${{ product.price | number:'1.2-2' }}</p>
 
-                    <!-- <div class="description-container mb-3">
-                        <p class="card-text text-muted mb-0" [class.collapsed]="!product.showFullDescription">
+                    <div class="description-container mb-3">
+                        <p class="card-text text-muted mb-0" [class.text-truncate]="!product.showFullDescription"
+                            [class.text-wrap]="product.showFullDescription">
                             {{ product.description }}
                         </p>
-                        <button *ngIf="product.description?.length > 100" class="btn btn-link p-0 text-decoration-none"
+                        <button *ngIf="product.description && product.description.length > 100"
+                            class="btn btn-link p-0 text-decoration-none text-primary"
                             (click)="product.showFullDescription = !product.showFullDescription">
                             {{ product.showFullDescription ? 'Show less' : 'Read more' }}
                         </button>
-                    </div> -->
+                    </div>
 
                     <div class="mt-auto d-flex gap-2">
                         <button class="btn btn-outline-primary btn-sm flex-grow-1" (click)="startEditProduct(product)">

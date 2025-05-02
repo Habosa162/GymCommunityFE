@@ -21,7 +21,7 @@ export class CoachproductsComponent implements OnInit {
   productForm: FormGroup;
   selectedImage?: File;
   previewUrl: string = '';
-  products: Product[] = [];
+  products: (Product & { showFullDescription?: boolean })[] = [];
   categories: Category[] = [];
   brands: Brand[] = [];
   coachId: string | null = null;
