@@ -39,6 +39,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   };
 
   isGymOwner: boolean = false;
+  isValidSub : boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,6 +55,7 @@ export class SubscriptionDetailsComponent implements OnInit {
     this.isGymOwner = userRole === 'GymOwner';
     this.subscriptionId = +this.route.snapshot.params['id'];
     this.loadSubscription();
+    this.validateQrCode();
   }
 
   loadSubscription(): void {
@@ -109,9 +111,9 @@ export class SubscriptionDetailsComponent implements OnInit {
   validateQrCode(): void {
     this.userSubscriptionService.validateQrCode(this.subscription.rawData).subscribe({
       next: (subscription) => {
-        alert(`Valid QR Code!`);
+        this.isValidSub = true;
       },
-      error: (err) => alert('Invalid QR Code')
+      error: (err) => this.isValidSub = false
     });
   }
 

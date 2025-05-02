@@ -5,7 +5,15 @@
     background-color: #191a1d;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   }
+  .comment-box{
+    background-color: #222222;
+  }
+  .post-form-container {
+    background-color: #161818;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.918);
 
+
+  }
   .card:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   }
@@ -72,6 +80,13 @@ img {
   margin-top: 10px;
   border-radius: 0.5rem;
   object-fit: cover;
+}
+
+.voters-tooltip{
+    background-color: #f9f9fb;
+    border: 1px solid #d7d7d7;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
 }
 
 .card {
@@ -165,10 +180,12 @@ textarea.form-control:focus {
 .comment-box {
   position: relative;
   padding-left: 60px;
+  background-color: #f9f9f9;
+  border-left: 5px solid #198754;
 }
 
 .comment-box:before {
-  content: "";
+  /* content: ""; */
   position: absolute;
   left: 25px;
   top: 0;
@@ -190,3 +207,92 @@ textarea.form-control:focus {
     left: 20px;
   }
 }
+
+.post-form-container {
+  /* Hidden state */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.post-form-container.active {
+  /* Visible state */
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.fab-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  background-color: transparent;
+}
+
+.fab-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #32cd32, #43e043);
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 20px rgba(50, 205, 50, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.fab-button:hover {
+  transform: scale(1.1) rotate(90deg);
+}
+
+.post-form-container {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  width: 400px;
+  max-width: 90vw;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.post-form-container.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+
+
+
+.post-form-container {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition: all 0.4s ease-in-out;
+  transform: scale(0.98);
+  opacity: 0;
+  pointer-events: none;
+
+  &.active {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: all;
+  }
+}
+
+
+.comment-box {
+
+}
+
+
+
+
+
+ 
