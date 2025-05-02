@@ -19,7 +19,7 @@
           <table class="table">
             <tbody>
               <tr>
-                <th scope="row" class="mainColor">
+                <th scope="row" class="mainColor text-nowrap">
                   <i class="fa-regular fa-user"></i> Full Name
                 </th>
                 <td class="text-capitalize">
@@ -28,10 +28,10 @@
                 </td>
               </tr>
               <tr>
-                <th scope="row" class="mainColor">
-                  <i class="fa-regular fa-calendar"></i> BirthDate
+                <th scope="row" class="mainColor text-nowrap">
+                  <i class="fa-regular fa-calendar"></i> Experience
                 </th>
-                <td>{{ trainingPlan?.coach.birthDate | date }}</td>
+                <td>{{ coachData?.experienceYears }}+ Years</td>
               </tr>
               <!-- <tr>
                 <th scope="row" class="mainColor">
@@ -41,19 +41,19 @@
               </tr> -->
 
               <tr>
-                <th scope="row" class="mainColor">
+                <th scope="row" class="mainColor text-nowrap">
                   <i class="fa-regular fa-calendar-plus"></i> Joined
                 </th>
                 <td>{{ trainingPlan?.coach.createdAt | date }}</td>
               </tr>
               <tr>
-                <th scope="row" class="mainColor">
+                <th scope="row" class="mainColor text-nowrap">
                   <i class="fa-solid fa-location-dot"></i> Address
                 </th>
                 <td>{{ trainingPlan?.coach.address }}</td>
               </tr>
               <tr>
-                <th scope="row" class="mainColor">
+                <th scope="row" class="mainColor text-nowrap">
                   <i class="fa-solid fa-lightbulb"></i> Skills
                 </th>
                 <td>
@@ -69,7 +69,7 @@
                 </td>
               </tr>
               <tr>
-                <th scope="row" class="mainColor">
+                <th scope="row" class="mainColor text-nowrap">
                   <i class="fa-solid fa-book"></i> Qualification
                 </th>
                 <td>{{ coachData?.qualifications }}</td>
