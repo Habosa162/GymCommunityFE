@@ -1,14 +1,14 @@
 // src/app/app.config.ts
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { routes } from './app.routes';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { authInterceptor } from './core/interceptors/auth.interceptor';
-import { SocialAuthService, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
-import { socialLoginConfig } from './services/social-login.config';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideRouter } from '@angular/router';
 import { provideToastr } from 'ngx-toastr';
-
+import { routes } from './app.routes';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { ChatbotComponent } from './presentation/ChatBot/chatbot.component';
+import { socialLoginConfig } from './services/social-login.config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,6 +27,7 @@ export const appConfig: ApplicationConfig = {
     // Social login provider setup
     { provide: 'SocialAuthServiceConfig', useValue: socialLoginConfig },
     SocialAuthService,
-
+    provideHttpClient(),
+    { provide: ChatbotComponent, useClass: ChatbotComponent },
   ],
 };

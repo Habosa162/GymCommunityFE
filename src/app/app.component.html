@@ -7,3 +7,4 @@
 
     <router-outlet *ngSwitchDefault></router-outlet>
 </ng-container>
+<app-chatbot *ngIf="authService.isLoggedIn() && authService.getUserRole() === 'Client'"></app-chatbot>
