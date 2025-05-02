@@ -16,30 +16,88 @@
 .card-header {
   background-color: #198754 !important;
   border-bottom: 1px solid #333;
-}
-
-.card-body {
-  flex: 1;
-  overflow-y: auto;
-  background-color: #1a1a1a;
-  padding: 1rem;
-}
-
-.card-footer {
-  background-color: #242424;
-  border-top: 1px solid #333;
-  padding: 1rem;
+  font-size: 1.1rem;
+  padding: 0.75rem 1rem;
 }
 
 /* Message Styles */
 .bg-user-message {
   background-color: #198754 !important;
   color: #ffffff;
+  font-size: 0.95rem;
 }
 
 .bg-bot-message {
   background-color: #2a2a2a !important;
-  color: #ffffff;
+  color: #e6e6e6;
+  font-size: 0.95rem;
+}
+
+/* Markdown Styles */
+::ng-deep markdown {
+  color: #e6e6e6;
+  
+  h1 {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    color: #ffffff;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    color: #ffffff;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  h4, h5, h6 {
+    font-size: 1rem;
+    color: #ffffff;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    font-weight: normal;
+    color: #e6e6e6;
+  }
+
+  strong, b {
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  ul, ol {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    font-size: 0.95rem;
+    color: #e6e6e6;
+  }
+
+  li {
+    color: #e6e6e6;
+  }
+
+  em {
+    font-style: italic;
+    font-weight: normal;
+    color: #e6e6e6;
+  }
 }
 
 /* Chat Button Styles */

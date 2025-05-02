@@ -104,7 +104,7 @@ export class ChatbotComponent implements OnInit {
     this.http
       .post<any>(this.apiUrl, payload)
       .pipe(
-        timeout(50000),
+        timeout(100000),
         catchError((error) => {
           let errorMessage = 'Sorry, something went wrong. Please try again.';
           if (error.name === 'TimeoutError') {
