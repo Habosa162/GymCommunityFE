@@ -5,11 +5,12 @@
   </div>
   <div class="container ">
     <!-- Create Post Form -->
-    <div *ngIf="!isProfilePage" class="card shadow-lg rounded-5 mb-5 border-0 post-card create-post-card">
-      <div class=" card-header bg-gradient bg-primary text-white rounded-top-5 py-3 px-4">
-        <h4 class="mb-0">📢 Create a New Post</h4>
-      </div>
-      <div class="card-body px-4 py-4 rounded-bottom-5 post-form-body">
+    <div class="fab-container" *ngIf="!isProfilePage">
+      <button class="fab-button" (click)="showPostForm = !showPostForm">
+        <span class="fab-icon">+</span>
+      </button>
+      
+      <div class="post-form-container" [class.active]="showPostForm">
         <form (submit)="createPost(); $event.preventDefault()">
           <div class="mb-3">
             <input class="form-control form-control-lg rounded-pill shadow-sm" 
@@ -111,7 +112,7 @@
         </ng-template>
   
         <div class="mb-2 text-muted small">
-          by <strong class="username">{{ post.userName }}</strong> in <span class="badge bg-success bg-opacity-10 text-success">{{ post.subName }}</span>
+          by <strong class="username" [routerLink]= "['/profile/', post.userId]" routerLinkActive="router-link-active" style="cursor: pointer;">{{ post.userName }}</strong> in <span class="badge bg-success bg-opacity-10 text-success">{{ post.subName }}</span>
         </div>
         <p class="fs-5 text-dark mt-3 post-content">{{ post.content }}</p>
         <img *ngIf="post.imgUrl" [src]="post.imgUrl" class="img-fluid rounded-4 mb-3 border shadow-sm post-image" />
@@ -131,7 +132,7 @@
               class="position-absolute voters-tooltip" 
               style="top: 120%; left: 0; z-index: 10; white-space: nowrap;">
               <ul class="list-unstyled mb-0 small">
-                <li *ngFor="let v of hoveredVotes">{{ v.userName }}</li>
+                <li *ngFor="let v of hoveredVotes" [routerLink]= "['/profile/', v.userId]" routerLinkActive="router-link-active" style="cursor: pointer;">{{ v.userName }}</li>
               </ul>
             </div>
           </span>
@@ -159,14 +160,14 @@
           <div *ngFor="let comment of commentsMap[post.id]" class="position-relative mb-4 comment-item">
             <div class="comment-box rounded-4 shadow-sm p-3 d-flex gap-3">
               <!-- Avatar Circle -->
-              <div class="avatar ms-3">
+              <div class="avatar " [routerLink]= "['/profile/', comment.userId]" routerLinkActive="router-link-active" style="cursor: pointer;">
                 {{ comment.userName[0] | uppercase }}
               </div>
   
               <div class="flex-grow-1">
                 <div class="d-flex justify-content-between align-items-center mb-1">
                   <div>
-                    <strong class="username">{{ comment.userName }}</strong>
+                    <strong class="username" [routerLink]= "['/profile/', comment.userId]" routerLinkActive="router-link-active" style="cursor: pointer;">{{ comment.userName }}</strong>
                     <span class="text-muted small ms-3">{{ comment.createdAt | date:'short' }}</span>
                   </div>
                   <div *ngIf="comment.userId === currentUserId" class="dropdown">
@@ -209,7 +210,7 @@
                     {{ comment.upvoteCount }}
                     <div *ngIf="hoveredCommentId === comment.id" class="position-absolute voters-tooltip" style="top: 120%; left: 0; z-index: 10; white-space: nowrap;">
                       <ul class="list-unstyled mb-0 small">
-                        <li *ngFor="let v of hoveredVotes">{{ v.userName }}</li>
+                        <li *ngFor="let v of hoveredVotes" [routerLink]= "['/profile/', v.userId]" routerLinkActive="router-link-active" style="cursor: pointer;">{{ v.userName }}</li>
                       </ul>
                     </div>
                   </span>
@@ -230,7 +231,7 @@
   
         <!-- Add Comment Input -->
         <form (submit)="createComment(post.id, commentInput.value); commentInput.value=''; $event.preventDefault()" class="mt-3">
-          <div class="input-group shadow-sm">
+          <div class="input-group">
             <input #commentInput type="text" class="form-control rounded-start-pill" placeholder="Add a comment..." />
             <button class="btn btn-outline-secondary rounded-end-pill hover-grow">➡️</button>
           </div>

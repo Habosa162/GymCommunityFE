@@ -124,8 +124,8 @@
         <h3>Selected: {{ selectedPlan.title }}</h3>
         <p>{{ selectedPlan.description }}</p>
       </div>
-      <button class="btn-subscribe" (click)="processSubscriptionAndPayment()">
-        Subscribe for EGP {{ selectedPlan.price }}
+      <button [disabled]="isSubscribed" class="btn-subscribe" (click)="processSubscriptionAndPayment()">
+        {{ isSubscribed ? 'Already Subscribed In a Plan' : 'Subscribe for EGP ' + selectedPlan.price }}
       </button>
     </div>
 

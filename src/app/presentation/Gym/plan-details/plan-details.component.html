@@ -62,7 +62,7 @@
         <button type="submit" class="btn btn-success">💾 Save Changes</button>
       </form>
 
-      <button class="btn btn-outline-success mt-3 px-5 " [routerLink]="['/gym-owner/gym/', plan.gymId]">Back To Gym</button>
+      <button class="btn btn-outline-success mt-3 px-5 " [routerLink]="['/gym-owner/gym/', plan.gymId]" *ngIf="isGymOwner">Back To Gym</button>
     </div>
   
   </div>

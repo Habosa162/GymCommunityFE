@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,ElementRef,HostListener,OnInit } from '@angular/core';
 import { CommentReadDTO, CommentCreateDTO } from '../../../../domain/models/Forum/comment.model';
 import { PostReadDTO, PostCreateDTO } from '../../../../domain/models/Forum/post.model';
 import { Sub } from '../../../../domain/models/Forum/sub.model';
@@ -11,14 +11,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 @Component({
   imports: [
     CommonModule,
     FormsModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
+    RouterModule
   ],
   templateUrl: './forum.component.html',
   styleUrl: './forum.component.css'
@@ -27,7 +28,7 @@ export class ForumComponent implements OnInit {
 //check if its in profile or not
 isProfilePage: boolean = false;
 userOfPosts:string = '';
-
+loading:boolean = true;
 
   posts: PostReadDTO[] = [];
   commentsMap: { [postId: number]: CommentReadDTO[] } = {};
@@ -43,7 +44,7 @@ userOfPosts:string = '';
   editCommentContent: string = '';
   editSelectedImage: File | null = null;
 
-
+  showPostForm: boolean = false;
 
   userVotesMap: { [postId: number]: { isUpvote: boolean, voteId: number } | null } = {};
   userCommentVotesMap: { [commentId: number]: { isUpvote: boolean, voteId: number } | null } = {};
@@ -55,7 +56,8 @@ userOfPosts:string = '';
     private voteService: VoteService,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private elementRef: ElementRef,
 
   ) {}
 
@@ -129,6 +131,7 @@ userOfPosts:string = '';
           } else {
             this.userVotesMap[post.id] = null;
           }
+          this.loading = false;
         });        
       });
     });
@@ -191,6 +194,7 @@ userOfPosts:string = '';
       this.newPost = { title: '', content: '', userId: this.currentUserId, subId: 0 };
       this.selectedImage = null;
     });
+    this.showPostForm = false;
   }
 
   createComment(postId: number, content: string): void {
@@ -430,7 +434,13 @@ hideVoters() {
   this.hoveredVotes = [];
 }
 
-
+// Close when clicking outside
+@HostListener('document:click', ['$event'])
+onClick(event: MouseEvent) {
+  if (!this.elementRef.nativeElement.contains(event.target)) {
+    this.showPostForm = false;
+  }
+}
   
 
   
