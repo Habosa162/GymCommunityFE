@@ -26,7 +26,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     'api/Chat',
     'api/group',
     'api/Admin',
-    'api/CoachOffers'
+    'api/CoachOffers',
+    'api/chatbot',
   ];
   const shouldAttach = secureUrls.some((url) => req.url.includes(url));
 

@@ -1,0 +1,123 @@
+.mw-md-400px {
+  max-width: 400px;
+  width: 100%;
+}
+
+.h-500px {
+  height: 500px;
+}
+
+/* Chat Window Styles */
+.card {
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+}
+
+.card-header {
+  background-color: #198754 !important;
+  border-bottom: 1px solid #333;
+}
+
+.card-body {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #1a1a1a;
+  padding: 1rem;
+}
+
+.card-footer {
+  background-color: #242424;
+  border-top: 1px solid #333;
+  padding: 1rem;
+}
+
+/* Message Styles */
+.bg-user-message {
+  background-color: #198754 !important;
+  color: #ffffff;
+}
+
+.bg-bot-message {
+  background-color: #2a2a2a !important;
+  color: #ffffff;
+}
+
+/* Chat Button Styles */
+.rounded-circle {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #198754 !important;
+  border: none;
+}
+
+/* Input Styles */
+textarea.form-control {
+  resize: none;
+  background-color: #2a2a2a;
+  border: 1px solid #333;
+  color: #ffffff;
+}
+
+textarea.form-control:focus {
+  background-color: #2a2a2a;
+  border-color: #198754;
+  box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+  color: #ffffff;
+}
+
+/* Markdown Styles */
+::ng-deep markdown {
+  color: #ffffff;
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #ffffff;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  strong, b {
+    font-weight: 700;
+  }
+
+  ul, ol {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+  }
+
+  p {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  em {
+    font-style: italic;
+    font-weight: 500;
+  }
+}
+
+/* Scrollbar Styles */
+.card-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.card-body::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.card-body::-webkit-scrollbar-thumb {
+  background: #198754;
+  border-radius: 4px;
+}
+
+.card-body::-webkit-scrollbar-thumb:hover {
+  background: #146c43;
+}
