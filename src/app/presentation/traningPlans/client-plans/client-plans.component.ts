@@ -40,7 +40,7 @@ interface Meal {
 @Component({
   selector: 'app-client-plans',
   standalone: true,
-  imports: [CommonModule, FormsModule,RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './client-plans.component.html',
   styleUrl: './client-plans.component.css',
 })
@@ -559,5 +559,18 @@ export class ClientPlansComponent implements OnInit {
     const dayDate = new Date(week.startDate);
     dayDate.setDate(dayDate.getDate() + (dayNumber - 1));
     return this.isDateCrossedOut(dayDate);
+  }
+
+  markDailyPlan(id: number): void {
+    this.trainingPlanService.markDailyPlanAsDone(id).subscribe({
+      next: (res) => {
+        console.log('Daily plan marked as done:', res);
+        const planId = this.route.snapshot.params['id'];
+        this.getTrainingPlanById(planId);
+      },
+      error: (error) => {
+        console.error('Error marking daily plan as done:', error);
+      },
+    });
   }
 }

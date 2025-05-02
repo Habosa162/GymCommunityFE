@@ -1,4 +1,7 @@
-import { CreatetrainingPlan, trainingPlan } from './../../domain/models/TraingingPlansModels/training-plan-model';
+import {
+  CreatetrainingPlan,
+  trainingPlan,
+} from './../../domain/models/TraingingPlansModels/training-plan-model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -42,6 +45,10 @@ export class TrainingPlansService {
     return this.http.delete<void>(`${this.baseUrl}/daily-plans/${id}`);
   }
 
+  markDailyPlanAsDone(id: number): Observable<void> {
+    return this.http.patch<void>(`${this.baseUrl}/markDailyPlan/${id}`, {});
+  }
+
   // ========== WEEK PLANS ==========
 
   getWeekPlansByTrainingPlan(
@@ -78,7 +85,9 @@ export class TrainingPlansService {
     return this.http.get<trainingPlan[]>(`${this.baseUrl}/GetAll`);
   }
 
-  createTrainingPlan(trainingPlan: CreatetrainingPlan): Observable<trainingPlan> {
+  createTrainingPlan(
+    trainingPlan: CreatetrainingPlan
+  ): Observable<trainingPlan> {
     return this.http.post<trainingPlan>(`${this.baseUrl}/create`, trainingPlan);
   }
 }

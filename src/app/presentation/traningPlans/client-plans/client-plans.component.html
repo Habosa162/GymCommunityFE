@@ -704,6 +704,27 @@
         </button>
       </div>
       <div class="charts text-center p-3">
+        <!-- Mark day -->
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <div class="checkbox-wrapper d-inline-block">
+            <input
+              type="checkbox"
+              [checked]="selectedDayPlan.isDone"
+              (change)="markDailyPlan(selectedDayPlan.id)"
+            />
+            <svg viewBox="0 0 35.6 35.6">
+              <circle r="17.8" cy="17.8" cx="17.8" class="background"></circle>
+              <circle r="14.37" cy="17.8" cx="17.8" class="stroke"></circle>
+              <polyline
+                points="11.78 18.12 15.55 22.23 25.17 12.87"
+                class="check"
+              ></polyline>
+            </svg>
+          </div>
+          <h3>Day Completed</h3>
+        </div>
+
+        <!-- Mark day -->
         <div class="row">
           <div class="col-lg-8">
             <div class="paper rounded-4 shadow px-4 py-3">
