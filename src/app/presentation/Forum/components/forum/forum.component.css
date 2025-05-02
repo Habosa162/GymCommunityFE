@@ -225,7 +225,7 @@ textarea.form-control:focus {
 .fab-container {
   position: fixed;
   bottom: 2rem;
-  right: 2rem;
+  left: 2rem;
   z-index: 1000;
   background-color: transparent;
 }
@@ -250,7 +250,7 @@ textarea.form-control:focus {
 .post-form-container {
   position: absolute;
   bottom: 70px;
-  right: 0;
+  left: 0;
   width: 400px;
   max-width: 90vw;
   opacity: 0;
