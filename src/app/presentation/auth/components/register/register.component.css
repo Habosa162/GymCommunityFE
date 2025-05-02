@@ -35,7 +35,7 @@
   display: none;
 }
 ::ng-deep .mat-mdc-text-field-wrapper:hover .mat-mdc-notch-piece {
-  border-color: #3f51b5 !important;
+  border-color: limegreen !important;
 }
 
 /* radiomodule */
@@ -65,12 +65,12 @@
 }
 
 .role-card.mat-radio-checked {
-  border-color: #3f51b5;
+  border-color: limegreen;
   background-color: #e8eaf6;
 }
 
 .role-card:hover {
-  border-color: #9fa8da;
+  border-color: limegreen;
 }
 
 /* dark mode styles */
@@ -96,7 +96,7 @@
   ::ng-deep
   .mat-mdc-text-field-wrapper:hover
   .lable {
-  color: #3f51b5 !important;
+  color: limegreen !important;
 }
 :host-context(body.dark-mode) .role-card {
   background-color: transparent !important;
@@ -107,7 +107,7 @@
   color: white !important;
 }
 :host-context(body.dark-mode) .role-card:hover {
-  border: 1px solid #3f51b5 !important;
+  border: 1px solid limegreen !important;
 }
 :host-context(body.dark-mode) .uploadCircle,
 :host-context(body.dark-mode) .text-muted {
@@ -115,5 +115,10 @@
   color: rgba(255, 255, 255, 0.5) !important;
 }
 :host-context(body.dark-mode) .submitBtn {
-  color: #3f51b5 !important;
+  color: limegreen !important;
+}
+
+::placeholder {
+  color: rgba(155, 15, 15, 0.5) !important;
+  opacity: 1 !important; /* Firefox */
 }
