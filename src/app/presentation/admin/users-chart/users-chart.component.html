@@ -1,0 +1,39 @@
+<div class="chart-container">
+  <div class="chart-filters">
+    <div class="filter-group">
+      <label for="roleSelect">Select Role:</label>
+      <select id="roleSelect" class="form-select" [(ngModel)]="role" (change)="onFilterChange()">
+        <option value="Client">Client</option>
+        <option value="Admin">Admin</option>
+        <option value="Coach">Coach</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="yearSelect">Select Year:</label>
+      <select id="yearSelect" class="form-select" [(ngModel)]="year" (change)="onFilterChange()">
+        <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="chart-wrapper" *ngIf="chartInfo.length > 0; else loadingOrEmpty">
+    <canvas baseChart
+      [data]="barChartData"
+      [labels]="barChartLabels"
+      [options]="barChartOptions"
+      [type]="'line'">
+    </canvas>
+  </div>
+
+  <ng-template #loadingOrEmpty>
+    <div class="chart-placeholder">
+      <div *ngIf="isLoading" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading chart data...</p>
+      </div>
+      <div *ngIf="!isLoading && chartInfo.length === 0" class="empty-message">
+        <p>No data available for the selected filters</p>
+      </div>
+    </div>
+  </ng-template>
+</div>

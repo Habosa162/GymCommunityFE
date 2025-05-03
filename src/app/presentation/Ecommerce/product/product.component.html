@@ -88,18 +88,29 @@
         {{ product.name }}
       </h6>
 
-<!-- Rating -->
-<div class="mb-2 d-flex align-items-center">
-  <ng-container *ngFor="let star of [1,2,3,4,5]">
-    <i class="fa-star" [ngClass]="getStarClass(star, product.averageRating || 0)"></i>
-
-  </ng-container>
-  <small class="text-muted ms-2">
-    ({{ product.reviewCount || product.reviews?.length || 0 }} reviews)
-  </small>
-</div>
-
-
+      <div class="mb-2 d-flex align-items-center">
+        <!-- Star Rating -->
+        <div class="star-rating me-2">
+          <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+            <i class="fa-star"
+               [ngClass]="{
+                 'fa-solid text-warning': star <= (product.averageRating || 0),
+                 'fa-regular text-muted': star > (product.averageRating || 0)
+               }"></i>
+          </ng-container>
+        </div>
+        
+        <!-- Numeric Rating -->
+        <span class="fw-bold text-warning ms-1">
+          {{ (product.averageRating || 0).toFixed(1) }}
+        </span>
+        
+        <!-- Review Count -->
+        <small class="text-muted">
+          ({{  product.reviewCount || 0 }} review{{  product.reviewCount !== 1 ? 's' : '' }})
+        </small>
+      </div>
+     
       <!-- Price & Stock -->
       <div class="d-flex justify-content-between align-items-center">
         <div>

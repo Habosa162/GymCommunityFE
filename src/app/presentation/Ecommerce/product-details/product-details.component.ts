@@ -135,6 +135,7 @@ private loadReviews(productId: number): void {
       }
       
       this.calculateAverageRating();
+      this.updatePaginatedReviews(); // Add this line
     },
     error: (err) => {
       console.error('Error loading reviews:', err);
@@ -302,5 +303,57 @@ calculateAverageRating(): void {
       return (rating >= star) ? 'fa-solid text-warning' : 'fa-regular text-muted';
     }
     
+    // pagnation 
+
+    
+// pagination 
+
+currentReviewPage: number = 1;
+reviewsPerPage: number = 4;  // Show 4 reviews per page
+paginatedReviews: Review[] = [];
+totalReviewPages: number = 0;
+// Add these new methods
+updatePaginatedReviews(): void {
+  const startIndex = (this.currentReviewPage - 1) * this.reviewsPerPage;
+  const endIndex = startIndex + this.reviewsPerPage;
+  this.paginatedReviews = this.reviews.slice(startIndex, endIndex);
+  this.totalReviewPages = Math.ceil(this.reviews.length / this.reviewsPerPage);
+}
+
+changeReviewPage(page: number): void {
+  if (page >= 1 && page <= this.totalReviewPages) {
+    this.currentReviewPage = page;
+    this.updatePaginatedReviews();
+  }
+}
+
+getReviewPagesToShow(): number[] {
+  if (this.totalReviewPages <= 5) {
+    return Array.from({length: this.totalReviewPages}, (_, i) => i + 1);
+  }
+  
+  let start = Math.max(2, this.currentReviewPage - 1);
+  let end = Math.min(this.totalReviewPages - 1, this.currentReviewPage + 1);
+  
+  if (this.currentReviewPage <= 3) {
+    end = 4;
+  }
+  
+  if (this.currentReviewPage >= this.totalReviewPages - 2) {
+    start = this.totalReviewPages - 3;
+  }
+  
+  const pages = [1];
+  if (start > 2) pages.push(-1); // -1 represents ellipsis
+  
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
+  }
+  
+  if (end < this.totalReviewPages - 1) pages.push(-1);
+  if (this.totalReviewPages > 1) pages.push(this.totalReviewPages);
+  
+  return pages;
+}
     
   }    

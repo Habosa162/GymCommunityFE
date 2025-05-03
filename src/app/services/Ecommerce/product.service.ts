@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { baseUrl } from '../enviroment';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Product } from '../../domain/models/Ecommerce/product.model';
 import { ToastrService } from 'ngx-toastr';
 
@@ -24,30 +24,31 @@ export class ProductService {
     sort: string,
     minPrice: number | null,
     maxPrice: number | null
-  ): Observable<any> {
+  ): Observable<{data: Product[], totalCount: number, totalPages: number}> {
     let params = new HttpParams()
       .set('query', query)
       .set('page', page.toString())
       .set('eleNo', eleNo.toString())
       .set('sort', sort);
-
-    if (categoryId !== null) {
-      params = params.set('categoryId', categoryId.toString());
-    }
-    if (brandId !== null) {
-      params = params.set('brandId', brandId.toString());
-    }
-    if (minPrice !== null) {
-      params = params.set('minPrice', minPrice.toString());
-    }
-    if (maxPrice !== null) {
-      params = params.set('maxPrice', maxPrice.toString());
-    }
-
-    return this.HttpClient.get(`${this.apiUrl}`, { params });
+  
+    if (categoryId !== null) params = params.set('categoryId', categoryId.toString());
+    if (brandId !== null) params = params.set('brandId', brandId.toString());
+    if (minPrice !== null) params = params.set('minPrice', minPrice.toString());
+    if (maxPrice !== null) params = params.set('maxPrice', maxPrice.toString());
+  
+    return this.HttpClient.get<{data: any[], totalCount: number, totalPages: number}>(`${this.apiUrl}`, { params }).pipe(
+      map(response => ({
+        ...response,
+        data: response.data.map(product => ({
+          ...product,
+          averageRating: product.averageRating || 0,
+          reviewCount: product.reviewCount || 0,
+          reviews: product.reviews || []
+        }))
+      }))
+    );
   }
-
-
+  
   getUserProducts(userid: any): Observable<any> {
     return this.HttpClient.get(`${this.apiUrl}/user`, {
       params: new HttpParams().set('userid', userid)

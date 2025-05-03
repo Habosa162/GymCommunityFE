@@ -7,10 +7,14 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AdminService {
-  apiUrl= `${baseUrl}/Admin` ; 
+  apiUrl= `${baseUrl}/Admin` ;
   constructor(private http:HttpClient) {}
 
   getDashBoardSummary():Observable<any>{
-    return this.http.get(`${this.apiUrl}/summary`) ; 
+    return this.http.get(`${this.apiUrl}/summary`) ;
+  }
+  getUsersSummary(role: string, year: number): Observable<any> {
+    const params = { role: role, year: year.toString() };
+    return this.http.get(`${this.apiUrl}/users`, { params });
   }
 }
