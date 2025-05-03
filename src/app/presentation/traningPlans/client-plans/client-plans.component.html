@@ -16,9 +16,9 @@
           </div>
           <div>
             <div class="rateBtn">
-              <div class="btn">
+              <div class="btn w-100">
                 <a class="colorBlack" (click)="showRateForm = !showRateForm">
-                  >Rate Your Experience</a
+                  Rate Your Experience</a
                 >
               </div>
             </div>
@@ -115,6 +115,7 @@
         *ngIf="showRateForm"
         (showRateFormChange)="onShowRateFormChange(false)"
         [showRateForm]="showRateForm"
+        [coachIdFromParent]="trainingPlan?.coach.id"
       ></app-coach-rating>
     </div>
   </section>

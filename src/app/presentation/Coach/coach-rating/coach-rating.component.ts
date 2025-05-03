@@ -20,7 +20,6 @@ import { CommonModule } from '@angular/common';
 export class CoachRatingComponent implements OnInit {
   @Input() coachIdFromParent?: string;
   ratingForm!: FormGroup;
-  coachId!: string;
   clientId!: string;
 
   constructor(
@@ -39,7 +38,7 @@ export class CoachRatingComponent implements OnInit {
 
   ngOnInit(): void {
     this.clientId = this.authService.getUserId()!;
-    this.coachId = this.route.snapshot.paramMap.get('coachId')!;
+    console.log('coach ID:', this.coachIdFromParent);
     this.ratingForm = this.fb.group({
       rate: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
       comment: ['', Validators.required],
@@ -49,7 +48,7 @@ export class CoachRatingComponent implements OnInit {
   onSubmit() {
     if (this.ratingForm.valid) {
       const ratingData = {
-        coachId: this.coachId,
+        coachId: this.coachIdFromParent,
         clientId: this.authService.getUserId(),
         rate: this.ratingForm.value.rate,
         comment: this.ratingForm.value.comment,
@@ -59,6 +58,7 @@ export class CoachRatingComponent implements OnInit {
         next: () => {
           alert('Rating submitted!');
           this.ratingForm.reset({ rate: 5, comment: '' });
+          this.closeForm(); // close the form after submission
         },
         error: (err) => alert('Error: ' + err.message),
       });
