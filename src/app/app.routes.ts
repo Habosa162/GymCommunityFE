@@ -65,10 +65,10 @@ import { PlanPaymentSuccessComponent } from './presentation/Coach/plan-payment-s
 import { UserGymSubComponent } from './presentation/Gym/user-gym-sub/user-gym-sub.component';
 import { CoachproductsComponent } from './presentation/Coach/coachproducts/coachproducts.component';
 import { UsersManagementComponent } from './presentation/admin/users-management/users-management.component';
-
+import { CoachDashboardComponent } from './presentation/Coach/coach-dashboard/coach-dashboard.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent,canActivate:[clientGuard] },
+  { path: '', component: HomeComponent, canActivate: [clientGuard] },
   //auth routes
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -160,7 +160,11 @@ export const routes: Routes = [
   },
   //Ecommerce routes
 
-  { path: 'shop', component: ProductsListComponent,canActivate:[clientGuard] },
+  {
+    path: 'shop',
+    component: ProductsListComponent,
+    canActivate: [clientGuard],
+  },
 
   {
     path: 'wish-list',
@@ -175,7 +179,12 @@ export const routes: Routes = [
     canActivate: [AuthGuard, clientGuard],
   },
   { path: 'cart', component: CartComponent, title: 'Cart' },
-  { path: 'checkout', component: CheckoutComponent, title: 'Checkout',canActivate:[AuthGuard,clientGuard] },
+  {
+    path: 'checkout',
+    component: CheckoutComponent,
+    title: 'Checkout',
+    canActivate: [AuthGuard, clientGuard],
+  },
   {
     path: 'payment-success',
     component: PaymentSuccessComponent,
@@ -185,13 +194,13 @@ export const routes: Routes = [
     path: 'order-summary/:id',
     component: OrderSummaryComponent,
     title: 'order summary',
-    canActivate:[AuthGuard,clientGuard]
+    canActivate: [AuthGuard, clientGuard],
   },
   {
     path: 'my-orders',
     component: MyOrdersComponent,
     title: 'My Orders',
-    canActivate:[AuthGuard,clientGuard]
+    canActivate: [AuthGuard, clientGuard],
   },
 
   //Gym routes
@@ -210,19 +219,17 @@ export const routes: Routes = [
     path: 'gym-owner/dashboard',
     component: MainDashboardComponent,
     canActivate: [AuthGuard, GymOwnerGuard],
-
   },
   {
     path: 'gym-owner/dashboard/AllSub',
     component: GymSubscriptionsComponent,
     canActivate: [AuthGuard, GymOwnerGuard],
-
   },
 
   {
     path: 'gym-owner/subscription/:id',
     component: SubscriptionDetailsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'gym-owner/plan/:id',
@@ -234,8 +241,9 @@ export const routes: Routes = [
   { path: 'gyms/:id', component: UserGymDetailsComponent },
   { path: 'gyms', component: GymListComponent },
   {
-    path: 'user/gym-subs', component: UserGymSubComponent,
-    canActivate: [AuthGuard]
+    path: 'user/gym-subs',
+    component: UserGymSubComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'sub-payment-success',
@@ -247,50 +255,50 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthGuard,AdminGuard],
-    title:"Dashboard"
+    canActivate: [AuthGuard, AdminGuard],
+    title: 'Dashboard',
   },
   {
     path: 'create-category',
     component: CreateCategoryComponent,
     canActivate: [AuthGuard, AdminGuard],
-    title:"create category"
+    title: 'create category',
   },
   {
     path: 'create-brand',
     component: CreateBrandComponent,
     canActivate: [AuthGuard, AdminGuard],
-    title:"create brand"
+    title: 'create brand',
   },
   {
     path: 'create-product',
     component: CreateProductComponent,
     canActivate: [AuthGuard, AdminCoachGuard],
-    title:"create product"
+    title: 'create product',
   },
   {
     path: 'product-management',
     component: ProductManagementComponent,
-    canActivate: [AuthGuard,AdminGuard],
-    title:"product management"
+    canActivate: [AuthGuard, AdminGuard],
+    title: 'product management',
   },
   {
     path: 'order-management',
     component: OrderManagementComponent,
-    canActivate: [AuthGuard,AdminGuard],
-    title:"order management"
+    canActivate: [AuthGuard, AdminGuard],
+    title: 'order management',
   },
   {
     path: 'update-product/:id',
     component: UpdateProductComponent,
-    canActivate: [AuthGuard,AdminCoachGuard],
-    title:"update-product"
+    canActivate: [AuthGuard, AdminCoachGuard],
+    title: 'update-product',
   },
   {
     path: 'users-management',
     component: UsersManagementComponent,
-    canActivate: [AuthGuard,AdminCoachGuard],
-    title:"users management"
+    canActivate: [AuthGuard, AdminCoachGuard],
+    title: 'users management',
   },
   //coach
   {
@@ -300,6 +308,11 @@ export const routes: Routes = [
   },
 
   //coach routes
+  {
+    path: 'coachDashboard',
+    component: CoachDashboardComponent,
+    canActivate: [AuthGuard, CoachGuard],
+  },
   {
     path: 'coach',
     children: [
@@ -331,7 +344,7 @@ export const routes: Routes = [
           { path: 'offers', component: CoachOffersComponent },
           { path: 'Products', component: CoachproductsComponent },
         ],
-      }
+      },
 
       // Private coach routes (requires authentication and coach role)
     ],
