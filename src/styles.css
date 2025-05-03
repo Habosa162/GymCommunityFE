@@ -38,6 +38,7 @@ body {
 .btn-outline-success {
   color: limegreen !important;
   border-color: limegreen !important;
+  padding: 10px 20px !important;
 }
 .btn-outline-success:hover {
   color: white !important;
