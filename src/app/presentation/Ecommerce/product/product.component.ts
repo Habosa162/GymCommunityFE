@@ -100,10 +100,43 @@ export class ProductComponent {
   }
 
   getStars(rating: number): number[] {
-    return Array(Math.floor(rating)).fill(0).map((_, i) => i);
+    const fullStars = Math.floor(rating);
+    const halfStars = (rating % 1) !== 0 ? 1 : 0;
+    const emptyStars = 5 - fullStars - halfStars;
+  
+    return [
+      ...new Array(fullStars).fill(1),  // Full stars
+      ...new Array(halfStars).fill(0.5),  // Half star
+      ...new Array(emptyStars).fill(0)  // Empty stars
+    ];
   }
   getStarClass(star: number, rating: number): string {
     return (rating >= star) ? 'fa-solid text-warning' : 'fa-regular text-muted';
+  }
+
+  getStarIcons(rating: number): {icon: string, class: string}[] {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.3 && rating % 1 <= 0.7;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+  
+    const stars = [];
+    
+    // Full stars
+    for (let i = 0; i < fullStars; i++) {
+      stars.push({icon: 'fa-star', class: 'fa-solid text-warning'});
+    }
+    
+    // Half star
+    if (hasHalfStar) {
+      stars.push({icon: 'fa-star-half-stroke', class: 'fa-solid text-warning'});
+    }
+    
+    // Empty stars
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push({icon: 'fa-star', class: 'fa-regular text-muted'});
+    }
+  
+    return stars;
   }
   
 }
