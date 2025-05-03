@@ -17,6 +17,9 @@
   .card:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   }
+  button{
+    color: #d7d7d7;
+  }
 
   /* Text colors */
   .text-muted,
@@ -287,8 +290,8 @@ textarea.form-control:focus {
 }
 
 
-.comment-box {
-
+button{
+  color: #161818;
 }
 
 

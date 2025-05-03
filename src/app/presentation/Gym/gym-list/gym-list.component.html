@@ -1,7 +1,45 @@
 <section class="bgColor w-100" style="min-height: 100vh;">
 
 <div class="gym-list-container">
+   <!-- Search and Filter Bar -->
+   <div class="search-filter-bar">
+    <!-- Search Input -->
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input type="text" 
+             [(ngModel)]="searchQuery" 
+             placeholder="Search by name or location...">
+    </div>
+    
+    <!-- Sort Dropdown -->
+    <div class="sort-dropdown">
+      <select [(ngModel)]="sortOption">
+        <option value="distance">Sort by: Distance</option>
+        <option value="rating">Sort by: Rating</option>
+        <option value="name">Sort by: Name</option>
+      </select>
+      <i class="bi bi-chevron-down"></i>
+    </div>
+    
+    <!-- Amenities Filter Button (Mobile) -->
+    <button class="filter-toggle" (click)="showAmenities = !showAmenities">
+      <i class="bi bi-funnel"></i> Filters
+    </button>
+  </div>
   
+  <!-- Amenities Filter Panel -->
+  <div class="amenities-filter" [class.active]="showAmenities">
+    <h4>Facilities</h4>
+    <div class="amenities-grid">
+      <div *ngFor="let amenity of amenitiesList" 
+           class="amenity-option"
+           [class.selected]="selectedAmenities.includes(amenity)"
+           (click)="toggleAmenity(amenity)">
+        <i class="bi" [class]="getAmenityIcon(amenity)"></i>
+        {{amenity}}
+      </div>
+    </div>
+  </div>
   <div class="filter-options">
     <button class="filter-btn" 
             (click)="showAllGyms()" 
@@ -14,9 +52,34 @@
       <i class="bi bi-geo-alt me-2"></i>Nearby Gyms
     </button>
   </div>
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading gyms...</p>
+  </div>
 
   <div class="gyms-list">
-    <div *ngFor="let gym of (showNearbyOnly ? nearbyGyms : gyms)" class="gym-card">
+    <div *ngFor="let gym of filterGyms()" class="gym-card">
+      <div class="gym-image-container" (click)="viewGymDetails(gym.id)">
+        <img [src]="gymImages[gym.id] || 'assets/default-gym.jpg'" 
+             alt="{{gym.name}}" 
+             class="gym-image">
+        <div class="gym-badges">
+          <span *ngIf="showNearbyOnly && userLocation" class="badge distance">
+            <i class="bi bi-signpost"></i>
+            {{ getDistance(gym.latitude, gym.longitude) < 1 
+                ? (getDistance(gym.latitude, gym.longitude) * 1000 | number:'1.0-0') + ' m' 
+                : (getDistance(gym.latitude, gym.longitude) | number:'1.1-1') + ' km' }}
+          </span>
+          <span *ngIf="gym.isOpen24h" class="badge open-24h">
+            <i class="bi bi-clock"></i> 24/7
+          </span>
+          <span *ngIf="gym.isPopular" class="badge popular">
+            <i class="bi bi-fire"></i> Popular
+          </span>
+        </div>
+      </div>
+
       <div class="gym-header">
         <div class="name-distance">
           <h2 class="gym-name" (click)="viewGymDetails(gym.id)">{{ gym.name }}</h2>
@@ -49,6 +112,17 @@
           <i class="bi bi-clock-fill"></i>
           <span> 6:00AM - 12:00AM </span>
         </div>
+      </div>
+
+      <div class="gym-amenities">
+        <span *ngFor="let amenity of gym.amenities?.slice(0, 3)" 
+              class="amenity-tag">
+          <i class="bi" [class]="getAmenityIcon(amenity)"></i>
+          {{amenity}}
+        </span>
+        <span *ngIf="(gym.amenities?.length || 0) > 3" class="more-amenities">
+          +{{(gym.amenities.length || 0) - 3}} more
+        </span>
       </div>
 
     </div>

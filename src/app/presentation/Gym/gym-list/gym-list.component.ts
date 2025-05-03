@@ -6,10 +6,11 @@ import { GeolocationService } from '../../../services/Gym/geolocation.service';
 import { CommonModule } from '@angular/common';
 import { GymImgService } from '../../../services/Gym/gym-img.service';
 import { GymImgReadDTO } from '../../../domain/models/Gym/gym-img.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-gym-list',
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './gym-list.component.html',
   styleUrl: './gym-list.component.css'
 })
@@ -20,6 +21,15 @@ export class GymListComponent implements OnInit {
   showNearbyOnly = false;
 
   gymImages: { [key: number]: string } =[];
+
+  searchQuery: string = '';
+  selectedAmenities: string[] = [];
+  sortOption: string = 'distance';
+  isLoading: boolean = false;
+  amenitiesList: string[] = [
+    'Parking', 'Pool', 'Sauna', '24/7', 
+    'Yoga', 'Personal Trainer', 'Locker Room'
+  ];
 
   constructor(
     private gymService: GymService,
@@ -34,9 +44,16 @@ export class GymListComponent implements OnInit {
   }
 
   loadAllGyms(): void {
+    this.isLoading = true;
     this.gymService.getAllGyms().subscribe({
-      next: (gyms) =>{this.gyms = gyms;
+      next: (gyms) =>{
+        this.gyms = gyms;
+        this.isLoading = false;
         gyms.forEach(gym => {
+          gym.isOpen24h = true;
+          gym.isPopular = true;
+          gym.amenities = ['Parking', 'Pool', 'Sauna', '24/7', 
+    'Yoga', 'Personal Trainer', 'Locker Room'];
           this.gymImgService.getByGymId(gym.id).subscribe({
             next: (images: GymImgReadDTO[]) => {
               if (images.length > 0) {
@@ -45,7 +62,10 @@ export class GymListComponent implements OnInit {
                 console.warn(`No images found for gym with ID ${gym.id}`);
               }
             },
-            error: (err) => console.error('Failed to load gym image', err)
+            error: (err) => {
+              console.error('Failed to load gym image', err);
+              this.isLoading = false;
+            }
           });
         });
       } ,
@@ -74,10 +94,16 @@ export class GymListComponent implements OnInit {
       4 
     ).subscribe({
       next: (gyms) => {
-        this.nearbyGyms = gyms;
+        gyms.forEach(gym => {
+          gym.isOpen24h = true;
+          gym.isPopular = true;
+          gym.amenities = ['Parking', 'Pool', 'Sauna', '24/7', 
+    'Yoga', 'Personal Trainer', 'Locker Room']
+  },
+        this.nearbyGyms = gyms)
         this.showNearbyOnly = true;
       },
-      error: (err) => console.error('Failed to load nearby gyms', err)
+      error: (err: any) => console.error(`Failed to load nearby gyms: ${err.message || err}`)
     });
   }
 
@@ -99,7 +125,59 @@ export class GymListComponent implements OnInit {
       gymLng
     );
   }
+
+  filterGyms(): GymReadDTO[] {
+    let filtered = this.showNearbyOnly ? this.nearbyGyms : this.gyms;
+    
+    // Search by name or location
+    if (this.searchQuery) {
+      filtered = filtered.filter(gym => 
+        gym.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        gym.location.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+    
+
+    
+    // Sort results
+    switch (this.sortOption) {
+      case 'distance':
+        if (this.userLocation) {
+          filtered.sort((a, b) => 
+            this.getDistance(a.latitude, a.longitude) - 
+            this.getDistance(b.latitude, b.longitude)
+          );
+        }
+        break;
+      case 'name':
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+    }
+    
+    return filtered;
+  }
+
   
+  showAmenities:boolean =false;
+// Add these to your component class
+getAmenityIcon(amenity: string): string {
+  const icons: {[key: string]: string} = {
+    'Parking': 'bi-p-circle',
+    'Pool': 'bi-droplet',
+    'Sauna': 'bi-thermometer-sun',
+    '24/7': 'bi-clock',
+    'Yoga': 'bi-flower1',
+    'Personal Trainer': 'bi-person-badge',
+    'Locker Room': 'bi-lock'
+  };
+  return icons[amenity] || 'bi-check';
+}
 
-
+toggleAmenity(amenity: string): void {
+  if (this.selectedAmenities.includes(amenity)) {
+    this.selectedAmenities = this.selectedAmenities.filter(a => a !== amenity);
+  } else {
+    this.selectedAmenities = [...this.selectedAmenities, amenity];
+  }
+}
 }

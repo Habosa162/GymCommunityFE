@@ -10,6 +10,11 @@ export interface GymReadDTO {
     latitude: number;
     longitude: number;
     createdAt: string;
+
+
+    isOpen24h:true;
+    isPopular:true;
+    amenities: string[]; 
   }
   
   export interface GymCreateDTO {
