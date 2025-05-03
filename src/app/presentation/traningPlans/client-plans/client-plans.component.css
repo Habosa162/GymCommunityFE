@@ -602,7 +602,7 @@ body {
   bottom: -5px;
   width: 30px;
   height: 10px;
-  background: #f00;
+  background: blue;
   border-radius: 10px;
   transition: 0.5s;
   transition-delay: 0.5;
@@ -623,7 +623,7 @@ body {
   top: -5px;
   width: 30px;
   height: 10px;
-  background: #f00;
+  background: blue;
   border-radius: 10px;
   transition: 0.5s;
   transition-delay: 0.5;
@@ -641,4 +641,10 @@ body {
   background: #1eff45;
   box-shadow: 0 0 5px #1eff45, 0 0 15px #1eff45, 0 0 30px #1eff45,
     0 0 60px #1eff45;
+}
+.rateBtn .btn:nth-child(2)::before,
+.rateBtn .btn:nth-child(2)::after {
+  background: #350ac3;
+  box-shadow: 0 0 5px #350ac3, 0 0 15px #350ac3, 0 0 30px #350ac3,
+    0 0 60px #350ac3;
 }
