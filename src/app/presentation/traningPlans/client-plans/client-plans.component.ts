@@ -46,7 +46,7 @@ interface Meal {
   styleUrl: './client-plans.component.css',
 })
 export class ClientPlansComponent implements OnInit {
-  trainingPlan!: trainingPlan & { weekPlans?: WeekPlanDto[]; coach?: any };
+  trainingPlan!: trainingPlan & { weekPlans?: WeekPlanDto[] };
   months: number[] = [];
   weeks: Week[] = [];
   selectedMonth: number = 1;
@@ -119,7 +119,7 @@ export class ClientPlansComponent implements OnInit {
       next: (response: any) => {
         this.trainingPlan = response.plan;
         this.coachData = response.coach; // Assuming the coach data is in the response
-        console.log('Training plan response:', response);
+        console.log('Training plan response:', this.trainingPlan.coachId);
         this.coachSkills = JSON.parse(response.coach.skillsJson); // Extract skills from coach data
         this.generateMonths(); // Generate months based on durationMonths
         this.initializeWeeks();

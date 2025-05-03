@@ -114,7 +114,7 @@
         *ngIf="showRateForm"
         (showRateFormChange)="onShowRateFormChange(false)"
         [showRateForm]="showRateForm"
-        [coachIdFromParent]="trainingPlan?.coach.id"
+        [coachIdFromParent]="trainingPlan.coachId"
       ></app-coach-rating>
     </div>
   </section>

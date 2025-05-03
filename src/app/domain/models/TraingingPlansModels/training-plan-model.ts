@@ -1,7 +1,7 @@
 export interface trainingPlan {
   id: number;
-  coachId: number;
-  clientId: number;
+  coachId: string;
+  clientId: string;
   isStaticPlan: boolean;
   name: string;
   durationMonths: number;
