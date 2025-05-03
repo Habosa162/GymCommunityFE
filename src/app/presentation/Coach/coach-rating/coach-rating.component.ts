@@ -10,6 +10,7 @@ import { CoachratingService } from '../../../services/Coachservice/coachrating.s
 import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-coach-rating',
@@ -26,7 +27,8 @@ export class CoachRatingComponent implements OnInit {
     private fb: FormBuilder,
     private ratingService: CoachratingService,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toaster: ToastrService
   ) {}
 
   @Input() showRateForm: boolean = false;
@@ -57,7 +59,8 @@ export class CoachRatingComponent implements OnInit {
       this.ratingService.addRating(ratingData).subscribe({
         next: () => {
           this.ratingForm.reset({ rate: 5, comment: '' });
-          this.closeForm(); // close the form after submission
+          this.closeForm();
+          this.toaster.success('Rating submitted successfully!', 'Success');
         },
         error: (err) => alert('Error: ' + err.message),
       });

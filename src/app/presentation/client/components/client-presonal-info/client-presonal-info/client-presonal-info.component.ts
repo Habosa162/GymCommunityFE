@@ -85,9 +85,11 @@ export class ClientPresonalInfoComponent implements OnInit {
     this.clientProfileService.updateClientProfile(updatedProfile).subscribe({
       next: (response: any) => {
         console.log('Personal info updated successfully');
+        this.toaster.success('Personal info updated successfully', 'Success');
       },
       error: (error) => {
         console.error('Error updating personal info:', error);
+        this.toaster.error('Error updating personal info', 'Error');
       },
     });
   }
@@ -97,9 +99,11 @@ export class ClientPresonalInfoComponent implements OnInit {
     this.clientProfileService.updateClientProfile(updatedProfile).subscribe({
       next: (response: any) => {
         console.log('Fitness stats updated successfully');
+        this.toaster.success('Fitness stats updated successfully', 'Success');
       },
       error: (error) => {
         console.error('Error updating fitness stats:', error);
+        this.toaster.error('Error updating fitness stats', 'Error');
       },
     });
   }
