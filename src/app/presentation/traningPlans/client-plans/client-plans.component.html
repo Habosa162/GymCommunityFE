@@ -9,10 +9,19 @@
         <div class="col-md-3">
           <div>
             <img
-              class="w-100 rounded-4"
+              class="w-100 rounded-4 mb-5"
               [src]="coachData?.aboutMeImageUrl"
               alt=""
             />
+          </div>
+          <div>
+            <div class="rateBtn">
+              <div class="btn">
+                <a class="colorBlack" (click)="showRateForm = !showRateForm">
+                  >Rate Your Experience</a
+                >
+              </div>
+            </div>
           </div>
         </div>
         <div class="col-md-5">
@@ -102,6 +111,11 @@
           <!-- chart -->
         </div>
       </div>
+      <app-coach-rating
+        *ngIf="showRateForm"
+        (showRateFormChange)="onShowRateFormChange(false)"
+        [showRateForm]="showRateForm"
+      ></app-coach-rating>
     </div>
   </section>
 

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { trainingPlan } from '../../../domain/models/TraingingPlansModels/training-plan-model';
 import { WeekPlanDto } from '../../../services/Training Plans/dtos/weekly-plan-dto';
 import { TrainingPlansService } from '../../../services/Training Plans/training-plan.service';
+import { CoachRatingComponent } from '../../Coach/coach-rating/coach-rating.component';
 
 interface Week {
   weekNumber: number;
@@ -40,7 +41,7 @@ interface Meal {
 @Component({
   selector: 'app-client-plans',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, CoachRatingComponent],
   templateUrl: './client-plans.component.html',
   styleUrl: './client-plans.component.css',
 })
@@ -59,6 +60,12 @@ export class ClientPlansComponent implements OnInit {
   //coach data
   coachData: any = null;
   coachSkills: string[] = [];
+
+  //toggle form
+  showRateForm = false;
+  onShowRateFormChange(newValue: boolean) {
+    this.showRateForm = newValue;
+  }
 
   // Day names for reference
   dayNames = [
