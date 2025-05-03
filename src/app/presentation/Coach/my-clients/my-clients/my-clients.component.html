@@ -5,7 +5,7 @@
       <!-- Sidebar Filters -->
       <div class="col-lg-3">
         <div class="client-sidebar">
-          <h4 class="mainColor">Filter Clients</h4>
+          <h4 class="mainColor">Filter Client's Plans plans</h4>
 
           <div class="filter-section">
             <h5 class="text-black-50">Search</h5>
@@ -50,7 +50,7 @@
             <h5 class="text-black-50">Age Range</h5>
             <div class="range-slider">
               <div class="range-values colorBlack">
-                <span >{{ minAge }} </span> - <span > {{ maxAge }}</span> years
+                <span>{{ minAge }} </span> - <span> {{ maxAge }}</span> years
               </div>
               <input
                 type="range"
@@ -87,9 +87,8 @@
       <!-- Client Cards Area -->
       <div class="col-lg-9">
         <div class="clients-header">
-          <h2 class="colorBlack">My Clients</h2>
+          <h2 class="colorBlack">My Client's Plans</h2>
           <div class="sorting-options">
-            
             <select
               class="form-control rounded-4"
               (change)="sortClients($any($event.target).value)"
@@ -109,47 +108,56 @@
           <!-- Client Card -->
           <div class="col-md-4 col-sm-6" *ngFor="let client of filteredClients">
             <div class="client-card rounded-4">
-              <div class="client-image position-relative ">
-                     <a
-                    class="text-decoration-none"
-                    routerLink="/profile/{{ client.client?.id }}"
-                    >
-                <img
-                class="rounded-circle"
-                  [src]="
-                    client.client?.profileImg ||
-                    'assets/img/placeholder-profile.jpg'
-                  "
-                  alt="Client Image"
-                />
-            
-                </a
-                  >
+              <div class="client-image position-relative">
+                <a
+                  class="text-decoration-none"
+                  routerLink="/profile/{{ client.client?.id }}"
+                >
+                  <img
+                    class="rounded-circle"
+                    [src]="
+                      client.client?.profileImg ||
+                      'assets/img/placeholder-profile.jpg'
+                    "
+                    alt="Client Image"
+                  />
+                </a>
               </div>
               <div class="client-info">
                 <h4 class="client-name text-capitalize">
                   {{ client.client?.firstName || "Client" }}
                   {{ client.client?.lastName || "" }}
                 </h4>
-                <ul class="client-details">
-                  <li class="text-capitalize">
+                <ul
+                  class="client-details d-flex justify-content-center align-items-center gap-2"
+                >
+                  <li class="text-capitalize d-block">
                     <i class="fa-solid fa-venus-mars"></i>
                     {{ client.client?.gender || "Unknown" }}
                   </li>
-                  <li>
-                    <i class="fa fa-calendar"></i>
+                  <li class="d-block">
+                    <i class="fa-solid fa-cake-candles"></i>
                     {{ calculateAge(client.client?.birthDate) }} years
                   </li>
                 </ul>
+                <h6 class="colorBlack">Plan Name</h6>
+                <p class="client-plan text-capitalize">
+                  <i class="fa-solid fa-chart-column"></i>
+                  {{ client.planName }}
+                </p>
+
                 <div class="client-actions">
                   <a
                     class="btn btn-sm btn-primary rounded-4"
                     routerLink="/plan/{{ client.planId }}"
-                    ><i class="fa-solid fa-clipboard-list"></i> Manage Plan</a
+                    ><i class="fa-solid fa-clipboard-list"></i>Manage Plan</a
                   >
-                  <button class="btn btn-sm btn-outline-secondary rounded-4">
+                  <a
+                    routerLink="/chat"
+                    class="btn btn-sm btn-outline-secondary rounded-4"
+                  >
                     <i class="fa fa-message"></i>
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>

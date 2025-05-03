@@ -10,4 +10,5 @@ export interface AppUser {
 export interface CoachClientsDTO {
   planId: number;
   client: AppUser;
+  planName: string;
 }
