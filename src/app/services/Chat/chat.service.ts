@@ -260,7 +260,10 @@ export class ChatService {
   getUserGroups(): Observable<any[]> {
     return this.http.get<ChatGroup[]>(`${this.apiUrl}/group/groups`);
   }
-
+  getUserNamesById(id: string): Observable<string> {
+    const url = `${this.apiUrl}/group/userName/${id}`;
+    return this.http.get<string>(url, { responseType: 'text' as 'json' });
+}
   /**
    * Fetches a user's name by their user ID
    * @param userId The ID of the user to fetch

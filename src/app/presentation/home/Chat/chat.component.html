@@ -8,18 +8,21 @@
       </button>
     </div>
     <ul class="groups-list">
-      <li *ngFor="let group of groups" 
+      <li class="d-flex flex-column" *ngFor="let group of groups" 
           [class.selected]="group.groupId === selectedGroupId"
           (click)="selectGroup(group.groupId)">
-        <span class="group-icon"><i class="fas fa-hashtag"></i></span>
-        <span class="group-name">{{ group.groupName }}</span>
+        <span class="group-name">{{ parsePlanName(group.groupName) }}</span>
+        <span *ngIf="authService.isLoggedIn() && authService.getUserRole() === 'Client'" class="group-name">
+          {{ getCoachName(group.groupName) }}
+        </span>
+        <span *ngIf="authService.isLoggedIn() && authService.getUserRole() === 'Coach'" class="group-name">
+          {{ getClientName(group.groupName) }}
+        </span>
       </li>
       <li *ngIf="groups.length === 0" class="no-groups">
         <i class="fas fa-info-circle"></i> No groups available
       </li>
     </ul>
-    
-    <!-- Add debug button at bottom of groups section -->
     <div class="debug-controls">
       <button (click)="inspectChatState()" class="debug-button" title="Inspect chat state in console">
         <i class="fas fa-bug"></i>
@@ -40,8 +43,6 @@
     <div class="messages" #messagesContainer *ngIf="selectedGroupId; else noGroup">
       <div *ngFor="let message of messages" 
            [ngClass]="{'message-sent': isMessageFromCurrentUser(message), 'message-received': !isMessageFromCurrentUser(message)}">
-        
-        <!-- For received messages, show avatar and content in a flex layout -->
         <ng-container *ngIf="!isMessageFromCurrentUser(message)">
           <div class="message-avatar">
             <img *ngIf="userAvatarCache[message.senderId]" [src]="userAvatarCache[message.senderId]" alt="Avatar" class="user-avatar">
@@ -61,8 +62,6 @@
             </div>
           </div>
         </ng-container>
-        
-        <!-- For sent messages -->
         <ng-container *ngIf="isMessageFromCurrentUser(message)">
           <div class="message-bubble">
             <p class="message-content">{{ message.content }}</p>
@@ -76,7 +75,6 @@
             </small>
           </div>
         </ng-container>
-        
       </div>
       <div *ngIf="messages.length === 0" class="no-messages">
         <p><i class="far fa-comment-dots"></i> No messages yet</p>

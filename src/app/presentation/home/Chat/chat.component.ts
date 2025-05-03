@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { of, Subject, Subscription, timer } from 'rxjs';
+import { firstValueFrom, of, Subject, Subscription, timer } from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -44,51 +44,34 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   private componentActive = true;
   public isConnected = false;
 
-  // Add a cache for user names
   private userNameCache: { [userId: string]: string } = {};
   public userAvatarCache: { [userId: string]: string } = {};
-
-  // Add a map to track pending user info requests
   private pendingUserRequests: { [userId: string]: boolean } = {};
-
-  // Add a throttled subject for user info requests
   private userInfoRequestSubject = new Subject<string>();
   private userInfoSubscription?: Subscription;
 
   constructor(
     private chatService: ChatService,
-    private authService: AuthService,
+    protected authService: AuthService,
     private chatDiagnostics: ChatDiagnostics
   ) {}
 
   ngOnInit(): void {
     console.log('Initializing Chat Component');
-
-    // Get current user ID from JWT token
     this.currentUserId = this.authService.getUserId() || 'anonymous-user';
     this.currentUserName = this.authService.getUserName() || 'Anonymous User';
     const profileImage = this.authService.getProfileImg();
-
-    // Add current user to cache
     this.userNameCache[this.currentUserId] = this.currentUserName;
     if (profileImage) {
       this.userAvatarCache[this.currentUserId] = profileImage;
     }
-
-    // Log authentication info
     console.log('Auth User ID:', this.currentUserId);
     console.log('Auth User Name:', this.currentUserName);
     console.log('JWT Token exists:', !!this.authService.getToken());
 
-    // Initialize the diagnostics and chat service
     this.chatDiagnostics.initialize();
-
-    // Setup throttled user info requests - process at most once per second
     this.userInfoSubscription = this.userInfoRequestSubject
-      .pipe(
-        throttleTime(1000), // Throttle to once per second
-        debounceTime(300) // Wait for a pause in the stream
-      )
+      .pipe(throttleTime(1000), debounceTime(300))
       .subscribe((userId) => {
         this.fetchUserInfo(userId);
       });
@@ -100,27 +83,17 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
           console.log('SignalR connection status changed:', connected);
           const wasConnected = this.isConnected;
           this.isConnected = connected;
-
-          // Reset connection retries on successful connection
           if (connected) {
             this.connectionRetries = 0;
-
-            // If we're connected and have a selected group, join it
             if (this.selectedGroupId) {
               this.joinGroup(this.selectedGroupId);
             }
-
-            // Schedule a diagnostic test message after connection to verify everything works
             setTimeout(() => {
               this.chatDiagnostics
                 .sendTestMessage()
-                .catch((err) =>
-                  console.error('Error sending test message:', err)
-                );
+                .catch((err) => console.error('Error sending test message:', err));
             }, 2000);
-          }
-          // If we've lost connection, try to reconnect
-          else if (wasConnected && !connected) {
+          } else if (wasConnected && !connected) {
             this.handleDisconnection();
           }
         },
@@ -133,18 +106,14 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.messageSubscription = this.chatService.getMessages().subscribe({
       next: (message) => {
         console.log('Received message in component:', message);
-        // Check if message belongs to current group
         if (
           !this.selectedGroupId ||
           message.groupId === this.selectedGroupId ||
           message.groupId === 'test-group'
         ) {
-          // Check if message already exists to avoid duplicates
           if (!this.messages.find((m) => m.id === message.id && m.id !== 0)) {
             this.messages.push(message);
             this.shouldScrollToBottom = true;
-
-            // Queue user info request if needed
             if (
               message.senderId !== this.currentUserId &&
               message.senderId !== 'system' &&
@@ -152,7 +121,6 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
               !this.userNameCache[message.senderId] &&
               !this.pendingUserRequests[message.senderId]
             ) {
-              // Set initial name and queue the request
               this.userNameCache[message.senderId] = 'User';
               this.queueUserInfoRequest(message.senderId);
             }
@@ -165,23 +133,15 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     });
 
     this.loadUserGroups();
-
-    // Setup diagnostic timer to periodically check connection health
     this.startDiagnosticTimer();
   }
 
-  /**
-   * Start a diagnostic timer to periodically check connection health
-   */
   private startDiagnosticTimer(): void {
-    // Check every 30 seconds
     this.diagnosticTimerSubscription = timer(30000, 30000)
       .pipe(takeWhile(() => this.componentActive))
       .subscribe(() => {
         if (!this.isConnected) {
-          console.log(
-            'Diagnostic timer: Connection lost, attempting reconnect'
-          );
+          console.log('Diagnostic timer: Connection lost, attempting reconnect');
           this.handleDisconnection();
         } else {
           console.log('Diagnostic timer: Connection is healthy');
@@ -189,51 +149,29 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
       });
   }
 
-  /**
-   * Handle disconnection by attempting to reconnect
-   */
   private handleDisconnection(): void {
     this.connectionRetries++;
     console.log(`Connection lost. Retry attempt ${this.connectionRetries}`);
-
     if (this.connectionRetries < 5) {
-      // Reinitialize the chat service with an exponential backoff
       const delay = Math.min(1000 * Math.pow(2, this.connectionRetries), 30000);
       console.log(`Attempting to reconnect in ${delay / 1000} seconds...`);
-
       setTimeout(() => {
         if (!this.isConnected && this.componentActive) {
           this.chatDiagnostics.initialize();
         }
       }, delay);
     } else {
-      console.error(
-        'Failed to reconnect after multiple attempts. Please refresh the page.'
-      );
+      console.error('Failed to reconnect after multiple attempts.');
     }
   }
 
   ngOnDestroy(): void {
     console.log('Destroying Chat Component');
     this.componentActive = false;
-
-    if (this.messageSubscription) {
-      this.messageSubscription.unsubscribe();
-    }
-
-    if (this.connectionSubscription) {
-      this.connectionSubscription.unsubscribe();
-    }
-
-    if (this.diagnosticTimerSubscription) {
-      this.diagnosticTimerSubscription.unsubscribe();
-    }
-
-    if (this.userInfoSubscription) {
-      this.userInfoSubscription.unsubscribe();
-    }
-
-    // Leave the current group when component is destroyed
+    this.messageSubscription?.unsubscribe();
+    this.connectionSubscription?.unsubscribe();
+    this.diagnosticTimerSubscription?.unsubscribe();
+    this.userInfoSubscription?.unsubscribe();
     if (this.selectedGroupId) {
       this.chatService
         .leaveGroup(this.selectedGroupId)
@@ -262,17 +200,14 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.chatService.getUserGroups().subscribe({
       next: (groups) => {
         this.groups = groups;
-        console.log('User groups loaded:', this.groups);
-
-        // If we have groups but none selected, select the first one automatically
-        if (this.groups.length > 0 && !this.selectedGroupId) {
-          this.selectGroup(this.groups[0].groupId);
+        console.log('User groups loaded:', groups);
+        if (groups.length > 0 && !this.selectedGroupId) {
+          this.selectGroup(groups[0].groupId);
         }
+        this.preloadGroupUsernames();
       },
       error: (err) => {
         console.error('Error loading groups:', err);
-
-        // If no groups available, create a default group
         if (!this.groups || this.groups.length === 0) {
           this.createDefaultGroup();
         }
@@ -280,13 +215,9 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     });
   }
 
-  /**
-   * Create a default group if none exist
-   */
   private createDefaultGroup(): void {
     const defaultGroupName = 'General Chat';
     console.log(`Creating default group: ${defaultGroupName}`);
-
     this.chatService.createGroup(defaultGroupName).subscribe({
       next: (group) => {
         console.log('Default group created:', group);
@@ -300,7 +231,6 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   joinGroup(groupId: string): void {
     console.log('Joining group:', groupId, 'Connected:', this.isConnected);
-
     if (this.isConnected) {
       this.chatService
         .joinGroup(groupId)
@@ -313,34 +243,24 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   selectGroup(groupId: string): void {
     console.log('Selecting group:', groupId);
-
-    // Leave current group if one is selected
     if (this.selectedGroupId) {
       this.chatService
         .leaveGroup(this.selectedGroupId)
         .catch((err) => console.error('Error leaving group:', err));
     }
-
     this.selectedGroupId = groupId;
     this.messages = [];
-
-    // Join the new group
     this.joinGroup(groupId);
-
-    // Load message history
     console.log('Loading message history for group:', groupId);
     this.chatService.getGroupHistory(groupId).subscribe({
       next: (messages) => {
         console.log('Group history loaded:', messages);
         this.messages = messages;
         this.shouldScrollToBottom = true;
-
-        // Preload user information for all messages
         this.preloadUserInfo(messages);
       },
       error: (err) => {
         console.error('Error loading message history:', err);
-        // Add a system message to indicate the error
         this.messages.push({
           id: 0,
           senderId: 'system',
@@ -353,9 +273,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     });
   }
 
-  // Preload user information for all messages
   private preloadUserInfo(messages: ChatMessage[]): void {
-    // Get unique user IDs from messages (excluding current user and system)
     const userIds = [
       ...new Set(
         messages
@@ -370,28 +288,60 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
           .map((m) => m.senderId)
       ),
     ];
-
     console.log(`Preloading user info for ${userIds.length} users`);
-
-    // Queue user info requests for each unique user ID - will be throttled
     userIds.forEach((userId) => {
       this.userNameCache[userId] = 'User';
       this.queueUserInfoRequest(userId);
     });
   }
 
+  private preloadGroupUsernames(): void {
+    const userIds: string[] = [];
+    this.groups.forEach((group) => {
+      const coachIdMatch = group.groupName.match(/"CoachId"\s*:\s*"([^"]+)"/);
+      const clientIdMatch = group.groupName.match(/"ClientId"\s*:\s*"([^"]+)"/);
+      if (coachIdMatch && coachIdMatch[1] && !this.userNameCache[coachIdMatch[1]] && !this.pendingUserRequests[coachIdMatch[1]]) {
+        userIds.push(coachIdMatch[1]);
+      }
+      if (clientIdMatch && clientIdMatch[1] && !this.userNameCache[clientIdMatch[1]] && !this.pendingUserRequests[clientIdMatch[1]]) {
+        userIds.push(clientIdMatch[1]);
+      }
+    });
+    console.log(`Preloading usernames for ${userIds.length} users from groups`);
+    userIds.forEach((userId) => {
+      this.userNameCache[userId] = 'User';
+      this.queueUserInfoRequest(userId);
+    });
+  }
+
+  // Updated getSelectedGroupName
   getSelectedGroupName(): string {
     const group = this.groups.find((g) => g.groupId === this.selectedGroupId);
-    return group ? group.groupName : 'Chat';
+    if (!group) {
+      return 'Chat';
+    }
+    try {
+      const planName = this.parsePlanName(group.groupName);
+      const userRole = this.authService.getUserRole();
+      let userName = '';
+      if (userRole === 'Client') {
+        userName = this.getCoachName(group.groupName);
+      } else if (userRole === 'Coach') {
+        userName = this.getClientName(group.groupName);
+      }
+      // Return formatted string: plan name only if no user name, otherwise combine
+      return planName && userName ? `${planName} - ${userName}` : planName || userName || 'Chat';
+    } catch (error) {
+      console.error('Error formatting selected group name:', error);
+      return 'Chat';
+    }
   }
 
   sendMessage(): void {
     if (!this.newMessage.trim() || !this.selectedGroupId) {
       return;
     }
-
     if (!this.isConnected) {
-      // Add a local-only message
       this.messages.push({
         id: 0,
         senderId: 'system',
@@ -404,23 +354,17 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.shouldScrollToBottom = true;
       return;
     }
-
     console.log('Sending message to group:', this.selectedGroupId);
-
-    // Add message to UI immediately for better UX
     const tempMessage: ChatMessage = {
-      id: 0, // Temporary ID
+      id: 0,
       senderId: this.currentUserId,
       senderName: this.currentUserName,
       groupId: this.selectedGroupId,
       content: this.newMessage,
       timestamp: new Date(),
     };
-
     this.messages.push(tempMessage);
     this.shouldScrollToBottom = true;
-
-    // Send message via SignalR
     this.chatService
       .sendMessageToGroup(
         this.currentUserId,
@@ -432,10 +376,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
       })
       .catch((err) => {
         console.error('Error sending message:', err);
-        // Remove the temporary message if sending failed
         this.messages = this.messages.filter((m) => m !== tempMessage);
-
-        // Add an error message
         this.messages.push({
           id: 0,
           senderId: 'system',
@@ -446,7 +387,6 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
         });
         this.shouldScrollToBottom = true;
       });
-
     this.newMessage = '';
   }
 
@@ -454,9 +394,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     if (!this.newGroupName.trim()) {
       return;
     }
-
     console.log('Creating new group:', this.newGroupName);
-
     this.chatService.createGroup(this.newGroupName).subscribe({
       next: (group) => {
         console.log('Group created:', group);
@@ -467,8 +405,6 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
               console.log('Added user to group:', group.groupId);
               this.loadUserGroups();
               this.newGroupName = '';
-
-              // Automatically select the new group
               setTimeout(() => {
                 this.selectGroup(group.groupId);
               }, 500);
@@ -484,37 +420,67 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     });
   }
 
-  // Add a function to get user name - simplified to just return cached value or trigger a fetch
   getUserName(userId: string): string {
-    // Return cached name if available
     if (this.userNameCache[userId]) {
       return this.userNameCache[userId];
     }
-
-    // Return placeholder for system messages
     if (userId === 'system' || userId === 'system-diagnostic') {
       return userId === 'system' ? 'System' : 'Chat System';
     }
-
-    // Set a temporary name and queue a fetch if not already pending
     if (!this.pendingUserRequests[userId]) {
       this.userNameCache[userId] = 'User';
       this.queueUserInfoRequest(userId);
     }
-
     return this.userNameCache[userId];
   }
 
-  // Queue a request to fetch user info - will be throttled
+  getCoachName(group: string): string {
+    try {
+      const match = group.match(/"CoachId"\s*:\s*"([^"]+)"/);
+      if (match && match[1]) {
+        return "Coach Name : "+this.getUserName(match[1]);
+      }
+      return 'Coach';
+    } catch (error) {
+      console.error('Error parsing CoachId:', error);
+      return 'Coach';
+    }
+  }
+
+  getClientName(group: string): string {
+    try {
+      const match = group.match(/"ClientId"\s*:\s*"([^"]+)"/);
+      if (match && match[1]) {
+        return "Client Name : "+this.getUserName(match[1]);
+      }
+      return 'Client';
+    } catch (error) {
+      console.error('Error parsing ClientId:', error);
+      return 'Client';
+    }
+  }
+
+  parsePlanName(group: string): string {
+    try {
+      console.log(group);
+      const match = group.match(/"Name"\s*:\s*"([^"]+)"/);
+      if (match && match[1]) {
+        return "Plan Name : "+match[1];
+      }
+      throw new Error('Name field not found');
+    } catch (error) {
+      console.error('Error parsing Name:', error);
+      return '';
+    }
+  }
+
   private queueUserInfoRequest(userId: string): void {
     this.pendingUserRequests[userId] = true;
     this.userInfoRequestSubject.next(userId);
   }
 
-  // Actually fetch the user info from the API
   private fetchUserInfo(userId: string): void {
     console.log(`Fetching user info for: ${userId}`);
-
     this.chatService
       .getUserNameById(userId)
       .pipe(
@@ -526,32 +492,24 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
       .subscribe({
         next: (result) => {
           console.log(`Received user info for ${userId}:`, result);
-
-          // Only update if we got a real name (not 'User' or empty)
           if (result.Name && result.Name !== 'User') {
             this.userNameCache[userId] = result.Name;
             console.log(`Updated username for ${userId} to "${result.Name}"`);
-
             if (result.ProfileImage) {
               this.userAvatarCache[userId] = result.ProfileImage;
               console.log(`Updated profile image for ${userId}`);
             }
           } else {
-            console.warn(
-              `Received invalid name for user ${userId}: "${result.Name}"`
-            );
+            console.warn(`Received invalid name for user ${userId}: "${result.Name}"`);
           }
-
           this.pendingUserRequests[userId] = false;
         },
         error: () => {
-          // On error, mark request as not pending so we can try again later
           this.pendingUserRequests[userId] = false;
         },
       });
   }
 
-  // Debug method for inspecting chat state
   inspectChatState(): void {
     console.group('Chat Component State');
     console.log('User caches:', {
@@ -564,12 +522,10 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     console.groupEnd();
   }
 
-  // Add function to get user avatar - simplified to just return cached value or default
   getUserAvatar(userId: string): string {
     return this.userAvatarCache[userId] || 'assets/images/default-avatar.png';
   }
 
-  // Check if the message is from the current user
   isMessageFromCurrentUser(message: ChatMessage): boolean {
     return (
       message.senderId === this.currentUserId ||
@@ -577,12 +533,10 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     );
   }
 
-  // Check if the message is from the system
   isSystemMessage(message: ChatMessage): boolean {
     return message.senderId === 'system';
   }
 
-  // Force reconnect the SignalR connection
   forceReconnect(): void {
     console.log('User requested reconnection');
     this.chatDiagnostics.initialize();
