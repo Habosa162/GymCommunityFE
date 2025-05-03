@@ -5,20 +5,15 @@
     background-color: #191a1d;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   }
-  .comment-box{
+  .comment-box {
     background-color: #222222;
   }
   .post-form-container {
     background-color: #161818;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.918);
-
-
   }
   .card:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-  }
-  button{
-    color: #d7d7d7;
   }
 
   /* Text colors */
@@ -39,7 +34,7 @@
     border-color: #4a5568;
     color: #f7fafc;
   }
-  ::placeholder{
+  ::placeholder {
     color: #e2e8f0;
   }
 
@@ -85,11 +80,11 @@ img {
   object-fit: cover;
 }
 
-.voters-tooltip{
-    background-color: #f9f9fb;
-    border: 1px solid #d7d7d7;
-    padding: 0.5rem;
-    border-radius: 0.375rem;
+.voters-tooltip {
+  background-color: #f9f9fb;
+  border: 1px solid #d7d7d7;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
 }
 
 .card {
@@ -103,7 +98,6 @@ img {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
 }
-
 
 /* Form Elements */
 select.form-select,
@@ -160,8 +154,14 @@ textarea.form-control:focus {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .card {
@@ -201,11 +201,11 @@ textarea.form-control:focus {
   .card {
     border-radius: 0.5rem !important;
   }
-  
+
   .comment-box {
     padding-left: 50px;
   }
-  
+
   .comment-box:before {
     left: 20px;
   }
@@ -268,9 +268,6 @@ textarea.form-control:focus {
   pointer-events: auto;
 }
 
-
-
-
 .post-form-container {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(10px);
@@ -289,13 +286,108 @@ textarea.form-control:focus {
   }
 }
 
-
-button{
-  color: #161818;
+/* Hide the default checkbox */
+.likeBtn input,
+.disLikeBtn input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
 }
 
+.likeBtn,
+.disLikeBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+.disLikeBtn {
+  transform: rotateX(180deg);
+}
 
+.likeBtn input:checked ~ .like {
+  animation: kfs-fill-like 0.5s forwards;
+}
+.disLikeBtn input:checked ~ .like {
+  animation: kfs-fill-dis-like 0.5s forwards;
+}
 
+.likeBtn .like,
+.disLikeBtn .like {
+  fill: none;
+  stroke: black;
+}
+:host-context(body.dark-mode) .likeBtn .like,
+:host-context(body.dark-mode) .disLikeBtn .like {
+  stroke: white;
+}
 
+.likeBtn input:checked ~ .celebrate,
+.disLikeBtn input:checked ~ .celebrate {
+  display: block;
+}
 
- 
+.likeBtn .celebrate,
+.disLikeBtn .celebrate {
+  position: absolute;
+  animation: kfs-celebrate 1s;
+  animation-fill-mode: forwards;
+  display: none;
+  stroke: limegreen;
+}
+.likeBtn .celebrate {
+  stroke: limegreen;
+}
+.disLikeBtn .celebrate {
+  stroke: red;
+}
+
+@keyframes kfs-celebrate {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.5) rotate(180deg);
+    opacity: 0;
+    display: none;
+  }
+}
+
+@keyframes kfs-fill-like {
+  50% {
+    fill: white;
+    stroke: white;
+    transform: scale(1.2);
+  }
+
+  100% {
+    fill: limegreen;
+    stroke: limegreen;
+  }
+}
+@keyframes kfs-fill-dis-like {
+  50% {
+    fill: white;
+    stroke: white;
+    transform: scale(1.2);
+  }
+
+  100% {
+    fill: red;
+    stroke: red;
+  }
+}
+/*dislike btn*/
+.disLikeBtn input {
+  animation: kfs-fill-dis-like 1s;
+}

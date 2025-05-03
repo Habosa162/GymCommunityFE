@@ -5,12 +5,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ClientProfileService } from '../../../../../services/Client/client-profile.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-client-presonal-info',
-  imports: [CommonModule,FormsModule,RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './client-presonal-info.component.html',
-  styleUrl: './client-presonal-info.component.css'
+  styleUrl: './client-presonal-info.component.css',
 })
 export class ClientPresonalInfoComponent implements OnInit {
   //data
@@ -21,17 +22,19 @@ export class ClientPresonalInfoComponent implements OnInit {
   isPersonalInfoEditing: boolean = false;
   isFitnessStatsEditing: boolean = false;
   isGoalsEditing: boolean = false;
-  constructor(private profileService: ProfileService ,private clientProfileService: ClientProfileService) { }
+  constructor(
+    private profileService: ProfileService,
+    private clientProfileService: ClientProfileService,
+    private toaster: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.profileService.profileData$.subscribe((data) => {
-      console.log("from info",data);
+      console.log('from info', data);
       this.clientProfile = data.clientProfile;
       this.isOwner = data.isOwner;
     });
   }
-
-
 
   // Toggle edit modes
   toggleBioEdit(): void {
@@ -62,17 +65,18 @@ export class ClientPresonalInfoComponent implements OnInit {
     }
   }
 
-
   // Save methods
   private saveBioChanges(): void {
     const updatedProfile = { ...this.clientProfile };
     this.clientProfileService.updateClientProfile(updatedProfile).subscribe({
       next: (response: any) => {
         console.log('Bio updated successfully');
+        this.toaster.success('Bio updated successfully', 'Success');
       },
       error: (error) => {
         console.error('Error updating bio:', error);
-      }
+        this.toaster.error(error.message, 'Error');
+      },
     });
   }
 
@@ -84,7 +88,7 @@ export class ClientPresonalInfoComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error updating personal info:', error);
-      }
+      },
     });
   }
 
@@ -96,7 +100,7 @@ export class ClientPresonalInfoComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error updating fitness stats:', error);
-      }
+      },
     });
   }
 
@@ -108,8 +112,7 @@ export class ClientPresonalInfoComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error updating goals:', error);
-      }
+      },
     });
   }
-
 }

@@ -1,260 +1,492 @@
-<section class="bgColor py-4" style="min-height: 100vh;">
+<section class="bgColor py-4" style="min-height: 100vh">
   <div *ngIf="!isProfilePage" class="text-center mb-3">
     <h2 class="fw-bold text-success">🌱 Forum Hub</h2>
-    <p class="text-muted">Share knowledge, ask questions, and grow together!</p>
+    <p class="text-black-50">
+      Share knowledge, ask questions, and grow together!
+    </p>
   </div>
-  <div class="container ">
+  <div class="container">
     <!-- Create Post Form -->
     <div class="fab-container" *ngIf="!isProfilePage">
       <button class="fab-button" (click)="showPostForm = !showPostForm">
         <span class="fab-icon">+</span>
       </button>
-      
+
       <div class="post-form-container" [class.active]="showPostForm">
-        <form #postForm="ngForm" (ngSubmit)="createPost()" novalidate>
-          <!-- Title Input -->
+        <form (submit)="createPost(); $event.preventDefault()">
           <div class="mb-3">
-            <input 
-              class="form-control form-control-lg rounded-pill shadow-sm" 
-              [(ngModel)]="newPost.title" 
-              name="title" 
-              placeholder="Title" 
-              required 
-              minlength="3" 
-              #title="ngModel" />
-            <!-- Error Messages for Title -->
-            <div *ngIf="title.invalid && title.touched" class="text-danger small mt-1">
-              <div *ngIf="title.errors?.['required']">Title is required.</div>
-              <div *ngIf="title.errors?.['minlength']">Title must be at least 3 characters long.</div>
-            </div>
+            <input
+              class="form-control form-control-lg rounded-pill shadow-sm"
+              [(ngModel)]="newPost.title"
+              name="title"
+              placeholder="Title"
+              required
+            />
           </div>
-        
-          <!-- Content Textarea -->
           <div class="mb-3">
-            <textarea 
-              class="form-control shadow-sm rounded-4" 
-              [(ngModel)]="newPost.content" 
-              name="content" 
-              placeholder="What's on your mind?" 
-              rows="2" 
-              required 
-              minlength="10" 
-              #content="ngModel"></textarea>
-            <!-- Error Messages for Content -->
-            <div *ngIf="content.invalid && content.touched" class="text-danger small mt-1">
-              <div *ngIf="content.errors?.['required']">Content is required.</div>
-              <div *ngIf="content.errors?.['minlength']">Content must be at least 10 characters long.</div>
-            </div>
+            <textarea
+              class="form-control shadow-sm rounded-4"
+              [(ngModel)]="newPost.content"
+              name="content"
+              placeholder="What's on your mind?"
+              rows="2"
+              required
+            ></textarea>
           </div>
-        
-          <!-- Subject Select -->
           <div class="row g-2 mb-3 align-items-center">
+            <!-- Added row and alignment -->
             <div class="col-md-6">
-              <select 
-                class="form-select shadow-sm rounded-pill" 
-                [(ngModel)]="newPost.subId" 
-                name="subId" 
-                required 
-                #subId="ngModel">
+              <!-- Subject select takes half width -->
+              <select
+                class="form-select shadow-sm rounded-pill"
+                [(ngModel)]="newPost.subId"
+                name="subId"
+                required
+              >
                 <option value="" disabled selected>Select a Subject</option>
-                <option *ngFor="let sub of subs" [value]="sub.id">{{ sub.name }}</option>
+                <option *ngFor="let sub of subs" [value]="sub.id">
+                  {{ sub.name }}
+                </option>
               </select>
-              <!-- Error Messages for Subject -->
-              <div *ngIf="subId.invalid && subId.touched" class="text-danger small mt-1">
-                <div *ngIf="subId.errors?.['required']">Please select a subject.</div>
-              </div>
             </div>
-        
-            <!-- File Input -->
             <div class="col-md-6">
-              <input 
-                type="file" 
-                class="form-control shadow-sm rounded-pill" 
-                (change)="handleImageUpload($event)" />
+              <input
+                type="file"
+                class="form-control shadow-sm rounded-pill"
+                (change)="handleImageUpload($event)"
+              />
             </div>
           </div>
-        
-          <!-- Submit Button -->
           <div class="text-end">
-            <button 
-              class="btn btn-success px-5 py-2 rounded-pill shadow hover-grow" 
-              [disabled]="postForm.invalid">
+            <button
+              class="btn btn-success px-5 py-2 rounded-pill shadow hover-grow"
+            >
               🚀 Publish
             </button>
           </div>
         </form>
       </div>
     </div>
-  
+
     <!-- Filter Options -->
-    <div *ngIf="!isProfilePage" class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
-      <select class="form-select w-auto rounded-pill shadow-sm" (change)="filterBySub($event)">
+    <div
+      *ngIf="!isProfilePage"
+      class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3"
+    >
+      <select
+        class="form-select w-auto rounded-pill shadow-sm"
+        (change)="filterBySub($event)"
+      >
         <option value="">All Subjects</option>
-        <option *ngFor="let sub of subs" [value]="sub.id">{{ sub.name }}</option>
+        <option *ngFor="let sub of subs" [value]="sub.id">
+          {{ sub.name }}
+        </option>
       </select>
-  
+
       <div class="d-flex gap-2">
-        <button class="btn btn-outline-primary px-4 rounded-pill shadow-sm hover-grow" (click)="filterTopRated()">⭐ Top Rated</button>
-        <button class="btn btn-outline-dark px-4 rounded-pill shadow-sm hover-grow dark-mode-toggle" (click)="loadPosts()">🔄 Reset</button>
+        <button
+          class="btn btn-outline-success px-4 rounded-pill shadow-sm hover-grow"
+          (click)="filterTopRated()"
+        >
+          <i class="fa-solid fa-thumbs-up"></i> Top Liked
+        </button>
+        <button
+          class="btn btn-outline-dark px-4 rounded-pill shadow-sm hover-grow dark-mode-toggle"
+          (click)="loadPosts()"
+        >
+          <i class="fa-solid fa-repeat"></i> Reset
+        </button>
       </div>
     </div>
-  
+
     <!-- Posts -->
-    <div *ngFor="let post of posts" class="card shadow-sm mb-5 border-0 rounded-5 hover-shadow post-card">
-      <div *ngIf="editingPostId === post.id; else viewPost" class="p-3">
-        <input [(ngModel)]="editPostData.title" class="form-control mb-2" name="editTitle" />
-        <textarea [(ngModel)]="editPostData.content" class="form-control mb-2" name="editContent"></textarea>
-        <select [(ngModel)]="editPostData.subId" class="form-select mb-3" name="editSubId">
-          <option *ngFor="let sub of subs" [value]="sub.id">{{ sub.name }}</option>
+    <div
+      *ngFor="let post of posts"
+      class="card shadow mb-5 border-0 rounded-5 hover-shadow post-card"
+    >
+      <div *ngIf="editingPostId === post.id; else viewPost">
+        <input
+          [(ngModel)]="editPostData.title"
+          class="form-control mb-2"
+          name="editTitle"
+        />
+        <textarea
+          [(ngModel)]="editPostData.content"
+          class="form-control mb-2"
+          name="editContent"
+        ></textarea>
+        <select
+          [(ngModel)]="editPostData.subId"
+          class="form-select mb-3"
+          name="editSubId"
+        >
+          <option *ngFor="let sub of subs" [value]="sub.id">
+            {{ sub.name }}
+          </option>
         </select>
-      
+
         <!-- Updated Image Preview -->
         <div class="mb-3">
-          <img *ngIf="editPostData.imgUrl" [src]="editPostData.imgUrl" class="img-fluid rounded-4 mb-2 border shadow-sm" style="max-height: 250px;" />
-          <input type="file" class="form-control shadow-sm rounded-pill" (change)="handleEditImageUpload($event)" />
+          <img
+            *ngIf="editPostData.imgUrl"
+            [src]="editPostData.imgUrl"
+            class="img-fluid rounded-4 mb-2 border shadow-sm"
+            style="max-height: 250px"
+          />
+          <input
+            type="file"
+            class="form-control shadow-sm rounded-pill"
+            (change)="handleEditImageUpload($event)"
+          />
         </div>
-      
-        <button class="btn btn-primary me-2 hover-grow" (click)="updatePost(post.id)">💾 Save</button>
-        <button class="btn btn-secondary hover-grow" (click)="editingPostId = null">❌ Cancel</button>
+
+        <button
+          class="btn btn-primary me-2 hover-grow"
+          (click)="updatePost(post.id)"
+        >
+          💾 Save
+        </button>
+        <button
+          class="btn btn-secondary hover-grow"
+          (click)="editingPostId = null"
+        >
+          ❌ Cancel
+        </button>
       </div>
-      
-  
+
       <div class="card-body">
         <ng-template #viewPost>
           <!-- Post Title Row -->
           <div class="d-flex justify-content-between align-items-center">
-            <h5 class="mb-0 fw-semibold pt-4 px-3 post-title">{{ post.title }}</h5>
+            <h5 class="mb-0 fw-semibold pt-4 px-3 post-title">
+              {{ post.title }}
+            </h5>
             <div class="d-flex align-items-center gap-2">
-              <small class="text-muted px-3">{{ post.createdAt | date:'short' }}</small>
+              <small class="text-muted px-3">{{
+                post.createdAt | date : "short"
+              }}</small>
               <div *ngIf="post.userId === currentUserId" class="dropdown m-3">
-                <button class="border-0 bg-transparent" mat-icon-button [matMenuTriggerFor]="menu">
-                  <mat-icon>more_vert</mat-icon>
+                <button
+                  class="border-0 bg-transparent"
+                  mat-icon-button
+                  [matMenuTriggerFor]="menu"
+                >
+                  <mat-icon class="colorBlack">more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
                   <button mat-menu-item (click)="editPost(post)">
                     <mat-icon>edit</mat-icon>
-                    <span style="color: white;">Edit</span>
+                    <span>Edit</span>
                   </button>
                   <button mat-menu-item (click)="deletePost(post.id)">
-                    <mat-icon color="white">delete</mat-icon>
-                    <span style="color: white;">Delete</span>
+                    <mat-icon color="warn">delete</mat-icon>
+                    <span>Delete</span>
                   </button>
                 </mat-menu>
               </div>
             </div>
           </div>
         </ng-template>
-  
+
         <div class="mb-2 text-muted small">
-          by <strong class="username" [routerLink]= "['/profile/', post.userId]" routerLinkActive="router-link-active" style="cursor: pointer;">{{ post.userName }}</strong> in <span class="badge bg-success bg-opacity-10 text-success">{{ post.subName }}</span>
+          by
+          <strong
+            class="username"
+            [routerLink]="['/profile/', post.userId]"
+            routerLinkActive="router-link-active"
+            style="cursor: pointer"
+            >{{ post.userName }}</strong
+          >
+          in
+          <span class="badge bg-success bg-opacity-10 text-success">{{
+            post.subName
+          }}</span>
         </div>
         <p class="fs-5 text-dark mt-3 post-content">{{ post.content }}</p>
-        <img *ngIf="post.imgUrl" [src]="post.imgUrl" class="img-fluid rounded-4 mb-3 border shadow-sm post-image" />
-  
+        <img
+          *ngIf="post.imgUrl"
+          [src]="post.imgUrl"
+          class="img-fluid rounded-4 mb-3 border shadow-sm post-image"
+        />
+
         <div class="d-flex align-items-center gap-3 flex-wrap mb-3">
-          <button class="btn btn-sm btn-outline-success rounded-circle shadow-sm hover-grow" 
-          [ngClass]="{'btn-success': userVotesMap[post.id]?.isUpvote === true}"
-          (click)="voteOnPost(post.id, true)">👍</button>
-          <span 
-            class="text-success position-relative" 
-            (mouseenter)="showVoters(post.id, true)" 
-            (mouseleave)="hideVoters()" 
-            style="cursor: pointer;">
+          <!-- <button
+            class="btn btn-sm btn-outline-success rounded-circle shadow-sm hover-grow"
+            [ngClass]="{
+              'btn-success': userVotesMap[post.id]?.isUpvote === true
+            }"
+            (click)="voteOnPost(post.id, true)"
+          >
+            👍
+          </button> -->
+
+          <!-- like btn -->
+          <label class="likeBtn">
+            <input
+              [checked]="userVotesMap[post.id]?.isUpvote === true"
+              (change)="voteOnPost(post.id, true)"
+              type="checkbox"
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              height="30px"
+              width="30px"
+              class="like"
+            >
+              <path
+                d="M8 10V20M8 10L4 9.99998V20L8 20M8 10L13.1956 3.93847C13.6886 3.3633 14.4642 3.11604 15.1992 3.29977L15.2467 3.31166C16.5885 3.64711 17.1929 5.21057 16.4258 6.36135L14 9.99998H18.5604C19.8225 9.99998 20.7691 11.1546 20.5216 12.3922L19.3216 18.3922C19.1346 19.3271 18.3138 20 17.3604 20L8 20"
+              ></path>
+            </svg>
+            <svg
+              width="30"
+              height="30"
+              xmlns="http://www.w3.org/2000/svg"
+              class="celebrate"
+            >
+              <polygon points="0,0 10,10"></polygon>
+              <polygon points="0,25 10,25"></polygon>
+              <polygon points="0,50 10,40"></polygon>
+              <polygon points="50,0 40,10"></polygon>
+              <polygon points="50,25 40,25"></polygon>
+              <polygon points="50,50 40,40"></polygon>
+            </svg>
+          </label>
+          <!-- like btn -->
+
+          <span
+            class="colorBlack position-relative"
+            (mouseenter)="showVoters(post.id, true)"
+            (mouseleave)="hideVoters()"
+            style="cursor: pointer"
+          >
             {{ post.upvoteCount }}
-            <div 
-              *ngIf="hoveredPostId === post.id" 
-              class="position-absolute voters-tooltip" 
-              style="top: 120%; left: 0; z-index: 10; white-space: nowrap;">
+            <div
+              *ngIf="hoveredPostId === post.id"
+              class="position-absolute voters-tooltip"
+              style="top: 120%; left: 0; z-index: 10; white-space: nowrap"
+            >
               <ul class="list-unstyled mb-0 small">
-                <li *ngFor="let v of hoveredVotes" [routerLink]= "['/profile/', v.userId]" routerLinkActive="router-link-active" style="cursor: pointer;">{{ v.userName }}</li>
+                <li
+                  *ngFor="let v of hoveredVotes"
+                  [routerLink]="['/profile/', v.userId]"
+                  routerLinkActive="router-link-active"
+                  style="cursor: pointer"
+                >
+                  {{ v.userName }}
+                </li>
               </ul>
             </div>
           </span>
-          
-          <button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm hover-grow" 
-          [class.active]=" userVotesMap[post.id]?.isUpvote === false" 
-          (click)="voteOnPost(post.id, false)">👎</button>
-          <span 
-            class="text-danger position-relative" 
-            (mouseenter)="showVoters(post.id, false)" 
-            (mouseleave)="hideVoters()" 
-            style="cursor: pointer;">
+
+          <!-- <button
+            class="btn btn-sm btn-outline-danger rounded-circle shadow-sm hover-grow"
+            [class.active]="userVotesMap[post.id]?.isUpvote === false"
+            (click)="voteOnPost(post.id, false)"
+          >
+            👎
+          </button> -->
+          <!-- dislike btn -->
+          <label class="disLikeBtn">
+            <input
+              [checked]="userVotesMap[post.id]?.isUpvote === false"
+              (change)="voteOnPost(post.id, false)"
+              type="checkbox"
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              height="30px"
+              width="30px"
+              class="like"
+            >
+              <path
+                d="M8 10V20M8 10L4 9.99998V20L8 20M8 10L13.1956 3.93847C13.6886 3.3633 14.4642 3.11604 15.1992 3.29977L15.2467 3.31166C16.5885 3.64711 17.1929 5.21057 16.4258 6.36135L14 9.99998H18.5604C19.8225 9.99998 20.7691 11.1546 20.5216 12.3922L19.3216 18.3922C19.1346 19.3271 18.3138 20 17.3604 20L8 20"
+              ></path>
+            </svg>
+            <svg
+              width="30"
+              height="30"
+              xmlns="http://www.w3.org/2000/svg"
+              class="celebrate"
+            >
+              <polygon points="0,0 10,10"></polygon>
+              <polygon points="0,25 10,25"></polygon>
+              <polygon points="0,50 10,40"></polygon>
+              <polygon points="50,0 40,10"></polygon>
+              <polygon points="50,25 40,25"></polygon>
+              <polygon points="50,50 40,40"></polygon>
+            </svg>
+          </label>
+
+          <!-- dislike btn -->
+          <span
+            class="text-danger position-relative"
+            (mouseenter)="showVoters(post.id, false)"
+            (mouseleave)="hideVoters()"
+            style="cursor: pointer"
+          >
             {{ post.downvoteCount }}
           </span>
-  
-          <span class="text-primary fw-semibold comment-toggle" style="cursor: pointer;" (click)="toggleComments(post.id)">
-            💬 {{ post.commentCount }} Comments
+
+          <span
+            class="text-primary fw-semibold comment-toggle"
+            style="cursor: pointer"
+            (click)="toggleComments(post.id)"
+          >
+            <i
+              class="fa-regular fa-comments colorBlack"
+              style="font-size: 20px"
+            ></i>
+            {{ post.commentCount }} Comments
           </span>
         </div>
-  
+
         <hr class="divider" />
-  
+
         <!-- Comments -->
         <div *ngIf="commentVisibility.has(post.id)" class="mt-4">
-          <div *ngFor="let comment of commentsMap[post.id]" class="position-relative mb-4 comment-item">
+          <div
+            *ngFor="let comment of commentsMap[post.id]"
+            class="position-relative mb-4 comment-item"
+          >
             <div class="comment-box rounded-4 shadow-sm p-3 d-flex gap-3">
               <!-- Avatar Circle -->
-              <div class="avatar " [routerLink]= "['/profile/', comment.userId]" routerLinkActive="router-link-active" style="cursor: pointer;">
+              <div
+                class="avatar"
+                [routerLink]="['/profile/', comment.userId]"
+                routerLinkActive="router-link-active"
+                style="cursor: pointer"
+              >
                 {{ comment.userName[0] | uppercase }}
               </div>
-  
+
               <div class="flex-grow-1">
-                <div class="d-flex justify-content-between align-items-center mb-1">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-1"
+                >
                   <div>
-                    <strong class="username" [routerLink]= "['/profile/', comment.userId]" routerLinkActive="router-link-active" style="cursor: pointer;">{{ comment.userName }}</strong>
-                    <span class="text-muted small ms-3">{{ comment.createdAt | date:'short' }}</span>
+                    <strong
+                      class="username"
+                      [routerLink]="['/profile/', comment.userId]"
+                      routerLinkActive="router-link-active"
+                      style="cursor: pointer"
+                      >{{ comment.userName }}</strong
+                    >
+                    <span class="text-muted small ms-3">{{
+                      comment.createdAt | date : "short"
+                    }}</span>
                   </div>
-                  <div *ngIf="comment.userId === currentUserId" class="dropdown">
-                    <button class="border-0 bg-transparent" mat-icon-button [matMenuTriggerFor]="menu">
+                  <div
+                    *ngIf="comment.userId === currentUserId"
+                    class="dropdown"
+                  >
+                    <button
+                      class="border-0 bg-transparent"
+                      mat-icon-button
+                      [matMenuTriggerFor]="menu"
+                    >
                       <mat-icon>more_vert</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu">
                       <button mat-menu-item (click)="editComment(comment)">
                         <mat-icon>edit</mat-icon>
-                        <span style="color: white;">Edit</span>
+                        <span>Edit</span>
                       </button>
-                      <button mat-menu-item (click)="deleteComment(comment.id, post.id)">
-                        <mat-icon >delete</mat-icon>
-                        <span style="color: white;">Delete</span>
+                      <button
+                        mat-menu-item
+                        (click)="deleteComment(comment.id, post.id)"
+                      >
+                        <mat-icon color="warn">delete</mat-icon>
+                        <span>Delete</span>
                       </button>
                     </mat-menu>
                   </div>
                 </div>
-  
-                <div *ngIf="editingCommentId === comment.id; else showCommentText">
-                  <textarea [(ngModel)]="editCommentContent" class="form-control mb-2"></textarea>
-                  <div class="d-flex gap-2 mb-2">
-                    <button class="btn btn-sm btn-primary hover-grow" (click)="updateComment(comment.id, post.id)">💾 Save</button>
-                    <button class="btn btn-sm btn-secondary hover-grow" (click)="editingCommentId = null">❌ Cancel</button>
+
+                <div
+                  *ngIf="editingCommentId === comment.id; else showCommentText"
+                >
+                  <textarea
+                    [(ngModel)]="editCommentContent"
+                    class="form-control mb-2"
+                  ></textarea>
+                  <div class="d-flex gap-2">
+                    <button
+                      class="btn btn-sm btn-primary hover-grow"
+                      (click)="updateComment(comment.id, post.id)"
+                    >
+                      💾 Save
+                    </button>
+                    <button
+                      class="btn btn-sm btn-secondary hover-grow"
+                      (click)="editingCommentId = null"
+                    >
+                      ❌ Cancel
+                    </button>
                   </div>
                 </div>
-  
+
                 <ng-template #showCommentText>
-                  <p class="mb-2 text-dark fs-6 comment-content">{{ comment.content }}</p>
+                  <p class="mb-2 text-dark fs-6 comment-content">
+                    {{ comment.content }}
+                  </p>
                 </ng-template>
-  
+
                 <!-- Vote Buttons -->
                 <div class="d-flex align-items-center gap-3">
-                  <button class="btn btn-sm btn-outline-success rounded-circle shadow-sm hover-grow" (click)="voteOnComment(comment.id, post.id, true)"
-                  [class.active]="userCommentVotesMap[comment.id]?.isUpvote">👍</button>
-                  <span class="text-success position-relative"
-                        (mouseenter)="showVoters(comment.id, true, false)" 
-                        (mouseleave)="hideVoters()"
-                        style="cursor: pointer;">
+                  <button
+                    class="btn btn-sm btn-outline-success rounded-circle shadow-sm hover-grow"
+                    (click)="voteOnComment(comment.id, post.id, true)"
+                    [class.active]="userCommentVotesMap[comment.id]?.isUpvote"
+                  >
+                    👍
+                  </button>
+                  <span
+                    class="text-success position-relative"
+                    (mouseenter)="showVoters(comment.id, true, false)"
+                    (mouseleave)="hideVoters()"
+                    style="cursor: pointer"
+                  >
                     {{ comment.upvoteCount }}
-                    <div *ngIf="hoveredCommentId === comment.id" class="position-absolute voters-tooltip" style="top: 120%; left: 0; z-index: 10; white-space: nowrap;">
+                    <div
+                      *ngIf="hoveredCommentId === comment.id"
+                      class="position-absolute voters-tooltip"
+                      style="
+                        top: 120%;
+                        left: 0;
+                        z-index: 10;
+                        white-space: nowrap;
+                      "
+                    >
                       <ul class="list-unstyled mb-0 small">
-                        <li *ngFor="let v of hoveredVotes" [routerLink]= "['/profile/', v.userId]" routerLinkActive="router-link-active" style="cursor: pointer;">{{ v.userName }}</li>
+                        <li
+                          *ngFor="let v of hoveredVotes"
+                          [routerLink]="['/profile/', v.userId]"
+                          routerLinkActive="router-link-active"
+                          style="cursor: pointer"
+                        >
+                          {{ v.userName }}
+                        </li>
                       </ul>
                     </div>
                   </span>
-  
-                  <button class="btn btn-sm btn-outline-danger rounded-circle shadow-sm hover-grow" (click)="voteOnComment(comment.id, post.id, false)"
-                  [class.active]="userCommentVotesMap[comment.id]?.isUpvote === false">👎</button>
-                  <span class="text-danger position-relative"
-                        (mouseenter)="showVoters(comment.id, false, false)" 
-                        (mouseleave)="hideVoters()" 
-                        style="cursor: pointer;">
+
+                  <button
+                    class="btn btn-sm btn-outline-danger rounded-circle shadow-sm hover-grow"
+                    (click)="voteOnComment(comment.id, post.id, false)"
+                    [class.active]="
+                      userCommentVotesMap[comment.id]?.isUpvote === false
+                    "
+                  >
+                    👎
+                  </button>
+                  <span
+                    class="text-danger position-relative"
+                    (mouseenter)="showVoters(comment.id, false, false)"
+                    (mouseleave)="hideVoters()"
+                    style="cursor: pointer"
+                  >
                     {{ comment.downvoteCount }}
                   </span>
                 </div>
@@ -262,19 +494,31 @@
             </div>
           </div>
         </div>
-  
+
         <!-- Add Comment Input -->
-        <form (submit)="createComment(post.id, commentInput.value); commentInput.value=''; $event.preventDefault()" class="mt-3">
+        <form
+          (submit)="
+            createComment(post.id, commentInput.value);
+            commentInput.value = '';
+            $event.preventDefault()
+          "
+          class="mt-3"
+        >
           <div class="input-group">
-            <input #commentInput type="text" class="form-control rounded-start-pill" placeholder="Add a comment..."/>
-            <button class="btn btn-outline-secondary rounded-end-pill hover-grow">➡️</button>
+            <input
+              #commentInput
+              type="text"
+              class="form-control rounded-start-pill"
+              placeholder="Add a comment..."
+            />
+            <button
+              class="btn btn-outline-secondary rounded-end-pill hover-grow"
+            >
+              <i class="bi bi-box-arrow-up"></i>
+            </button>
           </div>
         </form>
       </div>
     </div>
   </div>
-
-
 </section>
-
-
