@@ -1,24 +1,45 @@
-<div class="card shadow-sm border-0">
-  <div class="card-body">
-    <h5 class="card-title fw-bold mb-4">Leave a Rating</h5>
-    <form (ngSubmit)="onSubmit()" [formGroup]="ratingForm">
-      <div class="mb-4">
-        <label for="rate" class="form-label">Rating</label>
-        <div class="d-flex align-items-center gap-2">
-          <input type="number" class="form-control" id="rate" formControlName="rate" min="1" max="5"
-            placeholder="Enter rating (1-5)">
-          <span class="text-warning fw-bold">★</span>
-        </div>
-        <small class="text-muted">Rate from 1 to 5 stars</small>
-      </div>
-      <div class="mb-4">
-        <label for="comment" class="form-label">Comment</label>
-        <textarea class="form-control" id="comment" formControlName="comment" rows="3"
-          placeholder="Share your experience..."></textarea>
-      </div>
-      <button class="btn btn-primary w-100" [disabled]="ratingForm.invalid">
-        <i class="bi bi-star me-2"></i>Submit Rating
+<div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-75 z-2">
+  <div
+    class="card rounded-4 shadow-sm border-0 top-50 start-50 translate-middle position-fixed z-3 bgColor"
+  >
+    <div class="card-body rounded-4">
+      <button (click)="closeForm()" class="btn px-0 pt-0">
+        <i class="fa-solid fa-circle-xmark fs-3" style="color: #ff0000"></i>
       </button>
-    </form>
+      <h5 class="card-title fw-bold mb-4 text-center colorBlack">
+        Rate Your Experience with Your Coach
+      </h5>
+      <form (ngSubmit)="onSubmit()" [formGroup]="ratingForm">
+        <div class="mb-4">
+          <label for="rate" class="form-label text-black-50">Rating</label>
+          <div class="d-flex align-items-center gap-2">
+            <input
+              type="number"
+              class="form-control"
+              id="rate"
+              formControlName="rate"
+              min="1"
+              max="5"
+              placeholder="Enter rating (1-5)"
+            />
+            <span class="text-warning fw-bold">★</span>
+          </div>
+          <small class="text-black-50">Rate from 1 to 5 stars</small>
+        </div>
+        <div class="mb-4">
+          <label for="comment" class="form-label text-black-50">Comment</label>
+          <textarea
+            class="form-control"
+            id="comment"
+            formControlName="comment"
+            rows="3"
+            placeholder="Share your experience..."
+          ></textarea>
+        </div>
+        <button class="btn btn-primary w-100" [disabled]="ratingForm.invalid">
+          <i class="bi bi-star me-2"></i>Submit Rating
+        </button>
+      </form>
+    </div>
   </div>
 </div>

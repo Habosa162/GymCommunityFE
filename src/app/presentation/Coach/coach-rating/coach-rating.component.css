@@ -1,67 +1,67 @@
 .card {
-    border: none;
-    border-radius: 1.5rem;
-}
-
-.card-body {
-    background-color: #fff;
+  outline: 5px solid limegreen;
 }
 
 .form-control {
-    border-radius: 0.75rem;
-    padding: 0.75rem;
-}
-
-.form-control:focus {
-    border-color: #86b7fe;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
-.form-label {
-    margin-bottom: 0.5rem;
-    color: #212529;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
 }
 
 .btn {
-    border-radius: 0.75rem;
-    padding: 0.75rem 1rem;
-    font-weight: 500;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
 }
 
 .btn-primary {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+  background-color: limegreen;
+  border-color: limegreen;
 }
 
 .btn-primary:hover {
-    background-color: #0b5ed7;
-    border-color: #0a58ca;
+  background-color: green;
+  border-color: green;
 }
 
 .btn-primary:disabled {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-    opacity: 0.65;
+  background-color: darkgrey;
+  border-color: black;
+  opacity: 0.65;
 }
 
 textarea {
-    resize: vertical;
-    min-height: 100px;
+  resize: vertical;
+  min-height: 100px;
 }
 
 h5 {
-    font-weight: 700;
-    color: #212529;
+  font-weight: 700;
+  color: #212529;
 }
 
 .shadow-sm {
-    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
 }
 
 .text-muted {
-    font-size: 0.875rem;
+  font-size: 0.875rem;
 }
 
 .text-warning {
-    color: #ffc107 !important;
+  color: #ffc107 !important;
+}
+
+:host-context(body.dark-mode) textarea {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+}
+:host-context(body.dark-mode) textarea:focus {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
 }

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { trainingPlan } from '../../../domain/models/TraingingPlansModels/training-plan-model';
 import { WeekPlanDto } from '../../../services/Training Plans/dtos/weekly-plan-dto';
 import { TrainingPlansService } from '../../../services/Training Plans/training-plan.service';
+import { CoachRatingComponent } from '../../Coach/coach-rating/coach-rating.component';
 
 interface Week {
   weekNumber: number;
@@ -40,7 +41,7 @@ interface Meal {
 @Component({
   selector: 'app-client-plans',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, CoachRatingComponent],
   templateUrl: './client-plans.component.html',
   styleUrl: './client-plans.component.css',
 })
@@ -53,6 +54,18 @@ export class ClientPlansComponent implements OnInit {
     weekNumber: null,
     dayNumber: null,
   };
+
+  progressPercentage = 0;
+
+  //coach data
+  coachData: any = null;
+  coachSkills: string[] = [];
+
+  //toggle form
+  showRateForm = false;
+  onShowRateFormChange(newValue: boolean) {
+    this.showRateForm = newValue;
+  }
 
   // Day names for reference
   dayNames = [
@@ -81,16 +94,36 @@ export class ClientPlansComponent implements OnInit {
     this.getTrainingPlanById(planId);
   }
 
+  // Calculate progress percentage based on the training plan
+
+  calcProgressPercentage(trainingPlan: any): any {
+    let totalDays = 0;
+    let completedDays = 0;
+
+    for (const week of trainingPlan.weekPlans) {
+      for (const workoutDay of week.workoutDays) {
+        totalDays++;
+        if (workoutDay.isDone) {
+          completedDays++;
+        }
+      }
+    }
+    this.progressPercentage = Math.round((completedDays / totalDays) * 100);
+  }
+
   getTrainingPlanById(planId: string | number): void {
     // Convert planId to string if it's a number
     const id = planId.toString();
 
     this.trainingPlanService.getTrainingPlanById(Number(id)).subscribe({
-      next: (response) => {
-        console.log('Training plan response:', response);
-        this.trainingPlan = response;
+      next: (response: any) => {
+        this.trainingPlan = response.plan;
+        this.coachData = response.coach; // Assuming the coach data is in the response
+        console.log('Training plan response:', this.coachData);
+        this.coachSkills = JSON.parse(response.coach.skillsJson); // Extract skills from coach data
         this.generateMonths(); // Generate months based on durationMonths
         this.initializeWeeks();
+        this.calcProgressPercentage(this.trainingPlan);
 
         // If the plan has week plans, map them to our weeks
         if (
@@ -515,8 +548,10 @@ export class ClientPlansComponent implements OnInit {
     if (plan && plan.dailyPlanJson) {
       try {
         plan.parsedData = JSON.parse(plan.dailyPlanJson);
+        plan.parsedData.isDone = plan.isDone; // Add isDone property to parsed data
+        // console.log('Parsed daily plan JSON:', plan.parsedData);
       } catch (e) {
-        console.error('Error parsing daily plan JSON:', e);
+        // console.error('Error parsing daily plan JSON:', e);
       }
     }
 
