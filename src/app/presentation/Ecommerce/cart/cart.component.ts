@@ -14,7 +14,7 @@ export class CartComponent {
   paginatedCartItems: any[] = [];
   totalPrice: number = 0;
   currentPage: number = 1;
-  itemsPerPage: number = 4; // Show 4 items per page
+  itemsPerPage: number = 3; // Show 4 items per page
   totalPages: number = 0;
 
   constructor(private cartService: CartService) {}

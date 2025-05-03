@@ -186,6 +186,7 @@ calculateAverageRating(): void {
     this.productService.getProductsByCategory(categoryId).subscribe({
       next: (products) => {
         this.CategoryProducts = products;
+        this.updatePaginatedRelatedProducts(); // Add this line
       },
       error: (err) => {
         console.error('Error loading category products:', err);
@@ -352,6 +353,58 @@ getReviewPagesToShow(): number[] {
   
   if (end < this.totalReviewPages - 1) pages.push(-1);
   if (this.totalReviewPages > 1) pages.push(this.totalReviewPages);
+  
+  return pages;
+}
+
+
+// pagnation for related product 
+// Related Products Pagination
+currentProductsPage: number = 1;
+itemsPerPage: number = 6; // Show 6 products (2 rows of 3)
+paginatedRelatedProducts: Product[] = [];
+totalProductsPages: number = 0;
+
+// Related Products Pagination Methods
+private updatePaginatedRelatedProducts(): void {
+  const startIndex = (this.currentProductsPage - 1) * this.itemsPerPage;
+  const endIndex = startIndex + this.itemsPerPage;
+  this.paginatedRelatedProducts = this.CategoryProducts.slice(startIndex, endIndex);
+  this.totalProductsPages = Math.ceil(this.CategoryProducts.length / this.itemsPerPage);
+}
+
+changeProductsPage(page: number): void {
+  if (page >= 1 && page <= this.totalProductsPages) {
+    this.currentProductsPage = page;
+    this.updatePaginatedRelatedProducts();
+  }
+}
+
+getProductsPagesToShow(): number[] {
+  if (this.totalProductsPages <= 5) {
+    return Array.from({length: this.totalProductsPages}, (_, i) => i + 1);
+  }
+  
+  let start = Math.max(2, this.currentProductsPage - 1);
+  let end = Math.min(this.totalProductsPages - 1, this.currentProductsPage + 1);
+  
+  if (this.currentProductsPage <= 3) {
+    end = 4;
+  }
+  
+  if (this.currentProductsPage >= this.totalProductsPages - 2) {
+    start = this.totalProductsPages - 3;
+  }
+  
+  const pages = [1];
+  if (start > 2) pages.push(-1); // -1 represents ellipsis
+  
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
+  }
+  
+  if (end < this.totalProductsPages - 1) pages.push(-1);
+  if (this.totalProductsPages > 1) pages.push(this.totalProductsPages);
   
   return pages;
 }

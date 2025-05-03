@@ -229,14 +229,44 @@
   </div>
 </section>
 
-  <!-- Related Products (Category Products) -->
-  <div *ngIf="CategoryProducts?.length" class="mt-4">
-    <h4 class="my-3 green-dark">Related Products</h4>
-    <div class="row">
-      <div *ngFor="let relatedProduct of CategoryProducts" class="col-md-4 mb-4">
-        <app-product [product]="relatedProduct"></app-product>
-      </div>
+<!-- Related Products (Category Products) -->
+<div *ngIf="CategoryProducts?.length" class="mt-4">
+  <h4 class="my-3 green-dark">Related Products</h4>
+  
+  <!-- Products Grid -->
+  <div class="related-products-grid">
+    <div *ngFor="let relatedProduct of paginatedRelatedProducts" class="related-product-item">
+      <app-product [product]="relatedProduct"></app-product>
     </div>
   </div>
+
+  <!-- Pagination -->
+  <div *ngIf="CategoryProducts.length > itemsPerPage" class="related-products-pagination mt-4">
+    <nav aria-label="Related products pagination">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentProductsPage <= 1">
+          <a class="page-link" (click)="changeProductsPage(currentProductsPage - 1)" aria-label="Previous">
+            <i class="fas fa-chevron-left"></i>
+          </a>
+        </li>
+        
+        <ng-container *ngFor="let page of getProductsPagesToShow()">
+          <li class="page-item" *ngIf="page !== -1" [class.active]="page === currentProductsPage">
+            <a class="page-link" (click)="changeProductsPage(page)">{{ page }}</a>
+          </li>
+          <li class="page-item disabled" *ngIf="page === -1">
+            <span class="page-link">...</span>
+          </li>
+        </ng-container>
+        
+        <li class="page-item" [class.disabled]="currentProductsPage >= totalProductsPages">
+          <a class="page-link" (click)="changeProductsPage(currentProductsPage + 1)" aria-label="Next">
+            <i class="fas fa-chevron-right"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
 </div>
 </section>
