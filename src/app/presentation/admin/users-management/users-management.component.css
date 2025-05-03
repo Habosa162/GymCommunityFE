@@ -1,0 +1,6 @@
+:host-context(body.dark-mode){
+  #userManagermentSection{
+    background-color: black;
+    color: white;
+  }
+}

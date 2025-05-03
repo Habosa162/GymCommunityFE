@@ -9,6 +9,7 @@ import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { ChatbotComponent } from './presentation/ChatBot/chatbot.component';
 import { socialLoginConfig } from './services/social-login.config';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,7 +24,7 @@ export const appConfig: ApplicationConfig = {
       closeButton: true,
       progressBar: true,
     }),
-
+    provideCharts(withDefaultRegisterables()),
     // Social login provider setup
     { provide: 'SocialAuthServiceConfig', useValue: socialLoginConfig },
     SocialAuthService,
