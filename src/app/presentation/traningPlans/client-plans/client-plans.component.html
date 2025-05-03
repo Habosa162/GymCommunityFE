@@ -16,7 +16,7 @@
           </div>
           <div>
             <div class="rateBtn">
-              <div class="btn w-100">
+              <div class="btn">
                 <a class="colorBlack" (click)="showRateForm = !showRateForm">
                   Rate Your Experience</a
                 >
@@ -197,11 +197,17 @@
                     >
                       <i
                         *ngIf="getDayPlan(week, 1)?.parsedData?.isDone"
-                        class="fa-solid fa-circle-check"
+                        class="fa-solid fa-circle-check mb-2"
                         style="color: #32cd32"
                       ></i>
+                      <i
+                        *ngIf="
+                          getDayPlan(week, 1)?.parsedData?.isDone === false
+                        "
+                        class="fa-solid fa-circle mb-2"
+                      ></i>
                       <h5>Monday</h5>
-                      <div
+                      <!-- <div
                         *ngIf="
                           getDayPlan(week, 1)?.parsedData?.exercises?.length > 0
                         "
@@ -213,7 +219,7 @@
                             getDayPlan(week, 1)?.parsedData?.exercises?.length
                           }}</span
                         >
-                        <!-- <span
+                        <span
                           *ngIf="
                             getDayPlan(week, 1)?.parsedData?.exercises?.length >
                             0
@@ -243,9 +249,9 @@
                             class="has-video"
                             >(Has Video)</span
                           >
-                        </span> -->
-                      </div>
-                      <div
+                        </span>
+                      </div> -->
+                      <!-- <div
                         *ngIf="
                           getDayPlan(week, 1)?.parsedData?.meals?.length > 0
                         "
@@ -257,7 +263,7 @@
                             getDayPlan(week, 1)?.parsedData?.meals?.length
                           }}</span
                         >
-                      </div>
+                      </div> -->
                       <button
                         *ngIf="!isDayCrossedOut(week, 1)"
                         class="view-btn"
@@ -281,11 +287,17 @@
                     >
                       <i
                         *ngIf="getDayPlan(week, 2)?.parsedData?.isDone"
-                        class="fa-solid fa-circle-check"
+                        class="fa-solid fa-circle-check mb-2"
                         style="color: #32cd32"
                       ></i>
+                      <i
+                        *ngIf="
+                          getDayPlan(week, 2)?.parsedData?.isDone === false
+                        "
+                        class="fa-solid fa-circle mb-2"
+                      ></i>
                       <h5>Tuesday</h5>
-                      <div
+                      <!-- <div
                         *ngIf="
                           getDayPlan(week, 2)?.parsedData?.exercises?.length > 0
                         "
@@ -297,7 +309,7 @@
                             getDayPlan(week, 2)?.parsedData?.exercises?.length
                           }}</span
                         >
-                        <!-- <span
+                        <span
                           *ngIf="
                             getDayPlan(week, 2)?.parsedData?.exercises?.length >
                             0
@@ -327,9 +339,9 @@
                             class="has-video"
                             >(Has Video)</span
                           >
-                        </span> -->
-                      </div>
-                      <div
+                        </span>
+                      </div> -->
+                      <!-- <div
                         *ngIf="
                           getDayPlan(week, 2)?.parsedData?.meals?.length > 0
                         "
@@ -341,7 +353,7 @@
                             getDayPlan(week, 2)?.parsedData?.meals?.length
                           }}</span
                         >
-                      </div>
+                      </div> -->
                       <button
                         *ngIf="!isDayCrossedOut(week, 2)"
                         class="view-btn"
@@ -365,67 +377,17 @@
                     >
                       <i
                         *ngIf="getDayPlan(week, 3)?.parsedData?.isDone"
-                        class="fa-solid fa-circle-check"
+                        class="fa-solid fa-circle-check mb-2"
                         style="color: #32cd32"
                       ></i>
+                      <i
+                        *ngIf="
+                          getDayPlan(week, 3)?.parsedData?.isDone === false
+                        "
+                        class="fa-solid fa-circle mb-2"
+                      ></i>
                       <h5>Wednesday</h5>
-                      <div
-                        *ngIf="
-                          getDayPlan(week, 3)?.parsedData?.exercises?.length > 0
-                        "
-                        class="plan-summary"
-                      >
-                        <span class="plan-type"
-                          >Exercises:
-                          {{
-                            getDayPlan(week, 3)?.parsedData?.exercises?.length
-                          }}</span
-                        >
-                        <!-- <span
-                          *ngIf="
-                            getDayPlan(week, 3)?.parsedData?.exercises?.length >
-                            0
-                          "
-                          class="plan-item-name"
-                        >
-                          {{
-                            getDayPlan(week, 3)?.parsedData?.exercises[0]
-                              ?.exerciseName
-                          }}
-                          <span
-                            *ngIf="
-                              getDayPlan(week, 3)?.parsedData?.exercises
-                                ?.length > 1
-                            "
-                            >+{{
-                              getDayPlan(week, 3)?.parsedData?.exercises
-                                ?.length - 1
-                            }}
-                            more</span
-                          >
-                          <span
-                            *ngIf="
-                              getDayPlan(week, 3)?.parsedData?.exercises[0]
-                                ?.videoLink
-                            "
-                            class="has-video"
-                            >(Has Video)</span
-                          >
-                        </span> -->
-                      </div>
-                      <div
-                        *ngIf="
-                          getDayPlan(week, 3)?.parsedData?.meals?.length > 0
-                        "
-                        class="plan-summary"
-                      >
-                        <span class="plan-type"
-                          >Meals:
-                          {{
-                            getDayPlan(week, 3)?.parsedData?.meals?.length
-                          }}</span
-                        >
-                      </div>
+
                       <button
                         *ngIf="!isDayCrossedOut(week, 3)"
                         class="view-btn"
@@ -449,67 +411,17 @@
                     >
                       <i
                         *ngIf="getDayPlan(week, 4)?.parsedData?.isDone"
-                        class="fa-solid fa-circle-check"
+                        class="fa-solid fa-circle-check mb-2"
                         style="color: #32cd32"
                       ></i>
+                      <i
+                        *ngIf="
+                          getDayPlan(week, 4)?.parsedData?.isDone === false
+                        "
+                        class="fa-solid fa-circle mb-2"
+                      ></i>
                       <h5>Thursday</h5>
-                      <div
-                        *ngIf="
-                          getDayPlan(week, 4)?.parsedData?.exercises?.length > 0
-                        "
-                        class="plan-summary"
-                      >
-                        <span class="plan-type"
-                          >Exercises:
-                          {{
-                            getDayPlan(week, 4)?.parsedData?.exercises?.length
-                          }}</span
-                        >
-                        <!-- <span
-                          *ngIf="
-                            getDayPlan(week, 4)?.parsedData?.exercises?.length >
-                            0
-                          "
-                          class="plan-item-name"
-                        >
-                          {{
-                            getDayPlan(week, 4)?.parsedData?.exercises[0]
-                              ?.exerciseName
-                          }}
-                          <span
-                            *ngIf="
-                              getDayPlan(week, 4)?.parsedData?.exercises
-                                ?.length > 1
-                            "
-                            >+{{
-                              getDayPlan(week, 4)?.parsedData?.exercises
-                                ?.length - 1
-                            }}
-                            more</span
-                          >
-                          <span
-                            *ngIf="
-                              getDayPlan(week, 4)?.parsedData?.exercises[0]
-                                ?.videoLink
-                            "
-                            class="has-video"
-                            >(Has Video)</span
-                          >
-                        </span> -->
-                      </div>
-                      <div
-                        *ngIf="
-                          getDayPlan(week, 4)?.parsedData?.meals?.length > 0
-                        "
-                        class="plan-summary"
-                      >
-                        <span class="plan-type"
-                          >Meals:
-                          {{
-                            getDayPlan(week, 4)?.parsedData?.meals?.length
-                          }}</span
-                        >
-                      </div>
+
                       <button
                         *ngIf="!isDayCrossedOut(week, 4)"
                         class="view-btn"
@@ -533,67 +445,17 @@
                     >
                       <i
                         *ngIf="getDayPlan(week, 5)?.parsedData?.isDone"
-                        class="fa-solid fa-circle-check"
+                        class="fa-solid fa-circle-check mb-2"
                         style="color: #32cd32"
                       ></i>
+                      <i
+                        *ngIf="
+                          getDayPlan(week, 5)?.parsedData?.isDone === false
+                        "
+                        class="fa-solid fa-circle mb-2"
+                      ></i>
                       <h5>Friday</h5>
-                      <div
-                        *ngIf="
-                          getDayPlan(week, 5)?.parsedData?.exercises?.length > 0
-                        "
-                        class="plan-summary"
-                      >
-                        <span class="plan-type"
-                          >Exercises:
-                          {{
-                            getDayPlan(week, 5)?.parsedData?.exercises?.length
-                          }}</span
-                        >
-                        <!-- <span
-                          *ngIf="
-                            getDayPlan(week, 5)?.parsedData?.exercises?.length >
-                            0
-                          "
-                          class="plan-item-name"
-                        >
-                          {{
-                            getDayPlan(week, 5)?.parsedData?.exercises[0]
-                              ?.exerciseName
-                          }}
-                          <span
-                            *ngIf="
-                              getDayPlan(week, 5)?.parsedData?.exercises
-                                ?.length > 1
-                            "
-                            >+{{
-                              getDayPlan(week, 5)?.parsedData?.exercises
-                                ?.length - 1
-                            }}
-                            more</span
-                          >
-                          <span
-                            *ngIf="
-                              getDayPlan(week, 5)?.parsedData?.exercises[0]
-                                ?.videoLink
-                            "
-                            class="has-video"
-                            >(Has Video)</span
-                          >
-                        </span> -->
-                      </div>
-                      <div
-                        *ngIf="
-                          getDayPlan(week, 5)?.parsedData?.meals?.length > 0
-                        "
-                        class="plan-summary"
-                      >
-                        <span class="plan-type"
-                          >Meals:
-                          {{
-                            getDayPlan(week, 5)?.parsedData?.meals?.length
-                          }}</span
-                        >
-                      </div>
+
                       <button
                         *ngIf="!isDayCrossedOut(week, 5)"
                         class="view-btn"
@@ -617,67 +479,16 @@
                     >
                       <i
                         *ngIf="getDayPlan(week, 6)?.parsedData?.isDone"
-                        class="fa-solid fa-circle-check"
+                        class="fa-solid fa-circle-check mb-2"
                         style="color: #32cd32"
                       ></i>
+                      <i
+                        *ngIf="
+                          getDayPlan(week, 6)?.parsedData?.isDone === false
+                        "
+                        class="fa-solid fa-circle mb-2"
+                      ></i>
                       <h5>Saturday</h5>
-                      <div
-                        *ngIf="
-                          getDayPlan(week, 6)?.parsedData?.exercises?.length > 0
-                        "
-                        class="plan-summary"
-                      >
-                        <span class="plan-type"
-                          >Exercises:
-                          {{
-                            getDayPlan(week, 6)?.parsedData?.exercises?.length
-                          }}</span
-                        >
-                        <!-- <span
-                          *ngIf="
-                            getDayPlan(week, 6)?.parsedData?.exercises?.length >
-                            0
-                          "
-                          class="plan-item-name"
-                        >
-                          {{
-                            getDayPlan(week, 6)?.parsedData?.exercises[0]
-                              ?.exerciseName
-                          }}
-                          <span
-                            *ngIf="
-                              getDayPlan(week, 6)?.parsedData?.exercises
-                                ?.length > 1
-                            "
-                            >+{{
-                              getDayPlan(week, 6)?.parsedData?.exercises
-                                ?.length - 1
-                            }}
-                            more</span
-                          >
-                          <span
-                            *ngIf="
-                              getDayPlan(week, 6)?.parsedData?.exercises[0]
-                                ?.videoLink
-                            "
-                            class="has-video"
-                            >(Has Video)</span
-                          >
-                        </span> -->
-                      </div>
-                      <div
-                        *ngIf="
-                          getDayPlan(week, 6)?.parsedData?.meals?.length > 0
-                        "
-                        class="plan-summary"
-                      >
-                        <span class="plan-type"
-                          >Meals:
-                          {{
-                            getDayPlan(week, 6)?.parsedData?.meals?.length
-                          }}</span
-                        >
-                      </div>
                       <button
                         *ngIf="!isDayCrossedOut(week, 6)"
                         class="view-btn"
@@ -701,67 +512,16 @@
                     >
                       <i
                         *ngIf="getDayPlan(week, 7)?.parsedData?.isDone"
-                        class="fa-solid fa-circle-check"
+                        class="fa-solid fa-circle-check mb-2"
                         style="color: #32cd32"
                       ></i>
+                      <i
+                        *ngIf="
+                          getDayPlan(week, 7)?.parsedData?.isDone === false
+                        "
+                        class="fa-solid fa-circle mb-2"
+                      ></i>
                       <h5>Sunday</h5>
-                      <div
-                        *ngIf="
-                          getDayPlan(week, 7)?.parsedData?.exercises?.length > 0
-                        "
-                        class="plan-summary"
-                      >
-                        <span class="plan-type"
-                          >Exercises:
-                          {{
-                            getDayPlan(week, 7)?.parsedData?.exercises?.length
-                          }}</span
-                        >
-                        <!-- <span
-                          *ngIf="
-                            getDayPlan(week, 7)?.parsedData?.exercises?.length >
-                            0
-                          "
-                          class="plan-item-name"
-                        >
-                          {{
-                            getDayPlan(week, 7)?.parsedData?.exercises[0]
-                              ?.exerciseName
-                          }}
-                          <span
-                            *ngIf="
-                              getDayPlan(week, 7)?.parsedData?.exercises
-                                ?.length > 1
-                            "
-                            >+{{
-                              getDayPlan(week, 7)?.parsedData?.exercises
-                                ?.length - 1
-                            }}
-                            more</span
-                          >
-                          <span
-                            *ngIf="
-                              getDayPlan(week, 7)?.parsedData?.exercises[0]
-                                ?.videoLink
-                            "
-                            class="has-video"
-                            >(Has Video)</span
-                          >
-                        </span> -->
-                      </div>
-                      <div
-                        *ngIf="
-                          getDayPlan(week, 7)?.parsedData?.meals?.length > 0
-                        "
-                        class="plan-summary"
-                      >
-                        <span class="plan-type"
-                          >Meals:
-                          {{
-                            getDayPlan(week, 7)?.parsedData?.meals?.length
-                          }}</span
-                        >
-                      </div>
                       <button
                         *ngIf="!isDayCrossedOut(week, 7)"
                         class="view-btn"

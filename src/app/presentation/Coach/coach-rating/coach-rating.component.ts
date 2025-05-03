@@ -56,7 +56,6 @@ export class CoachRatingComponent implements OnInit {
 
       this.ratingService.addRating(ratingData).subscribe({
         next: () => {
-          alert('Rating submitted!');
           this.ratingForm.reset({ rate: 5, comment: '' });
           this.closeForm(); // close the form after submission
         },
