@@ -1,4 +1,4 @@
-<section id="wishlist" class="min-vh-100 py-5">
+<section id="wishlist" class="min-vh-100 py-4">
   <div class="container">
     <div class="row gx-4">
       <!-- Filter Sidebar - Only shown when items exist -->
@@ -7,17 +7,19 @@
           <div class="filter-header d-flex justify-content-between align-items-center">
             <h2 class="filter-title mb-0">Filters</h2>
             <button class="btn btn-sm btn-outline-secondary" (click)="clearAllFilters()">
-              <i class="fas fa-undo me-1"></i> Reset All
+              <i class="fas fa-sync-alt me-1"></i> Reset
             </button>
           </div>
 
           <!-- Category Filter -->
           <div class="filter-section mt-3">
             <div class="filter-section-header">
-              <h3 class="section-title">Categories</h3>
+              <h3 class="section-title d-flex align-items-center">
+                <i class="fas fa-tags me-2"></i>Categories
+              </h3>
             </div>
             <div class="filter-section-content">
-              <div class="search-box with-icon mb-2">
+              <div class="search-box with-icon mb-3">
                 <i class="fas fa-search"></i>
                 <input
                   type="text"
@@ -39,7 +41,7 @@
                   >
                   <label [for]="'category-' + category.categoryID" class="d-flex justify-content-between w-100">
                     <span>{{ category.name }}</span>
-                    <span class="badge bg-secondary ms-2">{{ getCategoryCount(category.categoryID) }}</span>
+                    <span class="badge bg-light text-dark ms-2">{{ getCategoryCount(category.categoryID) }}</span>
                   </label>
                 </li>
               </ul>
@@ -47,12 +49,14 @@
           </div>
 
           <!-- Brand Filter -->
-          <div class="filter-section mt-3">
+          <div class="filter-section mt-4">
             <div class="filter-section-header">
-              <h3 class="section-title">Brands</h3>
+              <h3 class="section-title d-flex align-items-center">
+                <i class="fas fa-copyright me-2"></i>Brands
+              </h3>
             </div>
             <div class="filter-section-content">
-              <div class="search-box with-icon mb-2">
+              <div class="search-box with-icon mb-3">
                 <i class="fas fa-search"></i>
                 <input
                   type="text"
@@ -79,9 +83,11 @@
           </div>
 
           <!-- Price Filter -->
-          <div class="filter-section mt-3">
+          <div class="filter-section mt-4">
             <div class="filter-section-header">
-              <h3 class="section-title">Price Range</h3>
+              <h3 class="section-title d-flex align-items-center">
+                <i class="fas fa-dollar-sign me-2"></i>Price Range
+              </h3>
             </div>
             <div class="filter-section-content">
               <ul class="filter-list">
@@ -107,20 +113,24 @@
       <!-- Main Content -->
       <main [class.col-lg-9]="wishlistProducts.length > 0" [class.col-md-8]="wishlistProducts.length > 0" [class.col-12]="wishlistProducts.length === 0">
         <!-- Header Section -->
-        <div class="d-flex justify-content-between align-items-center mb-4" *ngIf="wishlistProducts.length > 0">
-          <div>
-            <h2 class="wishlist-heading mb-0">Your Wishlist</h2>
-            <p class="text-muted mb-0 small">
-              {{ filteredWishlist.length }} of {{ wishlistProducts.length }} items
-            </p>
+        <div class="product-grid-header card shadow-sm mb-4" *ngIf="wishlistProducts.length > 0">
+          <div class="card-body py-3">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+              <div class="mb-3 mb-md-0">
+                <h2 class="h5 mb-1">Your Wishlist</h2>
+                <p class="text-muted small mb-0">
+                  Showing <strong class="text-primary">{{ filteredWishlist.length }}</strong> of {{ wishlistProducts.length }} items
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Loading State -->
         <ng-container *ngIf="isLoading">
           <div class="row g-3">
-            <div *ngFor="let skeleton of [1,2,3,4]" class="col-lg-3 col-md-6 col-sm-12">
-              <div class="skeleton-card h-100"></div>
+            <div *ngFor="let skeleton of [1,2,3,4,5,6]" class="col-xl-3 col-md-6 col-sm-12">
+              <div class="product-card-skeleton h-100"></div>
             </div>
           </div>
         </ng-container>
@@ -130,7 +140,7 @@
           <!-- When items exist -->
           <ng-container *ngIf="wishlistProducts.length > 0; else emptyWishlist">
             <div class="row g-3">
-              <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12" *ngFor="let product of filteredWishlist">
+              <div class="col-xl-3 col-md-6 col-sm-12" *ngFor="let product of filteredWishlist">
                 <app-product 
                   [product]="product" 
                   (removedFromWishlist)="removeItemFromWishlist($event)"
@@ -139,30 +149,32 @@
             </div>
 
             <!-- No Results State -->
-            <div *ngIf="filteredWishlist.length === 0" class="empty-state text-center mt-5 p-5">
-              <div class="empty-state-icon mb-4">
-                <i class="fas fa-search fa-4x text-muted"></i>
+            <div *ngIf="filteredWishlist.length === 0" class="empty-state card shadow-sm text-center mt-4">
+              <div class="card-body py-5">
+                <div class="empty-state-icon mb-4">
+                  <i class="fas fa-search fa-3x text-muted"></i>
+                </div>
+                <h3 class="empty-state-title mb-3">No items match your filters</h3>
+                <p class="empty-state-text mb-4">Try adjusting your search or filter criteria</p>
+                <button class="btn btn-outline-primary" (click)="clearAllFilters()">
+                  <i class="fas fa-filter-circle-xmark me-2"></i> Clear All Filters
+                </button>
               </div>
-              <h3 class="empty-state-title mb-3">No items match your filters</h3>
-              <p class="empty-state-text mb-4">Try adjusting your search or filters</p>
-              <button class="btn btn-outline-success" (click)="clearAllFilters()">
-                <i class="fas fa-filter-circle-xmark me-2"></i> Clear All Filters
-              </button>
             </div>
           </ng-container>
 
           <!-- Empty Wishlist State -->
           <ng-template #emptyWishlist>
-            <div class="card border-0 shadow-sm">
-              <div class="card-body text-center p-5">
-                <div class="empty-wishlist-icon mb-4">
-                  <i class="fas fa-heart-crack fa-4x text-danger"></i>
+            <div class="empty-state card shadow-sm text-center">
+              <div class="card-body py-5">
+                <div class="empty-state-icon mb-4">
+                  <i class="fas fa-heart-crack fa-3x text-danger"></i>
                 </div>
-                <h1 class="mb-3">Your wishlist is empty</h1>
-                <p class="text-muted mb-4">Start saving your favorite items for later</p>
+                <h3 class="empty-state-title mb-3">Your wishlist is empty</h3>
+                <p class="empty-state-text mb-4">Start saving your favorite items for later</p>
                 <a 
                   routerLink="/shop"  
-                  class="btn btn-success btn-lg px-4 py-2"
+                  class="btn btn-primary btn-lg px-4 py-2"
                 >
                   <i class="fas fa-store me-2"></i>Browse Products
                 </a>

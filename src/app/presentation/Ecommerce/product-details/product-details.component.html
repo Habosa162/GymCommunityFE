@@ -52,170 +52,182 @@
   </div>
 
  <!-- Rating and Review Section -->
- <div *ngIf="Product" class="mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="green-dark fs-1">Rating & Reviews</h4>
-    <div class="average-rating d-flex align-items-center">
-      <div class="stars me-2">
-        <i *ngFor="let star of [1,2,3,4,5]" 
-           class="fa fa-star fs-4" 
-           [ngClass]="star <= averageRating ? 'text-warning' : 'text-secondary'"></i>
+<!-- Rating and Review Section -->
+<section class="rating-review-section">
+  <div class="container">
+    <!-- Rating Header -->
+    <div class="rating-header">
+      <h4>Customer Reviews</h4>
+      <div class="average-rating">
+        <div class="stars">
+          <i *ngFor="let star of [1,2,3,4,5]" 
+             class="fa fa-star" 
+             [ngClass]="star <= averageRating ? 'text-warning' : 'text-secondary'"></i>
+        </div>
+        <span class="rating-value">{{ averageRating | number:'1.1-1' }}</span>
+        <span class="review-count">({{ reviews.length }} reviews)</span>
       </div>
-      <span class="fw-bold fs-5">{{ averageRating | number:'1.1-1' }} out of 5</span>
-      <span class="text-muted ms-2">({{ reviews.length }} reviews)</span>
     </div>
-  </div>
 
-  <!-- Rating Input Block -->
-  <div class="rating-input-block card shadow-sm mb-5">
-    <div class="card-body">
-      <h5 class="card-title">Rate this product</h5>
-      <div class="star-rating mb-3">
+    <!-- Rating Input Block -->
+    <div class="rating-input-block">
+      <h5>Share Your Experience</h5>
+      <div class="star-rating">
         <span *ngFor="let star of [1,2,3,4,5]" 
               (click)="newReview.rating = star" 
-              class="star fs-3"
+              class="star"
               [ngClass]="{'filled': star <= newReview.rating}">
           ★
         </span>
       </div>
-      <button class="btn btn-outline-primary" (click)="toggleReviewForm()">
-        {{ showReviewForm ? 'Cancel' : 'Write a Review' }}
+      <button class="btn btn-outline-success" (click)="toggleReviewForm()">
+        <i class="fas fa-pen me-2"></i>
+        {{ showReviewForm ? 'Cancel Review' : 'Write a Review' }}
       </button>
     </div>
-  </div>
 
-  <!-- Review Form (conditionally shown) -->
-  <div *ngIf="showReviewForm && authService.isLoggedIn()" class="review-form-block card shadow-sm mb-5">
-    <div class="card-body">
-      <h5 class="card-title">Write Your Review</h5>
+    <!-- Review Form -->
+    <div *ngIf="showReviewForm && authService.isLoggedIn()" class="review-form-block">
+      <h5>Write Your Review</h5>
       <form (ngSubmit)="submitReview()" #reviewForm="ngForm">
-        <div class="form-group mb-4">
+        <div class="form-group">
           <textarea [(ngModel)]="newReview.comment" name="comment" 
-          class="form-control rounded" rows="4" 
-          placeholder="Share your experience with this product..."></textarea>
-
+                    class="form-control" rows="5" 
+                    placeholder="Share your honest thoughts about this product..."></textarea>
         </div>
-        <div class="d-flex justify-content-end gap-2">
-          <button type="button" class="btn btn-outline-secondary" (click)="toggleReviewForm()">
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline-success" (click)="toggleReviewForm()">
             Cancel
           </button>
-          <button type="submit" class="btn btn-success px-4" 
+          <button type="submit" class="btn btn-success" 
                   [disabled]="reviewForm.invalid || isSubmitting">
             <span *ngIf="!isSubmitting">Submit Review</span>
             <span *ngIf="isSubmitting">
-              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
               Submitting...
             </span>
           </button>
         </div>
       </form>
     </div>
-  </div>
 
-  <!-- Author Reviews Section -->
-  <div *ngIf="authService.isLoggedIn() && authorReviews.length > 0" class="author-reviews-section mt-5">
-    <h5 class="section-title mb-4">Your Reviews</h5>
-    <div *ngFor="let review of authorReviews" class="review-item card shadow-sm mb-4">
-      <div class="card-body">
-        <!-- Review content same as other reviews -->
-        <div class="d-flex align-items-center mb-3">
-          <!-- Same user display as other reviews -->
-        </div>
-        <p class="card-text comment">{{ review.comment }}</p>
-        <div class="d-flex justify-content-end gap-2">
-          <button class="btn btn-sm btn-outline-warning" (click)="editReview(review)">
-            Edit
-          </button>
-          <!-- Add *ngIf to ensure id exists -->
-<button *ngIf="review.id !== undefined"
-class="btn btn-sm btn-outline-danger"
-(click)="deleteReview(review.id!)">
-Delete
-</button>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- All Reviews Section -->
-
-  <!-- All Reviews Section -->
-  <div class="all-reviews-section mt-5">
-    <h5 class="section-title mb-4">Customer Reviews</h5>
-    
-    <div *ngIf="reviews.length > 0">
-      <!-- Show paginated reviews -->
-      <div *ngFor="let review of paginatedReviews" class="review-item card shadow-sm mb-4">
-        <div class="card-body">
-          <div class="d-flex align-items-center mb-3">
-            <div class="user-avatar me-3">
-              <img *ngIf="review.userAvatar" 
-                   [src]="review.userAvatar" 
-                   alt="User avatar" 
-                   class="rounded-circle" 
-                   width="50" 
-                   height="50"
-                   (error)="review.userAvatar = null">
-              <div *ngIf="!review.userAvatar" 
-                   class="avatar-placeholder rounded-circle d-flex align-items-center justify-content-center" 
-                   [style.background-color]="getRandomColor()">
-                {{ (review.userName || 'Anonymous').charAt(0).toUpperCase() }}
-              </div>
-            </div>
-            <div>
-              <h5 class="mb-0">{{ review.userName || 'Anonymous User' }}</h5>
-              <div class="stars">
+    <!-- Author Reviews -->
+    <div *ngIf="authService.isLoggedIn() && authorReviews.length > 0" class="author-reviews-section">
+      <h5 class="section-title">Your Reviews</h5>
+      <div *ngFor="let review of authorReviews" class="review-item">
+        <div class="review-header">
+          <div class="user-avatar">
+            <img *ngIf="review.userAvatar" 
+                 [src]="review.userAvatar" 
+                 alt="User avatar">
+            <span *ngIf="!review.userAvatar">
+              {{ (review.userName || 'Anonymous').charAt(0).toUpperCase() }}
+            </span>
+          </div>
+          <div class="user-info">
+            <div class="user-name">{{ review.userName || 'Anonymous User' }}</div>
+            <div class="review-meta">
+              <div class="review-stars">
                 <i *ngFor="let star of [1,2,3,4,5]" 
                    class="fa fa-star" 
                    [ngClass]="star <= review.rating ? 'text-warning' : 'text-secondary'"></i>
               </div>
-            </div>
-            <div class="text-muted ms-auto" style="font-size: 0.9rem;">
-              {{ review.createdAt | date:'mediumDate' }}
+              <div class="review-date">{{ review.createdAt | date:'mediumDate' }}</div>
             </div>
           </div>
-          <p class="card-text comment">{{ review.comment }}</p>
+        </div>
+        <div class="review-content">
+          {{ review.comment }}
+        </div>
+        <div class="review-actions">
+          <button class="btn btn-sm btn-outline-warning" (click)="editReview(review)">
+            <i class="fas fa-edit me-1"></i> Edit
+          </button>
+          <button *ngIf="review.id !== undefined"
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="deleteReview(review.id)">
+            <i class="fas fa-trash me-1"></i> Delete
+          </button>
         </div>
       </div>
-  
-      <!-- Reviews Pagination -->
-<!-- Reviews Pagination -->
-<div *ngIf="reviews.length > reviewsPerPage" class="d-flex justify-content-center mt-4">
-  <nav aria-label="Reviews pagination">
-    <ul class="pagination">
-      <li class="page-item" [class.disabled]="currentReviewPage <= 1">
-        <a class="page-link" (click)="changeReviewPage(currentReviewPage - 1)" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      
-      <ng-container *ngFor="let page of getReviewPagesToShow()">
-        <li class="page-item" *ngIf="page !== -1" [class.active]="page === currentReviewPage">
-          <a class="page-link" (click)="changeReviewPage(page)">{{ page }}</a>
-        </li>
-        <li class="page-item disabled" *ngIf="page === -1">
-          <span class="page-link">...</span>
-        </li>
-      </ng-container>
-      
-      <li class="page-item" [class.disabled]="currentReviewPage >= totalReviewPages">
-        <a class="page-link" (click)="changeReviewPage(currentReviewPage + 1)" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-</div>
     </div>
-    
-    <div *ngIf="reviews.length === 0" class="text-center py-4">
-      <p class="light-dark fs-5">No reviews yet. Be the first to review this product!</p>
+
+    <!-- All Reviews -->
+    <div class="reviews-list">
+      <h5 class="section-title">Customer Reviews</h5>
+      
+      <div *ngIf="reviews.length > 0; else noReviews">
+        <div *ngFor="let review of paginatedReviews" class="review-item">
+          <div class="review-header">
+            <div class="user-avatar">
+              <img *ngIf="review.userAvatar" 
+                   [src]="review.userAvatar" 
+                   alt="User avatar">
+              <span *ngIf="!review.userAvatar">
+                {{ (review.userName || 'Anonymous').charAt(0).toUpperCase() }}
+              </span>
+            </div>
+            <div class="user-info">
+              <div class="user-name">{{ review.userName || 'Anonymous User' }}</div>
+              <div class="review-meta">
+                <div class="review-stars">
+                  <i *ngFor="let star of [1,2,3,4,5]" 
+                     class="fa fa-star" 
+                     [ngClass]="star <= review.rating ? 'text-warning' : 'text-secondary'"></i>
+                </div>
+                <div class="review-date">{{ review.createdAt | date:'mediumDate' }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="review-content">
+            {{ review.comment }}
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div *ngIf="reviews.length > reviewsPerPage" class="review-pagination">
+          <nav aria-label="Reviews pagination">
+            <ul class="pagination">
+              <li class="page-item" [class.disabled]="currentReviewPage <= 1">
+                <a class="page-link" (click)="changeReviewPage(currentReviewPage - 1)" aria-label="Previous">
+                  <i class="fas fa-chevron-left"></i>
+                </a>
+              </li>
+              
+              <ng-container *ngFor="let page of getReviewPagesToShow()">
+                <li class="page-item" *ngIf="page !== -1" [class.active]="page === currentReviewPage">
+                  <a class="page-link" (click)="changeReviewPage(page)">{{ page }}</a>
+                </li>
+                <li class="page-item disabled" *ngIf="page === -1">
+                  <span class="page-link">...</span>
+                </li>
+              </ng-container>
+              
+              <li class="page-item" [class.disabled]="currentReviewPage >= totalReviewPages">
+                <a class="page-link" (click)="changeReviewPage(currentReviewPage + 1)" aria-label="Next">
+                  <i class="fas fa-chevron-right"></i>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <ng-template #noReviews>
+        <div class="empty-reviews">
+          <div class="empty-reviews-icon">
+            <i class="far fa-comment-dots"></i>
+          </div>
+          <h5 class="empty-reviews-title">No Reviews Yet</h5>
+          <p class="empty-reviews-text">Be the first to share your thoughts about this product!</p>
+          <button class="btn btn-success" (click)="toggleReviewForm()">
+            <i class="fas fa-pen me-2"></i>Write a Review
+          </button>
+        </div>
+      </ng-template>
     </div>
   </div>
-  
-  
-</div>
+</section>
 
   <!-- Related Products (Category Products) -->
   <div *ngIf="CategoryProducts?.length" class="mt-4">
