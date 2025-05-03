@@ -139,52 +139,82 @@ Delete
   </div>
 
   <!-- All Reviews Section -->
+
+  <!-- All Reviews Section -->
   <div class="all-reviews-section mt-5">
     <h5 class="section-title mb-4">Customer Reviews</h5>
     
     <div *ngIf="reviews.length > 0">
-      <!-- Reviews display same as before -->
-<!-- In your review display section -->
-<div *ngFor="let review of reviews" class="review-item card shadow-sm mb-4">
-  <div class="card-body">
-    <div class="d-flex align-items-center mb-3">
-      <div class="user-avatar me-3">
-<img *ngIf="review.userAvatar" 
-     [src]="review.userAvatar" 
-     alt="User avatar" 
-     class="rounded-circle" 
-     width="50" 
-     height="50"
-     (error)="review.userAvatar = null">
-        <div *ngIf="!review.userAvatar" 
-             class="avatar-placeholder rounded-circle d-flex align-items-center justify-content-center" 
-             [style.background-color]="getRandomColor()">
-          {{ (review.userName || 'Anonymous').charAt(0).toUpperCase() }}
+      <!-- Show paginated reviews -->
+      <div *ngFor="let review of paginatedReviews" class="review-item card shadow-sm mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-3">
+            <div class="user-avatar me-3">
+              <img *ngIf="review.userAvatar" 
+                   [src]="review.userAvatar" 
+                   alt="User avatar" 
+                   class="rounded-circle" 
+                   width="50" 
+                   height="50"
+                   (error)="review.userAvatar = null">
+              <div *ngIf="!review.userAvatar" 
+                   class="avatar-placeholder rounded-circle d-flex align-items-center justify-content-center" 
+                   [style.background-color]="getRandomColor()">
+                {{ (review.userName || 'Anonymous').charAt(0).toUpperCase() }}
+              </div>
+            </div>
+            <div>
+              <h5 class="mb-0">{{ review.userName || 'Anonymous User' }}</h5>
+              <div class="stars">
+                <i *ngFor="let star of [1,2,3,4,5]" 
+                   class="fa fa-star" 
+                   [ngClass]="star <= review.rating ? 'text-warning' : 'text-secondary'"></i>
+              </div>
+            </div>
+            <div class="text-muted ms-auto" style="font-size: 0.9rem;">
+              {{ review.createdAt | date:'mediumDate' }}
+            </div>
+          </div>
+          <p class="card-text comment">{{ review.comment }}</p>
         </div>
       </div>
-      <div>
-        <h5 class="mb-0 username">{{ review.userName || 'Anonymous User' }}</h5>
-        <div class="stars">
-          <i *ngFor="let star of [1,2,3,4,5]" 
-             class="fa fa-star" 
-             [ngClass]="star <= review.rating ? 'text-warning' : 'text-secondary'"></i>
-        </div>
-      </div>
-      <div class="text-muted ms-auto" style="font-size: 0.9rem;">
-        {{ review.createdAt | date:'mediumDate' }}
-      </div>
-    </div>
-    
-    <p class="card-text comment">{{ review.comment }}</p>
-  </div>
-</div>
+  
+      <!-- Reviews Pagination -->
+<!-- Reviews Pagination -->
+<div *ngIf="reviews.length > reviewsPerPage" class="d-flex justify-content-center mt-4">
+  <nav aria-label="Reviews pagination">
+    <ul class="pagination">
+      <li class="page-item" [class.disabled]="currentReviewPage <= 1">
+        <a class="page-link" (click)="changeReviewPage(currentReviewPage - 1)" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
       
+      <ng-container *ngFor="let page of getReviewPagesToShow()">
+        <li class="page-item" *ngIf="page !== -1" [class.active]="page === currentReviewPage">
+          <a class="page-link" (click)="changeReviewPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item disabled" *ngIf="page === -1">
+          <span class="page-link">...</span>
+        </li>
+      </ng-container>
+      
+      <li class="page-item" [class.disabled]="currentReviewPage >= totalReviewPages">
+        <a class="page-link" (click)="changeReviewPage(currentReviewPage + 1)" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
     </div>
     
-    <div *ngIf="!reviews?.length" class="text-center py-4">
+    <div *ngIf="reviews.length === 0" class="text-center py-4">
       <p class="light-dark fs-5">No reviews yet. Be the first to review this product!</p>
     </div>
   </div>
+  
+  
 </div>
 
   <!-- Related Products (Category Products) -->
