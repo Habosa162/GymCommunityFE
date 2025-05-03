@@ -51,12 +51,9 @@ export class ProductComponent {
   }
   //wishlist Methods
   getWishlist() {
-    this.wishlistService.getWishlist().subscribe({
-      next: (res) => {
+    this.wishlistService.getWishlist().subscribe((res) => {
         this.WishList = res;
-      },
-      error: (err) => this.toastr.error('Network Connection', 'Error')
-    });
+      });
   }
 
   addToWishlist(productId: number) {
@@ -103,7 +100,7 @@ export class ProductComponent {
     const fullStars = Math.floor(rating);
     const halfStars = (rating % 1) !== 0 ? 1 : 0;
     const emptyStars = 5 - fullStars - halfStars;
-  
+
     return [
       ...new Array(fullStars).fill(1),  // Full stars
       ...new Array(halfStars).fill(0.5),  // Half star
@@ -118,25 +115,25 @@ export class ProductComponent {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.3 && rating % 1 <= 0.7;
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-  
+
     const stars = [];
-    
+
     // Full stars
     for (let i = 0; i < fullStars; i++) {
       stars.push({icon: 'fa-star', class: 'fa-solid text-warning'});
     }
-    
+
     // Half star
     if (hasHalfStar) {
       stars.push({icon: 'fa-star-half-stroke', class: 'fa-solid text-warning'});
     }
-    
+
     // Empty stars
     for (let i = 0; i < emptyStars; i++) {
       stars.push({icon: 'fa-star', class: 'fa-regular text-muted'});
     }
-  
+
     return stars;
   }
-  
+
 }
