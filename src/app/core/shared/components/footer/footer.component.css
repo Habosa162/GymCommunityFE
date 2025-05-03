@@ -256,19 +256,19 @@ ul {
   z-index: 9;
 }
 
-.footer-social-icon .button:nth-child(3) {
+.footer-social-icon .button:nth-child(2) {
   background: linear-gradient(120deg, #02ff2c, #008a12);
 }
 
-.footer-social-icon .button:nth-child(4) {
+.footer-social-icon .button:nth-child(3) {
   background: rgb(69, 187, 255);
 }
 
-.footer-social-icon .button:nth-child(5) {
+.footer-social-icon .button:nth-child(4) {
   background: rgb(255, 33, 33);
 }
 
-.footer-social-icon .button:nth-child(6) {
+.footer-social-icon .button:nth-child(5) {
   background: black;
 }
 
