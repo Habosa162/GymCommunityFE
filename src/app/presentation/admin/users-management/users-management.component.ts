@@ -12,10 +12,11 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./users-management.component.css']
 })
 export class UsersManagementComponent implements OnInit {
+  isLoading = true ;
   role: string = 'Client';
   query: string = '';
   isActive: boolean = true;
-  isPremium: boolean = false;
+  isPremium: any = false;
   gender: string = 'all';
   pageNumber: number = 1;
   pageSize: number = 10;
@@ -27,7 +28,7 @@ export class UsersManagementComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
-    private toastr: ToastrService  // Toastr for success/error messages
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -48,6 +49,8 @@ export class UsersManagementComponent implements OnInit {
         // console.log(res) ;
         this.systemUsers = res.items;
         this.totalUsers = res.totalCount;
+        this.isLoading = false;
+        this.toastr.success("Users Loaded Successfully","Success") ;
         // this.updateCounts();
       },
       (err) => {
