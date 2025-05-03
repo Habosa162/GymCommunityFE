@@ -67,23 +67,31 @@
                   </button> -->
                   <!-- checkoutBtn -->
                   <div class="checkoutBtn w-100">
-                    <div class="left-side">
-                      <div class="card">
-                        <div class="card-line"></div>
-                        <div class="buttons"></div>
-                      </div>
-                      <div class="post">
-                        <div class="post-line"></div>
-                        <div class="screen">
-                          <div class="dollar">$</div>
+                    <button
+                      class="border-0 w-100 p-0 m-0 d-flex align-items-center rounded-3"
+                      type="submit"
+                      [disabled]="
+                        cartItems.length === 0 || checkoutForm.invalid
+                      "
+                    >
+                      <div class="left-side">
+                        <div class="card">
+                          <div class="card-line"></div>
+                          <div class="buttons"></div>
                         </div>
-                        <div class="numbers"></div>
-                        <div class="numbers-line2"></div>
+                        <div class="post">
+                          <div class="post-line"></div>
+                          <div class="screen">
+                            <div class="dollar">$</div>
+                          </div>
+                          <div class="numbers"></div>
+                          <div class="numbers-line2"></div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="right-side">
-                      <div class="new">Checkout</div>
-                    </div>
+                      <div class="right-side">
+                        <div class="new">Pay Now</div>
+                      </div>
+                    </button>
                   </div>
                   <!-- checkoutBtn -->
                 </div>
