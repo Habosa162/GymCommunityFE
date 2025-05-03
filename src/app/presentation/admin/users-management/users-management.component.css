@@ -3,6 +3,28 @@
     background-color: black;
     color: white;
   }
+  .user-card{
+    background-color: #2A2A2A;
+    color: white;
+  }
+  .user-card span{
+    color: white;
+  }
+  h3{
+    color: #509DFB;
+  }
+  h2{
+    color: #509DFB;
+  }
+  select{
+    color:white ;
+    background-color: #2A2A2A;
+    border-color: black;
+  }
+  input{
+    background-color: #2A2A2A;
+    border-color:black;
+  }
 }
 .users-management-container {
   padding: 20px;
@@ -30,6 +52,7 @@
   display: flex;
   flex-direction: column;
   min-width: 150px;
+  padding: 5px 5px;
 }
 
 .filter-group label {
@@ -57,7 +80,7 @@
 }
 
 .search-group button {
-  padding: 8px 12px;
+  padding: 9px 12px;
   background: #3498db;
   color: white;
   border: none;
@@ -222,12 +245,12 @@
 }
 
 .btn-toggle-status {
-  background: #2ecc71;
+  background: limegreen;
   color: white;
 }
 
 .btn-toggle-status:hover {
-  background: #27ae60;
+  background: limegreen;
 }
 
 .pagination {
@@ -278,7 +301,7 @@
   .filter-controls {
     flex-direction: column;
   }
-  
+
   .users-list {
     grid-template-columns: 1fr;
   }

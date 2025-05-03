@@ -14,7 +14,7 @@
     <div class="col-md-2">
       <label for="status" class="form-label">Shipping Status</label>
       <select id="status" class="form-select" [(ngModel)]="status" (change)="onStatusFilterChange(status)">
-        <option [ngValue]="null">All Statuses</option>
+        <option [ngValue]="null">All</option>
         <option [value]="0">Pending</option>
         <option [value]="1">Shipped</option>
         <option [value]="2">Delivered</option>
@@ -99,7 +99,7 @@
         <p>Order Date: {{ selectedOrder.orderDate | date: 'medium' }}</p>
 
         <h6 class="mt-3 my-2">Shipping Status</h6>
-        
+
         <select [(ngModel)]="selctedStatus" class="form-select w-50">
           <option [value]="'Pending'">Pending</option>
           <option [value]="'Shipped'">Shipped</option>

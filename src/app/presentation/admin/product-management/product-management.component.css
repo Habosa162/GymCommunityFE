@@ -28,9 +28,9 @@
 
 /* Dark mode styles */
 :host-context(body.dark-mode) .card {
-  background-color: #2c2c2c;
+  background-color: black;
   color: white;
-  border-color: #2A2A2A;
+  border-color: black;
 }
 
 :host-context(body.dark-mode) #productManagementSection{
@@ -59,12 +59,21 @@
   border-color: #2A2A2A;
 }
 
-:host-context(body.dark-mode) .page-link {
-  background-color: #2A2A2A;
-  color: white;
-  border-color: #2A2A2A;
+:host-context(body.dark-mode){
+  .page-link {
+    background-color: #2A2A2A;
+    color: white;
+    border-color: #2A2A2A;
+  }
+  .btnManage{
+    border-color: black;
+  }
 }
-
+.btnManage{
+  background-color: limegreen;
+  padding: 10px 30px;
+  width: 20%;
+}
 :host-context(body.dark-mode) .page-item.disabled .page-link {
   background-color: #222;
   color: #6c757d;

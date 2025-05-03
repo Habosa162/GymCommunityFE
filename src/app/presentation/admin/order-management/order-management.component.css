@@ -47,7 +47,7 @@
   color: #121212;
 }
 :host-context(body.dark-mode) h3{
-  color:white ; 
+  color:white ;
 }
 :host-context(body.dark-mode) .table {
   color: #f0f0f0;
@@ -58,7 +58,7 @@
 :host-context(body.dark-mode) .table thead {
   background-color: #2c2c2c;
   color: #ffffff;
-  border:none ; 
+  border:none ;
 }
 
 :host-context(body.dark-mode) .table-bordered td,
@@ -110,7 +110,7 @@
 /****************************MODAL DARK MODE ******************************/
 
 :host-context(body.dark-mode) #orderDetailsModal h6{
-  color : white ; 
+  color : white ;
 }
 :host-context(body.dark-mode) .modal-content {
   background-color: #1e1e2f;
@@ -132,7 +132,7 @@
 }
 
 :host-context(body.dark-mode) .form-select {
-  background-color: #2c2c3c;
+  background-color: #2c2c2c;
   color: #e0e0e0;
   border-color: #555;
 }
@@ -148,7 +148,12 @@
   border-color: #0d6efd;
 }
 
-:host-context(body.dark-mode) a.btn-primary:hover {
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
+:host-context(body.dark-mode) {
+  .form-control::placeholder{
+    color: white;
+  }
+  a.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+  }
 }

@@ -1,12 +1,12 @@
 <section class="container" id="userManagermentSection">
   <div class="row">
-    
-    
+
+
      <div class="col-md-12">
       <app-users-chart></app-users-chart>
     </div>
-    
-    
+
+
     <div class="col-md-12">
       <div class="users-management-container">
         <!-- Header and Filters -->
@@ -21,25 +21,23 @@
                 <option value="Admin">Admin</option>
               </select>
             </div>
-      
+
             <div class="filter-group">
               <label for="statusFilter">Status:</label>
               <select id="statusFilter" [(ngModel)]="isActive" (change)="loadSystemUsers()">
                 <option [ngValue]="true">Active</option>
                 <option [ngValue]="false">Inactive</option>
-                <option [ngValue]="null">All</option>
               </select>
             </div>
-      
+
             <div class="filter-group">
               <label for="premiumFilter">Premium:</label>
               <select id="premiumFilter" [(ngModel)]="isPremium" (change)="loadSystemUsers()">
                 <option [ngValue]="true">Premium</option>
                 <option [ngValue]="false">Regular</option>
-                <option [ngValue]="null">All</option>
               </select>
             </div>
-      
+
             <div class="filter-group">
               <label for="genderFilter">Gender:</label>
               <select id="genderFilter" [(ngModel)]="gender" (change)="loadSystemUsers()">
@@ -48,14 +46,14 @@
                 <option value="f">Female</option>
               </select>
             </div>
-      
+
             <div class="search-group">
               <input type="text" [(ngModel)]="query" placeholder="Search users..." (keyup.enter)="loadSystemUsers()">
               <button (click)="loadSystemUsers()">Search</button>
             </div>
           </div>
         </div>
-      
+
         <!-- Users Statistics -->
         <!-- <div class="stats-bar">
           <div class="stat-card">
@@ -76,7 +74,7 @@
         <div class="users-list">
           <div *ngFor="let user of systemUsers" class="user-card" [class.inactive]="!user.isActive">
             <div class="user-card-header">
-              <img [src]="user.profileImg || 'assets/default-avatar.png'" alt="Profile" class="user-avatar">
+              <img [src]="user.profileImg" (error)="onImgError($event)" alt="Profile" class="user-avatar">
               <div class="user-info">
                 <h3>{{ user.firstName }} {{ user.lastName }}</h3>
                 <p class="user-email">{{ user.email }}</p>
@@ -89,7 +87,7 @@
                 </div>
               </div>
             </div>
-      
+
             <div class="user-card-body">
               <div class="user-detail">
                 <span class="detail-label">Joined:</span>
@@ -104,16 +102,16 @@
                 <span class="detail-value">{{ user.gender === 'm' ? 'Male' : 'Female' }}</span>
               </div>
             </div>
-      
+
             <div class="user-card-actions">
-              <button class="btn-edit" (click)="editUser(user)">Edit</button>
-              <button class="btn-toggle-status" (click)="toggleUserStatus(user)">
+              <button class="btn-edit fw-bolder" (click)="editUser(user)">Edit</button>
+              <button class="btn-toggle-status fw-bolder" (click)="toggleUserStatus(user)">
                 {{ user.isActive ? 'Deactivate' : 'Activate' }}
               </button>
             </div>
           </div>
         </div>
-      
+
       <!-- Pagination -->
       <div class="pagination" *ngIf="totalUsers > pageSize">
         <button (click)="onPageChange(pageNumber - 1)" [disabled]="pageNumber === 1">Previous</button>

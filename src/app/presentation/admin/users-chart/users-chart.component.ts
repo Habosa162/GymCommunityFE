@@ -21,16 +21,16 @@ export class UsersChartComponent implements OnInit {
   chartInfo: { month: number; count: number }[] = [];
 
   barChartLabels: string[] = [];
- 
- 
- 
-  barChartData: ChartData<'line'> = {
+
+
+
+  barChartData: ChartData<'bar'> = {
     labels: [],
     datasets: [{ data: [], label: 'Users per Month' }]
-  }; 
-  
-  
-  barChartOptions: ChartOptions<'line'> = {
+  };
+
+
+  barChartOptions: ChartOptions<'bar'> = {
     responsive: true,
     scales: {
       y: {
@@ -60,25 +60,25 @@ export class UsersChartComponent implements OnInit {
     this.getUsersChartInfo();
   }
 
- 
+
 // Update your getUsersChartInfo method
 getUsersChartInfo(): void {
   this.isLoading = true;
   this.adminService.getUsersSummary(this.role, this.year).subscribe({
     next: (res) => {
       this.chartInfo = res;
-     
+
       this.chartInfo.sort((a, b) => a.month - b.month);
-      
+
       this.barChartLabels = this.chartInfo.map(x => this.getMonthName(x.month));
-    
+
       this.barChartData = {
         labels: this.chartInfo.map(x => this.getMonthName(x.month)),
         datasets: [
           { data: this.chartInfo.map(x => x.count), label: 'Users per Month' }
         ]
-      };     
-      
+      };
+
       this.isLoading = false;
     },
     error: () => {
