@@ -119,7 +119,7 @@ export class ClientPlansComponent implements OnInit {
       next: (response: any) => {
         this.trainingPlan = response.plan;
         this.coachData = response.coach; // Assuming the coach data is in the response
-        console.log('Training plan response:', this.coachData);
+        console.log('Training plan response:', response);
         this.coachSkills = JSON.parse(response.coach.skillsJson); // Extract skills from coach data
         this.generateMonths(); // Generate months based on durationMonths
         this.initializeWeeks();

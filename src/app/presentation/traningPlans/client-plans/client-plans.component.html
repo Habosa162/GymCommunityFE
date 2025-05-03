@@ -55,16 +55,11 @@
 
               <tr>
                 <th scope="row" class="mainColor text-nowrap">
-                  <i class="fa-regular fa-calendar-plus"></i> Joined
+                  <i class="fa-solid fa-venus-mars"></i> Gender
                 </th>
-                <td>{{ trainingPlan?.coach.createdAt | date }}</td>
+                <td>{{ coachData?.gender == "m" ? "Male" : "Female" }}</td>
               </tr>
-              <tr>
-                <th scope="row" class="mainColor text-nowrap">
-                  <i class="fa-solid fa-location-dot"></i> Address
-                </th>
-                <td>{{ trainingPlan?.coach.address }}</td>
-              </tr>
+
               <tr>
                 <th scope="row" class="mainColor text-nowrap">
                   <i class="fa-solid fa-lightbulb"></i> Skills
@@ -90,8 +85,8 @@
             </tbody>
           </table>
           <a
-            routerLink="/coach/profile/{{ trainingPlan?.coach.id }}"
-            class="my-5 mainColor btn text-uppercase"
+            routerLink="/coach/profile/{{ trainingPlan?.coachId }}"
+            class="my-4 mainColor btn text-uppercase"
           >
             Go To Coach Profile <i class="fa-solid fa-arrow-right-long"></i>
           </a>

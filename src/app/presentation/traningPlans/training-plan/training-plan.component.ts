@@ -227,6 +227,7 @@ export class TrainingPlanComponent implements OnInit {
 
     this.trainingPlanService.getTrainingPlanById(Number(id)).subscribe({
       next: (response: any) => {
+        console.log('Training Plan:', response);
         this.trainingPlan = response.plan;
         this.generateMonths(); // Generate months based on durationMonths
         this.initializeWeeks();
