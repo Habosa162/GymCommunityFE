@@ -9,6 +9,8 @@ import { PaymentService } from '../../../services/Ecommerce/payment.service';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { ShippingService } from '../../../services/Ecommerce/shipping.service';
+import {ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -19,6 +21,7 @@ import { ShippingService } from '../../../services/Ecommerce/shipping.service';
   styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent {
+  @ViewChild('checkoutForm') checkoutForm!: NgForm;
   cartItems: any[] = [];
   paymentMethod: string = 'Paymob';
   totalPrice: number = 0;
@@ -131,10 +134,25 @@ export class CheckoutComponent {
       }
     });
   }
-
   submitOrder() {
     if (this.cartItems.length === 0) {
       alert("🛒 Your cart is empty!");
+      return;
+    }
+
+    if (this.shipping.PhoneNumber.length !== 11) {
+      alert("Please enter a valid 11-digit phone number starting with 01.");
+      return;
+    }
+
+    // Manually trigger validation for all fields
+    Object.keys(this.checkoutForm.controls).forEach(field => {
+      const control = this.checkoutForm.controls[field];
+      control.markAsTouched({ onlySelf: true });
+    });
+
+    if (this.checkoutForm.invalid) {
+      alert("Please fill all required fields correctly.");
       return;
     }
 
@@ -143,18 +161,80 @@ export class CheckoutComponent {
       return;
     }
 
-
+    // Set dummy phone number before processing
+    this.shipping.PhoneNumber = 'XXXXXXXXXXX';
     this.processPayment();
-    this.shipping = {
-      CustomerName: ''
-      , ShippingAddress: ''
-      , PhoneNumber: ''
-      , Carrier: ''
-      , TrackingNumber: ''
-      , Latitude: 30.0444
-      , Longitude: 31.2357
-      ,EstimatedDeliveryDate: ''
-    };
-    this.paymentMethod = 'COD';
+    this.resetForm();
   }
+
+  private resetForm() {
+    this.shipping = {
+      CustomerName: '',
+      ShippingAddress: '',
+      PhoneNumber: '',
+      Carrier: 'DHL',
+      TrackingNumber: 'ABC123456',
+      Latitude: 30.0444,
+      Longitude: 31.2357,
+      EstimatedDeliveryDate: null,
+    };
+    this.maskedPhoneNumber = '';
+    this.paymentMethod = 'Paymob';
+    this.checkoutForm?.resetForm();
+  }
+
+  // formatPhoneNumber() {
+  //   if (this.shipping.PhoneNumber) {
+  //     // Remove all non-digit characters first
+  //     let numbers = this.shipping.PhoneNumber.replace(/\D/g, '');
+      
+  //     // Ensure it starts with 01 and has correct length
+  //     if (numbers.startsWith('01') && numbers.length <= 11) {
+  //       // Format with spaces for display (optional)
+  //       let formatted = numbers.substring(0, 5);
+  //       if (numbers.length > 5) {
+  //         formatted += ' ' + numbers.substring(5, 8);
+  //       }
+  //       if (numbers.length > 8) {
+  //         formatted += ' ' + numbers.substring(8, 11);
+  //       }
+  //       this.shipping.PhoneNumber = formatted;
+  //     } else {
+  //       // If not valid, just keep the numbers
+  //       this.shipping.PhoneNumber = numbers;
+  //     }
+  //   }
+  // }
+
+  blockSymbols(event: KeyboardEvent) {
+    // Allow: backspace, delete, tab, escape, enter, arrows
+    if ([46, 8, 9, 27, 13, 110].includes(event.keyCode) || 
+        // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+        (event.keyCode === 65 && event.ctrlKey === true) || 
+        (event.keyCode === 67 && event.ctrlKey === true) ||
+        (event.keyCode === 86 && event.ctrlKey === true) ||
+        (event.keyCode === 88 && event.ctrlKey === true) ||
+        // Allow: home, end, left, right
+        (event.keyCode >= 35 && event.keyCode <= 39)) {
+      return;
+    }
+    
+    // Ensure it's a number (0-9) or space (keyCode 32)
+    if ((event.keyCode < 48 || event.keyCode > 57) && 
+        (event.keyCode < 96 || event.keyCode > 105) && 
+        event.keyCode !== 32) {
+      event.preventDefault();
+    }
+  }
+  maskedPhoneNumber: string = '';
+
+  formatMaskedPhone(event: any) {
+    const value = event.target.value.replace(/\D/g, '');
+    if (value.length <= 11) {
+      this.shipping.PhoneNumber = value;
+    }
+  }
+
+  
+
 }

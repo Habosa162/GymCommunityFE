@@ -283,3 +283,92 @@
     transform: translateY(0);
   }
 }
+
+/* Add these to your existing CSS */
+.text-danger {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+input.ng-invalid.ng-touched {
+  border-color: #dc3545;
+}
+
+input.ng-valid.ng-touched {
+  border-color: #28a745;
+}
+
+.form-control::placeholder {
+  color: #6c757d;
+  opacity: 0.6;
+}
+
+:host-context(body.dark-mode) .form-control::placeholder {
+  color: #adb5bd;
+}
+
+:host-context(body.dark-mode) input.ng-invalid.ng-touched {
+  border-color: #dc3545;
+}
+
+:host-context(body.dark-mode) input.ng-valid.ng-touched {
+  border-color: #28a745;
+}
+
+/* Add to your existing CSS */
+input[type="tel"] {
+  letter-spacing: 0.5px;
+  font-family: monospace; /* Makes numbers display evenly */
+}
+
+input[type="tel"]::placeholder {
+  letter-spacing: normal;
+  font-family: inherit;
+}
+
+:host-context(body.dark-mode) input[type="tel"] {
+  letter-spacing: 0.5px;
+  background-color: #202020 !important;
+  color: white !important;
+}
+
+.masked-phone {
+  font-family: monospace;
+  letter-spacing: 2px;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+.masked-phone::placeholder {
+  letter-spacing: 3px;
+  color: #6c757d;
+  opacity: 0.6;
+}
+
+:host-context(body.dark-mode) .masked-phone {
+  background-color: #202020 !important;
+  color: white !important;
+}
+
+/* Add this to checkout.component.css */
+
+input.form-control.ng-touched.ng-invalid {
+  border: 1px solid #dc3545;
+  background-color: #fff0f0;
+}
+
+input.form-control.ng-touched.ng-valid {
+  border: 1px solid #28a745;
+  background-color: #f0fff0;
+}
+
+::placeholder {
+  font-style: italic;
+  color: #999;
+}
+
+:host-context(body.dark-mode) input.form-control {
+  background-color: #222;
+  color: #fff;
+  border-color: #555;
+}
