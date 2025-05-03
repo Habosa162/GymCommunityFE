@@ -64,4 +64,11 @@ export class CoachRatingComponent implements OnInit {
       });
     }
   }
+  faces = ['😡', '😕', '🙂', '😃', '🤩'];
+  selectedRate: number = 1;
+
+  setRating(value: number) {
+    this.selectedRate = value;
+    this.ratingForm.get('rate')?.setValue(value);
+  }
 }

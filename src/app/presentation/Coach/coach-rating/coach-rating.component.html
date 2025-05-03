@@ -11,21 +11,28 @@
       </h5>
       <form (ngSubmit)="onSubmit()" [formGroup]="ratingForm">
         <div class="mb-4">
-          <label for="rate" class="form-label text-black-50">Rating</label>
-          <div class="d-flex align-items-center gap-2">
-            <input
-              type="number"
-              class="form-control"
-              id="rate"
-              formControlName="rate"
-              min="1"
-              max="5"
-              placeholder="Enter rating (1-5)"
-            />
-            <span class="text-warning fw-bold">★</span>
+          <label class="form-label text-black-50"
+            >How was your experience?</label
+          >
+          <div class="d-flex gap-2 justify-content-center">
+            <button
+              *ngFor="let face of faces; let i = index"
+              type="button"
+              (click)="setRating(i + 1)"
+              class="btn p-2 fs-3 rounded-circle border"
+              [ngClass]="{
+                'border-success border-3': selectedRate === i + 1,
+                'border-secondary': selectedRate !== i + 1
+              }"
+            >
+              {{ face }}
+            </button>
           </div>
-          <small class="text-black-50">Rate from 1 to 5 stars</small>
+          <small class="text-black-50"
+            >Tap a face to rate from bad to excellent</small
+          >
         </div>
+
         <div class="mb-4">
           <label for="comment" class="form-label text-black-50">Comment</label>
           <textarea
