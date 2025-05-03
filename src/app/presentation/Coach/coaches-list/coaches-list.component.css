@@ -190,7 +190,6 @@
   position: relative;
   overflow: hidden;
   background-color: #e8e8e8;
-
 }
 
 .skeleton-box::after {

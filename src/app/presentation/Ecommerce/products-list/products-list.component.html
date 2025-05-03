@@ -1,4 +1,4 @@
-<section id="shop" class="min-vh-100 py-4">
+<section id="shop" class="min-vh-100 py-4" *ngIf="!isLoading">
   <div class="container">
     <div class="row gx-4">
       <!-- Filter Sidebar -->
@@ -168,17 +168,7 @@
           />
         </div>
 
-        <!-- Loading State -->
-        <ng-container *ngIf="isLoading">
-          <div class="row g-3">
-            <div *ngFor="let skeleton of [1,2,3,4,5,6]" class="col-xl-3 col-md-6 col-sm-12">
-              <div class="product-card-skeleton h-100"></div>
-            </div>
-          </div>
-        </ng-container>
-
         <!-- Products Grid -->
-        <ng-container *ngIf="!isLoading">
           <div class="row g-3">
             <div *ngFor="let product of filteredProducts" class="col-xl-3 col-md-6 col-sm-12">
               <app-product [product]="product"></app-product>
@@ -198,7 +188,6 @@
               </button>
             </div>
           </div>
-        </ng-container>
 
         <!-- Pagination -->
         <div class="mt-5" *ngIf="totalPages > 1">
@@ -261,3 +250,120 @@
     </div>
   </div>
 </section>
+
+
+
+
+<!-- SKELETON -->
+<ng-container *ngIf="isLoading" >
+  <div class="row gx-4" id="shop">
+    <!-- Filter Sidebar Skeleton -->
+    <aside class="col-lg-3 col-md-4">
+      <div class="filter-card">
+        <!-- Filter header -->
+        <div class="filter-header d-flex justify-content-between align-items-center mb-3">
+          <div class="skeleton-box" style="height: 24px; width: 80px;"></div>
+          <div class="skeleton-box" style="height: 30px; width: 100px;"></div>
+        </div>
+
+        <!-- Category filter -->
+        <div class="filter-section mt-3">
+          <div class="filter-section-header mb-3">
+            <div class="skeleton-box" style="height: 20px; width: 120px;"></div>
+          </div>
+          <div class="filter-section-content">
+            <div class="skeleton-box mb-3" style="height: 32px; width: 100%;"></div>
+            <ul class="filter-list">
+              <li *ngFor="let i of [1,2,3,4]" class="mb-2">
+                <div class="skeleton-box" style="height: 18px; width: 100%;"></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Brand filter -->
+        <div class="filter-section mt-4">
+          <div class="filter-section-header mb-3">
+            <div class="skeleton-box" style="height: 20px; width: 80px;"></div>
+          </div>
+          <div class="filter-section-content">
+            <div class="skeleton-box mb-3" style="height: 32px; width: 100%;"></div>
+            <ul class="filter-list">
+              <li *ngFor="let i of [1,2,3]" class="mb-2">
+                <div class="skeleton-box" style="height: 18px; width: 100%;"></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Price filter -->
+        <div class="filter-section mt-4">
+          <div class="filter-section-header mb-3">
+            <div class="skeleton-box" style="height: 20px; width: 120px;"></div>
+          </div>
+          <div class="filter-section-content">
+            <ul class="filter-list">
+              <li *ngFor="let i of [1,2,3,4]" class="mb-2">
+                <div class="skeleton-box" style="height: 18px; width: 100%;"></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Skeleton -->
+    <main class="col-lg-9 col-md-8">
+      <!-- Product Grid Header -->
+      <div class="card shadow-lg mb-4">
+        <div class="card-body py-3">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+            <div class="mb-3 mb-md-0">
+              <div class="skeleton-box" style="height: 24px; width: 150px; margin-bottom: 8px;"></div>
+              <div class="skeleton-box" style="height: 16px; width: 200px;"></div>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+              <div class="skeleton-box" style="height: 32px; width: 120px;"></div>
+              <div class="skeleton-box" style="height: 32px; width: 160px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Box -->
+      <div class="skeleton-box mb-4" style="height: 40px; width: 100%; border-radius: 4px;"></div>
+
+      <!-- Product Grid -->
+      <div class="row g-3">
+        <div *ngFor="let skeleton of [1,2,3,4,5,6,7,8]" class="col-xl-3 col-md-6 col-sm-12">
+          <div class="card h-100 product-card-skeleton">
+            <!-- Image placeholder -->
+            <div class="skeleton-box" style="height: 200px; border-radius: 4px 4px 0 0;"></div>
+
+            <!-- Card body -->
+            <div class="card-body">
+              <div class="skeleton-box mb-2" style="height: 20px; width: 80%;"></div>
+              <div class="skeleton-box mb-3" style="height: 16px; width: 60%;"></div>
+
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="skeleton-box" style="height: 24px; width: 80px;"></div>
+                <div class="skeleton-box rounded-pill" style="height: 20px; width: 40px;"></div>
+              </div>
+
+              <div class="d-flex justify-content-between">
+                <div class="skeleton-box" style="height: 16px; width: 60px;"></div>
+                <div class="skeleton-box" style="height: 16px; width: 60px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination Skeleton -->
+      <div class="mt-5">
+        <div class="skeleton-box" style="height: 40px; width: 100%; border-radius: 4px;"></div>
+      </div>
+    </main>
+  </div>
+</ng-container>
+

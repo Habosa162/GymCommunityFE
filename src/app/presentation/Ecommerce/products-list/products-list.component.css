@@ -271,21 +271,89 @@
 }
 
 /* ============= Loading Skeletons ============= */
-.product-card-skeleton {
-  background: linear-gradient(-90deg, #f0f0f0 0%, #fafafa 50%, #f0f0f0 100%);
-  background-size: 400% 400%;
-  animation: shimmer 1.5s ease-in-out infinite;
-  border-radius: 12px;
-  height: 350px;
+.skeleton-box {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  background-color: #e8e8e8;
+}
+
+.skeleton-box::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 1.5s infinite;
+  content: '';
 }
 
 @keyframes shimmer {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
-:host-context(body.dark-mode) .product-card-skeleton {
-  background: linear-gradient(-90deg, #2d2d2d 0%, #333 50%, #2d2d2d 100%);
+.product-card-skeleton {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.filter-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.filter-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Dark Mode Styles */
+:host-context(body.dark-mode) {
+  .filter-card {
+    background-color: #2a2a2a;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .filter-header{
+    background-color: #121212;
+  }
+  .skeleton-box {
+    background-color: #444;
+  }
+
+  .skeleton-box::after {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0,
+      rgba(255, 255, 255, 0.05) 20%,
+      rgba(255, 255, 255, 0.1) 60%,
+      rgba(255, 255, 255, 0)
+    );
+  }
+
+  .product-card-skeleton {
+    border-color: #444;
+    background-color: #2a2a2a;
+  }
+  .card{
+    border-color: #121212;
+  }
+  .card-body{
+    background-color: #121212;
+  }
 }
 
 /* ============= Empty State ============= */
@@ -403,7 +471,10 @@
   #searchIcon{
     color: limegreen;
   }
-
+  .empty-state-icon .with-icon{
+    color: limegreen !important;
+    fill: #63CE34;
+  }
   .with-icon{
     color: white;;
   }

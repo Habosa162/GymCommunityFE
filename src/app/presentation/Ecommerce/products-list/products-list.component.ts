@@ -106,7 +106,7 @@ export class ProductsListComponent {
       },
       error: (error) => {
         console.error('Error loading products:', error);
-        this.isLoading = false;
+        this.isLoading = true;
       }
     });
   }
