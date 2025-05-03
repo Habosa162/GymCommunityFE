@@ -81,22 +81,35 @@
   </section>
 
   <!-- Gallery Section -->
-  <section id="gallery" class="section">
-    <h2 class="section-title">Photo Gallery</h2>
-    <div *ngIf="images && images.length > 0; else noGallery" class="gallery-grid">
-      <div *ngFor="let image of images" class="gallery-item">
-        <img [src]="image.imageUrl" 
-             (click)="openImageInNewTab(image.imageUrl)" 
-             alt="Gym facility photo">
+<section id="gallery" class="section">
+  <h2 class="section-title">Photo Gallery</h2>
+  <div *ngIf="images && images.length > 0; else noGallery" class="gallery-grid">
+    <div *ngFor="let image of images" class="gallery-item">
+      <img [src]="image.imageUrl" 
+           (click)="openLightbox(image.imageUrl)" 
+           alt="Gym facility photo">
+    </div>
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div *ngIf="selectedImage" class="lightbox-overlay" (click)="closeLightbox()">
+    <div class="lightbox-content" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeLightbox()">&times;</button>
+      <img [src]="selectedImage" alt="Enlarged gym photo">
+      <div class="lightbox-nav">
+        <button (click)="navigateImage(-1)"><i class="bi bi-chevron-left"></i></button>
+        <button (click)="navigateImage(1)"><i class="bi bi-chevron-right"></i></button>
       </div>
     </div>
-    <ng-template #noGallery>
-      <div class="empty-state">
-        <i class="bi bi-images"></i>
-        <p>No gallery images available</p>
-      </div>
-    </ng-template>
-  </section>
+  </div>
+
+  <ng-template #noGallery>
+    <div class="empty-state">
+      <i class="bi bi-images"></i>
+      <p>No gallery images available</p>
+    </div>
+  </ng-template>
+</section>
 
   <!-- Plans Section -->
   <section id="plans" class="section">

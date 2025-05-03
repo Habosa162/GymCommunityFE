@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { GymReadDTO } from '../../../domain/models/Gym/gym.model';
 import { PaymentService } from '../../../services/Ecommerce/payment.service';
@@ -19,7 +20,7 @@ import { GymPlanRead } from '../../../domain/models/Gym/gym-plan.model';
 
 @Component({
   selector: 'app-user-gym-details',
-  imports: [CommonModule,RouterModule,GoogleMapsModule],
+  imports: [CommonModule,RouterModule,GoogleMapsModule,NgxImageZoomModule],
   templateUrl: './user-gym-details.component.html',
   styleUrl: './user-gym-details.component.css'
 })
@@ -57,6 +58,17 @@ export class UserGymDetailsComponent {
   };
   markerPosition: google.maps.LatLngLiteral | null = null;
   mapInitialized = false;
+
+  zoomConfig = {
+    enable: true,
+    scale: 2, // Default zoom scale
+    zoomMode: 'hover', // or 'click'
+    enableScrollZoom: true, // Enable mouse wheel zoom
+    scrollStepSize: 0.1,
+    enableLens: false,
+    lensWidth: 100,
+    lensHeight: 100
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -281,4 +293,25 @@ export class UserGymDetailsComponent {
   
   }
 
+  selectedImage: string | null = null;
+
+  openLightbox(imageUrl: string): void {
+    this.selectedImage = imageUrl;
+  }
+
+  closeLightbox(): void {
+    this.selectedImage = null;
+  }
+  navigateImage(direction: number): void {
+    if (!this.selectedImage || !this.images) return;
+    
+    const currentIndex = this.images.findIndex(img => img.imageUrl === this.selectedImage);
+    let newIndex = currentIndex + direction;
+    
+    // Wrap around
+    if (newIndex < 0) newIndex = this.images.length - 1;
+    if (newIndex >= this.images.length) newIndex = 0;
+    
+    this.selectedImage = this.images[newIndex].imageUrl;
+  }
 }
