@@ -4,8 +4,10 @@
       <label for="roleSelect">Select Role:</label>
       <select id="roleSelect" class="form-select" [(ngModel)]="role" (change)="onFilterChange()">
         <option value="Client">Client</option>
-        <option value="Admin">Admin</option>
         <option value="Coach">Coach</option>
+        <option value="GymOwner">GymOwner</option>
+        <option value="Admin">Admin</option>
+        
       </select>
     </div>
     <div class="filter-group">

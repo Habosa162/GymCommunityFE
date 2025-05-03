@@ -30,12 +30,12 @@ export class ProductService {
       .set('page', page.toString())
       .set('eleNo', eleNo.toString())
       .set('sort', sort);
-  
+
     if (categoryId !== null) params = params.set('categoryId', categoryId.toString());
     if (brandId !== null) params = params.set('brandId', brandId.toString());
     if (minPrice !== null) params = params.set('minPrice', minPrice.toString());
     if (maxPrice !== null) params = params.set('maxPrice', maxPrice.toString());
-  
+
     return this.HttpClient.get<{data: any[], totalCount: number, totalPages: number}>(`${this.apiUrl}`, { params }).pipe(
       map(response => ({
         ...response,
@@ -48,7 +48,7 @@ export class ProductService {
       }))
     );
   }
-  
+
   getUserProducts(userid: any): Observable<any> {
     return this.HttpClient.get(`${this.apiUrl}/user`, {
       params: new HttpParams().set('userid', userid)

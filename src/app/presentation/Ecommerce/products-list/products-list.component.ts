@@ -78,9 +78,9 @@ export class ProductsListComponent {
 
   loadProducts(): void {
     this.isLoading = true;
-  
+
     const selectedPriceRange = this.priceRanges.find(r => r.selected);
-  
+
     this.productService.getProducts(
       this.productSearchTerm.trim(),
       this.page,
@@ -98,7 +98,7 @@ export class ProductsListComponent {
           averageRating: product.averageRating || 0, // Fallback to 0 if missing
           reviewCount: product.reviewCount || 0,     // Fallback to 0 if missing
         }));
-        
+
         this.filteredProducts = [...this.products];
         this.totalCount = response.totalCount;
         this.totalPages = response.totalPages;
@@ -218,36 +218,36 @@ export class ProductsListComponent {
     }
   }
 
-  
-  // pagination 
+
+  // pagination
 
   getRange(start: number, end: number): number[] {
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   }
-  
+
   getPagesToShow(): number[] {
     const pages = [];
     const maxVisiblePages = 3; // Number of pages to show around current page
-    
+
     if (this.totalPages <= 5) {
       return this.getRange(2, this.totalPages - 1);
     }
-    
+
     // Show pages around current page
     let start = Math.max(2, this.page - 1);
     let end = Math.min(this.totalPages - 1, this.page + 1);
-    
+
     // Adjust if we're at the beginning
     if (this.page <= 3) {
       end = 4;
     }
-    
+
     // Adjust if we're at the end
     if (this.page >= this.totalPages - 2) {
       start = this.totalPages - 3;
     }
-    
+
     return this.getRange(start, end);
   }
-  
+
 }
