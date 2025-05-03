@@ -118,17 +118,17 @@
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
               <div class="mb-3 mb-md-0">
                 <h2 class="h5 mb-1">Our Products</h2>
-                <p class="text-muted small mb-0">
+                <p class="text-muted small mb-0 showingText">
                   Showing <strong class="text-primary">{{ filteredProducts.length }}</strong> products
                 </p>
               </div>
-              
+
               <div class="d-flex flex-wrap gap-2">
                 <div class="sort-options">
-                  <select 
-                    id="itemsPerPage" 
-                    [(ngModel)]="eleNo" 
-                    (change)="onItemsPerPageChange()" 
+                  <select
+                    id="itemsPerPage"
+                    [(ngModel)]="eleNo"
+                    (change)="onItemsPerPageChange()"
                     class="form-select form-select-sm"
                   >
                     <option value="8">8 per page</option>
@@ -139,8 +139,8 @@
                 </div>
 
                 <div class="sort-options">
-                  <select 
-                    id="sortSelect" 
+                  <select
+                    id="sortSelect"
                     class="form-select form-select-sm"
                     [(ngModel)]="selectedSortOption"
                     (change)="onSortChange($event)"
@@ -189,7 +189,7 @@
           <div *ngIf="filteredProducts.length === 0" class="empty-state card shadow-sm text-center mt-4">
             <div class="card-body py-5">
               <div class="empty-state-icon mb-4">
-                <i class="fas fa-search fa-3x text-muted"></i>
+                <i class="fas fa-search fa-5x" id="searchIcon"></i>
               </div>
               <h3 class="empty-state-title mb-3">No products found</h3>
               <p class="empty-state-text mb-4">Try adjusting your search or filter criteria</p>
@@ -209,7 +209,7 @@
                   <i class="fas fa-chevron-left"></i>
                 </a>
               </li>
-              
+
               <ng-container *ngFor="let p of getPagesToShow()">
 <!-- Convert p to string for comparison -->
 <!-- Change string '...' to a number (if you have control over this) -->
@@ -248,7 +248,7 @@
   <a class="page-link" (click)="goToPage(page + 1)">Next</a>
 </li>
               </ng-container>
-              
+
               <li class="page-item" [class.disabled]="page >= totalPages">
                 <a class="page-link" (click)="goToPage(page + 1)" aria-label="Next">
                   <i class="fas fa-chevron-right"></i>

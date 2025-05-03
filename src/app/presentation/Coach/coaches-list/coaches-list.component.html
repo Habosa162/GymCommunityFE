@@ -1,4 +1,4 @@
-<section class="bgColor min-vh-100">
+<section class="bgColor min-vh-100" *ngIf="!loading">
   <div class="container py-4">
     <!-- Filter Controls -->
     <div class="row mb-4">
@@ -51,19 +51,14 @@
       </div>
     </div>
 
-    <!-- Loading Spinner -->
-    <div class="text-center" *ngIf="loading">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
+
 
     <!-- Coaches Grid -->
-    <div class="row g-4" *ngIf="!loading">
+    <div class="row g-4">
       <div class="col-md-4" *ngFor="let coach of filteredCoaches">
         <div class="card h-100 shadow-lg hover-shadow">
           <!-- Coach Image -->
-          <div class="position-relative">
+          <div class="position-relative" (click)="viewCoachProfile(coach.id)">
             <img
               [src]="coach.profileImage"
               class="card-img-top"
@@ -71,7 +66,7 @@
               style="height: 40vh; object-fit: cover"
             />
             <div class="position-absolute top-0 end-0 p-2">
-              <span class="badge bg-success">
+              <span class="badge bg-main">
                 <i class="bi bi-star-fill me-1"></i>
                 {{ coach.rating || "New" }}
               </span>
@@ -80,6 +75,7 @@
 
           <!-- Coach Info -->
           <div class="card-body">
+            <div (click)="viewCoachProfile(coach.id)">
             <h5 class="card-title mb-1">
               {{ coach.firstName }} {{ coach.lastName }}
             </h5>
@@ -89,7 +85,7 @@
 
             <!-- Experience -->
             <div class="d-flex align-items-center mb-3">
-              <i class="bi bi-calendar-check text-success me-2"></i>
+              <i class="bi bi-calendar-check c-main me-2"></i>
               <span class="small"
                 >{{ coach.portfolio?.experienceYears || 0 }} Years
                 Experience</span
@@ -105,14 +101,14 @@
               <div class="d-flex gap-1">
                 <span
                   *ngFor="let skill of coach.skills"
-                  class="badge bg-success text-white"
+                  class="badge bg-main text-white"
                 >
                   <i class="bi bi-check-circle"></i>
                   {{ skill }}
                 </span>
               </div>
             </div>
-
+          </div>
             <!-- Social Media Links -->
             <div
               class="mb-3 d-flex justify-content-between"
@@ -133,7 +129,7 @@
             </div>
 
             <!-- Brief Description -->
-            <p class="card-text small text-muted mb-3">
+            <p class="card-text small text-muted mb-3" (click)="viewCoachProfile(coach.id)">
               {{
                 coach.portfolio?.aboutMeDescription ||
                   "No description available" | slice : 0 : 45
@@ -144,15 +140,6 @@
                   : ""
               }}
             </p>
-
-            <!-- Action Button -->
-            <button
-              class="btn btn-success w-100"
-              (click)="viewCoachProfile(coach.id)"
-            >
-              <i class="bi bi-person-lines-fill me-2"></i>
-              See Details
-            </button>
           </div>
         </div>
       </div>
@@ -169,3 +156,64 @@
     </div>
   </div>
 </section>
+
+
+<!-- SKELETON -->
+<section class="bgColor min-vh-100" *ngIf="loading">
+  <div class="container py-4">
+    <!-- Filter Controls Skeleton -->
+    <div class="row mb-4">
+      <div class="col-md-3 mb-3">
+        <div class="skeleton-box" style="height: 38px; border-radius: 4px;"></div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="skeleton-box" style="height: 38px; border-radius: 4px;"></div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="skeleton-box" style="height: 38px; border-radius: 4px;"></div>
+      </div>
+      <div class="col-12 text-end">
+        <div class="skeleton-box" style="height: 38px; width: 150px; border-radius: 4px; display: inline-block;"></div>
+      </div>
+    </div>
+
+    <!-- Coaches Grid Skeleton -->
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let item of [1,2,3]">
+        <div class="card h-100 shadow-lg">
+          <div class="skeleton-box" style="height: 30vh; border-radius: 4px 4px 0 0;"></div>
+
+          <div class="card-body">
+            <div class="skeleton-box" style="height: 24px; width: 70%; margin-bottom: 12px;"></div>
+            <div class="skeleton-box" style="height: 16px; width: 50%; margin-bottom: 16px;"></div>
+
+            <div class="d-flex align-items-center mb-3">
+              <div class="skeleton-box" style="height: 16px; width: 20px; margin-right: 8px;"></div>
+              <div class="skeleton-box" style="height: 16px; width: 120px;"></div>
+            </div>
+
+            <div class="mb-3 d-flex justify-content-between">
+              <div class="skeleton-box" style="height: 16px; width: 40px;"></div>
+              <div class="d-flex gap-1">
+                <div class="skeleton-box" style="height: 24px; width: 50px; border-radius: 12px;"></div>
+                <div class="skeleton-box" style="height: 24px; width: 50px; border-radius: 12px;"></div>
+              </div>
+            </div>
+
+            <div class="mb-3 d-flex justify-content-between">
+              <div class="skeleton-box" style="height: 16px; width: 50px;"></div>
+              <div class="d-flex gap-2">
+                <div class="skeleton-box" style="height: 24px; width: 24px; border-radius: 50%;"></div>
+                <div class="skeleton-box" style="height: 24px; width: 24px; border-radius: 50%;"></div>
+              </div>
+            </div>
+
+            <div class="skeleton-box" style="height: 16px; margin-bottom: 4px;"></div>
+            <div class="skeleton-box" style="height: 16px; width: 80%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
