@@ -30,8 +30,21 @@
                     name="name"
                     class="form-control"
                     required
+                    minlength="3"
+                    maxlength="50"
+                    placeholder="Enter your full name"
                     [(ngModel)]="shipping.CustomerName"
+                    #name="ngModel"
                   />
+                  <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger">
+                    <div *ngIf="name.errors?.['required']">Name is required</div>
+                    <div *ngIf="name.errors?.['minlength']">
+                      Name must be at least 3 characters long
+                    </div>
+                    <div *ngIf="name.errors?.['maxlength']">
+                      Name cannot exceed 50 characters
+                    </div>
+                  </div>
                 </div>
 
                 <div class="mb-3">
@@ -41,38 +54,48 @@
                     name="address"
                     class="form-control"
                     required
+                    minlength="5"
+                    placeholder="Enter your full address"
                     [(ngModel)]="shipping.ShippingAddress"
+                    #address="ngModel"
                   />
+                  <div *ngIf="address.invalid && (address.dirty || address.touched)" class="text-danger">
+                    <div *ngIf="address.errors?.['required']">Address is required</div>
+                    <div *ngIf="address.errors?.['minlength']">
+                      Address must be at least 5 characters long
+                    </div>
+                  </div>
                 </div>
 
                 <div class="mb-4">
-                  <label for="phone" class="form-label">Phone Number</label>
+                  <label for="phone" class="form-label">Phone Number <small class="text-muted">(11 digits)</small></label>
                   <input
                     id="phone"
                     name="phone"
                     type="tel"
                     class="form-control"
                     required
+                    pattern="^01[0-9]{9}$"
+                    placeholder="e.g. 01012345678"
                     [(ngModel)]="shipping.PhoneNumber"
+                    (keypress)="blockSymbols($event)"
+                    #phone="ngModel"
+                    maxlength="11"
                   />
+                  
+                  <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="form-text text-danger">
+                    <div *ngIf="phone.errors?.['required']">📞 Phone number is required.</div>
+                    <div *ngIf="phone.errors?.['pattern']">❌ Must start with 01 and be exactly 11 digits.</div>
+                  </div>
+                  
                 </div>
 
                 <div class="text-center">
-                  <!-- <button
-                    type="submit"
-                    class="btn btn-outline-success fw-bold px-5"
-                    [disabled]="cartItems.length === 0 || checkoutForm.invalid"
-                  >
-                    Proceed to Payment
-                  </button> -->
-                  <!-- checkoutBtn -->
                   <div class="checkoutBtn w-100">
                     <button
                       class="border-0 w-100 p-0 m-0 d-flex align-items-center rounded-3"
                       type="submit"
-                      [disabled]="
-                        cartItems.length === 0 || checkoutForm.invalid
-                      "
+                      [disabled]="cartItems.length === 0 || checkoutForm.invalid"
                     >
                       <div class="left-side">
                         <div class="card">
@@ -93,7 +116,6 @@
                       </div>
                     </button>
                   </div>
-                  <!-- checkoutBtn -->
                 </div>
               </form>
             </div>
@@ -101,7 +123,6 @@
         </div>
 
         <!-- Cart Summary -->
-
         <div class="col-md-6 mb-5">
           <div class="card shadow border-0 rounded-4 mb-4 bg-transparent">
             <div class="card-body rounded-4">
@@ -130,11 +151,6 @@
           <!-- Payment Method Selection -->
           <div class="card p-4 PaymentMethod shadow border-0 rounded-4">
             <h4 class="mb-3">Payment Method</h4>
-            <!-- <div class="form-check mb-2">
-            <input type="radio" id="cashOnDelivery" name="paymentMethod" [(ngModel)]="paymentMethod" value="COD"
-              class="form-check-input">
-            <label for="cashOnDelivery" class="form-check-label">Strip</label>
-          </div> -->
             <div class="form-check">
               <input
                 type="radio"
@@ -148,7 +164,6 @@
                 >Credit Card or Wallet</label
               >
             </div>
-            <!-- <button type="button" class="btn btn-success w-100 mt-3" (click)="processPayment()">Proceed to Payment</button> -->
           </div>
         </div>
       </div>
