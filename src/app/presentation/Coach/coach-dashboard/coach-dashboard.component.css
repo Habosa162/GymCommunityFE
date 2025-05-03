@@ -1,0 +1,33 @@
+.card {
+  border: none;
+}
+:host-context(body.dark-mode) .card {
+  background-color: #131313;
+  border: 2px solid #444;
+}
+.card-category,
+.card-title {
+  margin: 0;
+}
+.card-title {
+  color: rgb(48, 48, 92);
+}
+:host-context(body.dark-mode) .card-title {
+  color: white;
+}
+
+.bg-Plan {
+  background-color: #1572e8 !important;
+}
+.bg-primary {
+  background-color: limegreen !important;
+}
+.bg-premium {
+  background: linear-gradient(135deg, #000000, #009200);
+}
+.bg-warning {
+  background-color: #48abf7 !important;
+}
+.bg-success {
+  background-color: #6861ce !important;
+}

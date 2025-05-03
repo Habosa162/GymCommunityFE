@@ -1,9 +1,272 @@
-<section id="coachDashboard" class="min-vh-100 bgColor">
+<section id="coachDashboard" class="min-vh-100 bgColor py-5">
   <div class="container">
-    <div class="coachInfo">
-      <div>
-        <img src="/public/assets/imgs/logo.png" alt="">
+    <h2 class="colorBlack text-uppercase mb-3">Dashboard</h2>
+    <!-- coach info -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="coachInfo d-flex align-items-center gap-3 mb-4">
+          <div style="width: 150px; height: 150px">
+            <img
+              width="150"
+              height="150"
+              class="rounded-circle border border-4 border-dark"
+              [src]="coachData.profileImg"
+              alt=""
+            />
+          </div>
+          <div>
+            <h3 class="colorBlack">
+              {{ coachData?.firstName }} {{ coachData?.lastName }}
+            </h3>
+            <p class="text-black-50 m-0">profissonal coach</p>
+            <p class="text-black-50">ID: {{ coachData?.id }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div
+          *ngIf="!coachData.IsPremium"
+          class="card shadow rounded-4 card-stats card-round"
+        >
+          <div class="card-body p-3">
+            <div class="d-flex align-items-center">
+              <div class="col-icon p-2 me-2 bg-premium rounded-3">
+                <div class="icon-big fs-5 text-center icon-primary d-flex p-0">
+                  <span class="m-2" title="Premium User" style="width: 40px">
+                    <svg
+                      class="w-100 h-100"
+                      version="1.1"
+                      id="Layer_1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      viewBox="0 0 128 128"
+                      enable-background="new 0 0 128 128"
+                      xml:space="preserve"
+                      fill="#000000"
+                    >
+                      <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+
+                      <g id="SVGRepo_iconCarrier">
+                        <path
+                          fill="#32cd32"
+                          d="M112,36c-6.629,0-12,5.375-12,12c0,1.68,0.352,3.273,0.973,4.727L84,60L69.801,34.445 C73.48,32.391,76,28.508,76,24c0-6.625-5.371-12-12-12s-12,5.375-12,12c0,4.508,2.52,8.391,6.199,10.445L44,60l-16.973-7.273 C27.648,51.273,28,49.68,28,48c0-6.625-5.371-12-12-12S4,41.375,4,48s5.371,12,12,12c0.93,0,1.822-0.133,2.695-0.328L28,100v8 c0,4.422,3.582,8,8,8h56c4.418,0,8-3.578,8-8v-8l9.309-40.328C110.176,59.875,111.07,60,112,60c6.629,0,12-5.375,12-12 S118.629,36,112,36z M64,20c2.207,0,4,1.797,4,4s-1.793,4-4,4s-4-1.797-4-4S61.793,20,64,20z M12,48c0-2.203,1.793-4,4-4 s4,1.797,4,4s-1.793,4-4,4S12,50.203,12,48z M92,108H36v-8h56V108z M93.633,92H34.367L27.34,61.563l13.508,5.789 C41.871,67.789,42.941,68,43.996,68c2.828,0,5.547-1.5,6.996-4.117L64,40.477l13.008,23.406C78.457,66.5,81.176,68,84.004,68 c1.055,0,2.125-0.211,3.148-0.648l13.508-5.789L93.633,92z M112,52c-2.207,0-4-1.797-4-4s1.793-4,4-4s4,1.797,4,4S114.207,52,112,52 z"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div class="col col-stats ms-3 ms-sm-0">
+                <div class="numbers">
+                  <p class="card-category">Premium</p>
+                  <h4 class="card-title text-primary">
+                    <a routerLink="/buy-premium">Become a Premium Member</a>
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="coachData.IsPremium"
+          class="card shadow rounded-4 card-stats card-round"
+        >
+          <div class="card-body p-3">
+            <div class="d-flex align-items-center">
+              <div class="col-icon p-2 me-2 bg-premium rounded-3">
+                <div class="icon-big fs-5 text-center icon-primary d-flex p-0">
+                  <span class="m-2" title="Premium User" style="width: 40px">
+                    <svg
+                      class="w-100 h-100"
+                      version="1.1"
+                      id="Layer_1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      viewBox="0 0 128 128"
+                      enable-background="new 0 0 128 128"
+                      xml:space="preserve"
+                      fill="#000000"
+                    >
+                      <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+
+                      <g id="SVGRepo_iconCarrier">
+                        <path
+                          fill="#32cd32"
+                          d="M112,36c-6.629,0-12,5.375-12,12c0,1.68,0.352,3.273,0.973,4.727L84,60L69.801,34.445 C73.48,32.391,76,28.508,76,24c0-6.625-5.371-12-12-12s-12,5.375-12,12c0,4.508,2.52,8.391,6.199,10.445L44,60l-16.973-7.273 C27.648,51.273,28,49.68,28,48c0-6.625-5.371-12-12-12S4,41.375,4,48s5.371,12,12,12c0.93,0,1.822-0.133,2.695-0.328L28,100v8 c0,4.422,3.582,8,8,8h56c4.418,0,8-3.578,8-8v-8l9.309-40.328C110.176,59.875,111.07,60,112,60c6.629,0,12-5.375,12-12 S118.629,36,112,36z M64,20c2.207,0,4,1.797,4,4s-1.793,4-4,4s-4-1.797-4-4S61.793,20,64,20z M12,48c0-2.203,1.793-4,4-4 s4,1.797,4,4s-1.793,4-4,4S12,50.203,12,48z M92,108H36v-8h56V108z M93.633,92H34.367L27.34,61.563l13.508,5.789 C41.871,67.789,42.941,68,43.996,68c2.828,0,5.547-1.5,6.996-4.117L64,40.477l13.008,23.406C78.457,66.5,81.176,68,84.004,68 c1.055,0,2.125-0.211,3.148-0.648l13.508-5.789L93.633,92z M112,52c-2.207,0-4-1.797-4-4s1.793-4,4-4s4,1.797,4,4S114.207,52,112,52 z"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div class="col col-stats ms-3 ms-sm-0">
+                <div class="numbers">
+                  <p class="card-category">Premium</p>
+                  <h4 class="card-title mainColor">You are a premium member</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- coach info -->
+
+    <!-- top cards -->
+    <div class="row gy-4 mb-4">
+      <div class="col-sm-6 col-md-3">
+        <div class="card shadow rounded-4 card-stats card-round">
+          <div class="card-body p-3">
+            <div class="d-flex align-items-center">
+              <div class="col-icon bg-Plan p-3 me-2 rounded-3">
+                <div
+                  class="icon-big fs-5 text-center icon-primary bubble-shadow-small"
+                >
+                  <i class="fas fa-users"></i>
+                </div>
+              </div>
+              <div class="col col-stats ms-3 ms-sm-0">
+                <div class="numbers">
+                  <p class="card-category">Plan Made</p>
+                  <h4 class="card-title">{{ totalPlans }}</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="card shadow rounded-4 card-stats card-round">
+          <div class="card-body p-3">
+            <div class="d-flex align-items-center">
+              <div class="col-icon p-3 me-2 bg-primary rounded-3">
+                <div
+                  class="icon-big fs-5 text-center icon-info bubble-shadow-small"
+                >
+                  <i class="fas fa-user-check"></i>
+                </div>
+              </div>
+              <div class="col col-stats ms-3 ms-sm-0">
+                <div class="numbers">
+                  <p class="card-category">Subscribers</p>
+                  <h4 class="card-title">{{ totalClients }}</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="card shadow rounded-4 card-stats card-round">
+          <div class="card-body p-3">
+            <div class="d-flex align-items-center">
+              <div class="col-icon p-3 me-2 bg-warning rounded-3">
+                <div
+                  class="icon-big fs-5 text-center icon-success bubble-shadow-small"
+                >
+                  <i class="fa-solid fa-shop"></i>
+                </div>
+              </div>
+              <div class="col col-stats ms-3 ms-sm-0">
+                <div class="numbers">
+                  <p class="card-category">Shop Earnings</p>
+                  <h4 class="card-title">EGP 1,345</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="card shadow rounded-4 card-stats card-round">
+          <div class="card-body p-3">
+            <div class="d-flex align-items-center">
+              <div class="col-icon p-3 me-2 bg-success rounded-3">
+                <div
+                  class="icon-big fs-5 text-center icon-secondary bubble-shadow-small"
+                >
+                  <i class="fa-solid fa-money-bills"></i>
+                </div>
+              </div>
+              <div class="col col-stats ms-3 ms-sm-0">
+                <div class="numbers">
+                  <p class="card-category">Shop Earnings</p>
+                  <h4 class="card-title">EGP 1,345</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- top cards -->
+
+    <!-- charts -->
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card rounded-4 shadow">
+          <div class="card-header">
+            <div class="card-head-row">
+              <div class="card-title">User Statistics</div>
+              <div class="card-tools"></div>
+              <!-- chart.component.html -->
+              <canvas id="topClientsChart"></canvas>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart-container" style="min-height: 375px">
+              <canvas id="statisticsChart"></canvas>
+            </div>
+            <div id="myChartLegend"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card rounded-4 shadow p-2">
+          <div class="card-header">
+            <div class="card-head-row">
+              <div class="card-title">Total Budget</div>
+              <div class="card-tools"></div>
+            </div>
+            <!-- <div class="card-category">March 25 - April 02</div> -->
+          </div>
+          <div class="card-body pb-0">
+            <div class="mb-4 mt-2">
+              <h2 class="text-success">EGP 4,578.58</h2>
+            </div>
+            <div class="pull-in">
+              <canvas id="dailySalesChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="card rounded-4 shadow mt-4">
+          <div class="card-body pb-0">
+            <div class="h1 fw-bold float-end text-primary text-danger">
+              -10%
+            </div>
+            <p class="text-muted colorBlack fs-5">Site fee percentage</p>
+            <div class="pull-in sparkline-fix">
+              <div id="lineChart"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- charts -->
   </div>
 </section>
