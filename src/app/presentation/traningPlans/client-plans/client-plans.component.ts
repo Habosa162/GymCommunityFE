@@ -1,3 +1,4 @@
+import { SafeUrlPipe } from './../../../core/pipes/safe-url.pipe';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +7,7 @@ import { trainingPlan } from '../../../domain/models/TraingingPlansModels/traini
 import { WeekPlanDto } from '../../../services/Training Plans/dtos/weekly-plan-dto';
 import { TrainingPlansService } from '../../../services/Training Plans/training-plan.service';
 import { CoachRatingComponent } from '../../Coach/coach-rating/coach-rating.component';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 interface Week {
   weekNumber: number;
@@ -41,7 +43,13 @@ interface Meal {
 @Component({
   selector: 'app-client-plans',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, CoachRatingComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    CoachRatingComponent,
+    SafeUrlPipe,
+  ],
   templateUrl: './client-plans.component.html',
   styleUrl: './client-plans.component.css',
 })
@@ -85,7 +93,8 @@ export class ClientPlansComponent implements OnInit {
 
   constructor(
     private trainingPlanService: TrainingPlansService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
