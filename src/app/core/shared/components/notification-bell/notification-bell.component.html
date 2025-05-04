@@ -5,15 +5,15 @@
   </button>
 
   <div class="dropdown" *ngIf="showDropdown">
-    <div *ngFor="let notif of notifications" class="notification-item">
-      <div>
+    <div *ngFor="let notif of notifications" class="notification-item" [ngClass]="{'unread': !notif.isRead}">
+      <div class="notification-content">
         <strong>{{ notif.title }}</strong>
         <p>{{ notif.body }}</p>
         <small>{{ notif.createdAt | date:'short' }}</small>
       </div>
       <div class="actions">
-        <button (click)="markAsRead(notif.id)" *ngIf="!notif.isRead">Mark as read</button>
-        <button (click)="deleteNotification(notif.id)">🗑️</button>
+        <button (click)="markAsRead(notif.id)" *ngIf="!notif.isRead" class="action-btn">Mark as read</button>
+        <button (click)="deleteNotification(notif.id)" class="action-btn delete">🗑️</button>
       </div>
     </div>
     <p *ngIf="notifications.length === 0" class="empty">No notifications</p>

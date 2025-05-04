@@ -1,46 +1,76 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
-import { NotificationService } from '../../../../services/Notification/notification.service';
 import { CommonModule } from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { NotificationService } from '../../../../services/Notification/notification.service';
 
 @Component({
   selector: 'app-notification-bell',
-  imports: [CommonModule,FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './notification-bell.component.html',
-  styleUrl: './notification-bell.component.css'
+  styleUrls: ['./notification-bell.component.css'],
 })
-export class NotificationBellComponent  implements OnInit{
+export class NotificationBellComponent implements OnInit, OnDestroy {
   notifications: any[] = [];
   unreadCount = 0;
   showDropdown = false;
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
-     private notificationService: NotificationService
-    ,private eRef : ElementRef
-  ){}
+    private notificationService: NotificationService,
+    private eRef: ElementRef
+  ) {}
 
   ngOnInit(): void {
-    this.notificationService.startConnection(); // Start SignalR
-    this.notificationService.loadNotifications();
-    this.notificationService.getUnreadCount();
+    this.notificationService
+      .startConnection()
+      .then(() => {
+        this.notificationService.loadNotifications();
+        this.notificationService.getUnreadCount();
+      })
+      .catch((err) => {
+        console.error('Failed to initialize SignalR connection:', err);
+      });
 
-    this.notificationService.notifications$.subscribe(n => this.notifications = n);
-    this.notificationService.unreadCount$.subscribe(c => this.unreadCount = c);
+    this.subscriptions.add(
+      this.notificationService.notifications$.subscribe(
+        (n) => (this.notifications = n)
+      )
+    );
+    this.subscriptions.add(
+      this.notificationService.unreadCount$.subscribe(
+        (c) => (this.unreadCount = c)
+      )
+    );
   }
 
-  toggleDropdown() {
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+    this.notificationService.stopConnection();
+  }
+
+  toggleDropdown(): void {
     this.showDropdown = !this.showDropdown;
   }
 
-  markAsRead(id: number) {
+  markAsRead(id: number): void {
     this.notificationService.markAsRead(id);
   }
 
-  deleteNotification(id: number) {
+  deleteNotification(id: number): void {
     this.notificationService.deleteNotification(id);
   }
+
   @HostListener('document:click', ['$event'])
-  handleClickOutside(event: MouseEvent) {
+  handleClickOutside(event: MouseEvent): void {
     if (!this.eRef.nativeElement.contains(event.target)) {
       this.showDropdown = false;
     }
