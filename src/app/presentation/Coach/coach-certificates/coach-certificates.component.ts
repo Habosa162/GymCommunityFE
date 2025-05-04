@@ -7,6 +7,7 @@ import { CoachcertficateService } from '../../../services/Coachservice/coachcert
 import { AuthService } from '../../../services/auth.service';
 import { CoachportfolioService } from '../../../services/Coachservice/coachportfolio.service';
 import { Coachportfolio } from '../../../domain/models/CoachModels/coachportfolio.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-coach-certificates',
@@ -32,7 +33,8 @@ export class CoachCertificatesComponent implements OnInit {
     private certService: CoachcertficateService,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private portfolioService: CoachportfolioService
+    private portfolioService: CoachportfolioService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -40,7 +42,7 @@ export class CoachCertificatesComponent implements OnInit {
     if (this.coachId) {
       this.loadCertificates();
     } else {
-      this.error = 'Coach ID not found';
+      this.toastr.error('Coach ID not found', 'Error');
       console.error('Coach ID not found in token');
     }
   }
@@ -57,14 +59,14 @@ export class CoachCertificatesComponent implements OnInit {
             this.loading = false;
           },
           error: (err) => {
-            this.error = 'Failed to load certificates';
+            this.toastr.error('Failed to load certificates', 'Error');
             this.loading = false;
             console.error('Failed to load certificates:', err);
           }
         });
       },
       error: (err) => {
-        this.error = 'You must create a portfolio before adding certificates';
+        this.toastr.error('You must create a portfolio before adding certificates', 'Error');
         this.loading = false;
         console.error('Failed to get portfolio ID:', err);
       }
@@ -78,13 +80,13 @@ export class CoachCertificatesComponent implements OnInit {
 
       // Validate file type
       if (!file.type.match(/image\/(jpeg|png|jpg|gif)/)) {
-        this.error = 'Please select a valid image file (JPEG, PNG, JPG, GIF)';
+        this.toastr.error('Please select a valid image file (JPEG, PNG, JPG, GIF)', 'Error');
         return;
       }
 
       // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        this.error = 'File size should not exceed 5MB';
+        this.toastr.error('File size should not exceed 5MB', 'Error');
         return;
       }
 
@@ -102,7 +104,7 @@ export class CoachCertificatesComponent implements OnInit {
 
   uploadCertificate() {
     if (!this.selectedFile || !this.protofolioId) {
-      this.error = 'Please select a valid certificate image';
+      this.toastr.error('Please select a valid certificate image', 'Error');
       return;
     }
 
@@ -114,23 +116,37 @@ export class CoachCertificatesComponent implements OnInit {
     formData.append('CertificateImage', this.selectedFile);
     formData.append('ProtofolioId', this.protofolioId.toString());
 
+    this.toastr.info('Uploading certificate...', 'Please wait');
+
     this.certService.create(formData).subscribe({
       next: () => {
-        this.success = 'Certificate uploaded successfully!';
+        this.toastr.success('Certificate uploaded successfully!', 'Success');
         this.loadCertificates();
         this.resetForm();
         this.loading = false;
       },
       error: (err) => {
-        this.error = err.error?.message || 'Failed to upload certificate';
+        this.toastr.error(err.error?.message || 'Failed to upload certificate', 'Error');
         this.loading = false;
         console.error('Upload failed:', err);
       }
     });
   }
 
-  deleteCertificate(id: number) {
-    if (confirm('Are you sure you want to delete this certificate?')) {
+  deleteCertificate(id: number | undefined) {
+    if (!id) {
+      this.toastr.error('Invalid certificate ID', 'Error');
+      return;
+    }
+
+    const toastRef = this.toastr.warning('Are you sure you want to delete this certificate?', 'Confirm Delete', {
+      timeOut: 5000,
+      positionClass: 'toast-top-center',
+      closeButton: true,
+      tapToDismiss: true
+    });
+
+    toastRef.onTap.subscribe(() => {
       this.loading = true;
       this.error = null;
       this.success = null;
@@ -138,16 +154,16 @@ export class CoachCertificatesComponent implements OnInit {
       this.certService.delete(id).subscribe({
         next: () => {
           this.certificates = this.certificates.filter(c => c.id !== id);
-          this.success = 'Certificate deleted successfully!';
+          this.toastr.success('Certificate deleted successfully!', 'Success');
           this.loading = false;
         },
         error: (err) => {
-          this.error = 'Failed to delete certificate';
+          this.toastr.error('Failed to delete certificate', 'Error');
           this.loading = false;
           console.error('Error deleting certificate:', err);
         }
       });
-    }
+    });
   }
 
   viewCertificate(certificate: Coachcertficate) {
@@ -160,7 +176,7 @@ export class CoachCertificatesComponent implements OnInit {
     this.selectedCertificate = null;
   }
 
-  private resetForm() {
+  resetForm() {
     this.selectedFile = null;
     this.previewUrl = null;
   }

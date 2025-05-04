@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { CoachOffer } from '../../../domain/models/CoachModels/coach-offer.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-coach-offers',
@@ -24,7 +25,8 @@ export class CoachOffersComponent implements OnInit {
     private fb: FormBuilder,
     private offerService: CoachOfferService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {
     this.offerForm = this.fb.group({
       title: ['', Validators.required],
@@ -51,13 +53,19 @@ export class CoachOffersComponent implements OnInit {
   }
 
   deleteOffer(offerId: number): void {
-    if (!confirm('Are you sure you want to delete this offer?')) return;
-    this.offerService.delete(offerId).subscribe({
-      next: () => {
-        this.offers = this.offers.filter(o => o.id !== offerId);
-      },
-      error: (err) => alert('Failed to delete offer')
-    });
+    if (confirm('Are you sure you want to delete this offer?')) {
+      this.offerService.delete(offerId).subscribe({
+        next: () => {
+          this.toastr.success('Offer deleted successfully!', 'Success');
+          this.offers = this.offers.filter(o => o.id !== offerId);
+          this.loadOffers();
+        },
+        error: (err) => {
+          this.toastr.error('Failed to delete offer. Please try again.', 'Error');
+          console.error('Error deleting offer:', err);
+        }
+      });
+    }
   }
 
   startEditOffer(offer: CoachOffer): void {
@@ -95,34 +103,32 @@ export class CoachOffersComponent implements OnInit {
     }
 
     if (this.editingOfferId) {
-      // Update existing offer
       this.offerService.update(this.editingOfferId, formData).subscribe({
         next: () => {
-          alert('Offer updated successfully');
+          this.toastr.success('Offer updated successfully!', 'Success');
           this.editingOfferId = null;
           this.offerForm.reset({ durationMonths: 1 });
           this.previewUrl = '';
           this.selectedImage = undefined;
           this.loadOffers();
         },
-        error: err => {
-          console.error(err);
-          alert('Failed to update offer');
+        error: (err) => {
+          this.toastr.error('Failed to update offer. Please try again.', 'Error');
+          console.error('Error updating offer:', err);
         }
       });
     } else {
-      // Create new offer
       this.offerService.create(formData).subscribe({
         next: () => {
-          alert('Offer added successfully');
+          this.toastr.success('Offer created successfully!', 'Success');
           this.offerForm.reset({ durationMonths: 1 });
           this.previewUrl = '';
           this.selectedImage = undefined;
           this.loadOffers();
         },
-        error: err => {
-          console.error(err);
-          alert('Failed to add offer');
+        error: (err) => {
+          this.toastr.error('Failed to create offer. Please try again.', 'Error');
+          console.error('Error creating offer:', err);
         }
       });
     }

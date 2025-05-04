@@ -14,6 +14,7 @@ import { CoachcertficateService } from '../../../services/Coachservice/coachcert
 import { Coachportfolio } from '../../../domain/models/CoachModels/coachportfolio.model';
 import { CoachService } from '../../../services/Coachservice/coach.service';
 import { AppUser } from '../../../domain/models/CoachModels/coachclient.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-coach-portfolio',
@@ -39,7 +40,8 @@ export class CoachPortfolioComponent implements OnInit {
     private authservice: AuthService,
     private certservice: CoachcertficateService,
     private router: Router,
-    private coachService: CoachService
+    private coachService: CoachService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +54,7 @@ export class CoachPortfolioComponent implements OnInit {
       // Load the portfolio
       this.loadPortfolio();
     } else {
+      this.toastr.error('Coach ID not found', 'Error');
       console.error('Coach ID not found in token');
       this.isLoading = false;
     }
@@ -96,7 +99,6 @@ export class CoachPortfolioComponent implements OnInit {
             experienceYears: data.experienceYears || 0,
             skills: this.safeParseArray(data.skillsJson).join(', '),
             socialLinks: this.safeParseArray(data.socialMediaLinksJson).join(', ')
-
           });
         } else {
           this.isNewPortfolio = true;
@@ -105,6 +107,7 @@ export class CoachPortfolioComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
+        this.toastr.error('Failed to load portfolio', 'Error');
         console.error('Error loading portfolio:', err);
         this.isNewPortfolio = true;
         this.existingImageUrl = this.coachProfileImage;
@@ -112,6 +115,7 @@ export class CoachPortfolioComponent implements OnInit {
       },
     });
   }
+
   private safeParseArray(value: any): string[] {
     if (Array.isArray(value)) return value;
     try {
@@ -121,9 +125,22 @@ export class CoachPortfolioComponent implements OnInit {
       return [];
     }
   }
+
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      // Validate file type
+      if (!file.type.match(/image\/(jpeg|png|jpg|gif)/)) {
+        this.toastr.error('Please select a valid image file (JPEG, PNG, JPG, GIF)', 'Error');
+        return;
+      }
+
+      // Validate file size (max 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        this.toastr.error('File size should not exceed 2MB', 'Error');
+        return;
+      }
+
       this.selectedImage = file;
       // Create a preview URL
       const reader = new FileReader();
@@ -131,6 +148,7 @@ export class CoachPortfolioComponent implements OnInit {
         this.existingImageUrl = e.target.result;
       };
       reader.readAsDataURL(file);
+      this.toastr.success('Image selected successfully', 'Success');
     }
   }
 
@@ -171,6 +189,7 @@ export class CoachPortfolioComponent implements OnInit {
 
       // Show loading state
       this.isLoading = true;
+      this.toastr.info('Saving portfolio...', 'Please wait');
 
       const saveObservable = this.isNewPortfolio
         ? this.portfolioService.create(formData)
@@ -178,7 +197,7 @@ export class CoachPortfolioComponent implements OnInit {
 
       saveObservable.subscribe({
         next: () => {
-          alert('Portfolio saved successfully!');
+          this.toastr.success('Portfolio saved successfully!', 'Success');
           this.router.navigate(['/coach/dashboard']);
         },
         error: (err) => {
@@ -193,7 +212,7 @@ export class CoachPortfolioComponent implements OnInit {
             errorMessage += err.error.message;
           }
 
-          alert(errorMessage);
+          this.toastr.error(errorMessage, 'Error');
           this.isLoading = false;
         }
       });
@@ -205,6 +224,7 @@ export class CoachPortfolioComponent implements OnInit {
           control.markAsTouched();
         }
       });
+      this.toastr.error('Please fill in all required fields', 'Validation Error');
     }
   }
 }

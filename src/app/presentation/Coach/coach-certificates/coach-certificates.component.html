@@ -1,75 +1,67 @@
 <div class="container py-5">
-    <!-- Header -->
-    <div class="row mb-5">
-        <div class="col-12">
-            <h3 class="text-center mb-4">My Certificates</h3>
-            <p class="text-center text-muted">Upload and manage your professional certificates</p>
-        </div>
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3">Your Certificates</h1>
+        <p class="lead text-muted">Showcase your professional certifications and achievements</p>
     </div>
 
-    <!-- Messages -->
-    <div class="alert alert-danger" *ngIf="error">
+    <!-- Alert Messages -->
+    <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
         {{ error }}
+        <button type="button" class="btn-close" (click)="error = null"></button>
     </div>
-    <div class="alert alert-success" *ngIf="success">
+
+    <div *ngIf="success" class="alert alert-success alert-dismissible fade show" role="alert">
         {{ success }}
+        <button type="button" class="btn-close" (click)="success = null"></button>
     </div>
 
-    <!-- Upload Certificate Form -->
-    <div class="row mb-5">
-        <div class="col-md-8 mx-auto">
-            <div class="card shadow">
-                <div class="card-body">
-                    <h5 class="card-title mb-4">Upload New Certificate</h5>
-                    <form (ngSubmit)="uploadCertificate()">
-                        <div class="mb-3">
-                            <label for="image" class="form-label">Certificate Image*</label>
-                            <input type="file" class="form-control" id="image" (change)="onFileSelected($event)"
-                                accept="image/*" name="certificateImage">
-                            <small class="text-muted">Supported formats: JPEG, PNG, JPG, GIF. Max size: 5MB</small>
-                        </div>
-
-                        <!-- Image Preview -->
-                        <div class="mb-3" *ngIf="previewUrl">
-                            <label class="form-label">Preview</label>
-                            <div class="certificate-preview">
-                                <img [src]="previewUrl" alt="Certificate Preview" class="img-fluid rounded">
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary w-100" [disabled]="loading || !selectedFile">
-                            <span class="spinner-border spinner-border-sm me-2" *ngIf="loading"></span>
-                            {{ loading ? 'Uploading...' : 'Upload Certificate' }}
-                        </button>
-                    </form>
-                </div>
-            </div>
+    <!-- Upload Form -->
+    <div class="card upload-card mb-5">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-cloud-upload-alt me-2"></i>Upload New Certificate</h5>
         </div>
-    </div>
+        <div class="card-body">
+            <form (ngSubmit)="uploadCertificate()">
+                <div class="row">
+                    <div class="col-md-12 mb-4">
+                        <label class="form-label" style="background-color: white; color: darkslategray;">Certificate
+                            Image</label>
+                        <div class="custom-file-upload" (click)="fileInput.click()" *ngIf="!previewUrl">
+                            <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*"
+                                style="display: none;">
+                            <i class="fas fa-image upload-icon"></i>
+                            <p class="mb-0">Click to upload or drag and drop</p>
+                            <small class="text-muted">PNG, JPG or GIF (MAX. 5MB)</small>
+                        </div>
+                        <div class="preview-container" *ngIf="previewUrl">
+                            <img [src]="previewUrl" alt="Preview" class="img-fluid">
+                            <button class="remove-preview" (click)="resetForm()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Loading Spinner -->
-    <div class="text-center" *ngIf="loading && certificates.length === 0">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary" [disabled]="loading || !selectedFile">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                        {{ loading ? 'Uploading...' : 'Upload Certificate' }}
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
     <!-- Certificates Grid -->
-    <div class="row g-4" *ngIf="!loading || certificates.length > 0">
-        <div class="col-md-4" *ngFor="let certificate of certificates">
-            <div class="card h-100 shadow-sm">
-                <div class="certificate-image" (click)="viewCertificate(certificate)">
+    <div class="row g-4">
+        <div *ngFor="let certificate of certificates" class="col-md-6 col-lg-4">
+            <div class="work-sample-card">
+                <div class="work-sample-image" (click)="viewCertificate(certificate)">
                     <img [src]="certificate.imageUrl" class="card-img-top" alt="Certificate">
                     <div class="overlay">
-                        <i class="bi bi-eye-fill"></i>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-outline-danger btn-sm" *ngIf="certificate.id"
-                            (click)="deleteCertificate(certificate.id)" [disabled]="loading">
-                            <span class="spinner-border spinner-border-sm me-1" *ngIf="loading"></span>
-                            Delete
+                        <button class="btn btn-danger"
+                            (click)="deleteCertificate(certificate.id); $event.stopPropagation()">
+                            <i class="fas fa-trash"></i>
                         </button>
                     </div>
                 </div>
@@ -78,30 +70,23 @@
     </div>
 
     <!-- Empty State -->
-    <div class="row mt-5" *ngIf="!loading && certificates.length === 0">
-        <div class="col-12 text-center">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">No Certificates Yet</h5>
-                    <p class="card-text text-muted">Start by uploading your first certificate using the form above.</p>
-                </div>
-            </div>
-        </div>
+    <div *ngIf="certificates.length === 0" class="empty-state text-center py-5">
+        <i class="fas fa-certificate mb-4"></i>
+        <h3 class="mb-3">No Certificates Yet</h3>
+        <p class="text-muted mb-4">Start by uploading your first certificate to showcase your qualifications</p>
     </div>
 
-    <!-- Certificate Modal -->
-    <div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" tabindex="-1">
+    <!-- View Modal -->
+    <div class="modal fade" [class.show]="showModal" tabindex="-1" [style.display]="showModal ? 'block' : 'none'">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Certificate</h5>
+                    <h5 class="modal-title">Certificate Details</h5>
                     <button type="button" class="btn-close" (click)="closeModal()"></button>
                 </div>
                 <div class="modal-body">
-                    <img [src]="selectedCertificate?.imageUrl" class="img-fluid rounded" alt="Certificate">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+                    <img *ngIf="selectedCertificate" [src]="selectedCertificate.imageUrl" class="img-fluid rounded mb-3"
+                        alt="Certificate">
                 </div>
             </div>
         </div>

@@ -73,6 +73,7 @@ export class CoachProfileComponent implements OnInit {
     // Repeat for other arrays
     console.log('certificates:', this.certificates);
     console.log('Is certificates array:', Array.isArray(this.certificates));
+   
   }
 
   loadcoachproducts(): void {
@@ -127,7 +128,8 @@ export class CoachProfileComponent implements OnInit {
         this.certificates = Array.isArray(data.certificates) ? data.certificates : [];
         this.workSamples = Array.isArray(data.workSamples) ? data.workSamples : [];
         this.ratings = Array.isArray(data.ratings) ? data.ratings : [];
-
+        console.log(this.ratings)
+        console.log(this.portfolio)
         if (this.portfolio?.skillsJson && typeof this.portfolio.skillsJson === 'string') {
           try {
             this.portfolio.skillsJson = JSON.parse(this.portfolio.skillsJson);

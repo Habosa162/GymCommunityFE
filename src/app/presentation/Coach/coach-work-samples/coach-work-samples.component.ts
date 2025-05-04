@@ -6,11 +6,13 @@ import { Coachworksample } from '../../../domain/models/CoachModels/coachworksam
 import { CoachworksampleService } from '../../../services/Coachservice/coachworksample.service';
 import { AuthService } from '../../../services/auth.service';
 import { CoachcertficateService } from '../../../services/Coachservice/coachcertficate.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-coach-work-samples',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule],
   templateUrl: './coach-work-samples.component.html',
   styleUrl: './coach-work-samples.component.css'
 })
@@ -26,13 +28,21 @@ export class CoachWorkSamplesComponent implements OnInit {
   success: string | null = null;
   selectedWorkSample: Coachworksample | null = null;
   showModal = false;
+  workSampleForm: FormGroup;
+  selectedImage?: File;
 
   constructor(
     private workSampleService: CoachworksampleService,
     private route: ActivatedRoute,
     private authservice: AuthService,
-    private certservice: CoachcertficateService
-  ) { }
+    private certservice: CoachcertficateService,
+    private fb: FormBuilder,
+    private toastr: ToastrService
+  ) {
+    this.workSampleForm = this.fb.group({
+      description: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.coachId = this.authservice.getUserId() || this.route.snapshot.paramMap.get('coachId')!;
@@ -100,8 +110,18 @@ export class CoachWorkSamplesComponent implements OnInit {
   }
 
   uploadSample() {
-    if (!this.selectedFile || !this.description || !this.protofolioId) {
-      this.error = 'Please fill all required fields';
+    if (!this.selectedFile) {
+      this.toastr.error('Please select an image file', 'Error');
+      return;
+    }
+
+    if (!this.workSampleForm.get('description')?.value?.trim()) {
+      this.toastr.error('Please enter a description', 'Error');
+      return;
+    }
+
+    if (!this.protofolioId) {
+      this.toastr.error('Portfolio ID not found', 'Error');
       return;
     }
 
@@ -111,20 +131,22 @@ export class CoachWorkSamplesComponent implements OnInit {
 
     const formData = new FormData();
     formData.append('worksampleimg', this.selectedFile);
-    formData.append('Description', this.description);
+    formData.append('Description', this.workSampleForm.get('description')?.value?.trim());
     formData.append('PortfolioId', this.protofolioId.toString());
+
+    this.toastr.info('Uploading work sample...', 'Please wait');
 
     this.workSampleService.create(formData).subscribe({
       next: () => {
-        this.success = 'Work sample uploaded successfully!';
+        this.toastr.success('Work sample uploaded successfully!', 'Success');
         this.loadSamples();
-        this.description = '';
+        this.workSampleForm.reset();
         this.selectedFile = undefined!;
         this.previewUrl = null;
         this.loading = false;
       },
       error: (err) => {
-        this.error = err.error?.message || 'Failed to upload work sample';
+        this.toastr.error(err.error?.message || 'Failed to upload work sample', 'Error');
         this.loading = false;
         console.error('Upload failed:', err);
       }
@@ -132,7 +154,14 @@ export class CoachWorkSamplesComponent implements OnInit {
   }
 
   deleteSample(id: any) {
-    if (confirm('Are you sure you want to delete this work sample?')) {
+    const toastRef = this.toastr.warning('Are you sure you want to delete this work sample?', 'Confirm Delete', {
+      timeOut: 5000,
+      positionClass: 'toast-top-center',
+      closeButton: true,
+      tapToDismiss: true
+    });
+
+    toastRef.onTap.subscribe(() => {
       this.loading = true;
       this.error = null;
       this.success = null;
@@ -140,16 +169,16 @@ export class CoachWorkSamplesComponent implements OnInit {
       this.workSampleService.delete(id).subscribe({
         next: () => {
           this.workSamples = this.workSamples.filter(s => s.id !== id);
-          this.success = 'Work sample deleted successfully!';
+          this.toastr.success('Work sample deleted successfully!', 'Success');
           this.loading = false;
         },
         error: (err) => {
-          this.error = 'Failed to delete work sample';
+          this.toastr.error('Failed to delete work sample', 'Error');
           this.loading = false;
           console.error('Error deleting work sample:', err);
         }
       });
-    }
+    });
   }
 
   viewWorkSample(sample: Coachworksample) {
@@ -160,5 +189,11 @@ export class CoachWorkSamplesComponent implements OnInit {
   closeModal() {
     this.showModal = false;
     this.selectedWorkSample = null;
+  }
+
+  removePreview(): void {
+    this.previewUrl = null;
+    this.selectedFile = undefined!;
+    this.error = null;
   }
 }
