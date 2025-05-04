@@ -57,15 +57,17 @@ import { HomeComponent } from './presentation/home/home/home.component';
 import { ClientPlansComponent } from './presentation/traningPlans/client-plans/client-plans.component';
 import { TrainingPlanComponent } from './presentation/traningPlans/training-plan/training-plan.component';
 
-import { MainDashboardComponent } from './presentation/Gym/main-dashboard/main-dashboard.component';
-import { GymSubscriptionsComponent } from './presentation/Gym/gym-subscriptions/gym-subscriptions.component';
-import { CoachOffersComponent } from './presentation/Coach/coach-offers/coach-offers.component';
-import { UpdateProductComponent } from './presentation/Ecommerce/Administration/update-product/update-product.component';
-import { PlanPaymentSuccessComponent } from './presentation/Coach/plan-payment-success/plan-payment-success.component';
-import { UserGymSubComponent } from './presentation/Gym/user-gym-sub/user-gym-sub.component';
-import { CoachproductsComponent } from './presentation/Coach/coachproducts/coachproducts.component';
-import { UsersManagementComponent } from './presentation/admin/users-management/users-management.component';
 import { CoachDashboardComponent } from './presentation/Coach/coach-dashboard/coach-dashboard.component';
+import { CoachOffersComponent } from './presentation/Coach/coach-offers/coach-offers.component';
+import { CoachproductsComponent } from './presentation/Coach/coachproducts/coachproducts.component';
+import { PlanPaymentSuccessComponent } from './presentation/Coach/plan-payment-success/plan-payment-success.component';
+import { UpdateProductComponent } from './presentation/Ecommerce/Administration/update-product/update-product.component';
+import { GymSubscriptionsComponent } from './presentation/Gym/gym-subscriptions/gym-subscriptions.component';
+import { MainDashboardComponent } from './presentation/Gym/main-dashboard/main-dashboard.component';
+import { UserGymSubComponent } from './presentation/Gym/user-gym-sub/user-gym-sub.component';
+import { GymManagementComponent } from './presentation/admin/Gym-Management/gym-management.component';
+import { UpdateGymComponent } from './presentation/admin/Gym-Management/update-gym/update-gym.component';
+import { UsersManagementComponent } from './presentation/admin/users-management/users-management.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [clientGuard] },
@@ -299,6 +301,19 @@ export const routes: Routes = [
     component: UsersManagementComponent,
     canActivate: [AuthGuard, AdminCoachGuard],
     title: 'users management',
+  },
+  // Gym Management Routes
+  {
+    path: 'gym-management',
+    component: GymManagementComponent,
+    canActivate: [AuthGuard, AdminGuard],
+    title: 'Gym Management',
+  },
+  {
+    path: 'update-gym/:id',
+    component: UpdateGymComponent,
+    canActivate: [AuthGuard, AdminGuard],
+    title: 'Update Gym',
   },
   //coach
   {

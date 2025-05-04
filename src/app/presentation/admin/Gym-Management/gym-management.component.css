@@ -1,0 +1,119 @@
+/* ============= Loading Skeletons ============= */
+.placeholder-glow {
+  height: 380px;
+  background: linear-gradient(-90deg, #e9ecef 0%, white 50%, #e9ecef 100%);
+  background-size: 400% 400%;
+  animation: shimmer 1.2s ease-in-out infinite;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+:host-context(body.dark-mode) .placeholder-glow {
+  background: linear-gradient(-90deg, #2a2a2a 0%, #2A2A2A 50%, #2a2a2a 100%);
+}
+
+:host-context(body.dark-mode) .totalPages{
+  color: white;
+}
+
+/* Card styling */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Dark mode styles */
+:host-context(body.dark-mode) .card {
+  background-color: black;
+  color: white;
+  border-color: black;
+}
+
+:host-context(body.dark-mode) #gymManagementSection{
+  height: 180vh;
+  background-color: black;
+  color: white;
+}
+
+:host-context(body.dark-mode) .card-footer {
+  background-color: #2c2c2c;
+}
+
+:host-context(body.dark-mode) .form-control,
+:host-context(body.dark-mode) .form-select,
+:host-context(body.dark-mode) .input-group-text {
+  background-color: #2A2A2A;
+  color: white;
+  border-color: #2A2A2A;
+}
+
+:host-context(body.dark-mode) .form-control::placeholder,
+:host-context(body.dark-mode) .form-select::content,
+:host-context(body.dark-mode) .input-group-text::placeholder {
+  background-color: #2A2A2A;
+  color: white;
+  border-color: #2A2A2A;
+}
+
+:host-context(body.dark-mode) .page-link {
+  background-color: #2A2A2A;
+  color: white;
+  border-color: #2A2A2A;
+}
+
+.btnManage {
+  transition: all 0.3s ease;
+  border-color: var(--bs-primary);
+  color: var(--bs-primary);
+}
+
+.btnManage:hover, .btnManage:focus {
+  background-color: var(--bs-primary);
+  color: white;
+}
+
+.page-link {
+  cursor: pointer;
+}
+
+:host-context(body.dark-mode) .page-item.disabled .page-link {
+  background-color: #222;
+  color: #6c757d;
+}
+
+:host-context(body.dark-mode) #headrSection h2,
+:host-context(body.dark-mode) .empty-state-title{
+  color: white !important;
+}
+
+.empty-state {
+  padding: 2rem;
+  border-radius: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.empty-state-icon {
+  color: var(--bs-secondary);
+}
+
+/* Loading skeleton animation */
+@keyframes shimmer {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0.6; }
+}
+
+.placeholder {
+  animation: pulse 1.5s infinite;
+}
+
+
