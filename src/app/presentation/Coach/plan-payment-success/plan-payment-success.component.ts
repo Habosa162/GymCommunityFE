@@ -11,7 +11,7 @@ import { AuthService } from '../../../services/auth.service';
   selector: 'app-plan-payment-success',
   imports: [],
   templateUrl: './plan-payment-success.component.html',
-  styleUrl: './plan-payment-success.component.css'
+  styleUrl: './plan-payment-success.component.css',
 })
 export class PlanPaymentSuccessComponent {
   //plan data
@@ -20,10 +20,10 @@ export class PlanPaymentSuccessComponent {
   duration: number = 0;
   coachId: string = '';
   clientId: string = '';
-// Payment state
-paymentState: boolean = false;
-paymentDetails: any = null;
-errorMessage: string = 'Payment processing failed. Please try again.';
+  // Payment state
+  paymentState: boolean = false;
+  paymentDetails: any = null;
+  errorMessage: string = 'Payment processing failed. Please try again.';
 
   paymentInfo = {
     pending: false,
@@ -31,9 +31,8 @@ errorMessage: string = 'Payment processing failed. Please try again.';
     success: false,
     created_at: '',
     currency: '',
-    paymentMethod: ''
+    paymentMethod: '',
   };
-
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -44,46 +43,45 @@ errorMessage: string = 'Payment processing failed. Please try again.';
     private authService: AuthService
   ) {}
 
-    ngOnInit() {
+  ngOnInit() {
     const plan = this.subscriptionToPlanService.getPlanSubscription();
     const planData = JSON.parse(plan || '{}');
     this.price = planData.price;
     this.title = planData.title;
     this.duration = planData.duration;
     this.coachId = planData.coachId;
-    console.log('coachId is',this.coachId);
+    console.log('coachId is', this.coachId);
     this.clientId = this.authService.getUserId()!;
 
-    this.activatedRoute.queryParamMap.subscribe(params => {
+    this.activatedRoute.queryParamMap.subscribe((params) => {
       this.paymentInfo.pending = params.get('pending') === 'true';
       this.paymentInfo.amount_cents = Number(params.get('amount_cents'));
       this.paymentInfo.success = params.get('success') === 'true';
       this.paymentInfo.created_at = params.get('created_at') ?? '';
       this.paymentInfo.currency = params.get('currency') || 'EGP';
-      this.paymentInfo.paymentMethod = params.get('source_data.sub_type') || 'Credit Card';
+      this.paymentInfo.paymentMethod =
+        params.get('source_data.sub_type') || 'Credit Card';
 
       this.createPlan();
     });
     this.paymentService.CreatePayment;
   }
 
-  createPlan(){
-   const expectedAmount = this.paymentInfo.amount_cents / 100;
- 
+  createPlan() {
+    const expectedAmount = this.paymentInfo.amount_cents / 100;
 
-    if(this.paymentInfo.success || this.price == expectedAmount){
+    if (this.paymentInfo.success || this.price == expectedAmount) {
       //create plan
-    const paymentObj: PaymentDTO = {
+      const paymentObj: PaymentDTO = {
         amount: expectedAmount,
         currency: this.paymentInfo.currency,
         paymentMethod: this.paymentInfo.paymentMethod,
-        status: this.paymentInfo.success==true ? 2 : 3,
+        status: this.paymentInfo.success == true ? 2 : 3,
         createdAt: this.paymentInfo.created_at,
-        updatedAt: this.paymentInfo.created_at
+        updatedAt: this.paymentInfo.created_at,
       };
 
-
-       this.paymentService.CreatePayment(paymentObj).subscribe({
+      this.paymentService.CreatePayment(paymentObj).subscribe({
         next: (paymentRes) => {
           console.log(paymentRes);
           if (!paymentRes.id) {
@@ -97,8 +95,9 @@ errorMessage: string = 'Payment processing failed. Please try again.';
             clientId: this.clientId,
             name: this.title,
             durationMonths: this.duration,
-            startDate: new Date(this.paymentInfo.created_at)
-          }
+            paymentId: paymentRes.id,
+            startDate: new Date(this.paymentInfo.created_at),
+          };
           //create training plan
           this.trainingPlanService.createTrainingPlan(trainingPlan).subscribe({
             next: (planRes) => {
@@ -107,32 +106,15 @@ errorMessage: string = 'Payment processing failed. Please try again.';
             },
             error: (error) => {
               console.error('Training plan creation failed:', error);
-            }
-          })
-
-       
-
+            },
+          });
         },
         error: (error) => {
           console.error('Payment creation failed:', error);
           this.paymentState = false;
           this.errorMessage = 'Payment processing failed. Please try again.';
-        }
+        },
       });
-      
-
- 
-
-
-    
     }
   }
 }
-
-
-         
-
-        
-
-
-      

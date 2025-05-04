@@ -134,10 +134,10 @@
   background-color: #f8f9fa;
   border: 1px solid #e0e0e0;
 }
-.bg-main{
+.bg-main {
   background-color: limegreen !important;
 }
-.c-main{
+.c-main {
   color: limegreen !important;
 }
 .email-link:hover {
@@ -207,7 +207,7 @@
     rgba(255, 255, 255, 0)
   );
   animation: shimmer 1.5s infinite;
-  content: '';
+  content: "";
 }
 
 @keyframes shimmer {
@@ -216,8 +216,12 @@
   }
 }
 
-:host-context(body.dark-mode){
-  .skeleton-box{
-    background-color: #2A2A2A;
+:host-context(body.dark-mode) {
+  .skeleton-box {
+    background-color: #2a2a2a;
   }
+}
+
+.card {
+  cursor: pointer;
 }

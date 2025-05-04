@@ -15,4 +15,5 @@ export interface CreatetrainingPlan {
   name: string;
   durationMonths: number;
   startDate: Date;
+  paymentId: number;
 }

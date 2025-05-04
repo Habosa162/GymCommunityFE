@@ -4,9 +4,14 @@
       <!-- Filter Sidebar -->
       <aside class="col-lg-3 col-md-4">
         <div class="filter-card">
-          <div class="filter-header d-flex justify-content-between align-items-center">
+          <div
+            class="filter-header bg-transparent d-flex justify-content-between align-items-center"
+          >
             <h2 class="filter-title mb-0">Filters</h2>
-            <button class="btn btn-sm btn-outline-secondary" (click)="clearAllFilters()">
+            <button
+              class="btn btn-sm btn-outline-secondary"
+              (click)="clearAllFilters()"
+            >
               <i class="fas fa-sync-alt me-1"></i> Reset
             </button>
           </div>
@@ -27,10 +32,13 @@
                   (input)="onCategorySearch()"
                   placeholder="Search categories..."
                   class="form-control form-control-sm"
-                >
+                />
               </div>
               <ul class="filter-list scrollable">
-                <li *ngFor="let category of filteredCategories" class="filter-item radio-item">
+                <li
+                  *ngFor="let category of filteredCategories"
+                  class="filter-item radio-item"
+                >
                   <input
                     type="radio"
                     name="category"
@@ -38,10 +46,15 @@
                     [value]="category.categoryID"
                     [checked]="category.categoryID === selectedCategoryId"
                     (change)="onCategorySelect(category.categoryID)"
+                  />
+                  <label
+                    [for]="'category-' + category.categoryID"
+                    class="d-flex justify-content-between w-100"
                   >
-                  <label [for]="'category-' + category.categoryID" class="d-flex justify-content-between w-100">
                     <span>{{ category.name }}</span>
-                    <span class="badge bg-light text-dark ms-2">{{ getCategoryCount(category.categoryID) }}</span>
+                    <span class="badge bg-light text-dark ms-2">{{
+                      getCategoryCount(category.categoryID)
+                    }}</span>
                   </label>
                 </li>
               </ul>
@@ -64,10 +77,13 @@
                   (input)="onBrandSearch()"
                   placeholder="Search brands..."
                   class="form-control form-control-sm"
-                >
+                />
               </div>
               <ul class="filter-list scrollable">
-                <li *ngFor="let brand of filteredBrands" class="filter-item radio-item">
+                <li
+                  *ngFor="let brand of filteredBrands"
+                  class="filter-item radio-item"
+                >
                   <input
                     type="radio"
                     name="brand"
@@ -75,8 +91,10 @@
                     [value]="brand.brandID"
                     [checked]="brand.brandID === selectedBrandId"
                     (change)="onBrandSelect(brand.brandID)"
-                  >
-                  <label [for]="'brand-' + brand.brandID">{{ brand.name }}</label>
+                  />
+                  <label [for]="'brand-' + brand.brandID">{{
+                    brand.name
+                  }}</label>
                 </li>
               </ul>
             </div>
@@ -91,7 +109,10 @@
             </div>
             <div class="filter-section-content">
               <ul class="filter-list">
-                <li *ngFor="let range of priceRanges" class="filter-item checkbox-item">
+                <li
+                  *ngFor="let range of priceRanges"
+                  class="filter-item checkbox-item"
+                >
                   <div class="form-check">
                     <input
                       type="checkbox"
@@ -100,8 +121,12 @@
                       [id]="'price-' + range.label"
                       [checked]="range.selected"
                       (change)="onPriceRangeChange(range)"
+                    />
+                    <label
+                      class="form-check-label"
+                      [for]="'price-' + range.label"
+                      >{{ range.label }}</label
                     >
-                    <label class="form-check-label" [for]="'price-' + range.label">{{ range.label }}</label>
                   </div>
                 </li>
               </ul>
@@ -115,11 +140,17 @@
         <!-- Product Grid Header -->
         <div class="product-grid-header card shadow-sm mb-4">
           <div class="card-body py-3">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+            <div
+              class="d-flex flex-column flex-md-row justify-content-between align-items-md-center"
+            >
               <div class="mb-3 mb-md-0">
                 <h2 class="h5 mb-1">Our Products</h2>
                 <p class="text-muted small mb-0 showingText">
-                  Showing <strong class="text-primary">{{ filteredProducts.length }}</strong> products
+                  Showing
+                  <strong class="text-primary">{{
+                    filteredProducts.length
+                  }}</strong>
+                  products
                 </p>
               </div>
 
@@ -169,77 +200,109 @@
         </div>
 
         <!-- Products Grid -->
-          <div class="row g-3">
-            <div *ngFor="let product of filteredProducts" class="col-xl-3 col-md-6 col-sm-12">
-              <app-product [product]="product"></app-product>
-            </div>
+        <div class="row g-3">
+          <div
+            *ngFor="let product of filteredProducts"
+            class="col-xl-3 col-md-6 col-sm-12"
+          >
+            <app-product [product]="product"></app-product>
           </div>
+        </div>
 
-          <!-- No Results State -->
-          <div *ngIf="filteredProducts.length === 0" class="empty-state card shadow-sm text-center mt-4">
-            <div class="card-body py-5">
-              <div class="empty-state-icon mb-4">
-                <i class="fas fa-search fa-5x" id="searchIcon"></i>
-              </div>
-              <h3 class="empty-state-title mb-3">No products found</h3>
-              <p class="empty-state-text mb-4">Try adjusting your search or filter criteria</p>
-              <button class="btn btn-outline-primary" (click)="clearAllFilters()">
-                <i class="fas fa-filter-circle-xmark me-2"></i> Clear All Filters
-              </button>
+        <!-- No Results State -->
+        <div
+          *ngIf="filteredProducts.length === 0"
+          class="empty-state card shadow-sm text-center mt-4"
+        >
+          <div class="card-body py-5">
+            <div class="empty-state-icon mb-4">
+              <i class="fas fa-search fa-5x" id="searchIcon"></i>
             </div>
+            <h3 class="empty-state-title mb-3">No products found</h3>
+            <p class="empty-state-text mb-4">
+              Try adjusting your search or filter criteria
+            </p>
+            <button class="btn btn-outline-primary" (click)="clearAllFilters()">
+              <i class="fas fa-filter-circle-xmark me-2"></i> Clear All Filters
+            </button>
           </div>
+        </div>
 
         <!-- Pagination -->
         <div class="mt-5" *ngIf="totalPages > 1">
           <nav aria-label="Products pagination">
             <ul class="pagination justify-content-center">
               <li class="page-item" [class.disabled]="page <= 1">
-                <a class="page-link" (click)="goToPage(page - 1)" aria-label="Previous">
+                <a
+                  class="page-link"
+                  (click)="goToPage(page - 1)"
+                  aria-label="Previous"
+                >
                   <i class="fas fa-chevron-left"></i>
                 </a>
               </li>
 
               <ng-container *ngFor="let p of getPagesToShow()">
-<!-- Convert p to string for comparison -->
-<!-- Change string '...' to a number (if you have control over this) -->
-<!-- Previous Page -->
-<li class="page-item" [class.disabled]="page === 1">
-  <a class="page-link" (click)="goToPage(page - 1)">Previous</a>
-</li>
+                <!-- Convert p to string for comparison -->
+                <!-- Change string '...' to a number (if you have control over this) -->
+                <!-- Previous Page -->
+                <li class="page-item" [class.disabled]="page === 1">
+                  <a class="page-link" (click)="goToPage(page - 1)">Previous</a>
+                </li>
 
-<!-- First Page -->
-<li class="page-item" [class.active]="page === 1">
-  <a class="page-link" (click)="goToPage(1)">1</a>
-</li>
+                <!-- First Page -->
+                <li class="page-item" [class.active]="page === 1">
+                  <a class="page-link" (click)="goToPage(1)">1</a>
+                </li>
 
-<!-- Ellipsis (if needed) -->
-<li class="page-item disabled" *ngIf="page > 3 && totalPages > 5">
-  <span class="page-link">...</span>
-</li>
+                <!-- Ellipsis (if needed) -->
+                <li
+                  class="page-item disabled"
+                  *ngIf="page > 3 && totalPages > 5"
+                >
+                  <span class="page-link">...</span>
+                </li>
 
-<!-- Middle Pages -->
-<li class="page-item" *ngFor="let p of getPagesToShow()" [class.active]="p === page">
-  <a class="page-link" (click)="goToPage(p)">{{ p }}</a>
-</li>
+                <!-- Middle Pages -->
+                <li
+                  class="page-item"
+                  *ngFor="let p of getPagesToShow()"
+                  [class.active]="p === page"
+                >
+                  <a class="page-link" (click)="goToPage(p)">{{ p }}</a>
+                </li>
 
-<!-- Ellipsis (if needed) -->
-<li class="page-item disabled" *ngIf="page < totalPages - 2 && totalPages > 5">
-  <span class="page-link">...</span>
-</li>
+                <!-- Ellipsis (if needed) -->
+                <li
+                  class="page-item disabled"
+                  *ngIf="page < totalPages - 2 && totalPages > 5"
+                >
+                  <span class="page-link">...</span>
+                </li>
 
-<!-- Last Page -->
-<li class="page-item" [class.active]="page === totalPages" *ngIf="totalPages > 1">
-  <a class="page-link" (click)="goToPage(totalPages)">{{ totalPages }}</a>
-</li>
+                <!-- Last Page -->
+                <li
+                  class="page-item"
+                  [class.active]="page === totalPages"
+                  *ngIf="totalPages > 1"
+                >
+                  <a class="page-link" (click)="goToPage(totalPages)">{{
+                    totalPages
+                  }}</a>
+                </li>
 
-<!-- Next Page -->
-<li class="page-item" [class.disabled]="page === totalPages">
-  <a class="page-link" (click)="goToPage(page + 1)">Next</a>
-</li>
+                <!-- Next Page -->
+                <li class="page-item" [class.disabled]="page === totalPages">
+                  <a class="page-link" (click)="goToPage(page + 1)">Next</a>
+                </li>
               </ng-container>
 
               <li class="page-item" [class.disabled]="page >= totalPages">
-                <a class="page-link" (click)="goToPage(page + 1)" aria-label="Next">
+                <a
+                  class="page-link"
+                  (click)="goToPage(page + 1)"
+                  aria-label="Next"
+                >
                   <i class="fas fa-chevron-right"></i>
                 </a>
               </li>
@@ -251,31 +314,36 @@
   </div>
 </section>
 
-
-
-
 <!-- SKELETON -->
-<ng-container *ngIf="isLoading" >
+<ng-container *ngIf="isLoading">
   <div class="row gx-4" id="shop">
     <!-- Filter Sidebar Skeleton -->
     <aside class="col-lg-3 col-md-4">
       <div class="filter-card">
         <!-- Filter header -->
-        <div class="filter-header d-flex justify-content-between align-items-center mb-3">
-          <div class="skeleton-box" style="height: 24px; width: 80px;"></div>
-          <div class="skeleton-box" style="height: 30px; width: 100px;"></div>
+        <div
+          class="filter-header d-flex justify-content-between align-items-center mb-3"
+        >
+          <div class="skeleton-box" style="height: 24px; width: 80px"></div>
+          <div class="skeleton-box" style="height: 30px; width: 100px"></div>
         </div>
 
         <!-- Category filter -->
         <div class="filter-section mt-3">
           <div class="filter-section-header mb-3">
-            <div class="skeleton-box" style="height: 20px; width: 120px;"></div>
+            <div class="skeleton-box" style="height: 20px; width: 120px"></div>
           </div>
           <div class="filter-section-content">
-            <div class="skeleton-box mb-3" style="height: 32px; width: 100%;"></div>
+            <div
+              class="skeleton-box mb-3"
+              style="height: 32px; width: 100%"
+            ></div>
             <ul class="filter-list">
-              <li *ngFor="let i of [1,2,3,4]" class="mb-2">
-                <div class="skeleton-box" style="height: 18px; width: 100%;"></div>
+              <li *ngFor="let i of [1, 2, 3, 4]" class="mb-2">
+                <div
+                  class="skeleton-box"
+                  style="height: 18px; width: 100%"
+                ></div>
               </li>
             </ul>
           </div>
@@ -284,13 +352,19 @@
         <!-- Brand filter -->
         <div class="filter-section mt-4">
           <div class="filter-section-header mb-3">
-            <div class="skeleton-box" style="height: 20px; width: 80px;"></div>
+            <div class="skeleton-box" style="height: 20px; width: 80px"></div>
           </div>
           <div class="filter-section-content">
-            <div class="skeleton-box mb-3" style="height: 32px; width: 100%;"></div>
+            <div
+              class="skeleton-box mb-3"
+              style="height: 32px; width: 100%"
+            ></div>
             <ul class="filter-list">
-              <li *ngFor="let i of [1,2,3]" class="mb-2">
-                <div class="skeleton-box" style="height: 18px; width: 100%;"></div>
+              <li *ngFor="let i of [1, 2, 3]" class="mb-2">
+                <div
+                  class="skeleton-box"
+                  style="height: 18px; width: 100%"
+                ></div>
               </li>
             </ul>
           </div>
@@ -299,12 +373,15 @@
         <!-- Price filter -->
         <div class="filter-section mt-4">
           <div class="filter-section-header mb-3">
-            <div class="skeleton-box" style="height: 20px; width: 120px;"></div>
+            <div class="skeleton-box" style="height: 20px; width: 120px"></div>
           </div>
           <div class="filter-section-content">
             <ul class="filter-list">
-              <li *ngFor="let i of [1,2,3,4]" class="mb-2">
-                <div class="skeleton-box" style="height: 18px; width: 100%;"></div>
+              <li *ngFor="let i of [1, 2, 3, 4]" class="mb-2">
+                <div
+                  class="skeleton-box"
+                  style="height: 18px; width: 100%"
+                ></div>
               </li>
             </ul>
           </div>
@@ -317,42 +394,85 @@
       <!-- Product Grid Header -->
       <div class="card shadow-lg mb-4">
         <div class="card-body py-3">
-          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+          <div
+            class="d-flex flex-column flex-md-row justify-content-between align-items-md-center"
+          >
             <div class="mb-3 mb-md-0">
-              <div class="skeleton-box" style="height: 24px; width: 150px; margin-bottom: 8px;"></div>
-              <div class="skeleton-box" style="height: 16px; width: 200px;"></div>
+              <div
+                class="skeleton-box"
+                style="height: 24px; width: 150px; margin-bottom: 8px"
+              ></div>
+              <div
+                class="skeleton-box"
+                style="height: 16px; width: 200px"
+              ></div>
             </div>
             <div class="d-flex flex-wrap gap-2">
-              <div class="skeleton-box" style="height: 32px; width: 120px;"></div>
-              <div class="skeleton-box" style="height: 32px; width: 160px;"></div>
+              <div
+                class="skeleton-box"
+                style="height: 32px; width: 120px"
+              ></div>
+              <div
+                class="skeleton-box"
+                style="height: 32px; width: 160px"
+              ></div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Search Box -->
-      <div class="skeleton-box mb-4" style="height: 40px; width: 100%; border-radius: 4px;"></div>
+      <div
+        class="skeleton-box mb-4"
+        style="height: 40px; width: 100%; border-radius: 4px"
+      ></div>
 
       <!-- Product Grid -->
       <div class="row g-3">
-        <div *ngFor="let skeleton of [1,2,3,4,5,6,7,8]" class="col-xl-3 col-md-6 col-sm-12">
+        <div
+          *ngFor="let skeleton of [1, 2, 3, 4, 5, 6, 7, 8]"
+          class="col-xl-3 col-md-6 col-sm-12"
+        >
           <div class="card h-100 product-card-skeleton">
             <!-- Image placeholder -->
-            <div class="skeleton-box" style="height: 200px; border-radius: 4px 4px 0 0;"></div>
+            <div
+              class="skeleton-box"
+              style="height: 200px; border-radius: 4px 4px 0 0"
+            ></div>
 
             <!-- Card body -->
             <div class="card-body">
-              <div class="skeleton-box mb-2" style="height: 20px; width: 80%;"></div>
-              <div class="skeleton-box mb-3" style="height: 16px; width: 60%;"></div>
+              <div
+                class="skeleton-box mb-2"
+                style="height: 20px; width: 80%"
+              ></div>
+              <div
+                class="skeleton-box mb-3"
+                style="height: 16px; width: 60%"
+              ></div>
 
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="skeleton-box" style="height: 24px; width: 80px;"></div>
-                <div class="skeleton-box rounded-pill" style="height: 20px; width: 40px;"></div>
+              <div
+                class="d-flex justify-content-between align-items-center mb-3"
+              >
+                <div
+                  class="skeleton-box"
+                  style="height: 24px; width: 80px"
+                ></div>
+                <div
+                  class="skeleton-box rounded-pill"
+                  style="height: 20px; width: 40px"
+                ></div>
               </div>
 
               <div class="d-flex justify-content-between">
-                <div class="skeleton-box" style="height: 16px; width: 60px;"></div>
-                <div class="skeleton-box" style="height: 16px; width: 60px;"></div>
+                <div
+                  class="skeleton-box"
+                  style="height: 16px; width: 60px"
+                ></div>
+                <div
+                  class="skeleton-box"
+                  style="height: 16px; width: 60px"
+                ></div>
               </div>
             </div>
           </div>
@@ -361,9 +481,11 @@
 
       <!-- Pagination Skeleton -->
       <div class="mt-5">
-        <div class="skeleton-box" style="height: 40px; width: 100%; border-radius: 4px;"></div>
+        <div
+          class="skeleton-box"
+          style="height: 40px; width: 100%; border-radius: 4px"
+        ></div>
       </div>
     </main>
   </div>
 </ng-container>
-
