@@ -504,3 +504,13 @@ small {
 :host-context(body.dark-mode) .class-timetable table tbody tr td.dark-bg {
   background: #090909;
 }
+.primary-btn:hover {
+  background-color: green !important;
+}
+
+button:disabled {
+  background-color: #656565 !important;
+}
+button:disabled:hover {
+  background-color: #656565 !important;
+}

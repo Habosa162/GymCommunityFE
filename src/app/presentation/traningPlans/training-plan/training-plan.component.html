@@ -890,10 +890,6 @@
     </div>
     <div class="popup-body">
       <form (ngSubmit)="submitDayPlan()">
-        <h5>total cal{{ totalCalories }}</h5>
-        <h5>total protein{{ totalProtein }}</h5>
-        <h5>total carbs{{ totalCarbs }}</h5>
-        <h5>total fat{{ totalFats }}</h5>
         <div class="form-group">
           <label for="dayDate">Day Date</label>
           <input
@@ -901,10 +897,29 @@
             id="dayDate"
             name="dayDate"
             [(ngModel)]="newDayPlan.dayDate"
-            class="form-control"
+            class="form-control d-none"
             readonly
           />
           <p class="fs-5">{{ newDayPlan.dayDate }}</p>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+          <h5 class="text-center">
+            {{ totalCalories }}
+            <br />
+            total cal
+          </h5>
+          <h5 class="text-center">
+            {{ totalProtein }} <br />
+            total protein
+          </h5>
+          <h5 class="text-center">
+            {{ totalCarbs }} <br />
+            total carbs
+          </h5>
+          <h5 class="text-center">
+            {{ totalFats }} <br />
+            total fat
+          </h5>
         </div>
 
         <div class="form-group">
@@ -1174,6 +1189,10 @@
           </div>
         </div>
 
+        <!-- <p  class="text-center text-danger fw-bold">
+          <i class="fa-solid fa-circle-exclamation" style="color: #d11515"></i>
+          Please Add Meal Or Exercise
+        </p> -->
         <div class="form-group text-center">
           <button type="submit" class="primary-btn">Create Day Plan</button>
         </div>
