@@ -226,26 +226,70 @@
         <div class="card rounded-4 shadow">
           <div class="card-header">
             <div class="card-head-row">
-              <div class="card-title">User Statistics</div>
+              <div class="card-title">
+                <i class="fa-solid fa-users-line" style="color: #b197fc"></i>
+                User Statistics
+              </div>
               <div class="card-tools"></div>
               <!-- chart.component.html -->
               <canvas id="topClientsChart"></canvas>
             </div>
           </div>
         </div>
+        <!-- top products -->
+        <div class="card rounded-4 shadow my-4">
+          <div class="card-header">
+            <div class="card-head-row">
+              <div class="card-title">
+                <i class="fa-solid fa-ranking-star" style="color: #1782d3"></i>
+                My Most Sold Products
+              </div>
+              <div class="card-tools"></div>
+              <!-- chart.component.html -->
+              <ul class="list-unstyled list-group my-2">
+                <li
+                  *ngFor="let product of profitsData.topProducts"
+                  class="shadow p-3 my-2 rounded-4 border-dark-subtle border border-2 gap-2 d-flex align-items-center"
+                >
+                  <div>
+                    <img
+                      class="object-fit-cover rounded-4 bg-light-subtle"
+                      width="50"
+                      height="50"
+                      [src]="product.productImg"
+                      alt=""
+                    />
+                  </div>
+                  <div>
+                    <h5 class="colorBlack text-capitalize">
+                      {{ product.productName }}
+                    </h5>
+                    <span class="text-white-50"
+                      >Sold: {{ product.quantitySold }} Times</span
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- top products -->
       </div>
       <div class="col-md-4">
         <div class="card rounded-4 shadow p-2">
           <div class="card-header">
             <div class="card-head-row">
-              <div class="card-title">Total Budget</div>
+              <div class="card-title">
+                <i class="fa-solid fa-dollar-sign" style="color: #32cd32"></i>
+                Total Budget
+              </div>
               <div class="card-tools"></div>
             </div>
             <!-- <div class="card-category">March 25 - April 02</div> -->
           </div>
           <div class="card-body pb-0">
             <div class="mb-4 mt-2">
-              <h2 class="text-success">EGP {{ totalBudgets }}</h2>
+              <h2 class="mainColor">EGP {{ totalBudgets }}</h2>
             </div>
             <div class="pull-in">
               <canvas id="dailySalesChart"></canvas>

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { trainingPlan } from '../../../domain/models/TraingingPlansModels/training-plan-model';
 import { CreateDailyPlanDto } from '../../../services/Training Plans/dtos/create-daily-plan.dto';
 import { CreateWeekPlanDto } from '../../../services/Training Plans/dtos/create-week-plan.dto';
@@ -52,7 +52,7 @@ interface DayPlanData {
 
 @Component({
   selector: 'app-training-plan',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './training-plan.component.html',
   styleUrl: './training-plan.component.css',
 })
@@ -64,7 +64,9 @@ export class TrainingPlanComponent implements OnInit {
   totalFats: number = 0;
   /////////////////////////
 
-  trainingPlan!: trainingPlan & { weekPlans?: WeekPlanDto[] };
+  clientAge: number = 0;
+
+  trainingPlan!: trainingPlan & { weekPlans?: WeekPlanDto[]; client?: any };
   months: number[] = [];
   weeks: Week[] = [];
   selectedMonth: number = 1;
@@ -231,6 +233,8 @@ export class TrainingPlanComponent implements OnInit {
         this.trainingPlan = response.plan;
         this.generateMonths(); // Generate months based on durationMonths
         this.initializeWeeks();
+
+        this.clientAge = this.calculateAge(response.plan.client.birthDate);
 
         // If the plan has week plans, map them to our weeks
         if (
@@ -810,7 +814,7 @@ export class TrainingPlanComponent implements OnInit {
 
     // Calculate date for this day based on week's start date
     const dayDate = new Date(week.startDate);
-    dayDate.setDate(dayDate.getDate() + (dayNumber - 1)); // Adjust the date based on the day number
+    dayDate.setDate(dayDate.getDate() + dayNumber); // Adjust the date based on the day number
 
     // Reset and prefill the form
     this.newDayPlan = {
@@ -1152,5 +1156,20 @@ export class TrainingPlanComponent implements OnInit {
 
     // Reset the selection
     this.selectedMeal = null;
+  }
+
+  calculateAge(birthDate: Date | string): number {
+    const birth = new Date(birthDate);
+    const today = new Date();
+
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    const dayDiff = today.getDate() - birth.getDate();
+
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      age--;
+    }
+
+    return age;
   }
 }

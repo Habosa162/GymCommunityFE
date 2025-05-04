@@ -1,24 +1,92 @@
 <!-- Class Timetable Section Begin -->
-<section class="class-timetable-section spad" *ngIf="trainingPlan">
+<section class="class-timetable-section spad bgColor" *ngIf="trainingPlan">
   <div class="container">
-    <h2 class="text-center mainColor">
+    <h2 class="text-center mainColor mb-3">
       <i class="fa-regular fa-pen-to-square"></i> Manage Client Plan
     </h2>
-    <p class="text-black-50">
-      Form
-      <span class="colorBlack d-inline">{{
-        trainingPlan.startDate | date
-      }}</span>
-      to
-      <span class="colorBlack d-inline"
-        >{{ trainingPlan.endDate | date }}
-      </span>
-    </p>
+    <div class="client">
+      <span class="mainColor fw-bold text-uppercase">Client</span>
+      <h2 class="mb-1 text-uppercase colorBlack">
+        {{ trainingPlan?.client.firstName }}
+        {{ trainingPlan?.client.lastName }}
+      </h2>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="section-title">
+            <div>
+              <img
+                width="200"
+                class="border border-2 border-dark-subtle rounded-4 object-fit-contain"
+                [src]="trainingPlan?.client.profileImg"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <table class="clientInfoTable">
+            <tbody>
+              <tr>
+                <th scope="row" class="mainColor text-nowrap">
+                  <i class="fa-regular fa-user"></i> Full Name
+                </th>
+                <td class="text-capitalize colorBlack">
+                  {{ trainingPlan?.client.firstName }}
+                  {{ trainingPlan?.client.lastName }}
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" class="mainColor text-nowrap">
+                  <i class="fa-regular fa-calendar"></i> BirthDate
+                </th>
+                <td class="text-capitalize colorBlack">
+                  <!-- {{ trainingPlan?.client.birthDate | date }} -->
+                  {{ clientAge }}
+                </td>
+              </tr>
+              <!-- <tr>
+                <th scope="row" class="mainColor">
+                  <i class="fa-solid fa-venus-mars"></i> Gender
+                </th>
+                <td class="text-uppercase">{{ trainingPlan?.coach.gender }}</td>
+              </tr> -->
+
+              <tr>
+                <th scope="row" class="mainColor text-nowrap">
+                  <i class="fa-solid fa-venus-mars"></i> Gender
+                </th>
+                <td class="text-capitalize colorBlack">
+                  {{ trainingPlan?.client.gender == "m" ? "Male" : "Female" }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h2 class="my-2">
+            <a
+              class="text-decoration-none"
+              routerLink="/profile/{{ trainingPlan?.client.id }}"
+              >See Full Client Info</a
+            >
+          </h2>
+        </div>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-lg-4">
         <div class="section-title">
           <span class="mainColor">Plan</span>
-          <h2>{{ trainingPlan.name }}</h2>
+          <p class="text-black-50">
+            Form
+            <span class="colorBlack d-inline">{{
+              trainingPlan.startDate | date
+            }}</span>
+            to
+            <span class="colorBlack d-inline"
+              >{{ trainingPlan.endDate | date }}
+            </span>
+          </p>
+          <h2 class="colorBlack">{{ trainingPlan.name }}</h2>
         </div>
       </div>
       <div class="col-lg-8">
@@ -828,14 +896,14 @@
         <h5>total fat{{ totalFats }}</h5>
         <div class="form-group">
           <label for="dayDate">Day Date</label>
-          <!-- <input
+          <input
             type="date"
             id="dayDate"
             name="dayDate"
             [(ngModel)]="newDayPlan.dayDate"
             class="form-control"
             readonly
-          /> -->
+          />
           <p class="fs-5">{{ newDayPlan.dayDate }}</p>
         </div>
 

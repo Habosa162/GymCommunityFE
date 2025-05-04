@@ -90,13 +90,20 @@ export class PlanPaymentSuccessComponent {
             return;
           }
 
+          //date
+          const today = new Date();
+          const year = today.getFullYear();
+          const month = String(today.getMonth() + 1).padStart(2, '0');
+          const day = String(today.getDate()).padStart(2, '0');
+          const formattedDate = `${year}-${month}-${day}`; // e.g., "2025-05-04"
+
           const trainingPlan: CreatetrainingPlan = {
             coachId: this.coachId,
             clientId: this.clientId,
             name: this.title,
             durationMonths: this.duration,
             paymentId: paymentRes.id,
-            startDate: new Date(this.paymentInfo.created_at),
+            startDate: formattedDate,
           };
           //create training plan
           this.trainingPlanService.createTrainingPlan(trainingPlan).subscribe({

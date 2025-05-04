@@ -40,7 +40,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(184 183 182 / 20%);
+  background-color: rgba(67, 67, 67, 0.2);
   border-radius: 4px;
 }
 
@@ -328,7 +328,7 @@
 }
 
 .has-video {
-  color: #4CAF50;
+  color: #4caf50;
   font-weight: bold;
   margin-left: 5px;
 }
@@ -465,4 +465,42 @@ small {
   text-overflow: ellipsis;
   color: white;
   width: 60px;
+}
+.clientInfoTable th {
+  padding: 10px;
+}
+.clientInfoTable th,
+.clientInfoTable td {
+  border-bottom: 1px solid gray;
+}
+
+.class-timetable table tbody tr td.class-time {
+  font-size: 16px;
+  color: limegreen;
+  background: #656565 !important;
+  border: 1px solid #363636;
+}
+:host-context(body.dark-mode) .class-timetable table tbody tr td.class-time {
+  font-size: 16px;
+
+  background: #000000 !important;
+}
+
+/* .class-timetable table tbody tr td.dark-bg {
+  background: #959595;
+}
+.class-timetable table tbody tr td.dark-bg {
+  background: #959595;
+} */
+
+.hover-bg {
+  background-color: limegreen !important;
+}
+
+.class-timetable table tbody tr td.dark-bg {
+  background: #adacac;
+}
+
+:host-context(body.dark-mode) .class-timetable table tbody tr td.dark-bg {
+  background: #090909;
 }
