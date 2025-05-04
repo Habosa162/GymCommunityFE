@@ -1,21 +1,36 @@
 <div class="notification-wrapper">
-  <button class="bell-btn" (click)="toggleDropdown()">
-    🔔
+  <button class="bell-btn" (click)="toggleDropdown()" aria-label="Notifications">
+    <i class="bi bi-bell-fill"></i>
     <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
   </button>
 
   <div class="dropdown" *ngIf="showDropdown">
-    <div *ngFor="let notif of notifications" class="notification-item">
-      <div>
-        <strong>{{ notif.title }}</strong>
+    <div class="dropdown-header">
+      <h4><i class="bi bi-bell-fill me-2"></i>Notifications</h4>
+      <button class="clear-all" *ngIf="notifications.length > 0" (click)="markAsRead(0)">
+        <i class="bi bi-check2-all"></i> Mark all read
+      </button>
+    </div>
+    
+    <div *ngFor="let notif of notifications" class="notification-item" [ngClass]="{'unread': !notif.isRead}">
+      <div class="notification-content">
+        <div class="notif-header">
+          <strong>{{ notif.title }}</strong>
+          <button (click)="deleteNotification(notif.id)" class="delete-btn" aria-label="Delete notification">
+            <i class="bi bi-x"></i>
+          </button>
+          <button *ngIf="!notif.isRead" (click)="markAsRead(notif.id)" class="read-btn" aria-label="Mark as read">
+            <i class="bi bi-check2"></i>
+          </button>
+        </div>
         <p>{{ notif.body }}</p>
-        <small>{{ notif.createdAt | date:'short' }}</small>
-      </div>
-      <div class="actions">
-        <button (click)="markAsRead(notif.id)" *ngIf="!notif.isRead">Mark as read</button>
-        <button (click)="deleteNotification(notif.id)">🗑️</button>
+        <small><i class="bi bi-clock me-1"></i>{{ notif.createdAt | date:'MMM d, h:mm a' }}</small>
       </div>
     </div>
-    <p *ngIf="notifications.length === 0" class="empty">No notifications</p>
+    
+    <div *ngIf="notifications.length === 0" class="empty">
+      <i class="bi bi-inbox me-2"></i>
+      No notifications
+    </div>
   </div>
 </div>

@@ -1,27 +1,28 @@
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
-  CommentReadDTO,
   CommentCreateDTO,
+  CommentReadDTO,
 } from '../../../../domain/models/Forum/comment.model';
 import {
-  PostReadDTO,
   PostCreateDTO,
+  PostReadDTO,
 } from '../../../../domain/models/Forum/post.model';
 import { Sub } from '../../../../domain/models/Forum/sub.model';
 import {
   VoteCreateDTO,
   VoteReadDTO,
 } from '../../../../domain/models/Forum/vote.model';
+import { AuthService } from '../../../../services/auth.service';
 import { CommentService } from '../../../../services/Forum/comment.service';
 import { PostService } from '../../../../services/Forum/post.service';
 import { SubService } from '../../../../services/Forum/sub.service';
 import { VoteService } from '../../../../services/Forum/vote.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../../../services/auth.service';
+import { NotificationService } from '../../../../services/Notification/notification.service';
 @Component({
   imports: [
     CommonModule,
@@ -75,7 +76,8 @@ export class ForumComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private notificationService: NotificationService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -323,6 +325,9 @@ export class ForumComponent implements OnInit {
         this.userVotesMap[postId] = null;
       });
     } else {
+      this.notificationService
+        .sendNotification(post.userId, 'You have upvoted a post', 'asd')
+        .subscribe();
       // Remove existing vote if different direction
       if (userVote) {
         this.voteService.delete(userVote.voteId).subscribe(() => {
