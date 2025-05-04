@@ -49,3 +49,16 @@
 .text-primary {
   color: #007bff !important;
 }
+#PaymentSuccess{
+  width: 100%;
+  background-color: black !important;
+}
+.icon{
+  color: limegreen;
+  font-size: 10vh;
+  font-weight: 900;
+}
+.card{
+  background-color: black;
+  color: white;
+}

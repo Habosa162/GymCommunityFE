@@ -101,13 +101,12 @@ export class ProductService {
       `<div class="row justify-content-center align-items-center toaster custom-toast custom-toast.toast-success" id="toaster">
         <div class="col-md-4">
           <img src="${product.imageUrl}"
-               class="img-fluid rounded"
-               style="width: 50px; height:50px; object-fit: cover;"
+               class="img-fluid rounded" object-fit: cover;"
                />
         </div>
 
         <div class="col-md-8 d-flex flex-column justify-content-center align-items-start">
-          <div class="fw-semibold text-light" style="font-size: 14px !important;"><small>${product.name.toUpperCase()}</small></div>
+          <div class="fw-semibold text-light" style="font-size: 10px !important;"><small>${product.name.toLowerCase()}</small></div>
           <p class="fw-semibold fw-small text-light text-start" style="font-size: 10px !important;"><small>${message}</small></p>
         </div>
       </div>`,

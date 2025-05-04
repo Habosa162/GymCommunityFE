@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { AuthService } from './../../../services/auth.service';
 import { WishlistService } from './../../../services/Ecommerce/wishlist.service';
 import { CartService } from './../../../services/Ecommerce/cart.service';
@@ -12,6 +13,7 @@ import { wishlistItem } from '../../../domain/models/Ecommerce/wishList.model';
 import { Review } from '../../../domain/models/Ecommerce/Review.model'; // Add this import
 
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-product-details',
   imports: [ProductComponent, CommonModule, RouterModule ,FormsModule  ],
@@ -20,7 +22,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./product-details.component.css']
 })
 export class ProductDetailsComponent implements OnInit {
-
+  isLoading = true ; 
   CategoryProducts: Product[] = [];
   Product: Product | null = null;
   reviews: any[] = [];
@@ -39,14 +41,15 @@ export class ProductDetailsComponent implements OnInit {
   colors = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', 
             '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D'];
   
-
+  canReview!:boolean ; 
   constructor(
     private productService: ProductService,
     private activatedRoute: ActivatedRoute,
     private reviewService: ReviewService,
     private cartService: CartService,
     private wishlistService: WishlistService,
-    protected authService : AuthService
+    protected authService : AuthService,
+    private toaster : ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +60,7 @@ export class ProductDetailsComponent implements OnInit {
         this.loadReviews(+productId);
         this.newReview.productId = +productId; 
         this.loadWishlist();
+        this.getCanUserReview(Number(productId)) ;
       }
     });
   }
@@ -120,6 +124,13 @@ removeFromWishList(productId: number): void {
 }
 
 // reviews Methods
+private getCanUserReview(productId:number){
+  this.reviewService.getCanUserReview(productId).subscribe((res)=>{
+    this.canReview = res
+    console.log(`______________________UserCanReview__________________${res}`);
+    
+  })
+}
 private loadReviews(productId: number): void {
   this.reviewService.getReviews(productId).subscribe({
     next: (reviews) => {
@@ -176,6 +187,7 @@ calculateAverageRating(): void {
         this.Product = product;
         this.loadCategoryProducts(product.categoryID);
         this.newReview.productId = product.id; // Set product ID for new review
+        this.isLoading = true ;
       },
       error: (err) => {
         console.error('Error loading product details:', err);
@@ -213,12 +225,13 @@ calculateAverageRating(): void {
     // Submit Review
     submitReview(): void {
       if (this.newReview.rating === 0 && this.newReview.comment.trim() !== '') {
-        alert('Please select at least one star when submitting a comment.');
+        this.toaster.success("Please select at least one star") ;
         return;
       }
       
       if (this.newReview.rating === 0 && this.newReview.comment.trim() === '') {
-        alert('You must provide a rating or a comment with at least one star.');
+        this.toaster.success("Please select at least one star") ;
+        // alert('You must provide a rating or a comment with at least one star.');
         return;
       }
       
@@ -245,7 +258,7 @@ calculateAverageRating(): void {
             // Reload product details to update the average rating
             this.loadProductDetails(this.Product!.id);
           }
-          alert('Review submitted successfully!');
+          this.toaster.success("Review submitted successfully","Success") ; 
           this.newReview.comment = '';
           this.newReview.rating = 0;
           this.showReviewForm = false;
@@ -303,6 +316,8 @@ calculateAverageRating(): void {
     getStarClass(star: number, rating: number): string {
       return (rating >= star) ? 'fa-solid text-warning' : 'fa-regular text-muted';
     }
+    
+
     
     // pagnation 
 

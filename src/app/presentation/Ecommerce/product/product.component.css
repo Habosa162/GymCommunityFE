@@ -78,3 +78,9 @@
   font-size: 0.85rem;
   margin-right: 2px;
 }
+.btn-Success{
+  color:limegreen ; 
+}
+.btn-Danger{
+  color: rgb(255, 0, 187);
+}

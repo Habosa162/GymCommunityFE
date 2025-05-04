@@ -31,4 +31,7 @@ export class ReviewService {
   deleteReview(reviewId:number):Observable<any>{
     return this.http.delete(`${this.apiUrl}/${reviewId}`) ;
   }
+  getCanUserReview(productId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/can-review/${productId}`);
+  }
 }
