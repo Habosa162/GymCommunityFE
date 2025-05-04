@@ -266,12 +266,12 @@
                   </span>
                 </div>
                 <div class="d-grid gap-2">
-                  <button class="btn btn-primary rounded-pill py-2">
-                    <i class="fas fa-shopping-cart me-2"></i> Buy Now
+                  <button class="btn btn-primary rounded-pill py-2" (click)="buyProduct(product)"
+                    [disabled]="!product?.stock || product.stock <= 0">
+                    <i class="fas fa-shopping-cart me-2"></i>
+                    {{ (product?.stock || 0) > 0 ? 'Buy Now' : 'Out of Stock' }}
                   </button>
-                  <button class="btn btn-outline-primary rounded-pill py-2">
-                    <i class="fas fa-info-circle me-2"></i> View Details
-                  </button>
+                  
                 </div>
               </div>
             </div>

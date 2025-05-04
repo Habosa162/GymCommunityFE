@@ -67,10 +67,10 @@ export class CoachesListComponent implements OnInit {
     }
 
     loadCoaches(): void {
-        console.log('Loading coaches...');
+
         this.coachPortfolioService.getAll().subscribe({
             next: (portfolios: Coachportfolio[]) => {
-                console.log('Portfolios loaded:', portfolios);
+
                 if (!portfolios || portfolios.length === 0) {
                     console.log('No portfolios found');
                     this.coaches = [];

@@ -18,6 +18,7 @@ import { CoachOffer } from '../../../domain/models/CoachModels/coach-offer.model
 import { FrontbaseUrl } from '../../../services/enviroment';
 import { PaymentService } from '../../../services/Ecommerce/payment.service';
 import { SubscriptionToPlanService } from '../../../services/subscription-to-plan.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-coach-profile',
@@ -55,7 +56,8 @@ export class CoachProfileComponent implements OnInit {
     private productservice: ProductService,
     private offersservice: CoachOfferService,
     private paymentService: PaymentService,
-    private subscriptionToPlanService: SubscriptionToPlanService
+    private subscriptionToPlanService: SubscriptionToPlanService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -67,20 +69,15 @@ export class CoachProfileComponent implements OnInit {
       this.loadcoachproducts();
       this.loadcoachoffers(this.coachId);
     }
-    console.log('portfolio.skillsJson:', this.portfolio?.skillsJson);
-    console.log('Is skillsJson array:', Array.isArray(this.portfolio?.skillsJson));
 
-    // Repeat for other arrays
-    console.log('certificates:', this.certificates);
-    console.log('Is certificates array:', Array.isArray(this.certificates));
-   
+
   }
 
   loadcoachproducts(): void {
     this.productservice.getUserProducts(this.coachId).subscribe({
       next: (response: any) => {
         this.coachproducts = Array.isArray(response) ? response : [];
-        console.log('Products loaded:', this.coachproducts);
+
       },
       error: (error) => {
         console.error('Error loading products:', error);
@@ -93,7 +90,7 @@ export class CoachProfileComponent implements OnInit {
     this.offersservice.getByCoachId(this.coachId).subscribe({
       next: (res: any) => {
         this.coachoffers = Array.isArray(res) ? res : [];
-        console.log('Offers loaded:', this.coachoffers);
+
       },
       error: (error) => {
         console.error('Error loading offers:', error);
@@ -109,7 +106,7 @@ export class CoachProfileComponent implements OnInit {
         this.currentPage = response.currentPage || 1;
         this.totalPages = response.totalPages || 0;
         this.totalCount = response.totalCount || 0;
-        console.log('Clients loaded:', this.clients);
+
       },
       error: (error) => {
         console.error('Error loading clients:', error);
@@ -128,8 +125,7 @@ export class CoachProfileComponent implements OnInit {
         this.certificates = Array.isArray(data.certificates) ? data.certificates : [];
         this.workSamples = Array.isArray(data.workSamples) ? data.workSamples : [];
         this.ratings = Array.isArray(data.ratings) ? data.ratings : [];
-        console.log(this.ratings)
-        console.log(this.portfolio)
+
         if (this.portfolio?.skillsJson && typeof this.portfolio.skillsJson === 'string') {
           try {
             this.portfolio.skillsJson = JSON.parse(this.portfolio.skillsJson);
@@ -150,12 +146,7 @@ export class CoachProfileComponent implements OnInit {
 
         this.calculateAverageRating();
         this.isLoading = false;
-        console.log('Profile loaded:', {
-          portfolio: this.portfolio,
-          certificates: this.certificates,
-          workSamples: this.workSamples,
-          ratings: this.ratings
-        });
+
       },
       error: (error) => {
         console.error('Error fetching coach profile:', error);
@@ -195,12 +186,21 @@ export class CoachProfileComponent implements OnInit {
 
 
 
-  
+
   //*********subscribe to offer*********
 
   subscribeToOffer(price: number, title: string, duration: number, coachId: string): void {
     this.subscriptionToPlanService.subscribeToOffer(price, title, duration, coachId);
     this.paymobpayment(price, title, coachId, duration);
+  }
+
+  //*********buy product*********
+  buyProduct(product: Product): void {
+    if (product.stock <= 0) {
+      this.toastr.error('This product is out of stock', 'Error');
+      return;
+    }
+    this.paymobpayment(product.price, product.name, this.coachId, 0);
   }
 
   paymobpayment(price: number, title: string, coachId: string, duration: number,) {
@@ -237,13 +237,13 @@ export class CoachProfileComponent implements OnInit {
           window.location.href = paymentUrl;
         } else {
           console.error("Client secret not found in the response.");
-          alert("Failed to retrieve payment details.");
+          this.toastr.error("Failed to retrieve payment details.", "Error");
         }
       },
       error: (error) => {
         console.log(error);
         console.error("Error in Paymob API request:", error);
-        alert("Failed to process payment. Please try again.");
+        this.toastr.error("Failed to process payment. Please try again.", "Error");
       }
     });
   }
