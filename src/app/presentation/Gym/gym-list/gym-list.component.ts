@@ -91,7 +91,7 @@ export class GymListComponent implements OnInit {
     this.gymService.getNearbyGyms(
       this.userLocation.lat,
       this.userLocation.lng,
-      4 
+      10 
     ).subscribe({
       next: (gyms) => {
         gyms.forEach(gym => {
