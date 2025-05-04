@@ -1,7 +1,10 @@
 <div class="coach-layout" [class.dark-mode]="isDarkMode">
   <!-- Top Navigation Bar -->
   <div class="app-header">
-   <div class="navbar navbar-expand-lg navbar-dark sticky-top" style="top: 80px;">
+    <div
+      class="navbar navbar-expand-lg navbar-dark sticky-top"
+      style="top: 80px"
+    >
       <div class="container-fluid">
         <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" routerLink="/">
@@ -96,13 +99,13 @@
 
           <!-- User Controls -->
           <div class="d-flex align-items-center user-controls">
-            <div class="theme-toggle me-3" (click)="toggleDarkMode()">
+            <!-- <div class="theme-toggle me-3" (click)="toggleDarkMode()">
               <i
                 class="bi"
                 [class.bi-sun]="!isDarkMode"
                 [class.bi-moon]="isDarkMode"
               ></i>
-            </div>
+            </div> -->
 
             <div class="profile-dropdown" #profileDropdown>
               <div
@@ -114,7 +117,7 @@
                   alt="User profile"
                   class="profile-image"
                 />
-                <span class="profile-name ms-2">{{ userName || 'Coach' }}</span>
+                <span class="profile-name ms-2">{{ userName || "Coach" }}</span>
                 <i
                   class="bi bi-chevron-down dropdown-arrow ms-1"
                   [class.rotate-180]="isProfileDropdownOpen"
@@ -133,7 +136,7 @@
                       class="dropdown-profile-image"
                     />
                     <div class="ms-3">
-                      <h6 class="mb-0">{{ userName || 'Coach' }}</h6>
+                      <h6 class="mb-0">{{ userName || "Coach" }}</h6>
                       <small class="text-muted">Professional Coach</small>
                     </div>
                   </div>
@@ -162,7 +165,7 @@
   </div>
 
   <!-- Main Content Area -->
-  <main >
+  <main>
     <router-outlet></router-outlet>
   </main>
 </div>
