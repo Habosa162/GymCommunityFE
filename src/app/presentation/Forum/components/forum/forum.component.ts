@@ -218,12 +218,22 @@ export class ForumComponent implements OnInit {
   }
 
   createComment(postId: number, content: string): void {
+    const userVote = this.userVotesMap[postId];
+    const post = this.posts.find((p) => p.id === postId);
+    if (!post) return;
     const comment: CommentCreateDTO = {
       content,
       userId: this.currentUserId,
       postId,
     };
 
+    this.notificationService
+      .sendNotification(
+        post.userId,
+        this.authService.getNameFromToken()!,
+        `Has commented on your post : ${post.title}`
+      )
+      .subscribe();
     this.commentService.create(comment).subscribe((newComment) => {
       this.commentsMap[postId].push(newComment);
       const post = this.posts.find((p) => p.id === postId);
@@ -326,7 +336,11 @@ export class ForumComponent implements OnInit {
       });
     } else {
       this.notificationService
-        .sendNotification(post.userId, 'You have upvoted a post', 'asd')
+        .sendNotification(
+          post.userId,
+          this.authService.getNameFromToken()!,
+          `Has Liked your post : ${post.title}`
+        )
         .subscribe();
       // Remove existing vote if different direction
       if (userVote) {

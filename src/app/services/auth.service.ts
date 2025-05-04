@@ -50,7 +50,10 @@ export class AuthService {
       body
     );
   }
-
+  getNameFromToken(): string | null {
+    const decoded = this.getDecodedToken();
+    return decoded?.Name || null;
+  }
   getToken(): string | null {
     // Try both storage keys for backwards compatibility
     const token = localStorage.getItem('token') || localStorage.getItem('jwt');
