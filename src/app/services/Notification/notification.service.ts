@@ -94,7 +94,8 @@ export class NotificationService {
 
   // Delete one notification
   deleteNotification(id: number) {
-    return this.http.delete(`${this.apiUrl}/${id}`).subscribe(() => {
+    return this.http.delete(`${this.apiUrl}/${id}`).subscribe((res) => {
+      console.log(res);
       this.loadNotifications();
       this.getUnreadCount();
     });

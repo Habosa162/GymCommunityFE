@@ -1,3 +1,4 @@
+import { Toast, ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -32,7 +33,8 @@ export class OrderManagementComponent implements OnInit {
   constructor(
     private orderService: OrderService,
     private shippingService: ShippingService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private toastrService : ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -127,11 +129,11 @@ export class OrderManagementComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(res);
-          alert('Shipping status updated successfully!');
+          this.toastrService.success("Shipping status updated successfully" , "Success") ; 
           this.loadOrders();
         },
         error: err => {
-          alert('Failed to update shipping status.');
+          this.toastrService.error("Connection Faild","Error") ; 
           console.error(err);
         }
       });

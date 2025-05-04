@@ -8,6 +8,8 @@ import { CartService } from '../../../services/Ecommerce/cart.service';
 import { OrderService } from '../../../services/Ecommerce/order.service';
 import { ShippingService } from '../../../services/Ecommerce/shipping.service';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from '../../../services/Notification/notification.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-payment-sucess',
@@ -37,7 +39,9 @@ errorMessage: string = 'Payment processing failed. Please try again.';
     private paymentService: PaymentService,
     private cartService: CartService,
     private orderService: OrderService,
-    private shippingService: ShippingService
+    private shippingService: ShippingService,
+    private notificationService:NotificationService,
+    private authService:AuthService
   ) {}
 
   ngOnInit() {
@@ -96,10 +100,19 @@ errorMessage: string = 'Payment processing failed. Please try again.';
           this.orderService.createOrder(orderRequest).subscribe({
             next: (orderRes) => {
               this.order = orderRes;
+              console.log("______________________");
+              console.log(this.order);
+              console.log(orderRes);
+              console.log("______________________");
+              
               if (this.order.paymentId) {
 
                 this.paymentState = true ;
-
+                this.notificationService.sendNotification(
+                  this.authService.getUserId()!
+                  ,`Order #${this.order.id}`
+                  ,`Your order #${this.order.id} is placed successfully`
+                ).subscribe();
                 this.router.navigate(['/order-summary', this.order.id]);
               } else {
                 this.paymentState = false;

@@ -67,6 +67,7 @@ export class NotificationBellComponent implements OnInit, OnDestroy {
 
   deleteNotification(id: number): void {
     this.notificationService.deleteNotification(id);
+    this.notificationService.loadNotifications() ; 
   }
 
   @HostListener('document:click', ['$event'])
