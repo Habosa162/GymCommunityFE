@@ -1,8 +1,7 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { FooterComponent } from '../../core/shared/components/footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -11,12 +10,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     RouterModule,
-    FooterComponent,
     ReactiveFormsModule,
     FormsModule,
   ],
   templateUrl: './coach-layout.component.html',
-  styleUrls: ['./coach-layout.component.css'],
+  styleUrls: ['./coach-layout.component.css']
 })
 export class CoachLayoutComponent implements OnInit {
   isSidebarOpen = true;
@@ -27,16 +25,13 @@ export class CoachLayoutComponent implements OnInit {
   isDarkMode = false;
   coachId = '';
 
+  @ViewChild('profileDropdown') profileDropdown!: ElementRef;
+
   constructor(
     private authService: AuthService,
-    private router: Router,
-    private authservice: AuthService
+    private router: Router
   ) {
-    // Check authentication on component creation
-    if (
-      !this.authService.isLoggedIn() ||
-      this.authService.getUserRole() !== 'Coach'
-    ) {
+    if (!this.authService.isLoggedIn() || this.authService.getUserRole() !== 'Coach') {
       this.router.navigate(['/login']);
     }
   }
@@ -44,7 +39,7 @@ export class CoachLayoutComponent implements OnInit {
   ngOnInit(): void {
     this.checkAuthentication();
     this.loadUserData();
-    // this.initializeDarkMode();
+    this.checkDarkModePreference();
   }
 
   private checkAuthentication(): void {
@@ -59,57 +54,43 @@ export class CoachLayoutComponent implements OnInit {
   private loadUserData(): void {
     if (this.isAuthenticated) {
       this.userName = this.authService.getUserName() || 'Coach';
-      this.userImage =
-        this.authService.getProfileImg() || 'assets/images/default-avatar.png';
-      // Redirect to dashboard if on root path
+      this.userImage = this.authService.getProfileImg() || 'assets/images/default-avatar.png';
       if (this.router.url === '/coach' || this.router.url === '/coach/') {
         this.router.navigate(['/coach/dashboard']);
       }
     }
   }
 
-  //   private initializeDarkMode(): void {
-  //     const savedMode = localStorage.getItem('darkMode');
-  //     this.isDarkMode = savedMode
-  //       ? savedMode === 'true'
-  //       : window.matchMedia('(prefers-color-scheme: dark)').matches;
-  //     this.applyTheme();
-  //   }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
-    const profileDropdown = document.querySelector('.profile-dropdown');
-    if (profileDropdown && !profileDropdown.contains(event.target as Node)) {
-      this.isProfileDropdownOpen = false;
+  private checkDarkModePreference(): void {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedMode = localStorage.getItem('darkMode');
+    
+    if (savedMode) {
+      this.isDarkMode = savedMode === 'true';
+    } else {
+      this.isDarkMode = prefersDark;
     }
+    
+    this.applyTheme();
   }
 
-  toggleSidebar(): void {
-    this.isSidebarOpen = !this.isSidebarOpen;
+  toggleDarkMode(): void {
+    this.isDarkMode = !this.isDarkMode;
+    localStorage.setItem('darkMode', this.isDarkMode.toString());
+    this.applyTheme();
+  }
+
+  private applyTheme(): void {
+    if (this.isDarkMode) {
+      document.documentElement.classList.add('dark-mode');
+    } else {
+      document.documentElement.classList.remove('dark-mode');
+    }
   }
 
   toggleProfileDropdown(): void {
     this.isProfileDropdownOpen = !this.isProfileDropdownOpen;
-    console.log('Dropdown toggled:', this.isProfileDropdownOpen);
   }
-
-  // toggleDarkMode(): void {
-  //     this.isDarkMode = !this.isDarkMode;
-  //     localStorage.setItem('darkMode', this.isDarkMode.toString());
-  //     this.applyTheme();
-  // }
-
-  //   private applyTheme(): void {
-  //     document.documentElement.setAttribute(
-  //       'data-theme',
-  //       this.isDarkMode ? 'dark' : 'light'
-  //     );
-  //     if (this.isDarkMode) {
-  //       document.body.classList.add('dark-mode');
-  //     } else {
-  //       document.body.classList.remove('dark-mode');
-  //     }
-  //   }
 
   logout(): void {
     this.authService.logout();
@@ -118,8 +99,7 @@ export class CoachLayoutComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.profile-dropdown')) {
+    if (this.profileDropdown && !this.profileDropdown.nativeElement.contains(event.target)) {
       this.isProfileDropdownOpen = false;
     }
   }

@@ -24,12 +24,12 @@
       <form [formGroup]="workSampleForm" (ngSubmit)="uploadSample()">
         <div class="row">
           <div class="col-md-6 mb-4">
-            <label class="form-label" style="background-color: white; color: darkslategray;"> Sample Description</label>
+            <label class="form-label">Sample Description</label>
             <textarea class="form-control" formControlName="description" rows="4"
               placeholder="Describe your work sample..."></textarea>
           </div>
           <div class="col-md-6 mb-4">
-            <label class="form-label" style="background-color: white; color: darkslategray;">Sample Image</label>
+            <label class="form-label">Sample Image</label>
             <div class="custom-file-upload" (click)="fileInput.click()" *ngIf="!previewUrl">
               <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
               <i class="fas fa-image upload-icon"></i>
