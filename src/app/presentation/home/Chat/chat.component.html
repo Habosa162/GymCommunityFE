@@ -1,102 +1,111 @@
-<div class="chat-container">
-  <div class="group-section">
-    <h3><i class="fas fa-users"></i> Groups</h3>
-    <div class="new-group-form">
-      <input [(ngModel)]="newGroupName" placeholder="New group name" (keyup.enter)="createGroup()">
-      <button (click)="createGroup()">
-        <i class="fas fa-plus"></i>
-      </button>
-    </div>
-    <ul class="groups-list">
-      <li class="d-flex flex-column" *ngFor="let group of groups" 
-          [class.selected]="group.groupId === selectedGroupId"
-          (click)="selectGroup(group.groupId)">
-        <span class="group-name">{{ parsePlanName(group.groupName) }}</span>
-        <span *ngIf="authService.isLoggedIn() && authService.getUserRole() === 'Client'" class="group-name">
-          {{ getCoachName(group.groupName) }}
-        </span>
-        <span *ngIf="authService.isLoggedIn() && authService.getUserRole() === 'Coach'" class="group-name">
-          {{ getClientName(group.groupName) }}
-        </span>
-      </li>
-      <li *ngIf="groups.length === 0" class="no-groups">
-        <i class="fas fa-info-circle"></i> No groups available
-      </li>
-    </ul>
-    <div class="debug-controls">
-      <button (click)="inspectChatState()" class="debug-button" title="Inspect chat state in console">
-        <i class="fas fa-bug"></i>
-      </button>
-    </div>
-  </div>
-  <div class="chat-section">
-    <div class="messages-header" *ngIf="selectedGroupId">
-      <h4>
-        <span class="group-icon"><i class="fas fa-hashtag"></i></span>
-        {{ getSelectedGroupName() }}
-      </h4>
-      <div class="connection-status" [class.connected]="isConnected">
-        <i [class]="isConnected ? 'fas fa-circle-check' : 'fas fa-circle-exclamation'"></i>
-        {{ isConnected ? 'Connected' : 'Connecting...' }}
-      </div>
-    </div>
-    <div class="messages" #messagesContainer *ngIf="selectedGroupId; else noGroup">
-      <div *ngFor="let message of messages" 
-           [ngClass]="{'message-sent': isMessageFromCurrentUser(message), 'message-received': !isMessageFromCurrentUser(message)}">
-        <ng-container *ngIf="!isMessageFromCurrentUser(message)">
-          <div class="message-avatar">
-            <img *ngIf="userAvatarCache[message.senderId]" [src]="userAvatarCache[message.senderId]" alt="Avatar" class="user-avatar">
-            <i *ngIf="!userAvatarCache[message.senderId]" class="fas fa-user"></i>
+<div class="container py-4">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="mb-4 text-center">Messages</h2>
+      
+      <div class="chat-container">
+        <div class="group-section">
+          <h3><i class="bi bi-people-fill"></i> Chats</h3>
+          <div class="new-group-form" *ngIf="authService.getUserRole() === 'Coach'">
+            <input [(ngModel)]="newGroupName" placeholder="New group name" (keyup.enter)="createGroup()">
+            <button (click)="createGroup()">
+              <i class="bi bi-plus-lg"></i>
+            </button>
           </div>
-          <div class="message-content-wrapper">
-            <div class="message-bubble">
-              <p class="message-content">{{ message.content }}</p>
-            </div>
-            <div class="message-info">
-              <small class="message-sender">
-                {{ message.senderName || getUserName(message.senderId) }}
-              </small>
-              <small class="message-time">
-                <i class="far fa-clock"></i> {{ message.timestamp | date:'short' }}
-              </small>
+          <ul class="groups-list">
+            <li class="d-flex flex-column" *ngFor="let group of groups" 
+                [class.selected]="group.groupId === selectedGroupId"
+                (click)="selectGroup(group.groupId)">
+              <span class="group-name">{{ parsePlanName(group.groupName) }}</span>
+              <span *ngIf="authService.isLoggedIn() && authService.getUserRole() === 'Client'" class="group-name">
+                <small><i class="bi bi-person-circle"></i> {{ getCoachName(group.groupName) }}</small>
+              </span>
+              <span *ngIf="authService.isLoggedIn() && authService.getUserRole() === 'Coach'" class="group-name">
+                <small><i class="bi bi-person-circle"></i> {{ getClientName(group.groupName) }}</small>
+              </span>
+            </li>
+            <li *ngIf="groups.length === 0" class="no-groups">
+              <i class="bi bi-info-circle"></i> No chats available
+            </li>
+          </ul>
+          <div class="debug-controls" *ngIf="false">
+            <button (click)="inspectChatState()" class="debug-button" title="Inspect chat state in console">
+              <i class="bi bi-bug"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="chat-section">
+          <div class="messages-header">
+            <h4>
+              <span class="group-icon">
+                <i class="bi bi-chat-dots-fill"></i>
+              </span>
+              {{ getSelectedGroupName() }}
+            </h4>
+            <div class="connection-status" [class.connected]="isConnected">
+              {{ isConnected ? 'Connected' : 'Connecting...' }}
             </div>
           </div>
-        </ng-container>
-        <ng-container *ngIf="isMessageFromCurrentUser(message)">
-          <div class="message-bubble">
-            <p class="message-content">{{ message.content }}</p>
+          
+          <div class="messages" #messagesContainer>
+            <ng-container *ngIf="selectedGroupId">
+              <div *ngFor="let message of messages; let i = index" 
+                  [class.message-sent]="isMessageFromCurrentUser(message)"
+                  [class.message-received]="!isMessageFromCurrentUser(message)"
+                  [class.message-diagnostic]="message.senderId === 'system-diagnostic'"
+                  [ngClass]="{'align-self-end': isMessageFromCurrentUser(message), 'align-self-start': !isMessageFromCurrentUser(message)}">
+                
+                <div class="message-sender" *ngIf="showSenderForMessage(i, message)">
+                  {{ message.senderName || 'Unknown' }}
+                </div>
+                
+                <div class="message-content">
+                  <div *ngIf="message.senderId === 'system-diagnostic'" class="diagnostic-message">
+                    <i class="bi bi-info-circle-fill"></i> {{ message.content }}
+                  </div>
+                  <div *ngIf="message.senderId !== 'system-diagnostic'">
+                    {{ message.content }}
+                  </div>
+                  <div class="message-time">
+                    {{ getMessageTime(message) }}
+                  </div>
+                </div>
+                
+                <div class="avatar" *ngIf="!isMessageFromCurrentUser(message) && message.senderId !== 'system-diagnostic'">
+                  <img [src]="getUserAvatar(message.senderId)" alt="User Avatar">
+                </div>
+              </div>
+              
+              <div *ngIf="messages.length === 0" class="no-messages">
+                <div>
+                  <i class="bi bi-chat-square-text"></i>
+                  <p>No messages yet. Start the conversation!</p>
+                </div>
+              </div>
+            </ng-container>
+            
+            <div *ngIf="!selectedGroupId" class="select-chat">
+              <div>
+                <i class="bi bi-arrow-left-circle"></i>
+                <p>Select a chat to start messaging</p>
+              </div>
+            </div>
           </div>
-          <div class="message-info">
-            <small class="message-time">
-              <i class="far fa-clock"></i> {{ message.timestamp | date:'short' }}
-            </small>
-            <small class="message-status">
-              <i class="fas fa-check"></i>
-            </small>
+          
+          <div class="message-input" *ngIf="selectedGroupId">
+            <textarea 
+              [(ngModel)]="newMessage" 
+              placeholder="Type a message..." 
+              (keydown.enter)="$event.preventDefault(); sendMessage()"
+              [disabled]="!isConnected">
+            </textarea>
+            <button (click)="sendMessage()" [disabled]="!newMessage.trim() || !isConnected">
+              <i class="bi bi-send-fill"></i>
+            </button>
           </div>
-        </ng-container>
-      </div>
-      <div *ngIf="messages.length === 0" class="no-messages">
-        <p><i class="far fa-comment-dots"></i> No messages yet</p>
-        <p class="sub-message">Be the first one to send a message!</p>
-      </div>
-    </div>
-    <ng-template #noGroup>
-      <div class="select-group-prompt">
-        <div class="prompt-content">
-          <i class="far fa-comments icon-large"></i>
-          <p>Select a group to start chatting</p>
         </div>
       </div>
-    </ng-template>
-    <div class="input-area" *ngIf="selectedGroupId">
-      <input [(ngModel)]="newMessage" 
-             (keyup.enter)="sendMessage()" 
-             placeholder="Type a message..."
-             [disabled]="!isConnected">
-      <button (click)="sendMessage()" [disabled]="!isConnected || !newMessage.trim()">
-        <i class="fas fa-paper-plane"></i>
-      </button>
     </div>
   </div>
 </div>

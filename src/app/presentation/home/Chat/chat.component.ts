@@ -8,7 +8,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { firstValueFrom, of, Subject, Subscription, timer } from 'rxjs';
+import { Router } from '@angular/router';
+import { of, Subject, Subscription, timer } from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -53,10 +54,18 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   constructor(
     private chatService: ChatService,
     protected authService: AuthService,
-    private chatDiagnostics: ChatDiagnostics
+    private chatDiagnostics: ChatDiagnostics,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    // Check if user is a gym owner and redirect if so
+    if (this.authService.getUserRole() === 'GymOwner') {
+      console.log('Gym owners do not have access to chat functionality');
+      this.router.navigate(['/']);
+      return;
+    }
+
     console.log('Initializing Chat Component');
     this.currentUserId = this.authService.getUserId() || 'anonymous-user';
     this.currentUserName = this.authService.getUserName() || 'Anonymous User';
@@ -91,7 +100,9 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
             setTimeout(() => {
               this.chatDiagnostics
                 .sendTestMessage()
-                .catch((err) => console.error('Error sending test message:', err));
+                .catch((err) =>
+                  console.error('Error sending test message:', err)
+                );
             }, 2000);
           } else if (wasConnected && !connected) {
             this.handleDisconnection();
@@ -141,7 +152,9 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
       .pipe(takeWhile(() => this.componentActive))
       .subscribe(() => {
         if (!this.isConnected) {
-          console.log('Diagnostic timer: Connection lost, attempting reconnect');
+          console.log(
+            'Diagnostic timer: Connection lost, attempting reconnect'
+          );
           this.handleDisconnection();
         } else {
           console.log('Diagnostic timer: Connection is healthy');
@@ -300,10 +313,20 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.groups.forEach((group) => {
       const coachIdMatch = group.groupName.match(/"CoachId"\s*:\s*"([^"]+)"/);
       const clientIdMatch = group.groupName.match(/"ClientId"\s*:\s*"([^"]+)"/);
-      if (coachIdMatch && coachIdMatch[1] && !this.userNameCache[coachIdMatch[1]] && !this.pendingUserRequests[coachIdMatch[1]]) {
+      if (
+        coachIdMatch &&
+        coachIdMatch[1] &&
+        !this.userNameCache[coachIdMatch[1]] &&
+        !this.pendingUserRequests[coachIdMatch[1]]
+      ) {
         userIds.push(coachIdMatch[1]);
       }
-      if (clientIdMatch && clientIdMatch[1] && !this.userNameCache[clientIdMatch[1]] && !this.pendingUserRequests[clientIdMatch[1]]) {
+      if (
+        clientIdMatch &&
+        clientIdMatch[1] &&
+        !this.userNameCache[clientIdMatch[1]] &&
+        !this.pendingUserRequests[clientIdMatch[1]]
+      ) {
         userIds.push(clientIdMatch[1]);
       }
     });
@@ -330,7 +353,9 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
         userName = this.getClientName(group.groupName);
       }
       // Return formatted string: plan name only if no user name, otherwise combine
-      return planName && userName ? `${planName} - ${userName}` : planName || userName || 'Chat';
+      return planName && userName
+        ? `${planName} - ${userName}`
+        : planName || userName || 'Chat';
     } catch (error) {
       console.error('Error formatting selected group name:', error);
       return 'Chat';
@@ -438,7 +463,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     try {
       const match = group.match(/"CoachId"\s*:\s*"([^"]+)"/);
       if (match && match[1]) {
-        return "Coach Name : "+this.getUserName(match[1]);
+        return 'Coach Name: ' + this.getUserName(match[1]);
       }
       return 'Coach';
     } catch (error) {
@@ -451,7 +476,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     try {
       const match = group.match(/"ClientId"\s*:\s*"([^"]+)"/);
       if (match && match[1]) {
-        return "Client Name : "+this.getUserName(match[1]);
+        return 'Client Name: ' + this.getUserName(match[1]);
       }
       return 'Client';
     } catch (error) {
@@ -465,7 +490,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
       console.log(group);
       const match = group.match(/"Name"\s*:\s*"([^"]+)"/);
       if (match && match[1]) {
-        return "Plan Name : "+match[1];
+        return 'Plan: ' + match[1];
       }
       throw new Error('Name field not found');
     } catch (error) {
@@ -500,7 +525,9 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
               console.log(`Updated profile image for ${userId}`);
             }
           } else {
-            console.warn(`Received invalid name for user ${userId}: "${result.Name}"`);
+            console.warn(
+              `Received invalid name for user ${userId}: "${result.Name}"`
+            );
           }
           this.pendingUserRequests[userId] = false;
         },
@@ -540,5 +567,32 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   forceReconnect(): void {
     console.log('User requested reconnection');
     this.chatDiagnostics.initialize();
+  }
+
+  showSenderForMessage(index: number, message: ChatMessage): boolean {
+    if (index === 0) return true;
+
+    const previousMessage = this.messages[index - 1];
+    return previousMessage.senderId !== message.senderId;
+  }
+
+  getMessageTime(message: ChatMessage): string {
+    if (!message.timestamp) return '';
+
+    const messageDate = new Date(message.timestamp);
+    const today = new Date();
+
+    if (messageDate.toDateString() === today.toDateString()) {
+      return messageDate.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    }
+
+    return (
+      messageDate.toLocaleDateString() +
+      ' ' +
+      messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    );
   }
 }
