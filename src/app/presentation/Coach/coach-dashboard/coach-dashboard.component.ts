@@ -35,6 +35,9 @@ export class CoachDashboardComponent implements OnInit {
   coachData: any;
   plans: any[] = [];
 
+  profitsData: any;
+  totalBudgets: number = 0;
+
   //visuals
   totalClients: number = 0;
   totalPlans: number = 0;
@@ -52,6 +55,10 @@ export class CoachDashboardComponent implements OnInit {
       (response) => {
         console.log(response);
         this.plans = response.tplans;
+        this.profitsData = response.data;
+        this.totalBudgets =
+          response.data.totalPlansSoldRevenue +
+          response.data.totalRevenueProducts;
         this.coachData = response.tplans[0].coach;
         this.calculatePlanAndClients(response.tplans);
         // console.log(this.totalPlans, this.totalClients);

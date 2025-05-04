@@ -185,7 +185,9 @@
               <div class="col col-stats ms-3 ms-sm-0">
                 <div class="numbers">
                   <p class="card-category">Shop Earnings</p>
-                  <h4 class="card-title">EGP 1,345</h4>
+                  <h4 class="card-title">
+                    EGP {{ profitsData.totalRevenueProducts }}
+                  </h4>
                 </div>
               </div>
             </div>
@@ -205,8 +207,10 @@
               </div>
               <div class="col col-stats ms-3 ms-sm-0">
                 <div class="numbers">
-                  <p class="card-category">Shop Earnings</p>
-                  <h4 class="card-title">EGP 1,345</h4>
+                  <p class="card-category">Plan Earnings</p>
+                  <h4 class="card-title">
+                    EGP {{ profitsData.totalPlansSoldRevenue }}
+                  </h4>
                 </div>
               </div>
             </div>
@@ -228,12 +232,6 @@
               <canvas id="topClientsChart"></canvas>
             </div>
           </div>
-          <div class="card-body">
-            <div class="chart-container" style="min-height: 375px">
-              <canvas id="statisticsChart"></canvas>
-            </div>
-            <div id="myChartLegend"></div>
-          </div>
         </div>
       </div>
       <div class="col-md-4">
@@ -247,7 +245,7 @@
           </div>
           <div class="card-body pb-0">
             <div class="mb-4 mt-2">
-              <h2 class="text-success">EGP 4,578.58</h2>
+              <h2 class="text-success">EGP {{ totalBudgets }}</h2>
             </div>
             <div class="pull-in">
               <canvas id="dailySalesChart"></canvas>

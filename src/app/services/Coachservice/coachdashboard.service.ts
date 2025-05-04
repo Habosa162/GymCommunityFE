@@ -12,7 +12,8 @@ export class CoachDashboardService {
   constructor(private http: HttpClient) {}
 
   getCoachDashboard(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/GetCoachDashboard`);
+    return this.http.get<any>(
+      `${this.baseUrl}/GetCoachDashboard?yr=2025&month=5&filter=${0}`
+    );
   }
-  
 }
