@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NavbarComponent } from "../../core/shared/components/navbar/navbar.component";
+import { SideBarComponent } from "../../presentation/admin/side-bar/side-bar.component";
 
 @Component({
   selector: 'app-coach-layout',
@@ -12,7 +14,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
-  ],
+    NavbarComponent,
+    SideBarComponent
+],
   templateUrl: './coach-layout.component.html',
   styleUrls: ['./coach-layout.component.css']
 })
