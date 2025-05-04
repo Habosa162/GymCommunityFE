@@ -1,3 +1,4 @@
+import { NotificationService } from './../../../services/Notification/notification.service';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaymentService } from '../../../services/Ecommerce/payment.service';
@@ -40,7 +41,8 @@ export class PlanPaymentSuccessComponent {
     private paymentService: PaymentService,
     private trainingPlanService: TrainingPlansService,
     private subscriptionToPlanService: SubscriptionToPlanService,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -109,6 +111,26 @@ export class PlanPaymentSuccessComponent {
           this.trainingPlanService.createTrainingPlan(trainingPlan).subscribe({
             next: (planRes) => {
               console.log('Training plan created:', planRes);
+              this.notificationService
+                .sendNotification(
+                  this.coachId,
+                  this.authService.getNameFromToken()!,
+                  `Has Subscribed on a ${this.title} Plan`
+                )
+                .subscribe();
+              console.log(
+                'iddddddddddddddddddddddddddddddddddddddddddddddddddd',
+                this.coachId,
+                this.clientId
+              );
+              this.notificationService
+                .sendNotification(
+                  this.clientId,
+                  `${this.title}`,
+                  `you Subscribed on a ${this.title} Plan Successfully`
+                )
+                .subscribe();
+
               this.router.navigate(['/my-plans']);
             },
             error: (error) => {

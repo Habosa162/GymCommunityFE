@@ -690,16 +690,23 @@
                   <strong style="color: #666">💪 Muscle Target:</strong>
                   {{ exercise.muscleGroup }}
                 </span>
-                <iframe
+                <!-- <iframe
                   class="rounded-4 w-100"
                   *ngIf="exercise.videoLink"
                   height="315"
-                  src="https://www.youtube.com/embed/gRVjAtPip0Y?si=2UY4Fu8TPecVnSs0"
+                  src="{{ exercise.videoLink }}"
                   title="YouTube video player"
                   frameborder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowfullscreen
-                ></iframe>
+                ></iframe> -->
+
+                <video width="100%" height="auto" controls>
+                  <source
+                    src="https://www.w3schools.com/html/mov_bbb.mp4"
+                    type="video/mp4"
+                  />
+                </video>
 
                 <div class="exercise-details d-flex gap-1">
                   <span class="badge text-bg-primary">
