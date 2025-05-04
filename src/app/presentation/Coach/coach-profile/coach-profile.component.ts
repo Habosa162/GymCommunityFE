@@ -25,7 +25,7 @@ import { ProductComponent } from '../../Ecommerce/product/product.component';
   selector: 'app-coach-profile',
   templateUrl: './coach-profile.component.html',
   styleUrls: ['./coach-profile.component.css'],
-  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule , ProductComponent],
+  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule, ProductComponent],
   standalone: true
 })
 export class CoachProfileComponent implements OnInit {
@@ -107,6 +107,7 @@ export class CoachProfileComponent implements OnInit {
         this.currentPage = response.currentPage || 1;
         this.totalPages = response.totalPages || 0;
         this.totalCount = response.totalCount || 0;
+        console.log(this.clients)
 
       },
       error: (error) => {

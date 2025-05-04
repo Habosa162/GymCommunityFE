@@ -100,7 +100,7 @@
       <div class="stat text-center col-sm-4">
         <i class="fa-solid fa-user-group p-4 rounded-circle fs-3"></i>
         <p class="fs-2">{{clients?.length || 0}}</p>
-        <p class="text-uppercase">total clients</p>
+        <p class="text-uppercase">total Plans</p>
       </div>
       <div class="stat text-center col-sm-4">
         <i class="fa-solid fa-award p-4 rounded-circle fs-3"></i>
@@ -279,10 +279,7 @@
         </div>
       </div> -->
       <div class="row g-3">
-        <div
-          *ngFor="let product of coachproducts"
-          class="col-xl-3 col-md-6 col-sm-12"
-        >
+        <div *ngFor="let product of coachproducts" class="col-xl-3 col-md-6 col-sm-12">
           <app-product [product]="product"></app-product>
         </div>
       </div>
