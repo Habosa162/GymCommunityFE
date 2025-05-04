@@ -136,6 +136,15 @@ export class NavbarComponent implements OnInit {
         ],
       },
       {
+        title: 'Shop',
+        icon: 'bi bi-shop',
+        children: [
+          { title: 'Browse Products', route: '/shop' },
+          { title: 'Wishlist', route: '/wish-list' },
+          { title: 'My Cart', route: '/cart' },
+        ],
+      },
+      {
         title: 'Community',
         icon: 'bi bi-people-fill',
         children: [
