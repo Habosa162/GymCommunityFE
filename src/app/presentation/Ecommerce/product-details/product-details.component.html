@@ -53,7 +53,7 @@
 
  <!-- Rating and Review Section -->
 <!-- Rating and Review Section -->
-<section class="rating-review-section">
+<section class="rating-review-section" *ngIf="isLoading">
   <div class="container">
     <!-- Rating Header -->
     <div class="rating-header">
@@ -62,7 +62,7 @@
         <div class="stars">
           <i *ngFor="let star of [1,2,3,4,5]" 
              class="fa fa-star" 
-             [ngClass]="star <= averageRating ? 'text-warning' : 'text-secondary'"></i>
+             [ngClass]="(star <= averageRating )? 'text-warning' : 'text-secondary'"></i>
         </div>
         <span class="rating-value">{{ averageRating | number:'1.1-1' }}</span>
         <span class="review-count">({{ reviews.length }} reviews)</span>
@@ -70,7 +70,7 @@
     </div>
 
     <!-- Rating Input Block -->
-    <div class="rating-input-block">
+    <div class="rating-input-block" *ngIf="canReview">
       <h5>Share Your Experience</h5>
       <div class="star-rating">
         <span *ngFor="let star of [1,2,3,4,5]" 

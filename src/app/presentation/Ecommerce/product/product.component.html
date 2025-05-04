@@ -39,7 +39,7 @@
           aria-label="Add to Wishlist"
         >
           <i
-            class="fa-regular fa-heart fs-5"
+            class="fa-regular fa-heart fs-3"
             [class.heart-animation]="animatedHeart[product.id]"
           ></i>
         </button>
@@ -53,7 +53,7 @@
           aria-label="Remove from Wishlist"
         >
           <i
-            class="fa-solid fa-heart fs-5 text-danger"
+            class="fa-solid fa-heart fs-3 text-danger"
             [class.heart-animation]="animatedHeart[product.id]"
           ></i>
         </button>
@@ -64,14 +64,14 @@
           (click)="addToCart(product); $event.stopPropagation()"
           [disabled]="product.stock <= 0"
           [ngClass]="{
-            'btn-outline-success': !isInCart(product),
-            'btn-outline-danger': isInCart(product)
+            'btn-Success': !isInCart(product),
+            'btn-Danger': isInCart(product)
           }"
           style="width: 40px; height: 40px;"
           title="{{ isInCart(product) ? 'Remove from Cart' : 'Add to Cart' }}"
         >
           <i
-            class="fa-solid fs-5"
+            class="fa-solid fs-3"
             [class.fa-cart-plus]="!isInCart(product)"
             [class.fa-cart-arrow-down]="isInCart(product)"
           ></i>

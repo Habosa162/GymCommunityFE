@@ -43,7 +43,7 @@ export class ProductComponent {
       this.productService.toasterSuccess('was added to cart', product);
     } else {
       this.cartService.removeFromCart(product.id);
-      this.productService.toasterSuccess('was removed from cart', product);
+      this.productService.toasterSuccess('removed from cart', product);
     }
   }
   isInCart(product: Product): boolean {
@@ -61,7 +61,7 @@ export class ProductComponent {
 
     this.wishlistService.addToWishlist(productId).subscribe({
       next: (res) => {
-        this.productService.toasterSuccess('was added to wishlist<i class="fa fa-cart"></i>', this.product);
+        this.productService.toasterSuccess('added to wishlist', this.product);
         this.getWishlist();
         this.resetAnimation(productId);
       },
@@ -79,7 +79,7 @@ export class ProductComponent {
     this.animatedHeart[productId] = true;
 
     this.wishlistService.removeFromWishlist(wishListItem.wishListId).subscribe((res)=>{
-      this.productService.toasterSuccess('was removed from cart', this.product);
+      this.productService.toasterSuccess('removed from wishlist', this.product);
       this.getWishlist();
       this.resetAnimation(productId);
       this.removedFromWishlist.emit(wishListItem.wishListId);

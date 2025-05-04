@@ -82,7 +82,7 @@ export class WishListComponent {
   }
 
   removeItemFromWishlist(wishListId: number) {
-    this.getWishList();
+    // this.getWishList();
   }
 
    // Filter methods

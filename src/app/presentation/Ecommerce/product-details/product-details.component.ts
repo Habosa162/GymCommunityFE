@@ -13,6 +13,7 @@ import { wishlistItem } from '../../../domain/models/Ecommerce/wishList.model';
 import { Review } from '../../../domain/models/Ecommerce/Review.model'; // Add this import
 
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-product-details',
   imports: [ProductComponent, CommonModule, RouterModule ,FormsModule  ],
@@ -21,7 +22,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./product-details.component.css']
 })
 export class ProductDetailsComponent implements OnInit {
-
+  isLoading = true ; 
   CategoryProducts: Product[] = [];
   Product: Product | null = null;
   reviews: any[] = [];
@@ -47,7 +48,8 @@ export class ProductDetailsComponent implements OnInit {
     private reviewService: ReviewService,
     private cartService: CartService,
     private wishlistService: WishlistService,
-    protected authService : AuthService
+    protected authService : AuthService,
+    private toaster : ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -185,6 +187,7 @@ calculateAverageRating(): void {
         this.Product = product;
         this.loadCategoryProducts(product.categoryID);
         this.newReview.productId = product.id; // Set product ID for new review
+        this.isLoading = true ;
       },
       error: (err) => {
         console.error('Error loading product details:', err);
@@ -222,12 +225,13 @@ calculateAverageRating(): void {
     // Submit Review
     submitReview(): void {
       if (this.newReview.rating === 0 && this.newReview.comment.trim() !== '') {
-        alert('Please select at least one star when submitting a comment.');
+        this.toaster.success("Please select at least one star") ;
         return;
       }
       
       if (this.newReview.rating === 0 && this.newReview.comment.trim() === '') {
-        alert('You must provide a rating or a comment with at least one star.');
+        this.toaster.success("Please select at least one star") ;
+        // alert('You must provide a rating or a comment with at least one star.');
         return;
       }
       
@@ -254,7 +258,7 @@ calculateAverageRating(): void {
             // Reload product details to update the average rating
             this.loadProductDetails(this.Product!.id);
           }
-          alert('Review submitted successfully!');
+          this.toaster.success("Review submitted successfully","Success") ; 
           this.newReview.comment = '';
           this.newReview.rating = 0;
           this.showReviewForm = false;
