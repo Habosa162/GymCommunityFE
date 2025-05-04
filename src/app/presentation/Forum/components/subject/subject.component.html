@@ -1,66 +1,128 @@
-<div class="container my-5">
-    <!-- Create New Subject Button -->
-    <button class="btn btn-primary mb-4" (click)="onCreate()" *ngIf="!isEditMode && !subjectId && !iscreateMode">Add New Subject</button>
+<div class="page-container">
+  <div class="container">
+    <!-- Subject Header -->
+    <div class="subject-header">
+      <h2 class="fw-bold text-success" *ngIf="!isEditMode && !subjectId && !iscreateMode">
+        <i class="fa-solid fa-bookmark me-2"></i> Forum Subjects
+      </h2>
+      <button 
+        *ngIf="!isEditMode && !subjectId && !iscreateMode" 
+        class="btn btn-primary rounded-pill shadow hover-grow"
+        (click)="onCreate()">
+        <i class="fa-solid fa-plus me-1"></i> Add New Subject
+      </button>
+    </div>
   
-    <!-- Subjects List -->
-    <div *ngIf="!isEditMode && !subjectId && !iscreateMode" >
-      <h2 class="mb-4">All Subjects</h2>
-      <div class="row">
-        <div class=" mb-4" *ngFor="let sub of subs">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">{{ sub.name }}</h5>
-              <p class="card-text">{{ sub.description }}</p>
-              <div class="d-flex ">
-                <button class="btn btn-secondary mx-2" (click)="onDetails(sub.id)">Details</button>
-                <button class="btn btn-success mx-2" (click)="onEdit(sub.id)">Edit</button>
-                <button class="btn btn-danger mx-2" (click)="onDelete(sub.id)">Delete</button>
+    <!-- Subjects Grid List -->
+    <div *ngIf="!isEditMode && !subjectId && !iscreateMode">
+      <div class="subject-grid">
+        <div *ngFor="let sub of subs">
+          <div class="card shadow-lg border-0 rounded-4 hover-shadow subject-card">
+            <div class="card-body p-4">
+              <h5 class="card-title fw-bold mb-3">{{ sub.name }}</h5>
+              <p class="card-text text-muted">{{ sub.description }}</p>
+              <div class="card-actions d-flex gap-2">
+                <button class="btn btn-outline-dark rounded-pill" (click)="onDetails(sub.id)">
+                  <i class="fa-solid fa-eye me-1"></i> View
+                </button>
+                <button class="btn btn-outline-success rounded-pill" (click)="onEdit(sub.id)">
+                  <i class="fa-solid fa-edit me-1"></i> Edit
+                </button>
+                <button class="btn btn-outline-danger rounded-pill" (click)="onDelete(sub.id)">
+                  <i class="fa-solid fa-trash me-1"></i> Delete
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- No subjects found message -->
+      <div *ngIf="subs && subs.length === 0" class="text-center my-5">
+        <p class="text-muted">No subjects found. Create one to get started!</p>
+      </div>
     </div>
   
     <!-- Create/Edit Subject Form -->
-    <div *ngIf="isEditMode || iscreateMode">
-      <h2>{{ isEditMode ? 'Edit Subject' : 'Create Subject' }}</h2>
+    <div *ngIf="isEditMode || iscreateMode" class="card shadow-lg border-0 rounded-4 p-4 mb-4">
+      <h2 class="fw-bold mb-4">{{ isEditMode ? 'Edit Subject' : 'Create Subject' }}</h2>
       <form [formGroup]="subForm" (ngSubmit)="onSubmit()" class="mt-4">
         <div class="mb-3">
           <label for="name" class="form-label">Subject Name</label>
-          <input type="text" id="name" formControlName="name" class="form-control" placeholder="Enter name" />
-          <div *ngIf="this.subForm.controls['name'].invalid && this.subForm.controls['name'].touched" class="text-danger">
-            Subject Name is required.
+          <input 
+            type="text" 
+            id="name" 
+            formControlName="name" 
+            class="form-control shadow-sm" 
+            placeholder="Enter subject name" 
+          />
+          <div *ngIf="this.subForm.controls['name'].invalid && this.subForm.controls['name'].touched" class="text-danger mt-1">
+            <small>Subject Name is required.</small>
           </div>
         </div>
   
-        <div class="mb-3">
+        <div class="mb-4">
           <label for="description" class="form-label">Subject Description</label>
-          <input type="text" id="description" formControlName="description" class="form-control" placeholder="Enter description" />
-          <div *ngIf="this.subForm.controls['description'].invalid && this.subForm.controls['description'].touched" class="text-danger">
-            Subject Description is required.
+          <textarea
+            id="description" 
+            formControlName="description" 
+            class="form-control shadow-sm" 
+            rows="3"
+            placeholder="Enter subject description"
+          ></textarea>
+          <div *ngIf="this.subForm.controls['description'].invalid && this.subForm.controls['description'].touched" class="text-danger mt-1">
+            <small>Subject Description is required.</small>
           </div>
         </div>
   
-        <button type="submit" class="btn btn-primary" [disabled]="subForm.invalid">{{ isEditMode ? 'Update' : 'Create' }} Subject</button>
+        <div class="d-flex gap-3">
+          <button 
+            type="submit" 
+            class="btn btn-primary rounded-pill px-4" 
+            [disabled]="subForm.invalid">
+            <i class="fa-solid {{ isEditMode ? 'fa-save' : 'fa-plus' }} me-1"></i>
+            {{ isEditMode ? 'Update' : 'Create' }} Subject
+          </button>
+          <button 
+            class="btn btn-outline-dark rounded-pill px-4" 
+            (click)="onBack()">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back
+          </button>
+        </div>
       </form>
-  
-      <button class="btn btn-secondary mt-3" (click)="onBack()">Back to List</button>
     </div>
   
     <!-- Subject Details -->
-
     <div *ngIf="!isEditMode && subjectId && currentSubject" class="subject-details mt-4">
-        <h2 class="mb-4">Subject Details</h2>
-        <div class="card">
-            <div class="card-body">
-                <h3 class="card-title">{{ currentSubject.name }}</h3>
-                <p class="card-text"> {{ currentSubject.description }}</p>
+      <h2 class="fw-bold mb-4 text-success">Subject Details</h2>
+      <div class="card shadow-lg border-0 rounded-4 p-4">
+        <div class="card-body">
+          <h3 class="card-title fw-bold mb-3">{{ currentSubject.name }}</h3>
+          <p class="card-text text-muted">{{ currentSubject.description }}</p>
+          
+          <!-- Subject Stats (you can add these if you have them) -->
+          <div class="d-flex gap-4 mt-4 mb-3">
+            <div>
+              <i class="fa-solid fa-hashtag text-success me-2"></i>
+              <span class="text-muted">Subject ID: {{ currentSubject.id }}</span>
             </div>
-            
+          </div>
         </div>
+      </div>
       
-      <button class="btn btn-secondary my-3" (click)="onBack()">Back to List</button>
+      <div class="mt-4">
+        <button 
+          class="btn btn-outline-dark rounded-pill px-4" 
+          (click)="onBack()">
+          <i class="fa-solid fa-arrow-left me-1"></i> Back to Subjects
+        </button>
+        <button 
+          class="btn btn-outline-success rounded-pill px-4 ms-2" 
+          (click)="onEdit(currentSubject.id)">
+          <i class="fa-solid fa-edit me-1"></i> Edit Subject
+        </button>
+      </div>
     </div>
   </div>
+</div>
   

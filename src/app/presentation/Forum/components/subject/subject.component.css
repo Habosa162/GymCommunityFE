@@ -1,0 +1,202 @@
+/* Dark mode styles */
+:host-context(body.dark-mode) {
+  /* Container background */
+  .page-container {
+    background-color: #0f1012;
+    color: #e2e8f0;
+  }
+  
+  /* Card styles */
+  .card {
+    background-color: #191a1d;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    border: none;
+  }
+  
+  .card:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Text colors */
+  .text-muted,
+  .card-title,
+  .card-text,
+  h2,
+  h3,
+  h5,
+  p,
+  label,
+  small {
+    color: #e2e8f0 !important;
+  }
+
+  /* Form elements */
+  select.form-select,
+  input.form-control,
+  textarea.form-control {
+    background-color: #161818;
+    border-color: #4a5568;
+    color: #f7fafc;
+  }
+  
+  ::placeholder {
+    color: #a0aec0;
+  }
+
+  /* Button styles */
+  .btn-outline-dark {
+    color: #e2e8f0;
+    border-color: #4a5568;
+  }
+
+  .btn-outline-dark:hover {
+    background-color: #4a5568;
+    color: #f7fafc;
+  }
+  
+  .btn-outline-danger {
+    color: #f8d7da;
+  }
+  
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #ffffff;
+  }
+  
+  /* Container */
+  .container {
+    background-color: transparent;
+  }
+  
+  /* Text danger color */
+  .text-danger {
+    color: #ff6b6b !important;
+  }
+}
+
+/* Common styles for both light and dark mode */
+.card {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: none;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.subject-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.subject-card .card-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.subject-card .card-text {
+  flex-grow: 1;
+  margin-bottom: 1rem;
+}
+
+.subject-card .card-actions {
+  margin-top: auto;
+}
+
+/* Form Elements */
+select.form-select,
+input.form-control,
+textarea.form-control {
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+select.form-select:focus,
+input.form-control:focus,
+textarea.form-control:focus {
+  border-color: #32cd32;
+  box-shadow: 0 0 0 0.25rem rgba(50, 205, 50, 0.25);
+}
+
+.btn {
+  transition: all 0.3s ease;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.25rem;
+}
+
+.btn-success {
+  background-color: #32cd32;
+  border-color: #32cd32;
+}
+
+.btn-outline-success {
+  color: #32cd32;
+  border-color: #32cd32;
+}
+
+.btn-outline-success:hover {
+  background-color: #32cd32;
+  color: white;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #32cd32, #43e043);
+  border: none;
+  box-shadow: 0 4px 10px rgba(50, 205, 50, 0.3);
+}
+
+.subject-details .card {
+  border-left: 5px solid #32cd32;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.subject-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.subject-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.page-container {
+  min-height: 80vh;
+  border-radius: 1rem;
+  padding: 2rem;
+  background-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .subject-grid {
+    grid-template-columns: 1fr;
+  }
+}
