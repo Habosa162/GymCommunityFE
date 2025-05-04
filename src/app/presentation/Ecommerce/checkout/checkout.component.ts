@@ -98,19 +98,24 @@ export class CheckoutComponent {
       amount: this.totalPrice * 100,
       currency: "EGP",
       payment_methods: [4419883, 4437311, 4437297],
-      orderItems: this.cartItems,
+      orderItems: this.cartItems.map((item) => ({
+        name: item.name,
+        amount: item.price * 100, 
+        description: item.description,
+        quantity: item.quantity
+      })),
       billing_data: {
-        "apartment": "dumy",
-        "first_name": this.shipping.CustomerName ,  // First Name, Last Name, Phone number, & Email are mandatory fields within sending the intention request
-        "last_name": "Hany",
+        "apartment": "",
+        "first_name": this.shipping.CustomerName ,
+        "last_name": "Client",
         "street": this.shipping.ShippingAddress,
-        "building": "dumy",
+        "building": "",
         "phone_number": this.shipping.PhoneNumber,
-        "city": "dumy",
-        "country": "dumy",
+        "city": "",
+        "country": "",
         "email": "habosa@habosa.com",
-        "floor": "dumy",
-        "state": "dumy"
+        "floor": "",
+        "state": ""
       },
       extras: { id: "USER_ID" },
       redirection_url: `${FrontbaseUrl}/payment-success`,
@@ -187,7 +192,7 @@ export class CheckoutComponent {
   //   if (this.shipping.PhoneNumber) {
   //     // Remove all non-digit characters first
   //     let numbers = this.shipping.PhoneNumber.replace(/\D/g, '');
-      
+
   //     // Ensure it starts with 01 and has correct length
   //     if (numbers.startsWith('01') && numbers.length <= 11) {
   //       // Format with spaces for display (optional)
@@ -208,9 +213,9 @@ export class CheckoutComponent {
 
   blockSymbols(event: KeyboardEvent) {
     // Allow: backspace, delete, tab, escape, enter, arrows
-    if ([46, 8, 9, 27, 13, 110].includes(event.keyCode) || 
+    if ([46, 8, 9, 27, 13, 110].includes(event.keyCode) ||
         // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
-        (event.keyCode === 65 && event.ctrlKey === true) || 
+        (event.keyCode === 65 && event.ctrlKey === true) ||
         (event.keyCode === 67 && event.ctrlKey === true) ||
         (event.keyCode === 86 && event.ctrlKey === true) ||
         (event.keyCode === 88 && event.ctrlKey === true) ||
@@ -218,10 +223,10 @@ export class CheckoutComponent {
         (event.keyCode >= 35 && event.keyCode <= 39)) {
       return;
     }
-    
+
     // Ensure it's a number (0-9) or space (keyCode 32)
-    if ((event.keyCode < 48 || event.keyCode > 57) && 
-        (event.keyCode < 96 || event.keyCode > 105) && 
+    if ((event.keyCode < 48 || event.keyCode > 57) &&
+        (event.keyCode < 96 || event.keyCode > 105) &&
         event.keyCode !== 32) {
       event.preventDefault();
     }
@@ -235,6 +240,6 @@ export class CheckoutComponent {
     }
   }
 
-  
+
 
 }

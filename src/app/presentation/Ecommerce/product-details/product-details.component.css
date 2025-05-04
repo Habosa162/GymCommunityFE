@@ -48,7 +48,7 @@
 }
 
 :host-context(body.dark-mode) .rating-header h4 {
-  color: #1d1e1f;
+  color: white;
 }
 
 .average-rating {

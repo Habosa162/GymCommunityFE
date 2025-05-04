@@ -87,7 +87,7 @@
     </div>
 
     <!-- Review Form -->
-    <div *ngIf="showReviewForm && authService.isLoggedIn()" class="review-form-block">
+    <div *ngIf="showReviewForm && authService.isLoggedIn() && canReview" class="review-form-block">
       <h5>Write Your Review</h5>
       <form (ngSubmit)="submitReview()" #reviewForm="ngForm">
         <div class="form-group">

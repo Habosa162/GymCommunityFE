@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { AuthService } from './../../../services/auth.service';
 import { WishlistService } from './../../../services/Ecommerce/wishlist.service';
 import { CartService } from './../../../services/Ecommerce/cart.service';
@@ -39,7 +40,7 @@ export class ProductDetailsComponent implements OnInit {
   colors = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', 
             '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D'];
   
-
+  canReview!:boolean ; 
   constructor(
     private productService: ProductService,
     private activatedRoute: ActivatedRoute,
@@ -57,6 +58,7 @@ export class ProductDetailsComponent implements OnInit {
         this.loadReviews(+productId);
         this.newReview.productId = +productId; 
         this.loadWishlist();
+        this.getCanUserReview(Number(productId)) ;
       }
     });
   }
@@ -120,6 +122,13 @@ removeFromWishList(productId: number): void {
 }
 
 // reviews Methods
+private getCanUserReview(productId:number){
+  this.reviewService.getCanUserReview(productId).subscribe((res)=>{
+    this.canReview = res
+    console.log(`______________________UserCanReview__________________${res}`);
+    
+  })
+}
 private loadReviews(productId: number): void {
   this.reviewService.getReviews(productId).subscribe({
     next: (reviews) => {
@@ -303,6 +312,8 @@ calculateAverageRating(): void {
     getStarClass(star: number, rating: number): string {
       return (rating >= star) ? 'fa-solid text-warning' : 'fa-regular text-muted';
     }
+    
+
     
     // pagnation 
 
