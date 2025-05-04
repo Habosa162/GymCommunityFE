@@ -67,7 +67,7 @@
             <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden hover-card">
                 <div class="position-relative">
                     <img *ngIf="product.imageUrl" [src]="product.imageUrl" class="card-img-top object-fit-cover"
-                        alt="Product Image" style="height: 200px; object-fit: cover;">
+                        alt="Product Image">
                     <div class="position-absolute top-0 end-0 m-2">
                         <span class="badge" [ngClass]="product.stock > 0 ? 'bg-success' : 'bg-danger'">
                             {{ product.stock > 0 ? 'In Stock' : 'Out of Stock' }}

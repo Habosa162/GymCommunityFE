@@ -36,13 +36,12 @@
   <div class="row gy-4">
     <div class="col-md-4" *ngFor="let offer of offers">
       <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
-        <img *ngIf="offer.imageUrl" [src]="offer.imageUrl" class="card-img-top object-fit-cover" alt="Offer Image"
-          style="height: 180px; object-fit: cover;">
+        <img *ngIf="offer.imageUrl" [src]="offer.imageUrl" class="card-img-top object-fit-cover" alt="Offer Image">
         <div class="card-body d-flex flex-column">
           <h5 class="card-title fw-bold">{{ offer.title }}</h5>
           <p class="text-success fw-bold mb-1">${{ offer.price }}</p>
           <p class="mb-1"><span class="badge bg-primary">{{ offer.durationMonths }} months</span></p>
-          <p class="card-text text-muted mb-2" style="min-height: 48px;">{{ offer.desc }}</p>
+          <p class="card-text text-muted mb-2">{{ offer.desc }}</p>
           <div class="mt-auto d-flex gap-2">
             <button class="btn btn-outline-primary btn-sm" (click)="startEditOffer(offer)"><i class="fa fa-edit"></i>
               Edit</button>

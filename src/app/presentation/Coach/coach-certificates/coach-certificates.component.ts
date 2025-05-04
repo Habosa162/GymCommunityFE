@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Coachcertficate } from '../../../domain/models/CoachModels/coachcertficate.model';
@@ -17,6 +17,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './coach-certificates.component.css'
 })
 export class CoachCertificatesComponent implements OnInit {
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
   protofolioId!: number;
   certificates: Coachcertficate[] = [];
   selectedFile: File | null = null;
@@ -47,6 +49,9 @@ export class CoachCertificatesComponent implements OnInit {
     }
   }
 
+  triggerFileInput() {
+    this.fileInput.nativeElement.click();
+  }
   loadCertificates() {
     this.loading = true;
     this.error = null;
