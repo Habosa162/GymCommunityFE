@@ -223,7 +223,7 @@
       Discover my premium fitness products and supplements.
     </p>
     <ng-container *ngIf="coachproducts && coachproducts.length > 0">
-      <div class="row gy-4">
+      <!-- <div class="row gy-4">
         <div class="col-md-4" *ngFor="let product of coachproducts">
           <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
             <div class="position-relative">
@@ -276,6 +276,14 @@
               </div>
             </div>
           </div>
+        </div>
+      </div> -->
+      <div class="row g-3">
+        <div
+          *ngFor="let product of coachproducts"
+          class="col-xl-3 col-md-6 col-sm-12"
+        >
+          <app-product [product]="product"></app-product>
         </div>
       </div>
     </ng-container>

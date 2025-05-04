@@ -19,12 +19,13 @@ import { FrontbaseUrl } from '../../../services/enviroment';
 import { PaymentService } from '../../../services/Ecommerce/payment.service';
 import { SubscriptionToPlanService } from '../../../services/subscription-to-plan.service';
 import { ToastrService } from 'ngx-toastr';
+import { ProductComponent } from '../../Ecommerce/product/product.component';
 
 @Component({
   selector: 'app-coach-profile',
   templateUrl: './coach-profile.component.html',
   styleUrls: ['./coach-profile.component.css'],
-  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule , ProductComponent],
   standalone: true
 })
 export class CoachProfileComponent implements OnInit {
