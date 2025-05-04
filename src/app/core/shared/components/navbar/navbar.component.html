@@ -37,6 +37,9 @@
 
       </ul>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li *ngIf="authService.isLoggedIn()" class="nav-item">
+          <app-notification-bell></app-notification-bell>
+        </li>
 
         <li *ngIf="!authService.isLoggedIn()" class="nav-item">
           <a class="nav-link" routerLink="/login">Login</a>
