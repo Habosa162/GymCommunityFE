@@ -208,7 +208,7 @@ export const routes: Routes = [
   //Gym routes
   /// For Gym Owner
   {
-    path: 'gym-owner',
+    path: 'gym-owner/myGyms',
     component: GymOwnerDashboardComponent,
     canActivate: [AuthGuard, GymOwnerGuard],
   },
@@ -223,7 +223,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard, GymOwnerGuard],
   },
   {
-    path: 'gym-owner/dashboard/AllSub',
+    path: 'gym-owner/AllSub',
     component: GymSubscriptionsComponent,
     canActivate: [AuthGuard, GymOwnerGuard],
   },

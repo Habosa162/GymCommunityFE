@@ -10,7 +10,8 @@ export class GeolocationService {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           position => resolve(position),
-          error => reject(error)
+          error => reject(error),
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
         );
       } else {
         reject(new Error('Geolocation is not supported'));
