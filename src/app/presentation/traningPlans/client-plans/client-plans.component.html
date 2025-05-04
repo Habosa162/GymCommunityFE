@@ -186,22 +186,22 @@
                   <!-- Monday -->
                   <td
                     class="dark-bg"
-                    [class.has-plan]="week.hasWeekPlan && hasDayPlan(week, 1)"
-                    [class.crossed-out]="isDayCrossedOut(week, 1)"
+                    [class.has-plan]="week.hasWeekPlan && hasDayPlan(week, 2)"
+                    [class.crossed-out]="isDayCrossedOut(week, 2)"
                   >
                     <!-- Show Day Plan (if exists) -->
                     <div
-                      *ngIf="week.hasWeekPlan && hasDayPlan(week, 1)"
+                      *ngIf="week.hasWeekPlan && hasDayPlan(week, 2)"
                       class="day-plan-info"
                     >
                       <i
-                        *ngIf="getDayPlan(week, 1)?.parsedData?.isDone"
+                        *ngIf="getDayPlan(week, 2)?.parsedData?.isDone"
                         class="fa-solid fa-circle-check mb-2"
                         style="color: #32cd32"
                       ></i>
                       <i
                         *ngIf="
-                          getDayPlan(week, 1)?.parsedData?.isDone === false
+                          getDayPlan(week, 2)?.parsedData?.isDone === false
                         "
                         class="fa-solid fa-circle mb-2"
                       ></i>
@@ -264,9 +264,9 @@
                         >
                       </div> -->
                       <button
-                        *ngIf="!isDayCrossedOut(week, 1)"
+                        *ngIf="!isDayCrossedOut(week, 2)"
                         class="view-btn"
-                        (click)="viewDayDetails(week, 1)"
+                        (click)="viewDayDetails(week, 2)"
                       >
                         View Details
                       </button>
@@ -276,22 +276,22 @@
                   <!-- Tuesday -->
                   <td
                     class="hover-bg"
-                    [class.has-plan]="week.hasWeekPlan && hasDayPlan(week, 2)"
-                    [class.crossed-out]="isDayCrossedOut(week, 2)"
+                    [class.has-plan]="week.hasWeekPlan && hasDayPlan(week, 3)"
+                    [class.crossed-out]="isDayCrossedOut(week, 3)"
                   >
                     <!-- Show Day Plan (if exists) -->
                     <div
-                      *ngIf="week.hasWeekPlan && hasDayPlan(week, 2)"
+                      *ngIf="week.hasWeekPlan && hasDayPlan(week, 3)"
                       class="day-plan-info"
                     >
                       <i
-                        *ngIf="getDayPlan(week, 2)?.parsedData?.isDone"
+                        *ngIf="getDayPlan(week, 3)?.parsedData?.isDone"
                         class="fa-solid fa-circle-check mb-2"
                         style="color: #32cd32"
                       ></i>
                       <i
                         *ngIf="
-                          getDayPlan(week, 2)?.parsedData?.isDone === false
+                          getDayPlan(week, 3)?.parsedData?.isDone === false
                         "
                         class="fa-solid fa-circle mb-2"
                       ></i>
@@ -354,40 +354,6 @@
                         >
                       </div> -->
                       <button
-                        *ngIf="!isDayCrossedOut(week, 2)"
-                        class="view-btn"
-                        (click)="viewDayDetails(week, 2)"
-                      >
-                        View Details
-                      </button>
-                    </div>
-                  </td>
-
-                  <!-- Wednesday -->
-                  <td
-                    class="dark-bg"
-                    [class.has-plan]="week.hasWeekPlan && hasDayPlan(week, 3)"
-                    [class.crossed-out]="isDayCrossedOut(week, 3)"
-                  >
-                    <!-- Show Day Plan (if exists) -->
-                    <div
-                      *ngIf="week.hasWeekPlan && hasDayPlan(week, 3)"
-                      class="day-plan-info"
-                    >
-                      <i
-                        *ngIf="getDayPlan(week, 3)?.parsedData?.isDone"
-                        class="fa-solid fa-circle-check mb-2"
-                        style="color: #32cd32"
-                      ></i>
-                      <i
-                        *ngIf="
-                          getDayPlan(week, 3)?.parsedData?.isDone === false
-                        "
-                        class="fa-solid fa-circle mb-2"
-                      ></i>
-                      <h5>Wednesday</h5>
-
-                      <button
                         *ngIf="!isDayCrossedOut(week, 3)"
                         class="view-btn"
                         (click)="viewDayDetails(week, 3)"
@@ -397,9 +363,9 @@
                     </div>
                   </td>
 
-                  <!-- Thursday -->
+                  <!-- Wednesday -->
                   <td
-                    class="hover-bg"
+                    class="dark-bg"
                     [class.has-plan]="week.hasWeekPlan && hasDayPlan(week, 4)"
                     [class.crossed-out]="isDayCrossedOut(week, 4)"
                   >
@@ -419,7 +385,7 @@
                         "
                         class="fa-solid fa-circle mb-2"
                       ></i>
-                      <h5>Thursday</h5>
+                      <h5>Wednesday</h5>
 
                       <button
                         *ngIf="!isDayCrossedOut(week, 4)"
@@ -431,9 +397,9 @@
                     </div>
                   </td>
 
-                  <!-- Friday -->
+                  <!-- Thursday -->
                   <td
-                    class="dark-bg"
+                    class="hover-bg"
                     [class.has-plan]="week.hasWeekPlan && hasDayPlan(week, 5)"
                     [class.crossed-out]="isDayCrossedOut(week, 5)"
                   >
@@ -453,7 +419,7 @@
                         "
                         class="fa-solid fa-circle mb-2"
                       ></i>
-                      <h5>Friday</h5>
+                      <h5>Thursday</h5>
 
                       <button
                         *ngIf="!isDayCrossedOut(week, 5)"
@@ -465,9 +431,9 @@
                     </div>
                   </td>
 
-                  <!-- Saturday -->
+                  <!-- Friday -->
                   <td
-                    class="hover-bg"
+                    class="dark-bg"
                     [class.has-plan]="week.hasWeekPlan && hasDayPlan(week, 6)"
                     [class.crossed-out]="isDayCrossedOut(week, 6)"
                   >
@@ -487,7 +453,8 @@
                         "
                         class="fa-solid fa-circle mb-2"
                       ></i>
-                      <h5>Saturday</h5>
+                      <h5>Friday</h5>
+
                       <button
                         *ngIf="!isDayCrossedOut(week, 6)"
                         class="view-btn"
@@ -498,9 +465,9 @@
                     </div>
                   </td>
 
-                  <!-- Sunday -->
+                  <!-- Saturday -->
                   <td
-                    class="dark-bg"
+                    class="hover-bg"
                     [class.has-plan]="week.hasWeekPlan && hasDayPlan(week, 7)"
                     [class.crossed-out]="isDayCrossedOut(week, 7)"
                   >
@@ -520,11 +487,44 @@
                         "
                         class="fa-solid fa-circle mb-2"
                       ></i>
-                      <h5>Sunday</h5>
+                      <h5>Saturday</h5>
                       <button
                         *ngIf="!isDayCrossedOut(week, 7)"
                         class="view-btn"
                         (click)="viewDayDetails(week, 7)"
+                      >
+                        View Details
+                      </button>
+                    </div>
+                  </td>
+
+                  <!-- Sunday -->
+                  <td
+                    class="dark-bg"
+                    [class.has-plan]="week.hasWeekPlan && hasDayPlan(week, 1)"
+                    [class.crossed-out]="isDayCrossedOut(week, 1)"
+                  >
+                    <!-- Show Day Plan (if exists) -->
+                    <div
+                      *ngIf="week.hasWeekPlan && hasDayPlan(week, 1)"
+                      class="day-plan-info"
+                    >
+                      <i
+                        *ngIf="getDayPlan(week, 1)?.parsedData?.isDone"
+                        class="fa-solid fa-circle-check mb-2"
+                        style="color: #32cd32"
+                      ></i>
+                      <i
+                        *ngIf="
+                          getDayPlan(week, 1)?.parsedData?.isDone === false
+                        "
+                        class="fa-solid fa-circle mb-2"
+                      ></i>
+                      <h5>Sunday</h5>
+                      <button
+                        *ngIf="!isDayCrossedOut(week, 1)"
+                        class="view-btn"
+                        (click)="viewDayDetails(week, 1)"
                       >
                         View Details
                       </button>

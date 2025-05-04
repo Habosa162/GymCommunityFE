@@ -814,7 +814,16 @@ export class TrainingPlanComponent implements OnInit {
 
     // Calculate date for this day based on week's start date
     const dayDate = new Date(week.startDate);
-    dayDate.setDate(dayDate.getDate() + dayNumber); // Adjust the date based on the day number
+    
+    // Get the day of week number for the start date (1-7, where 1 is Monday)
+    const startDayOfWeek = this.getDayOfWeekNumber(dayDate);
+    
+    // Calculate the number of days to add
+    // If we want Sunday (1) and start day is Monday (2), we need to add 6 days
+    // If we want Monday (2) and start day is Monday (2), we add 0 days
+    // And so on...
+    const daysToAdd = (dayNumber - startDayOfWeek + 7) % 7;
+    dayDate.setDate(dayDate.getDate() + daysToAdd);
 
     // Reset and prefill the form
     this.newDayPlan = {

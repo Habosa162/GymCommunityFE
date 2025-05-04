@@ -143,140 +143,6 @@
                   [class.hover-bg]="
                     (!week.hasWeekPlan && isWeekHovered(week.weekNumber)) ||
                     (week.hasWeekPlan &&
-                      !hasDayPlan(week, 1) &&
-                      isDayHovered(week.weekNumber, 1))
-                  "
-                  [class.has-plan]="week.hasWeekPlan"
-                  [class.crossed-out]="isDayCrossedOut(week, 1)"
-                  (mouseenter)="
-                    week.hasWeekPlan ? setHoveredDay(week.weekNumber, 1) : null
-                  "
-                  (mouseleave)="
-                    week.hasWeekPlan
-                      ? setHoveredDay(week.weekNumber, null)
-                      : null
-                  "
-                  (click)="
-                    !week.hasWeekPlan && isWeekHovered(week.weekNumber)
-                      ? openAddWeekPopup(week)
-                      : week.hasWeekPlan &&
-                        !hasDayPlan(week, 1) &&
-                        isDayHovered(week.weekNumber, 1) &&
-                        !isDayCrossedOut(week, 1)
-                      ? openAddDayPopup(week, 1)
-                      : null
-                  "
-                >
-                  <!-- Add Day Button (if has week plan but no day plan) -->
-                  <div
-                    *ngIf="
-                      week.hasWeekPlan &&
-                      !hasDayPlan(week, 1) &&
-                      isDayHovered(week.weekNumber, 1) &&
-                      !isDayCrossedOut(week, 1)
-                    "
-                    class="add-day-button"
-                  >
-                    <i
-                      class="fa-solid fa-circle-plus"
-                      style="color: #11ff00"
-                    ></i>
-                    <h5>Add Day Plan</h5>
-                  </div>
-
-                  <!-- Show Day Plan (if exists) -->
-                  <div
-                    *ngIf="week.hasWeekPlan && hasDayPlan(week, 1)"
-                    class="day-plan-info"
-                  >
-                    <h5>Monday</h5>
-                    <div
-                      *ngIf="
-                        getDayPlan(week, 1)?.parsedData?.exercises?.length > 0
-                      "
-                      class="plan-summary"
-                    >
-                      <span class="plan-type"
-                        >Exercises:
-                        {{
-                          getDayPlan(week, 1)?.parsedData?.exercises?.length
-                        }}</span
-                      >
-                      <!-- <span
-                        *ngIf="
-                          getDayPlan(week, 1)?.parsedData?.exercises?.length > 0
-                        "
-                        class="plan-item-name"
-                      >
-                        {{
-                          getDayPlan(week, 1)?.parsedData?.exercises[0]
-                            ?.exerciseName
-                        }}
-                        <span
-                          *ngIf="
-                            getDayPlan(week, 1)?.parsedData?.exercises?.length >
-                            1
-                          "
-                          >+{{
-                            getDayPlan(week, 1)?.parsedData?.exercises?.length -
-                              1
-                          }}
-                          more</span
-                        >
-                      </span> -->
-                    </div>
-                    <div
-                      *ngIf="getDayPlan(week, 1)?.parsedData?.meals?.length > 0"
-                      class="plan-summary"
-                    >
-                      <span class="plan-type"
-                        >Meals:
-                        {{
-                          getDayPlan(week, 1)?.parsedData?.meals?.length
-                        }}</span
-                      >
-                      <!-- <span
-                        *ngIf="
-                          getDayPlan(week, 1)?.parsedData?.meals?.length > 0
-                        "
-                        class="plan-item-name"
-                      >
-                        {{
-                          getDayPlan(week, 1)?.parsedData?.meals[0]?.mealName
-                        }}
-                        <span
-                          *ngIf="
-                            getDayPlan(week, 1)?.parsedData?.meals?.length > 1
-                          "
-                          >+{{
-                            getDayPlan(week, 1)?.parsedData?.meals?.length - 1
-                          }}
-                          more</span
-                        >
-                      </span> -->
-                    </div>
-                    <!-- <small *ngIf="getDayPlan(week, 1)?.extraTips">{{
-                      getDayPlan(week, 1)?.extraTips
-                    }}</small> -->
-                  </div>
-                  <!-- Add Week Button (if no week plan) -->
-                  <div
-                    *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)"
-                    class="add-week-button"
-                  >
-                    <h5>Press</h5>
-                  </div>
-                </td>
-
-                <!-- Tuesday -->
-                <td
-                  class="hover-bg"
-                  [class.week-disabled]="
-                    !week.hasWeekPlan && !isWeekHovered(week.weekNumber)
-                  "
-                  [class.hover-bg]="
-                    (!week.hasWeekPlan && isWeekHovered(week.weekNumber)) ||
-                    (week.hasWeekPlan &&
                       !hasDayPlan(week, 2) &&
                       isDayHovered(week.weekNumber, 2))
                   "
@@ -323,7 +189,7 @@
                     *ngIf="week.hasWeekPlan && hasDayPlan(week, 2)"
                     class="day-plan-info"
                   >
-                    <h5>Tuesday</h5>
+                    <h5>Monday</h5>
                     <div
                       *ngIf="
                         getDayPlan(week, 2)?.parsedData?.exercises?.length > 0
@@ -336,6 +202,28 @@
                           getDayPlan(week, 2)?.parsedData?.exercises?.length
                         }}</span
                       >
+                      <!-- <span
+                        *ngIf="
+                          getDayPlan(week, 1)?.parsedData?.exercises?.length > 0
+                        "
+                        class="plan-item-name"
+                      >
+                        {{
+                          getDayPlan(week, 1)?.parsedData?.exercises[0]
+                            ?.exerciseName
+                        }}
+                        <span
+                          *ngIf="
+                            getDayPlan(week, 1)?.parsedData?.exercises?.length >
+                            1
+                          "
+                          >+{{
+                            getDayPlan(week, 1)?.parsedData?.exercises?.length -
+                              1
+                          }}
+                          more</span
+                        >
+                      </span> -->
                     </div>
                     <div
                       *ngIf="getDayPlan(week, 2)?.parsedData?.meals?.length > 0"
@@ -347,9 +235,28 @@
                           getDayPlan(week, 2)?.parsedData?.meals?.length
                         }}</span
                       >
+                      <!-- <span
+                        *ngIf="
+                          getDayPlan(week, 1)?.parsedData?.meals?.length > 0
+                        "
+                        class="plan-item-name"
+                      >
+                        {{
+                          getDayPlan(week, 1)?.parsedData?.meals[0]?.mealName
+                        }}
+                        <span
+                          *ngIf="
+                            getDayPlan(week, 1)?.parsedData?.meals?.length > 1
+                          "
+                          >+{{
+                            getDayPlan(week, 1)?.parsedData?.meals?.length - 1
+                          }}
+                          more</span
+                        >
+                      </span> -->
                     </div>
-                    <!-- <small *ngIf="getDayPlan(week, 2)?.extraTips">{{
-                      getDayPlan(week, 2)?.extraTips
+                    <!-- <small *ngIf="getDayPlan(week, 1)?.extraTips">{{
+                      getDayPlan(week, 1)?.extraTips
                     }}</small> -->
                   </div>
                   <!-- Add Week Button (if no week plan) -->
@@ -357,13 +264,13 @@
                     *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)"
                     class="add-week-button"
                   >
-                    <h5>anywhere</h5>
+                    <h5>Press</h5>
                   </div>
                 </td>
 
-                <!-- Wednesday -->
+                <!-- Tuesday -->
                 <td
-                  class="dark-bg"
+                  class="hover-bg"
                   [class.week-disabled]="
                     !week.hasWeekPlan && !isWeekHovered(week.weekNumber)
                   "
@@ -416,7 +323,7 @@
                     *ngIf="week.hasWeekPlan && hasDayPlan(week, 3)"
                     class="day-plan-info"
                   >
-                    <h5>Wednesday</h5>
+                    <h5>Tuesday</h5>
                     <div
                       *ngIf="
                         getDayPlan(week, 3)?.parsedData?.exercises?.length > 0
@@ -441,8 +348,8 @@
                         }}</span
                       >
                     </div>
-                    <!-- <small *ngIf="getDayPlan(week, 3)?.extraTips">{{
-                      getDayPlan(week, 3)?.extraTips
+                    <!-- <small *ngIf="getDayPlan(week, 2)?.extraTips">{{
+                      getDayPlan(week, 2)?.extraTips
                     }}</small> -->
                   </div>
                   <!-- Add Week Button (if no week plan) -->
@@ -450,13 +357,13 @@
                     *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)"
                     class="add-week-button"
                   >
-                    <h5>here</h5>
+                    <h5>anywhere</h5>
                   </div>
                 </td>
 
-                <!-- Thursday -->
+                <!-- Wednesday -->
                 <td
-                  class="hover-bg"
+                  class="dark-bg"
                   [class.week-disabled]="
                     !week.hasWeekPlan && !isWeekHovered(week.weekNumber)
                   "
@@ -509,7 +416,7 @@
                     *ngIf="week.hasWeekPlan && hasDayPlan(week, 4)"
                     class="day-plan-info"
                   >
-                    <h5>Thursday</h5>
+                    <h5>Wednesday</h5>
                     <div
                       *ngIf="
                         getDayPlan(week, 4)?.parsedData?.exercises?.length > 0
@@ -534,8 +441,8 @@
                         }}</span
                       >
                     </div>
-                    <!-- <small *ngIf="getDayPlan(week, 4)?.extraTips">{{
-                      getDayPlan(week, 4)?.extraTips
+                    <!-- <small *ngIf="getDayPlan(week, 3)?.extraTips">{{
+                      getDayPlan(week, 3)?.extraTips
                     }}</small> -->
                   </div>
                   <!-- Add Week Button (if no week plan) -->
@@ -543,13 +450,13 @@
                     *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)"
                     class="add-week-button"
                   >
-                    <h5>to</h5>
+                    <h5>here</h5>
                   </div>
                 </td>
 
-                <!-- Friday -->
+                <!-- Thursday -->
                 <td
-                  class="dark-bg"
+                  class="hover-bg"
                   [class.week-disabled]="
                     !week.hasWeekPlan && !isWeekHovered(week.weekNumber)
                   "
@@ -602,7 +509,7 @@
                     *ngIf="week.hasWeekPlan && hasDayPlan(week, 5)"
                     class="day-plan-info"
                   >
-                    <h5>Friday</h5>
+                    <h5>Thursday</h5>
                     <div
                       *ngIf="
                         getDayPlan(week, 5)?.parsedData?.exercises?.length > 0
@@ -627,8 +534,8 @@
                         }}</span
                       >
                     </div>
-                    <!-- <small *ngIf="getDayPlan(week, 5)?.extraTips">{{
-                      getDayPlan(week, 5)?.extraTips
+                    <!-- <small *ngIf="getDayPlan(week, 4)?.extraTips">{{
+                      getDayPlan(week, 4)?.extraTips
                     }}</small> -->
                   </div>
                   <!-- Add Week Button (if no week plan) -->
@@ -636,13 +543,13 @@
                     *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)"
                     class="add-week-button"
                   >
-                    <h5>Add</h5>
+                    <h5>to</h5>
                   </div>
                 </td>
 
-                <!-- Saturday -->
+                <!-- Friday -->
                 <td
-                  class="hover-bg"
+                  class="dark-bg"
                   [class.week-disabled]="
                     !week.hasWeekPlan && !isWeekHovered(week.weekNumber)
                   "
@@ -695,7 +602,7 @@
                     *ngIf="week.hasWeekPlan && hasDayPlan(week, 6)"
                     class="day-plan-info"
                   >
-                    <h5>Saturday</h5>
+                    <h5>Friday</h5>
                     <div
                       *ngIf="
                         getDayPlan(week, 6)?.parsedData?.exercises?.length > 0
@@ -720,8 +627,8 @@
                         }}</span
                       >
                     </div>
-                    <!-- <small *ngIf="getDayPlan(week, 6)?.extraTips">{{
-                      getDayPlan(week, 6)?.extraTips
+                    <!-- <small *ngIf="getDayPlan(week, 5)?.extraTips">{{
+                      getDayPlan(week, 5)?.extraTips
                     }}</small> -->
                   </div>
                   <!-- Add Week Button (if no week plan) -->
@@ -729,13 +636,13 @@
                     *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)"
                     class="add-week-button"
                   >
-                    <h5>the</h5>
+                    <h5>Add</h5>
                   </div>
                 </td>
 
-                <!-- Sunday -->
+                <!-- Saturday -->
                 <td
-                  class="dark-bg"
+                  class="hover-bg"
                   [class.week-disabled]="
                     !week.hasWeekPlan && !isWeekHovered(week.weekNumber)
                   "
@@ -788,7 +695,7 @@
                     *ngIf="week.hasWeekPlan && hasDayPlan(week, 7)"
                     class="day-plan-info"
                   >
-                    <h5>Sunday</h5>
+                    <h5>Saturday</h5>
                     <div
                       *ngIf="
                         getDayPlan(week, 7)?.parsedData?.exercises?.length > 0
@@ -810,6 +717,99 @@
                         >Meals:
                         {{
                           getDayPlan(week, 7)?.parsedData?.meals?.length
+                        }}</span
+                      >
+                    </div>
+                    <!-- <small *ngIf="getDayPlan(week, 6)?.extraTips">{{
+                      getDayPlan(week, 6)?.extraTips
+                    }}</small> -->
+                  </div>
+                  <!-- Add Week Button (if no week plan) -->
+                  <div
+                    *ngIf="!week.hasWeekPlan && isWeekHovered(week.weekNumber)"
+                    class="add-week-button"
+                  >
+                    <h5>the</h5>
+                  </div>
+                </td>
+
+                <!-- Sunday -->
+                <td
+                  class="dark-bg"
+                  [class.week-disabled]="
+                    !week.hasWeekPlan && !isWeekHovered(week.weekNumber)
+                  "
+                  [class.hover-bg]="
+                    (!week.hasWeekPlan && isWeekHovered(week.weekNumber)) ||
+                    (week.hasWeekPlan &&
+                      !hasDayPlan(week, 1) &&
+                      isDayHovered(week.weekNumber, 1))
+                  "
+                  [class.has-plan]="week.hasWeekPlan"
+                  [class.crossed-out]="isDayCrossedOut(week, 1)"
+                  (mouseenter)="
+                    week.hasWeekPlan ? setHoveredDay(week.weekNumber, 1) : null
+                  "
+                  (mouseleave)="
+                    week.hasWeekPlan
+                      ? setHoveredDay(week.weekNumber, null)
+                      : null
+                  "
+                  (click)="
+                    !week.hasWeekPlan && isWeekHovered(week.weekNumber)
+                      ? openAddWeekPopup(week)
+                      : week.hasWeekPlan &&
+                        !hasDayPlan(week, 1) &&
+                        isDayHovered(week.weekNumber, 1) &&
+                        !isDayCrossedOut(week, 1)
+                      ? openAddDayPopup(week, 1)
+                      : null
+                  "
+                >
+                  <!-- Add Day Button (if has week plan but no day plan) -->
+                  <div
+                    *ngIf="
+                      week.hasWeekPlan &&
+                      !hasDayPlan(week, 1) &&
+                      isDayHovered(week.weekNumber, 1) &&
+                      !isDayCrossedOut(week, 1)
+                    "
+                    class="add-day-button"
+                  >
+                    <i
+                      class="fa-solid fa-circle-plus"
+                      style="color: #11ff00"
+                    ></i>
+                    <h5>Add Day Plan</h5>
+                  </div>
+
+                  <!-- Show Day Plan (if exists) -->
+                  <div
+                    *ngIf="week.hasWeekPlan && hasDayPlan(week, 1)"
+                    class="day-plan-info"
+                  >
+                    <h5>Sunday</h5>
+                    <div
+                      *ngIf="
+                        getDayPlan(week, 1)?.parsedData?.exercises?.length > 0
+                      "
+                      class="plan-summary"
+                    >
+                      <span class="plan-type"
+                        >Exercises:
+                        {{
+                          getDayPlan(week, 1)?.parsedData?.exercises?.length
+                        }}</span
+                      >
+                    </div>
+                    <div
+                      *ngIf="getDayPlan(week, 1)?.parsedData?.meals?.length > 0"
+                      class="plan-summary"
+                    >
+                      <span class="plan-type"
+                        >Meals:
+                        {{
+                          getDayPlan(week, 1)?.parsedData?.meals?.length
                         }}</span
                       >
                     </div>
@@ -900,7 +900,7 @@
             class="form-control d-none"
             readonly
           />
-          <p class="fs-5">{{ newDayPlan.dayDate }}</p>
+          <!-- <p class="fs-5">{{ newDayPlan.dayDate }}</p> -->
         </div>
         <div class="d-flex justify-content-between mb-3">
           <h5 class="text-center">
