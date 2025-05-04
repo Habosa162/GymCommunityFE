@@ -89,33 +89,66 @@ this.productService.getOneProduct(productId).subscribe((res) => {
       reader.readAsDataURL(this.selectedfile);
     }
   }
-
+  
   onUpdateProduct(): void {
+    // 1. Create FormData
     const formData = new FormData();
-    formData.append('id', this.updatedProduct.id.toString());
-    formData.append('Name', this.updatedProduct.name || '');
-    formData.append('Description', this.updatedProduct.description || '');
-    formData.append('Price', this.updatedProduct.price.toString());
-    formData.append('Stock', this.updatedProduct.stock.toString());
-    formData.append('AverageRating', (this.updatedProduct.averageRating ?? 3).toString());
-    if (this.updatedProduct.categoryID)
-      formData.append('categoryID', this.updatedProduct.categoryID.toString());
-    if (this.updatedProduct.brandId)
-      formData.append('brandId', this.updatedProduct.brandId.toString());
-    if (this.selectedfile) {
-      formData.append('productImg', this.selectedfile);
-    }
-
-    console.log(formData);
+  
+    // 2. Append product data as a JSON string
+    const productData = {
+      Id: this.updatedProduct.id,
+      Name: this.updatedProduct.name,
+      Description: this.updatedProduct.description,
+      Price: this.updatedProduct.price,
+      Stock: this.updatedProduct.stock,
+      CategoryID: this.updatedProduct.categoryID,
+      BrandId: this.updatedProduct.brandId,
+      ImageUrl: this.updatedProduct.imageUrl || '',
+      AverageRating: this.updatedProduct.averageRating || 0,
+      ReviewCount: this.updatedProduct.reviewCount || 0
+    };
     
-    this.productService.updateProduct(this.updatedProduct.id,formData).subscribe({
+    formData.append('productDTO', JSON.stringify(productData));
+  
+    // 3. Handle image file
+    if (this.selectedfile) {
+      formData.append('productImg', this.selectedfile, this.selectedfile.name);
+    } else {
+      // If no new image is selected, we still need to send the existing image URL
+      // Add this line to explicitly indicate no file is being uploaded
+      formData.append('productImg', new File([], 'empty'));
+    }
+  
+    // 4. Debug: Log FormData contents
+    console.log('FormData Contents:');
+    formData.forEach((value, key) => {
+      console.log(key, value);
+    });
+  
+    // 5. Make the request
+    this.productService.updateProduct(this.updatedProduct.id, formData).subscribe({
       next: (response) => {
-        console.log(response);
-        this.toastrService.success('Product updated successfully!', 'Success');
+        this.toastrService.success('Product updated successfully!');
       },
       error: (error) => {
-        this.toastrService.error('Failed to update product.', 'Error');
+        console.error('Full error:', error);
+        this.toastrService.error(`Update failed: ${this.getErrorDetails(error)}`);
       }
     });
   }
+  private getErrorDetails(error: any): string {
+    if (error.error) {
+        // Handle validation errors
+        if (error.error.errors) {
+            return Object.entries(error.error.errors)
+                .map(([field, errors]) => `${field}: ${(errors as string[]).join(', ')}`)
+                .join('; ');
+        }
+        // Handle other structured errors
+        if (error.error.message) return error.error.message;
+        if (typeof error.error === 'string') return error.error;
+        return JSON.stringify(error.error);
+    }
+    return error.message || 'Unknown error occurred';
+}
 }

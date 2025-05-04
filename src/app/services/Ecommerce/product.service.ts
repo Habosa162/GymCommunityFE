@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { baseUrl } from '../enviroment';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Product } from '../../domain/models/Ecommerce/product.model';
 import { ToastrService } from 'ngx-toastr';
 
@@ -65,8 +65,16 @@ export class ProductService {
   getProductsByCategory(categoryId: number): Observable<Product[]> {
     return this.HttpClient.get<Product[]>(`${this.apiUrl}/by-category/${categoryId}`);
   }
-  updateProduct(productId:number,Product: FormData): Observable<any> {
-    return this.HttpClient.put(`${this.apiUrl}/${productId}`, Product);
+  updateProduct(productId: number, formData: FormData): Observable<any> {
+    return this.HttpClient.put(`${this.apiUrl}/${productId}`, formData, { 
+      reportProgress: true,  // Optional: for tracking upload progress
+      observe: 'response'    // Get full response including headers
+    }).pipe(
+      catchError(error => {
+        console.error('Detailed error:', error);
+        return throwError(() => error);
+      })
+    );
   }
   deleteProduct(id: number): Observable<any> {
     return this.HttpClient.delete(`${this.apiUrl}/${id}`);
