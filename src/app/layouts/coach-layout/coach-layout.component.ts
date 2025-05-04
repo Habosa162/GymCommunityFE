@@ -1,16 +1,16 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
-  OnInit,
-  HostListener,
-  ViewChild,
   ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { NavbarComponent } from '../../core/shared/components/navbar/navbar.component';
 import { SideBarComponent } from '../../presentation/admin/side-bar/side-bar.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-coach-layout',
@@ -34,6 +34,22 @@ export class CoachLayoutComponent implements OnInit {
   userImage = '';
   isDarkMode = false;
   coachId = '';
+  showNotifications = false;
+  notifications = [
+    {
+      id: 1,
+      message: 'New message from client',
+      time: '5 min ago',
+      read: false,
+    },
+    {
+      id: 2,
+      message: 'Training session scheduled',
+      time: '1 hour ago',
+      read: false,
+    },
+    { id: 3, message: 'New product order', time: 'Yesterday', read: true },
+  ];
 
   @ViewChild('profileDropdown') profileDropdown!: ElementRef;
 
@@ -49,7 +65,7 @@ export class CoachLayoutComponent implements OnInit {
   ngOnInit(): void {
     this.checkAuthentication();
     this.loadUserData();
-    // this.checkDarkModePreference();
+    this.checkDarkModePreference();
   }
 
   private checkAuthentication(): void {
@@ -103,6 +119,27 @@ export class CoachLayoutComponent implements OnInit {
 
   toggleProfileDropdown(): void {
     this.isProfileDropdownOpen = !this.isProfileDropdownOpen;
+    if (this.isProfileDropdownOpen) {
+      this.showNotifications = false;
+    }
+  }
+
+  toggleNotifications(): void {
+    this.showNotifications = !this.showNotifications;
+    if (this.showNotifications) {
+      this.isProfileDropdownOpen = false;
+    }
+  }
+
+  markNotificationAsRead(id: number): void {
+    const notification = this.notifications.find((n) => n.id === id);
+    if (notification) {
+      notification.read = true;
+    }
+  }
+
+  getUnreadCount(): number {
+    return this.notifications.filter((n) => !n.read).length;
   }
 
   logout(): void {
@@ -117,6 +154,12 @@ export class CoachLayoutComponent implements OnInit {
       !this.profileDropdown.nativeElement.contains(event.target)
     ) {
       this.isProfileDropdownOpen = false;
+    }
+
+    // Close notifications dropdown when clicking outside
+    const target = event.target as HTMLElement;
+    if (!target.closest('.notifications-dropdown')) {
+      this.showNotifications = false;
     }
   }
 }
