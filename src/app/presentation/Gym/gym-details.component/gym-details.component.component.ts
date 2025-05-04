@@ -200,7 +200,7 @@ export class GymDetailsComponent implements OnInit {
   }
 
   viewCoachPortfolio(coachId: string): void {
-    this.router.navigate(['/profile', coachId]);
+    this.router.navigate(['/coach/profile/', coachId]);
   }
 
   // Plan Methods
