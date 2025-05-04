@@ -5,6 +5,12 @@
     background-color: #191a1d;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   }
+  .likeText{
+    color:white
+  }
+  .dislikeText{
+    color: white;
+  }
   .comment-box {
     background-color: #222222;
   }

@@ -103,20 +103,45 @@
       </div>
 
       <div class="row mt-4" *ngIf="order.shipping?.latitude && order.shipping?.longitude">
-        <div class="col-12">
-          <h4>Delivery Location</h4>
-          <div class="map-container bg-light p-3 rounded">
-            <div class="row">
-              <div class="col-md-6">
-                <p><strong>Latitude:</strong> {{ order.shipping.latitude }}</p>
-                <p><strong>Longitude:</strong> {{ order.shipping.longitude }}</p>
-              </div>
-              <div class="col-md-6">
-                <!-- Map placeholder - integrate with Google Maps or similar in production -->
-                <div class="text-center p-4 bg-secondary text-white rounded">
-                  <i class="bi bi-map fs-1"></i>
-                  <p class="mt-2">Delivery location map</p>
+        <div class="col-12 mb-4">
+          <h4 class="mb-3">Delivery Location</h4>
+          <div class="map-container border p-3 rounded bg-light">
+            <div class="row g-3 align-items-center">
+              <!-- Coordinates Section -->
+              <div class="col-md-5">
+                <div class="coordinates-card p-3 h-100">
+                  <h4 class="fw-bold mb-3">Delivery Coordinates</h4>
+                  <div class="mb-2">
+                    <span class="badge bg-primary me-2">Latitude</span>
+                    <span class="font-monospace">{{ order.shipping.latitude }}</span>
+                  </div>
+                  <div class="mb-2">
+                    <span class="badge bg-primary me-2">Longitude</span>
+                    <span class="font-monospace">{{ order.shipping.longitude }}</span>
+                  </div>
+                  <button class="btn btn-sm btn-outline-primary mt-2" (click)="copyCoordinates()">
+                    <i class="bi bi-clipboard"></i> Copy Coordinates
+                  </button>
                 </div>
+              </div>
+        
+              <!-- Map Section -->
+              <div class="col-md-7">
+                <div class="map-wrapper rounded overflow-hidden" style="height: 200px;">
+                  <div
+                      class="rounded-4 shadow"
+                      id="map"
+                      style="height: 400px; width: 100%; margin-bottom: 20px">
+                  </div>
+
+                  <!-- <div #mapContainer style="height: 200px; width: 200%;" class="rounded"></div> -->
+                  <!-- Fallback if maps not loaded -->
+                  <div *ngIf="!mapsLoaded" class="text-center p-4 bg-light text-muted h-100 d-flex flex-column justify-content-center">
+                    <i class="bi bi-map fs-1 text-muted"></i>
+                    <p class="mt-2 mb-0">Loading delivery location map...</p>
+                  </div>
+                </div>
+              
               </div>
             </div>
           </div>
