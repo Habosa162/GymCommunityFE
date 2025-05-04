@@ -571,4 +571,39 @@ main {
   margin-bottom: 16px;
 }
 
+.description-section {
+  background: rgba(248, 249, 250, 0.8);
+  border-radius: 12px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.description-section:hover {
+  background: rgba(248, 249, 250, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.description-content {
+  position: relative;
+}
+
+.description-content p {
+  margin: 0;
+  line-height: 1.6;
+  color: #495057;
+  font-size: 0.95rem;
+}
+
+.description-content .btn-link {
+  color: #007bff;
+  font-weight: 500;
+  padding: 0.25rem 0;
+  transition: all 0.2s ease;
+}
+
+.description-content .btn-link:hover {
+  color: #0056b3;
+  transform: translateX(4px);
+}
+
 /**/

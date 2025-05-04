@@ -8,6 +8,6 @@ export class Coachportfolio {
     aboutMeDescription !: string;
     qualifications     !: string;
     experienceYears    !: number;
-    skillsJson         !: string[];
-    socialMediaLinksJson  !: string[];
+    skillsJson         !: string [];
+    socialMediaLinksJson  !: string [];
 }

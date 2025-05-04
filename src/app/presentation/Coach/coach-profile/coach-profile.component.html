@@ -1,10 +1,11 @@
 <!-- Home -->
 <main class="d-flex align-items-center" id="home" [ngStyle]="{
-  'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + imgurl + ')'
+  'background-image': 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + (imgurl || '') + ')'
 }">
   <div class="container">
     <div class="home-content text-center">
-      <h1 class="mb-3" style="color:antiquewhite;">I am {{portfolio?.coachFirstName}} {{portfolio?.coachLastName}}</h1>
+      <h1 class="mb-3" style="color:antiquewhite;">I am {{portfolio?.coachFirstName || ''}} {{portfolio?.coachLastName
+        || ''}}</h1>
 
       <p class="fs-1 fw-medium" aria-label="Hi! I'm a Fitness Coach">
         Hi! I'm a&nbsp;<span class="typewriter"></span>
@@ -23,41 +24,31 @@
           <div class="imgAndInfo">
             <div class="row gy-4">
               <picture class="col-lg-5 col-md-6 col-sm-12">
-                <img class="rounded" src={{portfolio?.aboutMeImageUrl}} alt="Human" />
+                <img class="rounded" [src]="portfolio?.aboutMeImageUrl || ''" alt="Coach Profile" />
               </picture>
               <div class="info fw-bold col-lg-7 col-md-6 col-sm-12">
-                <p>Name: <span class="fw-normal">{{portfolio?.coachFirstName}} {{portfolio?.coachLastName}}</span></p>
-                <p>
-                  Experience Years
-                  <span class="fw-normal"> {{portfolio?.experienceYears}} Years</span>
-                </p>
-
-
+                <p>Name: <span class="fw-normal">{{portfolio?.coachFirstName || ''}} {{portfolio?.coachLastName ||
+                    ''}}</span></p>
+                <p>Experience Years <span class="fw-normal">{{portfolio?.experienceYears || 0}} Years</span></p>
               </div>
             </div>
           </div>
           <div class="skill mt-3">
-            <h6 class="mb-3">Skill</h6>
-            <!--Progress-->
-            <div class="skill-1" *ngFor="let item of portfolio?.skillsJson">
-              <span class="m-0">{{ item }}</span>
-              <div class="progress rounded-0 mt-2 mb-4" role="progressbar" aria-label="Example with label"
-                aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar" style="width: 85%"></div>
+            <h6 class="mb-3">Skills</h6>
+            <ng-container *ngIf="portfolio?.skillsJson ">
+              <div class="skill-1" *ngFor="let item of portfolio?.skillsJson">
+                <span class="m-0">{{ item }}</span>
+                <div class="progress rounded-0 mt-2 mb-4" role="progressbar" aria-label="Skill Progress"
+                  aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress-bar" style="width: 85%"></div>
+                </div>
               </div>
-            </div>
-            <!--Progress-->
-            <!--Progress-->
-
-            <!--Progress-->
+            </ng-container>
           </div>
         </div>
         <div class="about-content-left col-lg-6">
           <h2 class="heading-h position-relative mb-5">About me</h2>
-          <p class="lead">
-            {{portfolio?.aboutMeDescription}}
-          </p>
-
+          <p class="lead">{{portfolio?.aboutMeDescription || 'No description available'}}</p>
         </div>
       </div>
     </div>
@@ -71,17 +62,24 @@
     <p class="heading-p position-relative mb-5 text-light fst-italic">
       Dedication turns knowledge into mastery.
     </p>
-    <div class="row gy-4 justify-content-center">
-      <div class="col-md-4 col-sm-6" *ngFor="let cert of certificates">
-        <div class="card bg-dark text-white border-0 shadow-lg">
-          <img [src]="cert.imageUrl" class="card-img-top rounded-top" alt="Coach Certificate"
-            style="height: 250px; object-fit: cover;" />
-          <div class="card-body">
-            <h5 class="card-title">Certificate</h5>
-            <p class="card-text fst-italic">Verified Achievement</p>
+    <ng-container *ngIf="certificates && certificates.length > 0">
+      <div class="row gy-4 justify-content-center">
+        <div class="col-md-4 col-sm-6" *ngFor="let cert of certificates">
+          <div class="card bg-dark text-white border-0 shadow-lg">
+            <img [src]="cert?.imageUrl || ''" class="card-img-top rounded-top" alt="Coach Certificate"
+              style="height: 250px; object-fit: cover;" />
+            <div class="card-body">
+              <h5 class="card-title">Certificate</h5>
+              <p class="card-text fst-italic">Verified Achievement</p>
+            </div>
           </div>
         </div>
       </div>
+    </ng-container>
+    <div *ngIf="!certificates || certificates.length === 0" class="text-center text-white py-5">
+      <i class="fas fa-certificate fa-3x mb-3"></i>
+      <h3>No Certificates Yet</h3>
+      <p class="lead">This coach hasn't added any certificates yet.</p>
     </div>
   </div>
 </section>
@@ -96,18 +94,18 @@
 
       <div class="stat text-center col-sm-4">
         <i class="fa-solid fa-newspaper p-4 rounded-circle fs-3"></i>
-        <p class="fs-2">{{portfolio?.experienceYears}}</p>
+        <p class="fs-2">{{portfolio?.experienceYears || 0}}</p>
         <p class="text-uppercase">years of experience</p>
       </div>
       <div class="stat text-center col-sm-4">
         <i class="fa-solid fa-user-group p-4 rounded-circle fs-3"></i>
-        <p class="fs-2">{{clients?.length}}</p>
-        <p class="text-uppercase">total clinets</p>
+        <p class="fs-2">{{clients?.length || 0}}</p>
+        <p class="text-uppercase">total clients</p>
       </div>
       <div class="stat text-center col-sm-4">
         <i class="fa-solid fa-award p-4 rounded-circle fs-3"></i>
-        <p class="fs-2">{{certificates?.length}}</p>
-        <p class="text-uppercase">award won</p>
+        <p class="fs-2">{{certificates?.length || 0}}</p>
+        <p class="text-uppercase">awards won</p>
       </div>
     </div>
   </div>
@@ -121,21 +119,28 @@
     <p class="heading-p text-center position-relative mb-5 text-light">
       A glimpse into the craft and dedication of our coaches.
     </p>
-    <div class="row gy-5">
-      <div class="col-md-4" *ngFor="let work of workSamples">
-        <div class="card border-0 rounded-0 bg-dark text-white shadow-lg">
-          <picture class="overflow-hidden">
-            <img [src]="work.imageUrl" class="card-img-top w-100 imgwork" alt="work sample" />
-          </picture>
-          <div class="card-body py-4 d-flex justify-content-between align-items-center">
-            <div>
-              <p class="card-text mb-1 fw-medium">{{ work.description }}</p>
-              <p class="m-0 text-primary">Work Sample</p>
-            </div>
+    <ng-container *ngIf="workSamples && workSamples.length > 0">
+      <div class="row gy-5">
+        <div class="col-md-4" *ngFor="let work of workSamples">
+          <div class="card border-0 rounded-0 bg-dark text-white shadow-lg">
+            <picture class="overflow-hidden">
+              <img [src]="work?.imageUrl || ''" class="card-img-top w-100 imgwork" alt="Work Sample" />
+            </picture>
+            <div class="card-body py-4 d-flex justify-content-between align-items-center">
+              <div>
+                <p class="card-text mb-1 fw-medium">{{ work?.description || 'No description available' }}</p>
+                <p class="m-0 text-primary">Work Sample</p>
+              </div>
 
+            </div>
           </div>
         </div>
       </div>
+    </ng-container>
+    <div *ngIf="!workSamples || workSamples.length === 0" class="text-center text-white py-5">
+      <i class="fas fa-images fa-3x mb-3"></i>
+      <h3>No Work Samples Yet</h3>
+      <p class="lead">This coach hasn't added any work samples yet.</p>
     </div>
   </div>
 </section>
@@ -149,49 +154,54 @@
       Your body can stand almost anything. It's your mind you have to convince.
     </p>
 
-    <div class="row gy-4" *ngIf="coachoffers && coachoffers.length > 0">
-      <div class="col-md-4" *ngFor="let offer of coachoffers">
-        <div
-          class="offer-card shadow-lg border-0 rounded-4 overflow-hidden position-relative bg-white d-flex flex-column h-100">
-          <div class="offer-image-container position-relative">
-            <img [src]="offer.imageUrl" class="w-100 offer-image" [alt]="offer.title" />
-            <div class="offer-title-badge position-absolute top-0 start-0 m-2 px-3 py-1 rounded-pill fw-bold">
-              {{ offer.title }}
-            </div>
-            <div class="offer-price-badge position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill">
-              <span class="fw-bold text-success">${{ offer.price }}</span>
-            </div>
-          </div>
-          <div class="flex-grow-1 d-flex flex-column justify-content-between p-4">
-            <div>
-              <div class="description-container mb-3">
-                <p class="card-text text-muted mb-2" [class.expanded]="offer.id && isOfferExpanded(offer.id)">
-                  {{ offer.desc && offer.desc.length > 120 ?
-                  (offer.id && isOfferExpanded(offer.id) ? offer.desc : (offer.desc | slice:0:120) + '...') :
-                  (offer.desc || 'No description available') }}
-                </p>
-                <button *ngIf="offer.desc && offer.desc.length > 120 && offer.id"
-                  class="btn btn-link text-primary p-0 mb-2" (click)="toggleOfferExpansion(offer.id)">
-                  {{ isOfferExpanded(offer.id) ? 'Show Less' : 'Read More' }}
-                </button>
+    <ng-container *ngIf="coachoffers && coachoffers.length > 0">
+      <div class="row gy-4">
+        <div class="col-md-4" *ngFor="let offer of coachoffers">
+          <div
+            class="offer-card shadow-lg border-0 rounded-4 overflow-hidden position-relative bg-white d-flex flex-column h-100">
+            <div class="offer-image-container position-relative">
+              <img [src]="offer?.imageUrl || ''" class="w-100 offer-image" [alt]="offer?.title || 'Offer Image'" />
+              <div class="offer-title-badge position-absolute top-0 start-0 m-2 px-3 py-1 rounded-pill fw-bold">
+                {{ offer?.title || 'No title' }}
+              </div>
+              <div class="offer-price-badge position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill">
+                <span class="fw-bold text-success">${{ offer?.price || 0 }}</span>
               </div>
             </div>
-            <div class="d-flex flex-column align-items-stretch mt-auto">
-              <button class="btn btn-primary rounded-pill mb-3 py-2 fs-6 fw-bold"
-                (click)="subscribeToOffer(offer.price,offer.title,offer.durationMonths,offer.coachId)">
-                <i class="fa-solid fa-credit-card"></i> Subscribe Now
-              </button>
-              <div class="d-flex align-items-center justify-content-start small text-muted">
-                <i class="fas fa-user-circle me-2 text-primary"></i>
-                Coach: {{ offer.coachName }}
+            <div class="flex-grow-1 d-flex flex-column justify-content-between p-4">
+              <div class="description-section mb-3">
+                <div class="description-content">
+                  <p class="card-text text-muted mb-2">
+                    {{ offer && offer.desc ?
+                    (offer.desc.length > 120 ?
+                    (offer.id && isOfferExpanded(offer.id) ? offer.desc : (offer.desc | slice:0:120) + '...') :
+                    offer.desc) :
+                    'No description available' }}
+                  </p>
+                  <button *ngIf="offer && offer.desc && offer.desc.length > 120"
+                    class="btn btn-link text-primary p-0 mb-2" (click)="toggleOfferExpansion(offer.id)">
+                    {{ isOfferExpanded(offer.id) ? 'Show Less' : 'Read More' }}
+                  </button>
+                </div>
+              </div>
+
+              <div class="d-flex flex-column align-items-stretch mt-auto">
+                <button class="btn btn-primary rounded-pill mb-3 py-2 fs-6 fw-bold"
+                  (click)="subscribeToOffer(offer?.price || 0, offer?.title || '', offer?.durationMonths || 0, offer?.coachId || '')">
+                  <i class="fa-solid fa-credit-card"></i> Subscribe Now
+                </button>
+                <div class="d-flex align-items-center justify-content-start small text-muted">
+                  <i class="fas fa-user-circle me-2 text-primary"></i>
+                  Coach: {{ offer?.coachName || 'Unknown' }}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </ng-container>
 
-    <div class="text-center py-5" *ngIf="!coachoffers || coachoffers.length === 0">
+    <div *ngIf="!coachoffers || coachoffers.length === 0" class="text-center py-5">
       <div class="empty-state">
         <i class="fas fa-gift fa-3x text-muted mb-3"></i>
         <h3 class="text-muted">No Offers available yet</h3>
@@ -212,60 +222,67 @@
     <p class="heading-p text-center position-relative mb-5">
       Discover my premium fitness products and supplements.
     </p>
-    <div class="row gy-4">
-      <div class="col-md-4" *ngFor="let product of coachproducts">
-        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
-          <div class="position-relative">
-            <img *ngIf="product.imageUrl" [src]="product.imageUrl" class="card-img-top object-fit-cover"
-              alt="Product Image" style="height: 200px; object-fit: cover;">
-            <div class="position-absolute top-0 end-0 m-2">
-              <span class="badge bg-success rounded-pill px-3 py-2">
-                <i class="fas fa-tag me-1"></i> ${{ product.price }}
-              </span>
-            </div>
-          </div>
-          <div class="card-body d-flex flex-column">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <h5 class="card-title fw-bold mb-0">{{ product.name }}</h5>
-              <span class="badge bg-primary">{{ product.categoryName }}</span>
-            </div>
-            <p class="card-text text-muted mb-3" style="min-height: 48px;">
-              {{ product.description && product.description.length > 100 ?
-              (product.description | slice:0:100) + '...' :
-              product.description }}
-            </p>
-            <div class="mt-auto">
-              <div class="d-flex justify-content-between align-items-center mb-3"
-                *ngIf="product.rating && product.reviewCount">
-                <div class="d-flex align-items-center">
-                  <i class="fas fa-star text-warning me-1"></i>
-                  <span class="text-muted small">{{product.rating}} ({{product.reviewCount}} reviews)</span>
-                </div>
-                <span class="badge" [ngClass]="product.stock > 0 ? 'bg-info' : 'bg-danger'">
-                  <i class="fas fa-box me-1"></i> {{product.stock > 0 ? 'In Stock' : 'Out of Stock'}}
+    <ng-container *ngIf="coachproducts && coachproducts.length > 0">
+      <div class="row gy-4">
+        <div class="col-md-4" *ngFor="let product of coachproducts">
+          <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+            <div class="position-relative">
+              <img *ngIf="product?.imageUrl" [src]="product.imageUrl" class="card-img-top object-fit-cover"
+                alt="Product Image" style="height: 200px; object-fit: cover;">
+              <div class="position-absolute top-0 end-0 m-2">
+                <span class="badge bg-success rounded-pill px-3 py-2">
+                  <i class="fas fa-tag me-1"></i> ${{ product?.price || 0 }}
                 </span>
               </div>
-              <div class="d-flex justify-content-between align-items-center mb-3"
-                *ngIf="!product.rating || !product.reviewCount">
-                <div class="d-flex align-items-center">
-                  <span class="text-muted small">No reviews yet</span>
-                </div>
-                <span class="badge" [ngClass]="product.stock > 0 ? 'bg-info' : 'bg-danger'">
-                  <i class="fas fa-box me-1"></i> {{product.stock > 0 ? 'In Stock' : 'Out of Stock'}}
-                </span>
+            </div>
+            <div class="card-body d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h5 class="card-title fw-bold mb-0">{{ product?.name || 'Unnamed Product' }}</h5>
+                <span class="badge bg-primary">{{ product?.categoryName || 'Uncategorized' }}</span>
               </div>
-              <div class="d-grid gap-2">
-                <button class="btn btn-primary rounded-pill py-2">
-                  <i class="fas fa-shopping-cart me-2"></i> Buy Now
-                </button>
-                <button class="btn btn-outline-primary rounded-pill py-2">
-                  <i class="fas fa-info-circle me-2"></i> View Details
-                </button>
+              <p class="card-text text-muted mb-3" style="min-height: 48px;">
+                {{ (product?.description && product.description.length > 100 ?
+                (product.description | slice:0:100) + '...' :
+                (product?.description || 'No description available')) }}
+              </p>
+              <div class="mt-auto">
+                <div class="d-flex justify-content-between align-items-center mb-3"
+                  *ngIf="product?.rating && product?.reviewCount">
+                  <div class="d-flex align-items-center">
+                    <i class="fas fa-star text-warning me-1"></i>
+                    <span class="text-muted small">{{product.rating}} ({{product.reviewCount}} reviews)</span>
+                  </div>
+                  <span class="badge" [ngClass]="(product?.stock || 0) > 0 ? 'bg-info' : 'bg-danger'">
+                    <i class="fas fa-box me-1"></i> {{(product?.stock || 0) > 0 ? 'In Stock' : 'Out of Stock'}}
+                  </span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3"
+                  *ngIf="!product?.rating || !product?.reviewCount">
+                  <div class="d-flex align-items-center">
+                    <span class="text-muted small">No reviews yet</span>
+                  </div>
+                  <span class="badge" [ngClass]="(product?.stock || 0) > 0 ? 'bg-info' : 'bg-danger'">
+                    <i class="fas fa-box me-1"></i> {{(product?.stock || 0) > 0 ? 'In Stock' : 'Out of Stock'}}
+                  </span>
+                </div>
+                <div class="d-grid gap-2">
+                  <button class="btn btn-primary rounded-pill py-2">
+                    <i class="fas fa-shopping-cart me-2"></i> Buy Now
+                  </button>
+                  <button class="btn btn-outline-primary rounded-pill py-2">
+                    <i class="fas fa-info-circle me-2"></i> View Details
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </ng-container>
+    <div *ngIf="!coachproducts || coachproducts.length === 0" class="text-center py-5">
+      <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+      <h3 class="text-muted">No Products available yet</h3>
+      <p class="lead text-muted">This coach hasn't added any products yet.</p>
     </div>
   </div>
 </section>
@@ -273,49 +290,79 @@
 
 
 
-<!-- clinets -->
+<!-- Ratings Section -->
 <section class="d-flex align-items-center justify-content-center" id="clients">
   <div class="container">
     <h1 class="text-center fw-bold text-white">Ratings</h1>
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+
+    <!-- Carousel Container -->
+    <div id="ratingsCarousel" class="carousel slide" data-bs-ride="carousel">
       <!-- Carousel Indicators -->
       <div class="carousel-indicators">
-        <button *ngFor="let rating of ratings; let i = index" type="button" data-bs-target="#carouselExampleIndicators"
-          [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0 ? 'true' : null"
-          [attr.aria-label]="'Slide ' + (i + 1)">
-        </button>
+        <ng-container *ngIf="ratings && ratings.length > 0">
+          <button *ngFor="let rating of ratings; let i = index" type="button" data-bs-target="#ratingsCarousel"
+            [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0 ? 'true' : null"
+            [attr.aria-label]="'Slide ' + (i + 1)">
+          </button>
+        </ng-container>
       </div>
 
-      <!-- Carousel Inner -->
+      <!-- Carousel Items -->
       <div class="carousel-inner">
-        <div *ngFor="let rating of ratings; let i = index" class="carousel-item" [class.active]="i === 0">
-          <div class="client-feedback text-center p-5 text-light">
-            <!-- Optional: If you have an image per rating, bind it here -->
-            <img class="rounded-circle" src={{rating?.clientimg}} alt="client" />
-            <h3 class="text-uppercase my-4 h4">{{rating?.clientFirstName}} {{rating?.clientLastName}}</h3>
+        <ng-container *ngIf="ratings && ratings.length > 0">
+          <div *ngFor="let rating of ratings; let i = index" class="carousel-item" [class.active]="i === 0">
+            <div class="client-feedback text-center p-5 text-light">
+              <!-- Client Image -->
+              <div class="client-image-container mb-4">
+                <img class="rounded-circle" [src]="rating?.clientimg || 'assets/images/default-avatar.png'"
+                  alt="Client Image" style="width: 120px; height: 120px; object-fit: cover;"
+                  onerror="this.src='assets/images/default-avatar.png'">
+              </div>
 
-            <!-- Display Stars or Rating Number -->
-            <div class="mb-2">
-              <ng-container *ngFor="let star of [1,2,3,4,5]; let j = index">
-                <i class="bi" [ngClass]="rating.rate > j ? 'bi-star-fill text-warning' : 'bi-star text-secondary'"></i>
-              </ng-container>
+              <!-- Client Name -->
+              <h3 class="text-uppercase my-3 h4">
+                {{rating?.clientFirstName || ''}} {{rating?.clientLastName || ''}}
+              </h3>
+
+              <!-- Rating Stars -->
+              <div class="rating-stars mb-3">
+                <ng-container *ngFor="let star of [1,2,3,4,5]; let j = index">
+                  <i class="bi"
+                    [ngClass]="(rating?.rate || 0) > j ? 'bi-star-fill text-warning' : 'bi-star text-secondary'">
+                  </i>
+                </ng-container>
+              </div>
+
+              <!-- Rating Comment -->
+              <div class="rating-comment">
+                <p class="px-5 lead">
+                  {{ rating?.comment || 'No comment provided' }}
+                </p>
+              </div>
             </div>
-
-            <!-- Display Comment -->
-            <p class="px-5 lead">
-              {{ rating.comment }}
-            </p>
           </div>
-        </div>
+        </ng-container>
       </div>
+
+      <!-- Carousel Controls -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#ratingsCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#ratingsCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+    <!-- No Ratings Message -->
+    <div *ngIf="!ratings || ratings.length === 0" class="text-center text-white py-5">
+      <i class="fas fa-star fa-3x mb-3"></i>
+      <h3>No Ratings Yet</h3>
+      <p class="lead">This coach hasn't received any ratings yet.</p>
     </div>
   </div>
 </section>
-
-<!-- clinets -->
-
-
-<!-- blog -->
 
 <!-- contact -->
 <!-- <section class="pt-5" id="contact">
@@ -402,4 +449,5 @@
 
 
 </footer>
+<!-- footer -->
 <!-- footer -->

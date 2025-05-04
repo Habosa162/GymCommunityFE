@@ -23,7 +23,8 @@ import { SubscriptionToPlanService } from '../../../services/subscription-to-pla
   selector: 'app-coach-profile',
   templateUrl: './coach-profile.component.html',
   styleUrls: ['./coach-profile.component.css'],
-  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule]
+  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule],
+  standalone: true
 })
 export class CoachProfileComponent implements OnInit {
   coachId: string = '';
@@ -36,7 +37,7 @@ export class CoachProfileComponent implements OnInit {
   isLoading: boolean = true;
   currentYear: number = new Date().getFullYear();
   coach: CoachFullProfile | null = null;
-  imgurl!: string;
+  imgurl: string = '';
   // Pagination properties
   currentPage: number = 1;
   pageSize: number = 9;
@@ -66,93 +67,134 @@ export class CoachProfileComponent implements OnInit {
       this.loadcoachproducts();
       this.loadcoachoffers(this.coachId);
     }
+    console.log('portfolio.skillsJson:', this.portfolio?.skillsJson);
+    console.log('Is skillsJson array:', Array.isArray(this.portfolio?.skillsJson));
+
+    // Repeat for other arrays
+    console.log('certificates:', this.certificates);
+    console.log('Is certificates array:', Array.isArray(this.certificates));
   }
 
   loadcoachproducts(): void {
     this.productservice.getUserProducts(this.coachId).subscribe({
       next: (response: any) => {
-        this.coachproducts = response || [];
-        console.log(this.coachproducts)
+        this.coachproducts = Array.isArray(response) ? response : [];
+        console.log('Products loaded:', this.coachproducts);
       },
-    })
+      error: (error) => {
+        console.error('Error loading products:', error);
+        this.coachproducts = [];
+      }
+    });
   }
 
-  loadcoachoffers(coachid: any): void {
+  loadcoachoffers(coachid: string): void {
     this.offersservice.getByCoachId(this.coachId).subscribe({
       next: (res: any) => {
-        this.coachoffers = res || [];
-        console.log(this.coachoffers)
+        this.coachoffers = Array.isArray(res) ? res : [];
+        console.log('Offers loaded:', this.coachoffers);
+      },
+      error: (error) => {
+        console.error('Error loading offers:', error);
+        this.coachoffers = [];
       }
-    })
+    });
   }
+
   loadcoachclient(): void {
     this.coachclientservice.getClientsByCoachId(this.currentPage, this.pageSize).subscribe({
       next: (response: any) => {
-        this.clients = response.data || [];
-        this.currentPage = response.currentPage;
-        this.totalPages = response.totalPages;
-        this.totalCount = response.totalCount;
+        this.clients = Array.isArray(response.data) ? response.data : [];
+        this.currentPage = response.currentPage || 1;
+        this.totalPages = response.totalPages || 0;
+        this.totalCount = response.totalCount || 0;
+        console.log('Clients loaded:', this.clients);
       },
-      error: (error: any) => {
+      error: (error) => {
         console.error('Error loading clients:', error);
         this.clients = [];
       }
     });
   }
+
   loadCoachProfile(): void {
     this.isLoading = true;
     this.coachService.getCoachFullProfile(this.coachId).subscribe({
-      next: (data) => {
+      next: (data: CoachFullProfile) => {
         this.coach = data;
-        this.portfolio = data.portfolio;
-        this.imgurl = this.portfolio.aboutMeImageUrl;
-        this.certificates = data.certificates;
-        this.workSamples = data.workSamples;
-        this.ratings = data.ratings;
-        if (typeof this.portfolio?.skillsJson === 'string') {
-          this.portfolio.skillsJson = JSON.parse(this.portfolio.skillsJson);
+        this.portfolio = data.portfolio || null;
+        this.imgurl = this.portfolio?.aboutMeImageUrl || '';
+        this.certificates = Array.isArray(data.certificates) ? data.certificates : [];
+        this.workSamples = Array.isArray(data.workSamples) ? data.workSamples : [];
+        this.ratings = Array.isArray(data.ratings) ? data.ratings : [];
+
+        if (this.portfolio?.skillsJson && typeof this.portfolio.skillsJson === 'string') {
+          try {
+            this.portfolio.skillsJson = JSON.parse(this.portfolio.skillsJson);
+          } catch (e) {
+            console.error('Error parsing skillsJson:', e);
+            this.portfolio.skillsJson = [];
+          }
         }
-        if (typeof this.portfolio?.socialMediaLinksJson === 'string') {
-          this.portfolio.socialMediaLinksJson = JSON.parse(this.portfolio.socialMediaLinksJson);
+
+        if (this.portfolio?.socialMediaLinksJson && typeof this.portfolio.socialMediaLinksJson === 'string') {
+          try {
+            this.portfolio.socialMediaLinksJson = JSON.parse(this.portfolio.socialMediaLinksJson);
+          } catch (e) {
+            console.error('Error parsing socialMediaLinksJson:', e);
+            this.portfolio.socialMediaLinksJson = [];
+          }
         }
+
         this.calculateAverageRating();
         this.isLoading = false;
+        console.log('Profile loaded:', {
+          portfolio: this.portfolio,
+          certificates: this.certificates,
+          workSamples: this.workSamples,
+          ratings: this.ratings
+        });
       },
-      error: (error: any) => {
+      error: (error) => {
         console.error('Error fetching coach profile:', error);
         this.isLoading = false;
+        this.portfolio = null;
+        this.certificates = [];
+        this.workSamples = [];
+        this.ratings = [];
       }
     });
-
   }
 
   calculateAverageRating(): void {
-    if (this.ratings.length > 0) {
-      const sum = this.ratings.reduce((total, rating) => total + rating.rate, 0);
+    if (this.ratings && this.ratings.length > 0) {
+      const sum = this.ratings.reduce((total, rating) => total + (rating.rate || 0), 0);
       this.averageRating = sum / this.ratings.length;
+    } else {
+      this.averageRating = 0;
     }
   }
 
   getSkills(): string[] {
-    return this.portfolio?.skillsJson || [];
+    return Array.isArray(this.portfolio?.skillsJson) ? this.portfolio.skillsJson : [];
   }
 
   getSocialMediaLinks(): string[] {
-    return this.portfolio?.socialMediaLinksJson || [];
+    return Array.isArray(this.portfolio?.socialMediaLinksJson) ? this.portfolio.socialMediaLinksJson : [];
   }
 
-  toggleOfferExpansion(offerId: number): void {
+  toggleOfferExpansion(offerId: any): void {
     this.expandedOffers[offerId] = !this.expandedOffers[offerId];
   }
 
-  isOfferExpanded(offerId: number): boolean {
+  isOfferExpanded(offerId: any): boolean {
     return this.expandedOffers[offerId] || false;
   }
 
 
+
+  
   //*********subscribe to offer*********
-
-
 
   subscribeToOffer(price: number, title: string, duration: number, coachId: string): void {
     this.subscriptionToPlanService.subscribeToOffer(price, title, duration, coachId);
@@ -162,8 +204,6 @@ export class CoachProfileComponent implements OnInit {
   paymobpayment(price: number, title: string, coachId: string, duration: number,) {
     const userName = this.authservice.getUserName();
     const userEmail = this.authservice.getUserEmail();
-
-
 
     const orderData = {
       amount: price * 100,
@@ -186,13 +226,13 @@ export class CoachProfileComponent implements OnInit {
       extras: {},
       redirection_url: `${FrontbaseUrl}/plan-payment-success`,
     };
+
     this.paymentService.PaymobRequest(orderData).subscribe({
       next: (response: any) => {
         const clientSecret = response.client_secret;
         if (clientSecret) {
           const paymentUrl = `https://accept.paymob.com/unifiedcheckout/?publicKey=egy_pk_test_jrlnWL5oJX8IRTp9xpeHq5mmQhAMfXES&clientSecret=${clientSecret}`;
           window.location.href = paymentUrl;
-
         } else {
           console.error("Client secret not found in the response.");
           alert("Failed to retrieve payment details.");
@@ -204,7 +244,5 @@ export class CoachProfileComponent implements OnInit {
         alert("Failed to process payment. Please try again.");
       }
     });
-
   }
-
 }
