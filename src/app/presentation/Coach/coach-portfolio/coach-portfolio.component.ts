@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -6,15 +7,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CoachportfolioService } from '../../../services/Coachservice/coachportfolio.service';
-import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { CoachcertficateService } from '../../../services/Coachservice/coachcertficate.service';
+import { ToastrService } from 'ngx-toastr';
 import { Coachportfolio } from '../../../domain/models/CoachModels/coachportfolio.model';
 import { CoachService } from '../../../services/Coachservice/coach.service';
-import { AppUser } from '../../../domain/models/CoachModels/coachclient.model';
-import { ToastrService } from 'ngx-toastr';
+import { CoachcertficateService } from '../../../services/Coachservice/coachcertficate.service';
+import { CoachportfolioService } from '../../../services/Coachservice/coachportfolio.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-coach-portfolio',
@@ -42,10 +41,12 @@ export class CoachPortfolioComponent implements OnInit {
     private router: Router,
     private coachService: CoachService,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.coachId = this.authservice.getUserId() || this.route.snapshot.paramMap.get('coachId')!;
+    this.coachId =
+      this.authservice.getUserId() ||
+      this.route.snapshot.paramMap.get('coachId')!;
     this.initForm();
 
     if (this.coachId) {
@@ -76,21 +77,22 @@ export class CoachPortfolioComponent implements OnInit {
       next: (data: Coachportfolio) => {
         if (data) {
           this.portfolioid = data.id!;
-          this.existingImageUrl = data.aboutMeImageUrl || this.coachProfileImage;
+          this.existingImageUrl =
+            data.aboutMeImageUrl || this.coachProfileImage;
           this.isNewPortfolio = false;
 
           // Convert arrays to comma-separated strings
           const skillsString = Array.isArray(data.skillsJson)
             ? data.skillsJson.join(', ')
             : typeof data.skillsJson === 'string'
-              ? data.skillsJson
-              : '';
+            ? data.skillsJson
+            : '';
 
           const socialLinksString = Array.isArray(data.socialMediaLinksJson)
             ? data.socialMediaLinksJson.join(', ')
             : typeof data.socialMediaLinksJson === 'string'
-              ? data.socialMediaLinksJson
-              : '';
+            ? data.socialMediaLinksJson
+            : '';
 
           // Update form with existing data
           this.portfolioForm.patchValue({
@@ -98,7 +100,9 @@ export class CoachPortfolioComponent implements OnInit {
             qualifications: data.qualifications || '',
             experienceYears: data.experienceYears || 0,
             skills: this.safeParseArray(data.skillsJson).join(', '),
-            socialLinks: this.safeParseArray(data.socialMediaLinksJson).join(', ')
+            socialLinks: this.safeParseArray(data.socialMediaLinksJson).join(
+              ', '
+            ),
           });
         } else {
           this.isNewPortfolio = true;
@@ -107,7 +111,7 @@ export class CoachPortfolioComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        this.toastr.error('Failed to load portfolio', 'Error');
+        // this.toastr.error('Failed to load portfolio', 'Error');
         console.error('Error loading portfolio:', err);
         this.isNewPortfolio = true;
         this.existingImageUrl = this.coachProfileImage;
@@ -131,7 +135,10 @@ export class CoachPortfolioComponent implements OnInit {
     if (file) {
       // Validate file type
       if (!file.type.match(/image\/(jpeg|png|jpg|gif)/)) {
-        this.toastr.error('Please select a valid image file (JPEG, PNG, JPG, GIF)', 'Error');
+        this.toastr.error(
+          'Please select a valid image file (JPEG, PNG, JPG, GIF)',
+          'Error'
+        );
         return;
       }
 
@@ -158,18 +165,37 @@ export class CoachPortfolioComponent implements OnInit {
 
       // Add required fields
       formData.append('CoachId', this.coachId);
-      formData.append('AboutMeDescription', this.portfolioForm.get('aboutMeDescription')?.value || '');
-      formData.append('Qualifications', this.portfolioForm.get('qualifications')?.value || '');
-      formData.append('ExperienceYears', this.portfolioForm.get('experienceYears')?.value?.toString() || '0');
+      formData.append(
+        'AboutMeDescription',
+        this.portfolioForm.get('aboutMeDescription')?.value || ''
+      );
+      formData.append(
+        'Qualifications',
+        this.portfolioForm.get('qualifications')?.value || ''
+      );
+      formData.append(
+        'ExperienceYears',
+        this.portfolioForm.get('experienceYears')?.value?.toString() || '0'
+      );
 
       // Handle skills array
       const skillsValue = this.portfolioForm.get('skills')?.value;
-      const skillsArray = skillsValue ? skillsValue.split(',').map((s: string) => s.trim()).filter(Boolean) : [];
+      const skillsArray = skillsValue
+        ? skillsValue
+            .split(',')
+            .map((s: string) => s.trim())
+            .filter(Boolean)
+        : [];
       formData.append('SkillsJson', JSON.stringify(skillsArray));
 
       // Handle social media links array
       const socialLinksValue = this.portfolioForm.get('socialLinks')?.value;
-      const socialLinksArray = socialLinksValue ? socialLinksValue.split(',').map((l: string) => l.trim()).filter(Boolean) : [];
+      const socialLinksArray = socialLinksValue
+        ? socialLinksValue
+            .split(',')
+            .map((l: string) => l.trim())
+            .filter(Boolean)
+        : [];
       formData.append('SocialMediaLinksJson', JSON.stringify(socialLinksArray));
 
       // Always include AboutMeImageUrl field
@@ -214,17 +240,20 @@ export class CoachPortfolioComponent implements OnInit {
 
           this.toastr.error(errorMessage, 'Error');
           this.isLoading = false;
-        }
+        },
       });
     } else {
       // Mark all fields as touched to show validation errors
-      Object.keys(this.portfolioForm.controls).forEach(key => {
+      Object.keys(this.portfolioForm.controls).forEach((key) => {
         const control = this.portfolioForm.get(key);
         if (control) {
           control.markAsTouched();
         }
       });
-      this.toastr.error('Please fill in all required fields', 'Validation Error');
+      this.toastr.error(
+        'Please fill in all required fields',
+        'Validation Error'
+      );
     }
   }
 }
