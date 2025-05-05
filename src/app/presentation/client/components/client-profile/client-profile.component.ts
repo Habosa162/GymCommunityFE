@@ -28,6 +28,11 @@ export class ClientProfileComponent implements OnInit {
   selectedFile: File | null = null;
   previewUrl: string | ArrayBuffer | null = null;
 
+  //change cover img code
+  showCoverModal = false;
+  selectedCoverFile: File | null = null;
+  coverPreviewUrl: string | ArrayBuffer | null = null;
+
   constructor(
     private clientProfileService: ClientProfileService,
     private clientInfoService: ClientInfoService,
@@ -43,6 +48,17 @@ export class ClientProfileComponent implements OnInit {
     this.showModal = false;
     this.selectedFile = null;
     this.previewUrl = null;
+  }
+
+  //cover
+  openCoverModal(): void {
+    this.showCoverModal = true;
+  }
+
+  closeCoverModal(): void {
+    this.showCoverModal = false;
+    this.selectedCoverFile = null;
+    this.coverPreviewUrl = null;
   }
 
   ngOnInit(): void {
@@ -106,16 +122,50 @@ export class ClientProfileComponent implements OnInit {
   }
 
   //change cover img
-  private changeCoverImg(file: File) {
-    this.clientInfoService.changeClientCoverImg(file).subscribe({
-      next: (response: any) => {
-        console.log('Cover img updated successfully');
-      },
-      error: (error) => {
-        console.error('Error updating cover img:', error);
-      },
-    });
+  // private changeCoverImg(file: File) {
+  //   this.clientInfoService.changeClientCoverImg(file).subscribe({
+  //     next: (response: any) => {
+  //       console.log('Cover img updated successfully');
+  //     },
+  //     error: (error) => {
+  //       console.error('Error updating cover img:', error);
+  //     },
+  //   });
+  // }
+
+  onCoverFileChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedCoverFile = file;
+
+      const reader = new FileReader();
+      reader.onload = () => (this.coverPreviewUrl = reader.result);
+      reader.readAsDataURL(file);
+    }
   }
+
+  triggerCoverFileInput(fileInput: HTMLInputElement): void {
+    fileInput.click();
+  }
+
+  onCoverSubmit(): void {
+    if (this.selectedCoverFile) {
+      this.clientInfoService
+        .changeCoverImage(this.selectedCoverFile)
+        .subscribe({
+          next: (res) => {
+            this.clientProfile.coverImg = res.imgUrl;
+            this.closeCoverModal();
+            this.toaster.success('Cover Image Changed', 'Success');
+          },
+          error: () => alert('Failed to update cover image'),
+        });
+    } else {
+      alert('Please select an image');
+    }
+  }
+
+  ///////////////
 
   onFileChange(event: any): void {
     const file = event.target.files[0];
