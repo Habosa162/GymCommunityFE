@@ -245,7 +245,7 @@ export const routes: Routes = [
 
   //For Users
   { path: 'gyms/:id', component: UserGymDetailsComponent },
-  { path: 'gyms', component: GymListComponent },
+  { path: 'gyms', component: GymListComponent ,canActivate:[AuthGuard]},
   {
     path: 'user/gym-subs',
     component: UserGymSubComponent,
@@ -339,6 +339,7 @@ export const routes: Routes = [
       {
         path: '',
         component: CoachesListComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'profile/:coachId',
