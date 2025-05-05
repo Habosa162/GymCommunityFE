@@ -142,54 +142,63 @@ export class CoachproductsComponent implements OnInit {
       return;
     }
 
-    const formData = new FormData();
     const formValue = this.productForm.value;
-
-    // Match the server's expected format exactly
-    formData.append('id', this.editingProductId?.toString() || '');
-    formData.append('Name', formValue.name?.toString().trim() || '');
-    formData.append('Description', formValue.description?.toString().trim() || '');
-    formData.append('Price', formValue.price?.toString() || '0');
-    formData.append('Stock', formValue.stock?.toString() || '0');
-    formData.append('AverageRating', '3'); // Default rating
-    formData.append('categoryID', formValue.categoryID?.toString() || '');
-    formData.append('brandId', formValue.brandId?.toString() || '');
-    formData.append('CoachId', this.coachId || '');
-
-    // Handle product image - only append if a new image is selected
-    if (this.selectedImage) {
-      formData.append('productImg', this.selectedImage);
-    }
+    const productDTO = {
+      id: this.editingProductId || 0,
+      name: formValue.name?.toString().trim() || '',
+      description: formValue.description?.toString().trim() || '',
+      price: formValue.price?.toString() || '0',
+      stock: formValue.stock?.toString() || '0',
+      averageRating: '3',
+      categoryID: formValue.categoryID?.toString() || '',
+      brandId: formValue.brandId?.toString() || '',
+      coachId: this.coachId || '',
+      imageUrl: this.previewUrl || ''
+    };
 
     if (this.editingProductId) {
-      // Update existing product
-      this.productService.updateProduct(this.editingProductId, formData).subscribe({
-        next: () => {
-          this.toastr.success('Product updated successfully');
-          this.editingProductId = null;
-          this.productForm.reset();
-          this.previewUrl = '';
-          this.selectedImage = undefined;
-          this.loadProducts();
-        },
-        error: (err) => {
-          console.error('Update error:', err);
-          if (err.error?.errors) {
-            // Handle validation errors
-            const errorMessages = Object.values(err.error.errors).flat().join('\n');
-            this.toastr.error(errorMessages, 'Validation Error');
-          } else {
-            this.toastr.error('Failed to update product', 'Error');
-          }
+      // For update, we need to handle the productDTO and image separately
+      const updateData = new FormData();
+      updateData.append('productDTO', JSON.stringify(productDTO));
+
+      // Always append productImg - either the new image or the existing image URL
+      if (this.selectedImage) {
+        updateData.append('productImg', this.selectedImage);
+      } else {
+        // Find the existing product to get its image URL
+        const existingProduct = this.products.find(p => p.id === this.editingProductId);
+        if (existingProduct?.imageUrl) {
+          // Create a dummy file with the image URL
+          const dummyFile = new File([existingProduct.imageUrl], 'existing-image.txt', { type: 'text/plain' });
+          updateData.append('productImg', dummyFile);
+        } else {
+          this.toastr.error('Existing image not found', 'Error');
+          return;
         }
-      });
+      }
+
+      this.performUpdate(updateData);
     } else {
+      // Create new product
+      const createData = new FormData();
+      createData.append('id', '0');
+      createData.append('name', productDTO.name);
+      createData.append('description', productDTO.description);
+      createData.append('price', productDTO.price);
+      createData.append('stock', productDTO.stock);
+      createData.append('averageRating', productDTO.averageRating);
+      createData.append('categoryID', productDTO.categoryID);
+      createData.append('brandId', productDTO.brandId);
+      createData.append('coachId', productDTO.coachId);
+
       // Create new product - require an image
       if (!this.selectedImage) {
         this.toastr.error('Product image is required', 'Validation Error');
         return;
       }
-      this.productService.createProduct(formData).subscribe({
+      createData.append('productImg', this.selectedImage);
+
+      this.productService.createProduct(createData).subscribe({
         next: () => {
           this.toastr.success('Product added successfully');
           this.productForm.reset();
@@ -209,5 +218,28 @@ export class CoachproductsComponent implements OnInit {
         }
       });
     }
+  }
+
+  private performUpdate(updateData: FormData): void {
+    this.productService.updateProduct(this.editingProductId!, updateData).subscribe({
+      next: () => {
+        this.toastr.success('Product updated successfully');
+        this.editingProductId = null;
+        this.productForm.reset();
+        this.previewUrl = '';
+        this.selectedImage = undefined;
+        this.loadProducts();
+      },
+      error: (err) => {
+        console.error('Update error:', err);
+        if (err.error?.errors) {
+          // Handle validation errors
+          const errorMessages = Object.values(err.error.errors).flat().join('\n');
+          this.toastr.error(errorMessages, 'Validation Error');
+        } else {
+          this.toastr.error('Failed to update product', 'Error');
+        }
+      }
+    });
   }
 }
