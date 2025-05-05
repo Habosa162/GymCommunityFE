@@ -145,3 +145,10 @@ body {
 .btn-success {
   background-color: limegreen !important;
 }
+
+.multi-line-truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* Change this number to control how many lines are shown */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
