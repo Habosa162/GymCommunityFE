@@ -24,8 +24,12 @@
             />
           </div>
           <p *ngIf="isOwner" class="text-center mainColor mb-4">
-            <i class="fa-solid fa-camera"></i> Change profile picture
+            <button class="btn" (click)="openModal()">
+              <i class="fa-solid fa-camera"></i> Change Profile Picture
+            </button>
           </p>
+          <!-- Trigger Button -->
+
           <div class="card shadow-sm rounded-4 p-2">
             <div class="card-body p-0">
               <ul class="list-group list-group-flush bg-transparent">
@@ -116,3 +120,31 @@
 </section>
 
 <!-- <app-change-profile-img *ngIf="isOwner"></app-change-profile-img> -->
+
+<!-- Modal -->
+<div class="modal-backdrop" *ngIf="showModal">
+  <div class="modal-content">
+    <h4>Update Profile Picture</h4>
+
+    <!-- Circle Image Upload -->
+    <div class="circle" (click)="triggerFileInput(fileInput)">
+      <img *ngIf="previewUrl" [src]="previewUrl" alt="Preview" />
+      <span *ngIf="!previewUrl">+</span>
+    </div>
+
+    <!-- Hidden File Input -->
+    <input
+      #fileInput
+      type="file"
+      accept="image/*"
+      (change)="onFileChange($event)"
+      hidden
+    />
+
+    <!-- Submit + Cancel -->
+    <div class="mt-3">
+      <button class="btn btn-success me-2" (click)="onSubmit()">Submit</button>
+      <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
