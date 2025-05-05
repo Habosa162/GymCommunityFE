@@ -10,10 +10,10 @@
         <a class="navbar-brand d-flex align-items-center" routerLink="/">
           <img
             src="/assets/imgs/logo.png"
-            alt="Voltmort Logo"
+            alt="Thunder Fit Logo"
             class="brand-logo"
           />
-          <span class="brand-name ms-2">Thunder Fit</span>
+          <span class="brand-name ms-2 d-none d-sm-inline">Thunder Fit</span>
         </a>
 
         <!-- Mobile Toggle -->
@@ -38,10 +38,21 @@
                 routerLink="/coach/dashboard"
                 routerLinkActive="active"
               >
+                <i class="bi bi-person-circle d-md-none me-2"></i>
                 <span class="nav-link-text">My Profile</span>
               </a>
             </li>
             <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/coachDashboard"
+                routerLinkActive="active"
+              >
+                <i class="bi bi-speedometer2 d-md-none me-2"></i>
+                <span class="nav-link-text">Coach Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-item d-none d-lg-block">
               <a
                 class="nav-link"
                 routerLink="/coach/dashboard/portfolio"
@@ -50,7 +61,7 @@
                 <span class="nav-link-text">Portfolio</span>
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item d-none d-lg-block">
               <a
                 class="nav-link"
                 routerLink="/coach/dashboard/certificates"
@@ -59,7 +70,7 @@
                 <span class="nav-link-text">Certificates</span>
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item d-none d-lg-block">
               <a
                 class="nav-link"
                 routerLink="/coach/dashboard/work-samples"
@@ -68,7 +79,55 @@
                 <span class="nav-link-text">Work Samples</span>
               </a>
             </li>
-            <li class="nav-item">
+            
+            <!-- Dropdown for mobile menu -->
+            <li class="nav-item dropdown d-lg-none">
+              <a 
+                class="nav-link dropdown-toggle" 
+                href="#" 
+                id="moreMenuDropdown" 
+                role="button" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false"
+              >
+                <i class="bi bi-three-dots me-2"></i>
+                <span class="nav-link-text">More</span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="moreMenuDropdown">
+                <li>
+                  <a class="dropdown-item" routerLink="/coach/dashboard/portfolio">
+                    <i class="bi bi-journal-album me-2"></i>Portfolio
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" routerLink="/coach/dashboard/certificates">
+                    <i class="bi bi-award me-2"></i>Certificates
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" routerLink="/coach/dashboard/work-samples">
+                    <i class="bi bi-images me-2"></i>Work Samples
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" routerLink="/coach/dashboard/offers">
+                    <i class="bi bi-tags me-2"></i>My Offers
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" routerLink="/coach/dashboard/Products">
+                    <i class="bi bi-box-seam me-2"></i>My Products
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" routerLink="/coach/dashboard/my-client">
+                    <i class="bi bi-people me-2"></i>My Clients
+                  </a>
+                </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item d-none d-lg-block">
               <a
                 class="nav-link"
                 routerLink="/coach/dashboard/offers"
@@ -77,7 +136,7 @@
                 <span class="nav-link-text">My Offers</span>
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item d-none d-lg-block">
               <a
                 class="nav-link"
                 routerLink="/coach/dashboard/Products"
@@ -86,7 +145,7 @@
                 <span class="nav-link-text">My Products</span>
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item d-none d-lg-block">
               <a
                 class="nav-link"
                 routerLink="/coach/dashboard/my-client"
@@ -101,6 +160,7 @@
                 routerLink="/chat"
                 routerLinkActive="active"
               >
+                <i class="bi bi-chat-dots-fill d-md-none me-2"></i>
                 <span class="nav-link-text">Chat</span>
               </a>
             </li>
@@ -110,6 +170,7 @@
                 routerLink="/forum"
                 routerLinkActive="active"
               >
+                <i class="bi bi-people-fill d-md-none me-2"></i>
                 <span class="nav-link-text">Forum</span>
               </a>
             </li>
@@ -117,54 +178,8 @@
 
           <!-- User Controls -->
           <div class="d-flex align-items-center user-controls gap-3">
-            <!-- Theme Toggle -->
-            <!-- <div class="theme-toggle" (click)="toggleDarkMode()">
-              <i
-                class="bi"
-                [class.bi-sun]="!isDarkMode"
-                [class.bi-moon]="isDarkMode"
-              ></i>
-            </div> -->
-            
             <!-- Notifications -->
-            <!-- <div class="notifications-dropdown position-relative">
-              <div class="notifications-icon" role="button" (click)="toggleNotifications()">
-                <i class="bi bi-bell position-relative">
-                  <span *ngIf="getUnreadCount() > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    {{getUnreadCount()}}
-                    <span class="visually-hidden">unread notifications</span>
-                  </span>
-                </i>
-              </div> -->
-              
-              <!-- Notifications Dropdown Menu -->
-               <app-notification-bell></app-notification-bell>
-              <!-- <div class="dropdown-menu shadow notifications-menu" [class.show]="showNotifications">
-                <div class="dropdown-header d-flex justify-content-between align-items-center">
-                  <h6 class="mb-0">Notifications</h6>
-                  <span class="badge bg-primary rounded-pill">{{getUnreadCount()}} new</span>
-                </div>
-                <div class="dropdown-divider"></div>
-                <div class="notifications-list">
-                  <a *ngFor="let notification of notifications" 
-                     class="dropdown-item" 
-                     [class.unread]="!notification.read"
-                     (click)="markNotificationAsRead(notification.id)">
-                    <div class="d-flex w-100 justify-content-between">
-                      <span [class.fw-bold]="!notification.read">{{notification.message}}</span>
-                      <small class="text-muted">{{notification.time}}</small>
-                    </div>
-                  </a>
-                  <div *ngIf="notifications.length === 0" class="dropdown-item text-center">
-                    <span class="text-muted">No notifications</span>
-                  </div>
-                </div>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-center text-primary" routerLink="/coach/dashboard">
-                  View all notifications
-                </a>
-              </div> 
-            </div>-->
+            <app-notification-bell></app-notification-bell>
 
             <div class="profile-dropdown" #profileDropdown>
               <div
@@ -176,7 +191,7 @@
                   alt="User profile"
                   class="profile-image"
                 />
-                <span class="profile-name ms-2">{{ userName || "Coach" }}</span>
+                <span class="profile-name ms-2 d-none d-sm-inline">{{ userName || "Coach" }}</span>
                 <i
                   class="bi bi-chevron-down dropdown-arrow ms-1"
                   [class.rotate-180]="isProfileDropdownOpen"
