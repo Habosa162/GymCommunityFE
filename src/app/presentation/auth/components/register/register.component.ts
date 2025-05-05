@@ -216,7 +216,7 @@ export class RegisterComponent {
           this.isLoading = false;
           this.isSuccess = true;
           setTimeout(() => {
-            this.router.navigate(['/login']);
+            this.router.navigate(['/confirm-email']);
           }, 3000);
         },
         error: (error) => {

@@ -68,6 +68,8 @@ import { UserGymSubComponent } from './presentation/Gym/user-gym-sub/user-gym-su
 import { GymManagementComponent } from './presentation/admin/Gym-Management/gym-management.component';
 import { UpdateGymComponent } from './presentation/admin/Gym-Management/update-gym/update-gym.component';
 import { UsersManagementComponent } from './presentation/admin/users-management/users-management.component';
+import { EmailConfirmPageComponent } from './presentation/auth/components/email-confirm-page/email-confirm-page.component';
+import { EmailConfirmDoneComponent } from './presentation/auth/components/email-confirm-done/email-confirm-done.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [clientGuard] },
@@ -77,6 +79,8 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'ResetPassword', component: ResetPasswordComponent },
   { path: 'Choose-role', component: SelectRoleComponent },
+  { path: 'confirm-email', component: EmailConfirmPageComponent },
+  { path: 'confirm-done', component: EmailConfirmDoneComponent },
   //client routes
 
   {

@@ -1,0 +1,10 @@
+<section
+  id="confirmDone"
+  class="bgColor d-flex justify-content-center align-items-center flex-column"
+>
+  <h2 class="colorBlack mb-3">Email Confirmation Done</h2>
+  <h3 *ngIf="isConfirmed">
+    <i class="fa-solid fa-circle-check fs-1" style="color: #32cd32"></i>
+  </h3>
+  <p class="text-black-50">{{ message }}</p>
+</section>
