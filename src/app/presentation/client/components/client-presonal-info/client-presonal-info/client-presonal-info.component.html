@@ -3,7 +3,12 @@
     <h2 class="clientName text-capitalize m-0">
       {{ clientProfile?.firstName }} {{ clientProfile?.lastName }}
     </h2>
-    <span class="m-2" title="Premium User" style="width: 30px">
+    <span
+      *ngIf="clientProfile.isPremium"
+      class="m-2"
+      title="Premium User"
+      style="width: 30px"
+    >
       <svg
         class="w-100 h-100"
         version="1.1"

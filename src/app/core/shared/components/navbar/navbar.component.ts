@@ -1,3 +1,4 @@
+import { ClientProfileService } from './../../../../services/Client/client-profile.service';
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -15,22 +16,26 @@ import { ProductService } from '../../../../services/Ecommerce/product.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
-export class NavbarComponent implements OnInit{
+export class NavbarComponent implements OnInit {
   profileBtnClicked: boolean = false;
   searchQuery: string = '';
   showSearchResults: boolean = true;
   isLoggedIn: boolean = false;
   isLoading: boolean = false;
+  profileImg !:string;
   constructor(
     private productService: ProductService,
     private cartService: CartService,
     protected authService: AuthService,
     protected categoryService: CategoryService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private ClientProfileService: ClientProfileService
   ) {}
 
   ngOnInit(): void {
-
+    this.ClientProfileService.getClientProfileById(this.authService.getUserId()!).subscribe((res:any)=>{
+          this.profileImg = res.data.profileImg;
+    });
   }
   profileBtn() {
     this.profileBtnClicked = !this.profileBtnClicked;
@@ -39,6 +44,4 @@ export class NavbarComponent implements OnInit{
   cartCount() {
     return this.cartService.getCartCount();
   }
-
-
 }
