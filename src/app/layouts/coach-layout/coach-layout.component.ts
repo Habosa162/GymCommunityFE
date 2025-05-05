@@ -1,3 +1,4 @@
+import { NotificationBellComponent } from './../../core/shared/components/notification-bell/notification-bell.component';
 import { CommonModule } from '@angular/common';
 import {
   Component,
@@ -6,7 +7,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { NavbarComponent } from '../../core/shared/components/navbar/navbar.component';
 import { SideBarComponent } from '../../presentation/admin/side-bar/side-bar.component';
@@ -22,6 +23,7 @@ import { AuthService } from '../../services/auth.service';
     FormsModule,
     NavbarComponent,
     SideBarComponent,
+    NotificationBellComponent
   ],
   templateUrl: './coach-layout.component.html',
   styleUrls: ['./coach-layout.component.css'],
