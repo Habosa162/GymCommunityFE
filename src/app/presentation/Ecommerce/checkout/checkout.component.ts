@@ -97,7 +97,7 @@ export class CheckoutComponent {
     const orderData = {
       amount: this.totalPrice * 100,
       currency: "EGP",
-      payment_methods: [4419883, 4437311, 4437297],
+      payment_methods: [4419883, 4437311, 4437297,4438104],
       orderItems: this.cartItems.map((item) => ({
         name: item.name,
         amount: item.price * 100, 

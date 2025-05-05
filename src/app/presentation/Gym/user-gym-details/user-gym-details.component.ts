@@ -186,7 +186,7 @@ export class UserGymDetailsComponent {
     const orderData = {
       amount: (this.selectedPlan?.price ?? 0) * 100,
       currency: "EGP",
-      payment_methods: [4419883, 4437311, 4437297],
+      payment_methods: [4419883, 4437311, 4437297,4438104],
       billing_data: {
         "first_name": "N/A",
         "last_name": "N/A",

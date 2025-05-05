@@ -43,7 +43,7 @@ export class BuyPremiumComponent implements OnInit {
     const orderData = {
       amount: this.totalPrice * 100,
       currency: "EGP",
-      payment_methods: [4419883, 4437311, 4437297],
+      payment_methods: [4419883, 4437311, 4437297,4438104],
       orderItems: "Premium 500EGP",
       billing_data: {
         "apartment": "dumy",
