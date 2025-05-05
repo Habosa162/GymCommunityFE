@@ -13,7 +13,7 @@
             alt="Voltmort Logo"
             class="brand-logo"
           />
-          <span class="brand-name ms-2">Voltmort</span>
+          <span class="brand-name ms-2">Thunder Fit</span>
         </a>
 
         <!-- Mobile Toggle -->
@@ -118,16 +118,16 @@
           <!-- User Controls -->
           <div class="d-flex align-items-center user-controls gap-3">
             <!-- Theme Toggle -->
-            <div class="theme-toggle" (click)="toggleDarkMode()">
+            <!-- <div class="theme-toggle" (click)="toggleDarkMode()">
               <i
                 class="bi"
                 [class.bi-sun]="!isDarkMode"
                 [class.bi-moon]="isDarkMode"
               ></i>
-            </div>
+            </div> -->
             
             <!-- Notifications -->
-            <div class="notifications-dropdown position-relative">
+            <!-- <div class="notifications-dropdown position-relative">
               <div class="notifications-icon" role="button" (click)="toggleNotifications()">
                 <i class="bi bi-bell position-relative">
                   <span *ngIf="getUnreadCount() > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -135,7 +135,7 @@
                     <span class="visually-hidden">unread notifications</span>
                   </span>
                 </i>
-              </div>
+              </div> -->
               
               <!-- Notifications Dropdown Menu -->
                <app-notification-bell></app-notification-bell>
@@ -163,8 +163,8 @@
                 <a class="dropdown-item text-center text-primary" routerLink="/coach/dashboard">
                   View all notifications
                 </a>
-              </div> -->
-            </div>
+              </div> 
+            </div>-->
 
             <div class="profile-dropdown" #profileDropdown>
               <div
