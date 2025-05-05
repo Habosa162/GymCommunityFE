@@ -1,17 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { baseUrl } from '../enviroment';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ClientInfoService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   private apiUrl = `${baseUrl}/ClientInfo`;
 
-  changeClientCoverImg(file: File) {
-    return this.http.get(`${this.apiUrl}/ChangeCoverImg`);
+  changeCoverImage(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('img', file);
+    return this.http.post(`${this.apiUrl}/ChangeCoverImg`, formData);
   }
 }

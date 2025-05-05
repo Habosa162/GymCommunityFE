@@ -1,121 +1,103 @@
-<nav class="navbar navbar-expand-lg" [ngClass]="{'navbar-scrolled': isScrolled}">
+<nav class="navbar navbar-expand-lg">
   <div class="container">
-    <!-- Logo -->
-    <a class="navbar-brand" routerLink="/">
-      <img src="/assets/imgs/logo.png" class="img-fluid" style="max-width: 50px; height: auto;" alt="Gym Community">
+    <a
+      class="navbar-brand align-middle d-flex align-items-center me-lg-4"
+      href="#"
+    >
+      <img width="50" src="/assets/imgs/logo.png" alt="" />
+      <!-- <span class="fw-bold mainColor fs-4 d-none d-md-block">ThunderFit</span> -->
     </a>
-
-    <!-- Mobile Toggle Button -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
-
-    <!-- Navbar Content -->
-    <div class="collapse navbar-collapse" id="navbarContent">
-      <!-- Main Navigation -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <!-- Loop through navigation menus based on user role -->
-        <ng-container *ngFor="let menu of navMenus">
-          <!-- Menu item with dropdown -->
-          <li *ngIf="menu.children" class="nav-item dropdown" [ngClass]="{'show': activeDropdown === menu.title}">
-            <a class="nav-link dropdown-toggle" href="javascript:void(0);" (click)="toggleDropdown(menu.title)" role="button" 
-               aria-expanded="false">
-              <i [ngClass]="menu.icon" class="me-1"></i> {{menu.title}}
-            </a>
-            <ul class="dropdown-menu" [ngClass]="{'show': activeDropdown === menu.title}">
-              <li *ngFor="let child of menu.children">
-                <a class="dropdown-item" [routerLink]="child.route" (click)="closeDropdowns()">
-                  {{child.title}}
-                </a>
-              </li>
-            </ul>
-          </li>
-          
-          <!-- Single menu item without dropdown -->
-          <li *ngIf="!menu.children" class="nav-item">
-            <a class="nav-link" [routerLink]="menu.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: menu.route === '/'}">
-              <i [ngClass]="menu.icon" class="me-1"></i> {{menu.title}}
-            </a>
-          </li>
-        </ng-container>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
+        </li>
+        <!-- Categories Dropdown -->
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/shop">Shop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/coach">CoachHub</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/gyms">GymHub</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/forum">Blogs</a>
+        </li>
+
+        <!-- WhisList -->
+        <li class="nav-item d-flex align-items-center WishList text-center">
+          <a
+            routerLink="/wish-list"
+            class="text-black-50 p-1 text-decoration-none"
+            aria-current="page"
+          >
+            <i class="d-lg-none">WishList</i>
+            <i class="fa-solid fa-heart fs-4 px-2"></i>
+          </a>
+        </li>
+
+        <!-- Cart -->
+        <li class="nav-item d-flex align-items-center Cart">
+          <a
+            routerLink="/cart"
+            class="position-relative text-black-50 p-1 text-decoration-none"
+            aria-current="page"
+          >
+            <i class="d-lg-none">Cart</i>
+            <i class="fa-solid fa-cart-shopping fs-4 p-xs-2"></i>
+            <span
+              class="position-absolute top-0 d-sm-none d-xs-none d-md-block start-100 translate-middle badge rounded-circle bg-danger cart"
+            >
+              {{ cartCount() }}
+            </span>
+          </a>
+        </li>
       </ul>
+      <!-- END OF THE FIRST UNORDERED LIST -->
 
-      <!-- User Account Section -->
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-        <!-- Auth-dependent UI Elements -->
-        <ng-container *ngIf="authService.isLoggedIn(); else loginButtons">
-          <!-- Notification Bell -->
-          <li class="nav-item me-2">
-            <app-notification-bell></app-notification-bell>
-          </li>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="me-auto nav-item" *ngIf="authService.isLoggedIn()">
+          <app-notification-bell class="fs-1 p-xs-2"></app-notification-bell>
+        </li>
 
-          <!-- User Profile Dropdown -->
-          <li class="nav-item dropdown" [ngClass]="{'show': activeDropdown === 'profile'}">
-            <a class="nav-link dropdown-toggle d-flex align-items-center" href="javascript:void(0);" (click)="toggleDropdown('profile')" role="button">
-              <span class="me-2">{{authService.getNameFromToken() || 'User'}}</span>
-              <div class="user-avatar">
-                <img *ngIf="authService.getProfileImg()" [src]="authService.getProfileImg()" alt="Profile" class="rounded-circle">
-                <i *ngIf="!authService.getProfileImg()" class="bi bi-person-circle"></i>
-              </div>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" [ngClass]="{'show': activeDropdown === 'profile'}">
-              <li>
-                <a class="dropdown-item" routerLink="/profile/me" (click)="closeDropdowns()">
-                  <i class="bi bi-person-fill me-2"></i>My Profile
-                </a>
-              </li>
-              
-              <!-- Role-specific menu items -->
-              <li *ngIf="userRole === 'Client'">
-                <a class="dropdown-item" routerLink="/my-plans" (click)="closeDropdowns()">
-                  <i class="bi bi-card-checklist me-2"></i>My Plans
-                </a>
-              </li>
-              <li *ngIf="userRole === 'GymOwner'">
-                <a class="dropdown-item" routerLink="/gym-owner/myGyms" (click)="closeDropdowns()">
-                  <i class="bi bi-building me-2"></i>My Gyms
-                </a>
-              </li>
-              <li *ngIf="userRole === 'Coach'">
-                <a class="dropdown-item" routerLink="/coach/dashboard" (click)="closeDropdowns()">
-                  <i class="bi bi-speedometer2 me-2"></i>Dashboard
-                </a>
-              </li>
-              <li *ngIf="userRole === 'Admin'">
-                <a class="dropdown-item" routerLink="/dashboard" (click)="closeDropdowns()">
-                  <i class="bi bi-speedometer2 me-2"></i>Admin Dashboard
-                </a>
-              </li>
-              
-              <!-- Messages link for everyone except gym owners -->
-              <li *ngIf="userRole !== 'GymOwner'">
-                <a class="dropdown-item" routerLink="/chat" (click)="closeDropdowns()">
-                  <i class="bi bi-chat-dots-fill me-2"></i>Messages
-                </a>
-              </li>
-              
-              <li><hr class="dropdown-divider"></li>
-              <li>
-                <a class="dropdown-item text-danger" href="javascript:void(0);" (click)="authService.logout()">
-                  <i class="bi bi-box-arrow-right me-2"></i>Logout
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ng-container>
-        
-        <!-- Login/Register Template for non-logged-in users -->
-        <ng-template #loginButtons>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/login">
-              <i class="bi bi-box-arrow-in-right me-1"></i> Login
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="btn btn-outline-primary" routerLink="/register">Register</a>
-          </li>
-        </ng-template>
+        <li *ngIf="authService.isLoggedIn()" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
+            <img *ngIf="authService.getProfileImg()"
+                 [src]="authService.getProfileImg()"
+                 class="rounded-circle"
+                 width="50px" height="50px" alt="User Profile" />
+            <i *ngIf="!authService.getProfileImg()" class="fa-regular fa-circle-user fs-4"></i>
+            {{ authService.getDecodedToken()?.Name }}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" routerLink="profile/me">Profile</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" routerLink="/my-orders">Orders</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" routerLink="/my-plans">Plans</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><button class="dropdown-item" (click)="authService.logout()">Logout</button></li>
+          </ul>
+        </li>
+
+        <li class="nav-item" *ngIf="!authService.isLoggedIn()">
+          <a class="nav-link" routerLink="/login">Login</a>
+        </li>
       </ul>
     </div>
   </div>

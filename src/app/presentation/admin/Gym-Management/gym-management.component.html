@@ -1,7 +1,10 @@
 <section id="gymManagementSection" class="container p-3">
   <div class="row g-3">
     <!-- Header Section -->
-    <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-2" id="headrSection">
+    <div
+      class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-2"
+      id="headrSection"
+    >
       <h2 class="mb-0">Gym Management</h2>
     </div>
 
@@ -13,26 +16,40 @@
             <!-- Search Bar -->
             <div class="col-md-10">
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-search"></i></span>
-                <input type="text"
-                       [(ngModel)]="query"
-                       (input)="onSearchChange()"
-                       class="form-control"
-                       placeholder="Search gyms by name or location...">
-                <button *ngIf="query" 
-                       class="btn btn-outline-secondary" 
-                       type="button"
-                       (click)="clearAllFilters()">
+                <span class="input-group-text"
+                  ><i class="bi bi-search"></i
+                ></span>
+                <input
+                  type="text"
+                  [(ngModel)]="query"
+                  (input)="onSearchChange()"
+                  class="form-control"
+                  placeholder="Search gyms by name or location..."
+                />
+                <button
+                  *ngIf="query"
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  (click)="clearAllFilters()"
+                >
                   <i class="bi bi-x-lg"></i>
                 </button>
               </div>
             </div>
-            
+
             <!-- Sort Button -->
             <div class="col-md-2">
-              <button class="btn btn-outline-secondary w-100" (click)="toggleSort()">
-                <i class="bi" [ngClass]="sort === 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up'"></i>
-                {{ sort === 'asc' ? 'A-Z' : 'Z-A' }}
+              <button
+                class="btn btn-outline-secondary w-100"
+                (click)="toggleSort()"
+              >
+                <i
+                  class="bi"
+                  [ngClass]="
+                    sort === 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up'
+                  "
+                ></i>
+                {{ sort === "asc" ? "A-Z" : "Z-A" }}
               </button>
             </div>
           </div>
@@ -43,9 +60,12 @@
     <!-- Loading State -->
     <ng-container *ngIf="isLoading">
       <div class="row g-3">
-        <div *ngFor="let skeleton of [1,2,3,4,5,6,7,8]" class="col-xl-3 col-md-6 col-sm-12">
+        <div
+          *ngFor="let skeleton of [1, 2, 3, 4, 5, 6, 7, 8]"
+          class="col-xl-3 col-md-6 col-sm-12"
+        >
           <div class="card h-100 placeholder-glow">
-            <div class="card-img-top placeholder" style="height: 200px;"></div>
+            <div class="card-img-top placeholder" style="height: 200px"></div>
             <div class="card-body">
               <h5 class="card-title placeholder col-8"></h5>
               <p class="card-text placeholder col-6"></p>
@@ -61,15 +81,24 @@
 
     <!-- Gyms Grid -->
     <ng-container *ngIf="!isLoading">
-      <div class="col-xl-3 col-md-6 col-sm-12" *ngFor="let gym of filteredGymsList">
+      <div
+        class="col-xl-3 col-md-6 col-sm-12"
+        *ngFor="let gym of filteredGymsList"
+      >
         <div class="card h-100 shadow-sm">
           <app-gym [gym]="gym"></app-gym>
           <div class="card-footer bg-transparent border-top-0">
             <div class="d-flex justify-content-between gap-2">
-              <button class="btn btn-danger flex-grow-1" (click)="onRemoveGym(gym.id)">
+              <button
+                class="btn btn-danger flex-grow-1"
+                (click)="onRemoveGym(gym.id)"
+              >
                 <i class="bi bi-trash me-2"></i>Remove
               </button>
-              <a class="btn btn-warning flex-grow-1" [routerLink]="['/update-gym', gym.id]">
+              <a
+                class="btn btn-success flex-grow-1"
+                [routerLink]="['/update-gym', gym.id]"
+              >
                 <i class="bi bi-pencil me-2"></i>Update
               </a>
             </div>
@@ -79,18 +108,32 @@
     </ng-container>
 
     <!-- Empty State -->
-    <div *ngIf="filteredGymsList.length === 0 && !isLoading" class="empty-state text-center mt-5">
+    <div
+      *ngIf="filteredGymsList.length === 0 && !isLoading"
+      class="empty-state text-center mt-5"
+    >
       <div class="empty-state-icon mb-3">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          width="48"
+          height="48"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          <path
+            d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+          ></path>
         </svg>
       </div>
       <h3 class="empty-state-title">No gyms found</h3>
       <p class="empty-state-text">Try adjusting your search criteria</p>
-      <button class="btn btn-primary mt-3" (click)="clearAllFilters()">Clear Search</button>
+      <button class="btn btn-primary mt-3" (click)="clearAllFilters()">
+        Clear Search
+      </button>
     </div>
-    
+
     <!-- Pagination -->
     <div class="col-12 mt-4" *ngIf="totalPages > 1 && !isLoading">
       <nav aria-label="Page navigation">
@@ -99,9 +142,12 @@
             <a class="page-link" (click)="goToPage(page - 1)">Previous</a>
           </li>
           <li class="page-item" *ngFor="let pageNum of getPageArray()">
-            <a class="page-link" 
-               [class.active]="pageNum === page"
-               (click)="goToPage(pageNum)">{{ pageNum }}</a>
+            <a
+              class="page-link"
+              [class.active]="pageNum === page"
+              (click)="goToPage(pageNum)"
+              >{{ pageNum }}</a
+            >
           </li>
           <li class="page-item" [class.disabled]="page >= totalPages">
             <a class="page-link" (click)="goToPage(page + 1)">Next</a>

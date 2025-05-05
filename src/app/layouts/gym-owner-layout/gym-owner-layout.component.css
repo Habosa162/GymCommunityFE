@@ -22,7 +22,9 @@
     font-size: 0.9rem;
   }
 }
-
+.nav-item{
+  cursor: pointer;
+}
 /* Sidebar */
 .admin-sidebar {
   position: sticky;

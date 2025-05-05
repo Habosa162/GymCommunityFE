@@ -1,7 +1,5 @@
 <div class="gym-owner-layout">
   <!-- Navbar -->
-  <app-navbar class="navbar-compact"></app-navbar>
-
   <div class="content-wrapper">
     <!-- Sidebar -->
     <div class="admin-sidebar shadow-sm border-top" [class.collapsed]="sidebarCollapsed">
@@ -68,13 +66,19 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/forum" routerLinkActive="active">
             <i class="bi bi-chat-square-text"></i>
-            <span class="link-text">Forum</span>
+            <span class="link-text">Blogs</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/subjects" routerLinkActive="active">
             <i class="bi bi-list-check"></i>
             <span class="link-text">Subjects</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="Logout()">
+            <i class="fa-solid fa-door-open me-3"></i>
+            <span class="link-text">Logout</span>
           </a>
         </li>
       </ul>

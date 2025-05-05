@@ -3,10 +3,19 @@
   <div class="cover overflow-hidden position-relative">
     <img
       class="w-100 cover-img"
-      src="https://img.freepik.com/free-photo/beautiful-deer-relaxing-valley-foggy-day_181624-5918.jpg?uid=R132930234&ga=GA1.1.GA1.2.263481332.1694631472&semt=ais_hybrid&w=740"
+      [src]="
+        clientProfile?.coverImg ||
+        'https://img.freepik.com/free-photo/beautiful-deer-relaxing-valley-foggy-day_181624-5918.jpg'
+      "
       alt="profile cover"
     />
     <div class="cover-overlay"></div>
+    <button
+      class="position-absolute bottom-0 end-0 btn"
+      (click)="openCoverModal()"
+    >
+      <i class="fa-solid fa-camera"></i> Change Cover Image
+    </button>
   </div>
 
   <div class="container mt-4">
@@ -145,6 +154,40 @@
     <div class="mt-3">
       <button class="btn btn-success me-2" (click)="onSubmit()">Submit</button>
       <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- cover Modal -->
+<div class="modal-backdrop" *ngIf="showCoverModal">
+  <div class="modal-content">
+    <h4>Update Cover Image</h4>
+
+    <!-- Cover Preview Box -->
+    <div class="cover-box" (click)="triggerCoverFileInput(fileInput)">
+      <img *ngIf="coverPreviewUrl" [src]="coverPreviewUrl" alt="Preview" />
+      <span *ngIf="!coverPreviewUrl" class="btn btn-outline-success mt-2"
+        >Click to choose</span
+      >
+    </div>
+
+    <!-- Hidden File Input -->
+    <input
+      #fileInput
+      type="file"
+      accept="image/*"
+      (change)="onCoverFileChange($event)"
+      hidden
+    />
+
+    <!-- Submit + Cancel -->
+    <div class="mt-3">
+      <button class="btn btn-success me-2" (click)="onCoverSubmit()">
+        Submit
+      </button>
+      <button class="btn btn-secondary" (click)="closeCoverModal()">
+        Cancel
+      </button>
     </div>
   </div>
 </div>

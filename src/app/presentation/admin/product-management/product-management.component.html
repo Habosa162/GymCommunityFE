@@ -1,16 +1,28 @@
 <section id="productManagementSection" class="container p-3">
   <div class="row g-3">
     <!-- Header Section -->
-    <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-2" id="headrSection">
+    <div
+      class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-2"
+      id="headrSection"
+    >
       <h2 class="mb-0">Product Management</h2>
 
-      <a routerLink="/create-category" class="btn btn-outline-light btnManage fw-bolder">
+      <a
+        routerLink="/create-category"
+        class="btn btn-outline-light btnManage fw-bolder"
+      >
         <i class="fa-solid fa-layer-group me-2"></i>Categories
       </a>
-      <a routerLink="/create-brand" class="btn btn-outline-light btnManage fw-bolder">
+      <a
+        routerLink="/create-brand"
+        class="btn btn-outline-light btnManage fw-bolder"
+      >
         <i class="fa-solid fa-copyright me-2"></i>Brands
       </a>
-      <a routerLink="/create-product" class="btn btn-outline-light btnManage fw-bolder">
+      <a
+        routerLink="/create-product"
+        class="btn btn-outline-light btnManage fw-bolder"
+      >
         <i class="fa-solid fa-plus me-2"></i>Create New
       </a>
     </div>
@@ -23,36 +35,45 @@
             <!-- Search Bar -->
             <div class="col-md-4">
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-search"></i></span>
-                <input type="text"
-                       [(ngModel)]="query"
-                       (input)="onSearchChange()"
-                       class="form-control"
-                       placeholder="Search products...">
+                <span class="input-group-text"
+                  ><i class="bi bi-search"></i
+                ></span>
+                <input
+                  type="text"
+                  [(ngModel)]="query"
+                  (input)="onSearchChange()"
+                  class="form-control"
+                  placeholder="Search products..."
+                />
               </div>
             </div>
 
             <!-- Category Filter -->
             <div class="col-md-2">
-              <select class="form-select"
-                      [(ngModel)]="categoryId"
-                      (change)="onCategoryChange()">
+              <select
+                class="form-select"
+                [(ngModel)]="categoryId"
+                (change)="onCategoryChange()"
+              >
                 <option value="" selected>All Categories</option>
-                <option *ngFor="let category of categories"
-                        [value]="category.categoryID">
-                     {{category.name }}
+                <option
+                  *ngFor="let category of categories"
+                  [value]="category.categoryID"
+                >
+                  {{ category.name }}
                 </option>
               </select>
             </div>
 
             <!-- Brand Filter -->
             <div class="col-md-2">
-              <select class="form-select"
-                      [(ngModel)]="brandId"
-                      (change)="onBrandChange()">
+              <select
+                class="form-select"
+                [(ngModel)]="brandId"
+                (change)="onBrandChange()"
+              >
                 <option value="" selected>All Brands</option>
-                <option *ngFor="let brand of brands"
-                        [value]="brand.brandID">
+                <option *ngFor="let brand of brands" [value]="brand.brandID">
                   {{ brand.name }}
                 </option>
               </select>
@@ -60,28 +81,34 @@
 
             <!-- Price Range -->
             <div class="col-md-2">
-              <input type="number"
-                     [(ngModel)]="minPrice"
-                     (input)="onPriceRangeChange()"
-                     class="form-control"
-                     placeholder="Min Price">
+              <input
+                type="number"
+                [(ngModel)]="minPrice"
+                (input)="onPriceRangeChange()"
+                class="form-control"
+                placeholder="Min Price"
+              />
             </div>
 
             <div class="col-md-2">
-              <input type="number"
-                     [(ngModel)]="maxPrice"
-                     (input)="onPriceRangeChange()"
-                     class="form-control"
-                     placeholder="Max Price">
+              <input
+                type="number"
+                [(ngModel)]="maxPrice"
+                (input)="onPriceRangeChange()"
+                class="form-control"
+                placeholder="Max Price"
+              />
             </div>
           </div>
 
           <div class="row g-3 mt-2">
             <!-- Sort Option -->
             <div class="col-md-3">
-              <select class="form-select"
-                      [(ngModel)]="sort"
-                      (change)="onSortChange()">
+              <select
+                class="form-select"
+                [(ngModel)]="sort"
+                (change)="onSortChange()"
+              >
                 <option value="">Sort By</option>
                 <option value="asc">Price: Low to High</option>
                 <option value="desc">Price: High to Low</option>
@@ -92,9 +119,11 @@
             <div class="col-md-3">
               <div class="input-group">
                 <span class="input-group-text">Items</span>
-                <select class="form-select"
-                        [(ngModel)]="eleNo"
-                        (change)="onItemsPerPageChange()">
+                <select
+                  class="form-select"
+                  [(ngModel)]="eleNo"
+                  (change)="onItemsPerPageChange()"
+                >
                   <option value="8">8</option>
                   <option value="12">12</option>
                   <option value="16">16</option>
@@ -110,9 +139,12 @@
     <!-- Loading State -->
     <ng-container *ngIf="isLoading">
       <div class="row g-3">
-        <div *ngFor="let skeleton of [1,2,3,4,5,6]" class="col-xl-3 col-md-6 col-sm-12">
+        <div
+          *ngFor="let skeleton of [1, 2, 3, 4, 5, 6]"
+          class="col-xl-3 col-md-6 col-sm-12"
+        >
           <div class="card h-100 placeholder-glow">
-            <div class="card-img-top placeholder" style="height: 200px;"></div>
+            <div class="card-img-top placeholder" style="height: 200px"></div>
             <div class="card-body">
               <h5 class="card-title placeholder col-8"></h5>
               <p class="card-text placeholder col-6"></p>
@@ -128,15 +160,24 @@
 
     <!-- Products Grid -->
     <ng-container *ngIf="!isLoading">
-      <div class="col-xl-3 col-md-6 col-sm-12" *ngFor="let product of productsList">
+      <div
+        class="col-xl-3 col-md-6 col-sm-12"
+        *ngFor="let product of productsList"
+      >
         <div class="card h-100 shadow-sm">
           <app-product [product]="product"></app-product>
           <div class="card-footer bg-transparent border-top-0">
             <div class="d-flex justify-content-between gap-2">
-              <button class="btn btn-danger flex-grow-1"(click)="onRemoveProduct(product.id)">
+              <button
+                class="btn btn-danger flex-grow-1"
+                (click)="onRemoveProduct(product.id)"
+              >
                 <i class="bi bi-trash me-2"></i>Remove
               </button>
-              <a class="btn btn-warning flex-grow-1" [routerLink]="['/update-product',product.id]" >
+              <a
+                class="btn btn-success flex-grow-1"
+                [routerLink]="['/update-product', product.id]"
+              >
                 <i class="bi bi-pencil me-2"></i>Update
               </a>
             </div>
@@ -148,14 +189,27 @@
     <!-- Empty State -->
     <div *ngIf="productsList.length === 0" class="empty-state text-center mt-5">
       <div class="empty-state-icon mb-3">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          width="48"
+          height="48"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          <path
+            d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+          ></path>
         </svg>
       </div>
       <h3 class="empty-state-title">No products found</h3>
-      <p class="empty-state-text">Try adjusting your filters or search criteria</p>
-      <button class="btn btn-primary mt-3" (click)="clearAllFilters()">Clear All Filters</button>
+      <p class="empty-state-text">
+        Try adjusting your filters or search criteria
+      </p>
+      <button class="btn btn-primary mt-3" (click)="clearAllFilters()">
+        Clear All Filters
+      </button>
     </div>
     <!-- Pagination -->
     <div class="col-12">

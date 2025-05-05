@@ -16,9 +16,12 @@ import { FooterComponent } from '../../core/shared/components/footer/footer.comp
 export class GymOwnerLayoutComponent {
   sidebarCollapsed: boolean = false;
 
+  constructor(protected authService:AuthService){}
   toggleSidebar() {
     this.sidebarCollapsed = !this.sidebarCollapsed;
   }
-
+  Logout(){
+    this.authService.logout();
+  }
     
 }
