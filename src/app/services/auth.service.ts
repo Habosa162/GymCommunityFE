@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { LoginRequest } from './../domain/models/auth.model';
 import { baseUrl } from './enviroment';
 
@@ -20,6 +20,9 @@ export class AuthService {
   private ForgotPasswordEndPoint = `${baseUrl}/Auth/ForgotPassword`;
   private ResetPasswordEndPoint = `${baseUrl}/Auth/ResetPassword`;
 
+  // Observable to track authentication state changes
+  public authStateChanged = new BehaviorSubject<boolean>(this.isLoggedIn());
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -28,11 +31,27 @@ export class AuthService {
 
   login(data: LoginRequest): Observable<any> {
     console.log(data);
-    return this.http.post(this.LoginEndPoint, data);
+    return this.http.post(this.LoginEndPoint, data).pipe(
+      tap((response: any) => {
+        if (response && response.token) {
+          localStorage.setItem('token', response.token);
+          // Notify subscribers that auth state has changed
+          this.authStateChanged.next(true);
+        }
+      })
+    );
   }
   register(data: FormData): Observable<any> {
     console.log(data);
-    return this.http.post(this.RegisterEndPoint, data);
+    return this.http.post(this.RegisterEndPoint, data).pipe(
+      tap((response: any) => {
+        if (response && response.token) {
+          localStorage.setItem('token', response.token);
+          // Notify subscribers that auth state has changed
+          this.authStateChanged.next(true);
+        }
+      })
+    );
   }
   forgotPassword(email: string): Observable<any> {
     const body = { email };
@@ -126,6 +145,8 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    // Notify subscribers that auth state has changed
+    this.authStateChanged.next(false);
     this.router.navigate(['/login']);
   }
 
@@ -156,6 +177,9 @@ export class AuthService {
           // Store token in both locations for compatibility
           localStorage.setItem('jwt', res.token);
           localStorage.setItem('token', res.token);
+
+          // Notify subscribers that auth state has changed
+          this.authStateChanged.next(true);
 
           if (res.isNewUser) {
             this.router.navigate(['/choose-role']);

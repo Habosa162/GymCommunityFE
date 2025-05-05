@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../../../../services/auth.service';
 import { NotificationBellComponent } from '../notification-bell/notification-bell.component';
 
@@ -11,10 +12,11 @@ import { NotificationBellComponent } from '../notification-bell/notification-bel
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   isScrolled = false;
   userRole: string | null = null;
   navMenus: any[] = [];
+  private authSubscription: Subscription | null = null;
 
   // Dropdown state management
   activeDropdown: string | null = null;
@@ -22,6 +24,23 @@ export class NavbarComponent implements OnInit {
   constructor(protected authService: AuthService) {}
 
   ngOnInit(): void {
+    // Initialize with current auth state
+    this.updateNavigation();
+
+    // Subscribe to auth state changes
+    this.authSubscription = this.authService.authStateChanged.subscribe(() => {
+      this.updateNavigation();
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Clean up subscription to prevent memory leaks
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
+  }
+
+  private updateNavigation(): void {
     this.userRole = this.authService.getUserRole();
     this.setupNavMenus();
   }
