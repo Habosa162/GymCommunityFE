@@ -1,6 +1,6 @@
 import { NotificationService } from './../../../services/Notification/notification.service';
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PaymentService } from '../../../services/Ecommerce/payment.service';
 import { TrainingPlansService } from '../../../services/Training Plans/training-plan.service';
 import { PaymentDTO } from '../../../domain/models/Ecommerce/payment.mdoel';
@@ -10,7 +10,7 @@ import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-plan-payment-success',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './plan-payment-success.component.html',
   styleUrl: './plan-payment-success.component.css',
 })
@@ -42,7 +42,8 @@ export class PlanPaymentSuccessComponent {
     private trainingPlanService: TrainingPlansService,
     private subscriptionToPlanService: SubscriptionToPlanService,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    
   ) {}
 
   ngOnInit() {
