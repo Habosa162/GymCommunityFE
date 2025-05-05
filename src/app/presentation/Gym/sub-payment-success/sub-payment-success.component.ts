@@ -44,7 +44,9 @@ export class SubPaymentSuccessComponent implements OnInit {
 
     this.route.queryParams.subscribe(params => {
       if (params['success'] === 'true' && params['pending'] === 'false') {
-        this.processSuccessfulPayment(params);
+        //this.processSuccessfulPayment(params);
+        this.createSubscriptionAndPayment(params, PaymentStatus.Completed);
+
       } else {
         this.handlePaymentFailure(params);
       }

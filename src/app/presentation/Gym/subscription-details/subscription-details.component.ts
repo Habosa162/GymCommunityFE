@@ -22,21 +22,22 @@ export class SubscriptionDetailsComponent implements OnInit {
   gym!: GymReadDTO;
   subscriptionId!: number;
   editMode = false;
+  paymentStatuses: number[] = [0,1, 2, 3, 4]; 
   updatedSubscription: UserSubscriptionUpdate = {
-    paymentStatus: PaymentStatus.Unknown,
+    paymentStatus: 0,
     startDate: new Date(),
     expiresAt: new Date(),
     isExpired: false
   };
 
-  paymentStatuses = Object.values(PaymentStatus).filter(value => typeof value === 'number');
-  statusText: Record<number, string> = {
-    0: 'Unknown',
-    1: 'Pending',
-    2: 'Completed',
-    3: 'Failed',
-    4: 'Refunded'
-  };
+  // paymentStatuses = Object.values(PaymentStatus).filter(value => typeof value === 'number');
+  // statusText: Record<number, string> = {
+  //   0: 'Unknown',
+  //   1: 'Pending',
+  //   2: 'Completed',
+  //   3: 'Failed',
+  //   4: 'Refunded'
+  // };
 
   isGymOwner: boolean = false;
   isValidSub : boolean = false;
@@ -90,6 +91,9 @@ export class SubscriptionDetailsComponent implements OnInit {
   }
 
   updateSubscription(): void {
+    console.log('Updated Subscription:', this.updatedSubscription);
+    this.updatedSubscription.paymentStatus = Number(this.updatedSubscription.paymentStatus);
+
     this.userSubscriptionService.update(this.subscriptionId, this.updatedSubscription).subscribe({
       next: (updatedSub) => {
         this.subscription = updatedSub;
@@ -118,7 +122,14 @@ export class SubscriptionDetailsComponent implements OnInit {
   }
 
   getStatusName(status: number): string {
-    return this.statusText[status] || 'Unknown';
+    const statusNames: { [key: number]: string } = {
+      0: 'Unknown',
+    1: 'Pending',
+    2: 'Completed',
+    3: 'Failed',
+    4: 'Refunded'
+    };
+    return statusNames[status] || 'Unknown';
   }
 
   toggleEditMode(): void {
