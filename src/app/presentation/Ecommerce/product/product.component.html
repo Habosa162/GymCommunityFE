@@ -25,12 +25,12 @@
 
       <!-- Action Buttons -->
       <div
-        *ngIf="authService.isLoggedIn() && authService.getUserRole() !== 'Admin'"
+        *ngIf="authService.getUserRole() !== 'Admin'"
         class="d-flex gap-2"
       >
         <!-- Wishlist Button -->
         <button
-          *ngIf="!isInWishlist(product.id)"
+          *ngIf="!isInWishlist(product.id)&&authService.isLoggedIn()"
           class="btn wishListBtn btn-sm rounded-circle shadow-sm"
           (click)="addToWishlist(product.id); $event.stopPropagation()"
           [disabled]="product.stock <= 0"
@@ -44,7 +44,7 @@
           ></i>
         </button>
         <button
-          *ngIf="isInWishlist(product.id)"
+          *ngIf="isInWishlist(product.id)&&authService.isLoggedIn()"
           class="btn wishListBtn btn-sm rounded-circle shadow-sm"
           (click)="removeFromWishlist(product.id); $event.stopPropagation()"
           [disabled]="product.stock <= 0"
