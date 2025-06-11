@@ -207,15 +207,13 @@
 
 
         </div>
-                <p class="fs-5 text-dark mt-3 post-content">{{ post.content }}</p>
-
-          <img
+        <div class="postContent row justify-content-center align-items-center">
+        <p class="fs-5 text-dark mt-3 post-content">{{ post.content }}</p>
+        <img
           *ngIf="post.imgUrl"
           [src]="post.imgUrl"
           class="img-fluid rounded-4 mb-3 border shadow-sm post-image"
         />
-        <div class="postContent row justify-content-center align-items-center">
-      
 
         <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap mb-3">
           <label class="likeBtn">
